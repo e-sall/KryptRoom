@@ -6,7 +6,7 @@ KryptRoom is encrypted-compute and collaboration infrastructure for organization
 
 ## Status
 
-Milestone 1 provides a runtime-verified two-party private-set-intersection cardinality (PSI-CA). Milestone 2 now contains an implemented secret-shared private join handoff into SecretFlow SPU, with its Linux cryptographic integration run still pending. Product claims are intentionally limited to the recorded evidence.
+Milestone 1 provides a runtime-verified two-party private-set-intersection cardinality (PSI-CA). Milestone 2 provides a runtime-verified secret-shared private join handoff into SecretFlow SPU. Product claims are intentionally limited to the recorded evidence.
 
 The intended first demo uses two independent KryptNodes:
 
@@ -42,6 +42,8 @@ npm run demo:private-join
 ```
 
 The official SecretFlow 1.14.0b0 image is pinned by immutable digest. Its release entrypoint is bypassed because that interactive version banner imports optional packages absent from the image; KryptRoom starts SecretFlow's documented no-Ray production scheduler directly. CHEETAH/FM128 is used because SEMI2K's default trusted-first-party preprocessing does not satisfy the two-party privacy model. No ML is included. The full Linux cryptographic integration is enforced in GitHub Actions.
+
+Runtime verification completed on 2026-09-30 in [GitHub Actions run 36731809790](https://github.com/e-sall/KryptRoom/actions/runs/36731809790): both containers exited successfully, both returned cardinality `2`, the SPU logs recorded CHEETAH over a 128-bit ring, and the log-leak gate found no synthetic participant identifier.
 
 ## Principles
 

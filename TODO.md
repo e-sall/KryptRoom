@@ -22,8 +22,8 @@
 ## Milestone 2: secret-shared private join handoff
 
 - [x] Integrate a fixed-shape SecretFlow SPU circuit for private join/MPC handoff.
-- [ ] Execute the two-container CHEETAH/FM128 cryptographic integration test.
-- [ ] Record exact Milestone 2 runtime and test evidence.
+- [x] Execute the two-container CHEETAH/FM128 cryptographic integration test.
+- [x] Record exact Milestone 2 runtime and test evidence.
 
 ## Environment blocker
 

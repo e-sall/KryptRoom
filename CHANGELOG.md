@@ -40,8 +40,5 @@ All notable project changes are recorded here. The project follows milestone-ori
 - Nine automated tests pass, including a real two-process cryptographic PSI-cardinality integration test.
 - The cancer-collaboration demo returns cardinality `2` with `matchedIdentifiersRevealed: false`.
 - The locally cached production dependency audit reports zero known vulnerabilities.
-
-### Pending verification
-
-- The Milestone 2 SPU runtime has not been executed in this Windows workspace because Python, Docker, and WSL are unavailable. Source or policy-test success must not be presented as cryptographic runtime evidence.
+- The two-container SecretFlow integration executed CHEETAH over a 128-bit ring, returned cardinality `2` at both participants, exited cleanly, and emitted none of the synthetic participant identifiers.
 

@@ -2,7 +2,7 @@
 
 > Compute together. Reveal nothing.
 
-KryptRoom is encrypted-compute and collaboration infrastructure for organizations that need to work together without disclosing their raw data to one another, KryptRoom, or a central cloud operator.
+KryptRoom is encrypted-compute and collaboration infrastructure for organizations that need to work together without disclosing their raw data to one another, KryptRoom or a central cloud operator.
 
 ## Status
 
@@ -38,7 +38,7 @@ Read [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md), [ARCHITECTURE.md](ARCHITECTURE.md
 
 ## Runtime prerequisites
 
-The real PSI milestone targets Linux containers. Windows development requires Docker Desktop with its WSL 2 backend, or an equivalent Linux Docker host. Exact demo and verification commands will be documented with the PSI implementation.
+The real PSI milestone targets Linux containers. Windows development requires Docker Desktop with its WSL 2 backend or an equivalent Linux Docker host. Exact demo and verification commands will be documented with the PSI implementation.
 
 ## Security notice
 

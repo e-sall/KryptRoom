@@ -29,9 +29,13 @@ Each organization controls its KryptNode and local storage. Cryptographic protoc
 
 ## Milestone 1 design
 
-Milestone 1 will run the official SecretFlow standalone PSI implementation in two separate Linux containers. Each container receives only its own read-only input mount and its own writable result directory. A private container network carries RR22 protocol traffic directly between the nodes. No Control Plane service participates in the data plane.
+Milestone 1 runs OpenMined PSI v2.0.6 between two separate KryptNode processes. Each process reads only its organization's local CSV. Lab A acts as the PSI server and Lab B as the client. The client sends ECDH-encrypted identifiers; the server responds with evaluated ciphertexts and an exact `Raw` encrypted server-set representation. The client computes only the intersection cardinality.
 
-The milestone does not yet implement node identity, transport authentication, signed manifests, output commitments, or RunReceipts. These omissions are security limitations, not implicit features.
+Both peers instantiate the library with identifier revelation disabled. The server never receives Lab B plaintext identifiers. Lab B receives the cardinality but no matched identifiers. No Control Plane service participates in the protocol or receives participant input.
+
+The current backend does not produce secret shares of matched rows. It therefore does not yet implement the private join/MPC handoff. A circuit-PSI or secret-shared PSI backend is required before that claim can be made.
+
+The milestone does not yet implement node identity, transport authentication, signed manifests, output commitments, malicious-security enforcement, or RunReceipts. These omissions are security limitations, not implicit features.
 
 ## Repository boundaries
 

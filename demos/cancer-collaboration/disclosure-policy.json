@@ -1,0 +1,10 @@
+{
+  "version": "1",
+  "resultMode": "cardinality-only",
+  "revealMatchedIdentifiers": false,
+  "cardinalityRecipients": ["lab-a", "lab-b", "ui"],
+  "futureIdentifierDisclosure": {
+    "requiresExplicitOptIn": true
+  }
+}
+

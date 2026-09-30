@@ -10,20 +10,21 @@
 
 ## Milestone 1: real two-party PSI
 
-- [ ] Confirm which participant(s) are authorized to receive the intersection.
-- [ ] Add two independently configured KryptNode containers.
-- [ ] Add isolated synthetic Lab A and Lab B inputs.
-- [ ] Execute SecretFlow PSI v2 with `PROTOCOL_RR22`.
-- [ ] Verify the intersection is exactly `P002`, `P004`.
-- [ ] Verify no Control Plane component mounts or logs raw IDs.
-- [ ] Verify non-intersecting peer IDs are absent from outputs and logs.
-- [ ] Add automated integration, privacy, and reproducibility checks.
-- [ ] Pin the tested SecretFlow container by immutable digest.
+- [x] Confirm that neither participant is authorized to receive matched identifiers; cardinality only is allowed.
+- [x] Add two independent KryptNode processes.
+- [x] Add isolated synthetic Lab A and Lab B inputs.
+- [x] Implement OpenMined ECDH PSI cardinality with the exact `Raw` container.
+- [x] Execute the cryptographic integration test and verify cardinality `2`.
+- [x] Verify structurally that no Control Plane component mounts or logs raw IDs.
+- [x] Add automated integration, privacy, and reproducibility checks.
+- [x] Generate and commit `package-lock.json` after a successful trusted install.
+- [ ] Integrate a mature circuit-PSI or secret-shared PSI backend for private join/MPC handoff.
 - [ ] Record exact runtime and test evidence.
 
 ## Environment blocker
 
-- [ ] Install Docker Desktop with WSL 2 backend, or provide a Linux Docker host. The current Windows environment has no Python, Docker, or WSL installation, so real PSI execution is not yet possible here.
+- [x] Install the pinned OpenMined PSI dependency and run the cryptographic tests.
+- [ ] Install Docker Desktop with WSL 2 backend, or provide a Linux Docker host before SecretFlow SPU/MPC work. The current Windows environment has no Python, Docker, or WSL installation.
 
 ## Explicitly deferred
 

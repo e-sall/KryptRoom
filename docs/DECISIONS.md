@@ -40,3 +40,25 @@
 
 **Status:** Accepted.
 
+## ADR-005 — Default output is cardinality only
+
+**Decision:** Reveal matched identifiers to neither participant. The authorized Milestone 1 output is only the exact intersection cardinality. Any future identifier disclosure requires explicit opt-in authorization naming the recipients.
+
+**Reason:** Matching patient identifiers are sensitive linkage information. Private join and MPC should consume alignment internally rather than disclose it to collaborators.
+
+**Alternatives:** Reveal to both parties, or select a single receiver. Both are rejected as defaults.
+
+**Status:** Accepted.
+
+## ADR-006 — OpenMined PSI-CA replaces RR22 for Milestone 1
+
+**Decision:** Use OpenMined PSI v2.0.6 with ECDH commutative encryption, `revealIntersection=false`, and its exact `Raw` container for Milestone 1.
+
+**Reason:** SecretFlow PSI v2 RR22 always assigns a receiver that obtains the exact intersection. Its `broadcast_result` flag controls only whether senders also receive it. OpenMined's cardinality mode reveals the exact count without exposing matched identifiers, and `Raw` avoids probabilistic false positives.
+
+**Alternatives:** SecretFlow RR22 with a hidden output file; rejected because a participant controlling the receiver node can inspect it. GCS or Bloom-filter cardinality; rejected for this small correctness fixture because they are probabilistic. Custom circuit PSI; rejected because KryptRoom does not invent cryptographic protocols.
+
+**Consequences:** The backend does not create secret-shared matched rows. Private join/MPC handoff remains a separate gate requiring a mature circuit-PSI or secret-shared PSI implementation. The current security model remains honest-but-curious.
+
+**Status:** Accepted and runtime-verified on the synthetic Milestone 1 fixture.
+

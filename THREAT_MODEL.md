@@ -25,7 +25,9 @@ Milestone 1 targets two non-colluding, semi-honest (honest-but-curious) parties.
 
 ## Protected properties targeted by Milestone 1
 
-- A party does not receive the other party's non-intersecting raw identifiers through the authorized PSI interface.
+- Neither party receives matched identifiers through the authorized PSI-cardinality interface.
+- Lab B learns the exact intersection cardinality; Lab A need not receive the result.
+- A party does not receive the other party's non-intersecting raw identifiers through the authorized interface.
 - The Control Plane receives no raw input identifiers because it is absent from the PSI data path.
 - Raw CSV inputs are mounted only into their owning KryptNode container.
 
@@ -52,15 +54,17 @@ These properties depend on correct SecretFlow configuration, isolated mounts, no
 - Correct deletion, backup handling, disaster recovery, and production key management.
 - Regulatory compliance or suitability for real patient data.
 
-## Information leakage inherent to PSI
+## Information leakage inherent to PSI cardinality
 
-Authorized result recipients learn the intersection and its size. Parties may combine that result with prior knowledge. Dataset cardinality and traffic patterns may also be exposed by the implementation. Repeated or adversarial queries can amplify membership leakage; production policy must constrain them.
+Authorized result recipients learn the exact intersection size. They may combine that number with their own dataset or prior knowledge; small sets can make individual membership inferable even without identifier output. Each peer learns the other input's declared cardinality, and traffic patterns may expose additional size information. Repeated or adversarial queries can amplify membership leakage; production policy must constrain them.
+
+The honest-but-curious model assumes both peers run the reviewed binary and keep `revealIntersection=false`. A malicious or modified peer is outside the current model and may attempt policy bypasses or chosen-input attacks.
 
 ## Validation obligations
 
-- Verify the exact SecretFlow protocol selected at runtime.
+- Verify OpenMined PSI v2.0.6, ECDH mode, `Raw` exact container, and identifier revelation disabled at runtime.
 - Verify input mounts are disjoint and the Control Plane has none.
 - Verify logs and committed files contain no raw private inputs or non-matching peer identifiers.
 - Verify the result against synthetic fixtures outside the protocol only in test code that is not part of the Control Plane.
-- Pin and record container image digests before any production claim.
+- Pin the full dependency graph before any production claim.
 

@@ -29,7 +29,7 @@ npm run demo:psi
 
 The authorized demo output contains `intersectionCardinality: 2` and no matched identifiers. Lab A and Lab B run as independent operating-system processes and read separate CSV files. No Control Plane process receives either dataset.
 
-Runtime verification completed on 2026-09-29: all eight automated tests passed and the end-to-end demo returned cardinality `2` without emitting matched identifiers. The use of `--ignore-scripts` avoids an unnecessary and currently broken `protoc-gen-js` installer; OpenMined PSI's distributed WebAssembly runtime is already precompiled.
+Runtime verification completed on 2026-09-29: all nine automated tests passed and the end-to-end demo returned cardinality `2` without emitting matched identifiers. The use of `--ignore-scripts` avoids an unnecessary and currently broken `protoc-gen-js` installer; OpenMined PSI's distributed WebAssembly runtime is already precompiled.
 
 ## Principles
 

@@ -34,3 +34,13 @@ test('the disclosure manifest requires opt-in for any future ID reveal', async (
   assert.equal(manifest.futureIdentifierDisclosure.requiresExplicitOptIn, true)
 })
 
+test('the PSI job manifest contains no patient identifiers or remote inputs', async () => {
+  const sourceText = await source('demos/cancer-collaboration/psi-job.json')
+  const manifest = JSON.parse(sourceText)
+
+  assert.doesNotMatch(sourceText, /P00[1-7]/u)
+  assert.equal(manifest.controlPlaneDataAccess, 'none')
+  assert.equal(manifest.outputPolicy.revealMatchedIdentifiers, false)
+  assert.ok(manifest.participants.every(({ input }) => input.startsWith('local://')))
+})
+

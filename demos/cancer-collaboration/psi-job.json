@@ -1,0 +1,35 @@
+{
+  "version": "1",
+  "jobId": "cancer-collaboration-psi-cardinality-v1",
+  "operation": "psi-cardinality",
+  "backend": {
+    "name": "@openmined/psi.js",
+    "version": "2.0.6",
+    "protocol": "ECDH-PSI-CA",
+    "dataStructure": "Raw",
+    "securityModel": "semi-honest"
+  },
+  "participants": [
+    {
+      "id": "lab-a",
+      "role": "server",
+      "input": "local://lab-a/patients.csv"
+    },
+    {
+      "id": "lab-b",
+      "role": "client",
+      "input": "local://lab-b/patients.csv"
+    }
+  ],
+  "outputPolicy": {
+    "version": "1",
+    "resultMode": "cardinality-only",
+    "revealMatchedIdentifiers": false,
+    "cardinalityRecipients": ["lab-a", "lab-b", "ui"],
+    "futureIdentifierDisclosure": {
+      "requiresExplicitOptIn": true
+    }
+  },
+  "controlPlaneDataAccess": "none"
+}
+

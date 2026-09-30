@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kryptroom.dev/schemas/psi-job.schema.json",
+  "title": "KryptRoom PSI Job",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "jobId",
+    "operation",
+    "backend",
+    "participants",
+    "outputPolicy",
+    "controlPlaneDataAccess"
+  ],
+  "properties": {
+    "version": { "const": "1" },
+    "jobId": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "operation": { "const": "psi-cardinality" },
+    "backend": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version",
+        "protocol",
+        "dataStructure",
+        "securityModel"
+      ],
+      "properties": {
+        "name": { "const": "@openmined/psi.js" },
+        "version": { "const": "2.0.6" },
+        "protocol": { "const": "ECDH-PSI-CA" },
+        "dataStructure": { "const": "Raw" },
+        "securityModel": { "const": "semi-honest" }
+      }
+    },
+    "participants": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "role", "input"],
+        "properties": {
+          "id": { "enum": ["lab-a", "lab-b"] },
+          "role": { "enum": ["server", "client"] },
+          "input": { "type": "string", "pattern": "^local://" }
+        }
+      }
+    },
+    "outputPolicy": {
+      "$ref": "psi-cardinality-policy.schema.json"
+    },
+    "controlPlaneDataAccess": { "const": "none" }
+  }
+}
+

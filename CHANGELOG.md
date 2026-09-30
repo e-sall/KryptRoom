@@ -13,6 +13,7 @@ All notable project changes are recorded here. The project follows milestone-ori
 - Synthetic cancer-collaboration fixtures, disclosure manifest, demo runner, and automated unit/integration/privacy/reproducibility tests.
 - CI workflow for the PSI milestone.
 - Reproducible npm lockfile for the full PSI dependency graph.
+- Canonical PSI job manifest and schema recording the backend, participants, security model, local inputs, and disclosure policy.
 
 ### Changed
 
@@ -26,7 +27,7 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Verified
 
-- Eight automated tests pass, including a real two-process cryptographic PSI-cardinality integration test.
+- Nine automated tests pass, including a real two-process cryptographic PSI-cardinality integration test.
 - The cancer-collaboration demo returns cardinality `2` with `matchedIdentifiersRevealed: false`.
 - The locally cached production dependency audit reports zero known vulnerabilities.
 

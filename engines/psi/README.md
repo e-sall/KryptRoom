@@ -15,7 +15,7 @@ This backend does not produce secret shares of matched rows. It is suitable for 
 
 The dependency is pinned to v2.0.6 in `package.json` and the full dependency graph is locked in `package-lock.json`. Install with `npm ci --ignore-scripts`; the package's PSI WebAssembly is precompiled, while an unrelated `protoc-gen-js` post-install downloader is broken on the tested Windows environment.
 
-On 2026-09-29, the automated suite passed 8/8 tests and the independent Lab A/Lab B process demo returned exact cardinality `2` without identifier output.
+On 2026-09-29, the automated suite passed 9/9 tests and the independent Lab A/Lab B process demo returned exact cardinality `2` without identifier output.
 
 ## Security model
 

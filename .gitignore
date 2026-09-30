@@ -1,0 +1,35 @@
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+
+# JavaScript
+node_modules/
+.next/
+
+# IDE and OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local secrets, datasets, and cryptographic outputs
+**/private/
+**/output/
+**/*.trace
+**/*.key
+**/*.pem
+**/*.secret
+
+# Build artifacts
+dist/
+build/
+coverage/
+

@@ -12,6 +12,7 @@ All notable project changes are recorded here. The project follows milestone-ori
 - Two independent KryptNode processes for exact PSI cardinality.
 - Synthetic cancer-collaboration fixtures, disclosure manifest, demo runner, and automated unit/integration/privacy/reproducibility tests.
 - CI workflow for the PSI milestone.
+- Reproducible npm lockfile for the full PSI dependency graph.
 
 ### Changed
 
@@ -22,4 +23,10 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 - Established the rule that no privacy or security claim may exceed tested implementation evidence.
 - Enforced `revealIntersection=false` at both PSI peers and selected the exact `Raw` encrypted container.
+
+### Verified
+
+- Eight automated tests pass, including a real two-process cryptographic PSI-cardinality integration test.
+- The cancer-collaboration demo returns cardinality `2` with `matchedIdentifiersRevealed: false`.
+- The locally cached production dependency audit reports zero known vulnerabilities.
 

@@ -60,5 +60,5 @@
 
 **Consequences:** The backend does not create secret-shared matched rows. Private join/MPC handoff remains a separate gate requiring a mature circuit-PSI or secret-shared PSI implementation. The current security model remains honest-but-curious.
 
-**Status:** Accepted; runtime verification pending dependency installation.
+**Status:** Accepted and runtime-verified on the synthetic Milestone 1 fixture.
 

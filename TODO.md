@@ -14,16 +14,16 @@
 - [x] Add two independent KryptNode processes.
 - [x] Add isolated synthetic Lab A and Lab B inputs.
 - [x] Implement OpenMined ECDH PSI cardinality with the exact `Raw` container.
-- [ ] Execute the cryptographic integration test and verify cardinality `2` (dependency download blocked in the current environment).
+- [x] Execute the cryptographic integration test and verify cardinality `2`.
 - [x] Verify structurally that no Control Plane component mounts or logs raw IDs.
 - [x] Add automated integration, privacy, and reproducibility checks.
-- [ ] Generate and commit `package-lock.json` after a successful trusted install.
+- [x] Generate and commit `package-lock.json` after a successful trusted install.
 - [ ] Integrate a mature circuit-PSI or secret-shared PSI backend for private join/MPC handoff.
 - [ ] Record exact runtime and test evidence.
 
 ## Environment blocker
 
-- [ ] Permit npm package access long enough to install the pinned OpenMined PSI dependency and run the cryptographic tests.
+- [x] Install the pinned OpenMined PSI dependency and run the cryptographic tests.
 - [ ] Install Docker Desktop with WSL 2 backend, or provide a Linux Docker host before SecretFlow SPU/MPC work. The current Windows environment has no Python, Docker, or WSL installation.
 
 ## Explicitly deferred

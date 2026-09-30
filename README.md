@@ -22,14 +22,14 @@ The current implementation uses OpenMined PSI v2.0.6 with ECDH commutative encry
 Prerequisites: Node.js 20 or newer and npm.
 
 ```bash
-npm install
+npm ci --ignore-scripts
 npm test
 npm run demo:psi
 ```
 
 The authorized demo output contains `intersectionCardinality: 2` and no matched identifiers. Lab A and Lab B run as independent operating-system processes and read separate CSV files. No Control Plane process receives either dataset.
 
-The cryptographic dependency could not be downloaded or executed in the original bootstrap environment because outbound package access was blocked. Until `npm test` succeeds in an environment with the dependency installed, Milestone 1 remains implemented but not runtime-verified by KryptRoom.
+Runtime verification completed on 2026-09-29: all eight automated tests passed and the end-to-end demo returned cardinality `2` without emitting matched identifiers. The use of `--ignore-scripts` avoids an unnecessary and currently broken `protoc-gen-js` installer; OpenMined PSI's distributed WebAssembly runtime is already precompiled.
 
 ## Principles
 

@@ -2,16 +2,15 @@ name: Private join
 
 on:
   pull_request:
-    paths:
-      - "engines/mpc/**"
-      - "demos/cancer-collaboration/**"
-      - "packages/manifests/**"
-      - "tests/**"
-      - "compose.private-join.yml"
-      - "package.json"
-      - ".github/workflows/private-join.yml"
+    branches:
+      - main
+      - dev
+      - "feat/**"
   push:
-    branches: [main, dev]
+    branches:
+      - main
+      - dev
+      - "feat/**"
 
 permissions:
   contents: read

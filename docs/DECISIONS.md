@@ -62,3 +62,15 @@
 
 **Status:** Accepted and runtime-verified on the synthetic Milestone 1 fixture.
 
+## ADR-007 — Fixed-shape private join inside two-party SPU
+
+**Decision:** Recompute identifier equality inside SecretFlow SPU and keep the match mask and masked feature grids as fixed-shape secret SPU objects. Reconstruct only the intersection cardinality. Use CHEETAH with FM128 for the two-party runtime.
+
+**Reason:** SecretFlow's receiver-oriented PSI interfaces materialize matched rows at a participant, which violates ADR-005. A fixed-shape MPC circuit can transfer each owner's input directly from PYU to secret shares, compare exact fixed-width identifier bytes, exclude identifiers from the handoff, and feed secret outputs into subsequent MPC calls. CHEETAH provides a two-party semi-honest backend without adding a preprocessing trust party.
+
+**Alternatives:** Use `psi_df`/`psi_csv` and hide the result path; rejected because a participant controls the receiver host. Use SEMI2K's default trusted-first-party Beaver provider; rejected because it weakens the two-party privacy model and is documented as unsafe/debug-only. Add a trusted-third-party Beaver service; deferred because it expands the trust model. Implement a custom PSI protocol; rejected. Compact the joined rows; rejected because compaction reveals match positions or secret-dependent shapes.
+
+**Consequences:** The join is exact for accepted identifiers and has O(n*m) work, so it is bounded to small public capacities. The configured capacity and tensor shapes are public. SecretFlow 1.14.0b0 supports Python 3.10/3.11 rather than Python 3.12, so this engine is isolated in its pinned official Linux image even though the future application backend targets Python 3.12. The beta runtime remains non-production until further review.
+
+**Status:** Accepted and implemented; Linux two-container runtime verification pending.
+

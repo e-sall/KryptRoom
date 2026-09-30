@@ -1,0 +1,51 @@
+name: Private join
+
+on:
+  pull_request:
+    paths:
+      - "engines/mpc/**"
+      - "demos/cancer-collaboration/**"
+      - "packages/manifests/**"
+      - "tests/**"
+      - "compose.private-join.yml"
+      - "package.json"
+      - ".github/workflows/private-join.yml"
+  push:
+    branches: [main, dev]
+
+permissions:
+  contents: read
+
+jobs:
+  policy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts
+      - run: npm test
+
+  cryptographic-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run isolated two-party SPU join
+        shell: bash
+        run: |
+          set -o pipefail
+          docker compose -f compose.private-join.yml up --pull always 2>&1 | tee private-join.log
+          test "$(docker inspect -f '{{.State.ExitCode}}' "$(docker compose -f compose.private-join.yml ps -a -q lab-a)")" -eq 0
+          test "$(docker inspect -f '{{.State.ExitCode}}' "$(docker compose -f compose.private-join.yml ps -a -q lab-b)")" -eq 0
+          test "$(grep -c '\"intersectionCardinality\":2' private-join.log)" -eq 2
+          test "$(grep -c '\"matchedIdentifiersRevealed\":false' private-join.log)" -eq 2
+          if grep -Eq 'P00[1-7]' private-join.log; then
+            echo "Participant identifier appeared in SPU logs" >&2
+            exit 1
+          fi
+      - name: Stop containers
+        if: always()
+        run: docker compose -f compose.private-join.yml down --volumes

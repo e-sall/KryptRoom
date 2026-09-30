@@ -17,10 +17,10 @@ The long-term workflow is private schema mapping, matching, deduplication, quali
 
 ## Approved technologies
 
-- Backend: Python 3.12, FastAPI, Pydantic, PostgreSQL, Temporal, and gRPC where appropriate.
+- Backend: Python 3.12, FastAPI, Pydantic, PostgreSQL, Temporal, and gRPC where appropriate. SecretFlow 1.14.0b0 is isolated in its official Linux image because that release supports Python 3.10/3.11 rather than Python 3.12.
 - Packaging and CI: Docker, Docker Compose, and GitHub Actions.
 - PSI: SecretFlow PSI, initially real two-party exact PSI; RR22 when practical.
-- MPC: SecretFlow SPU with JAX and Flax; initial target SEMI2K, FM128, two parties, honest-but-curious.
+- MPC: SecretFlow SPU with JAX and Flax; FM128, two parties, honest-but-curious. SEMI2K remains a target only with safe preprocessing; the current two-party private join uses CHEETAH to avoid SEMI2K's trusted-first-party default.
 - Private ML: a small real JAX/Flax neural network on SPU, with features, labels, gradients, weights, and loss private by default.
 - FHE: OpenFHE Python bindings where practical; BFV/BGV for exact arithmetic and CKKS for approximate vector arithmetic.
 - ZK: SP1 zkVM for realistic manifest, signature, commitment, policy, and output-authorization statements—not a false claim of proving full MPC training.
@@ -51,20 +51,21 @@ The long-term workflow is private schema mapping, matching, deduplication, quali
 1. Monorepo, Docker, and common schemas.
 2. Two independent KryptNodes.
 3. Real PSI private matching.
-4. MPC private analytics.
-5. MPC neural-network training.
-6. Treatment-response prediction and private feature importance.
-7. OpenFHE private analytics.
-8. Canonical RunReceipt and commitments.
-9. Post-quantum signatures.
-10. SP1 proof.
-11. Base Sepolia registry.
-12. UI.
-13. Integration tests, benchmarks, and demo hardening.
+4. Secret-shared private join handoff into MPC.
+5. MPC private analytics.
+6. MPC neural-network training.
+7. Treatment-response prediction and private feature importance.
+8. OpenFHE private analytics.
+9. Canonical RunReceipt and commitments.
+10. Post-quantum signatures.
+11. SP1 proof.
+12. Base Sepolia registry.
+13. UI.
+14. Integration tests, benchmarks, and demo hardening.
 
 Do not casually reorder this sequence or expand product scope without approval.
 
 ## Current milestone
 
-Milestone 1 is a real two-party PSI-cardinality protocol using independent Lab A and Lab B KryptNodes. The authorized output is the exact cardinality `2`; matched identifiers are revealed to neither participant. No server-side plaintext comparison, server-side hash intersection, custom PSI, or mock presented as cryptography is acceptable. Any future identifier disclosure requires an explicit opt-in policy naming authorized recipients.
+Milestone 2 is a fixed-shape, secret-shared private join handoff into a two-party SecretFlow SPU. Identifier equality is computed inside MPC; the resulting match mask and masked feature grids remain secret SPU objects. The only authorized reconstruction is the intersection cardinality. Matched identifiers are revealed to neither participant, and any future identifier disclosure requires an explicit opt-in policy naming authorized recipients. Private analytics and ML remain out of scope.
 

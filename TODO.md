@@ -5,8 +5,8 @@
 - [x] Record product and architecture context.
 - [x] Establish initial threat model and decision log.
 - [x] Create monorepo directory boundaries.
-- [ ] Push the initial `main` commit.
-- [ ] Create and push `dev`, then continue work from `dev`.
+- [x] Push the initial `main` commit.
+- [x] Create and push `dev`, then continue work from `dev`.
 
 ## Milestone 1: real two-party PSI
 
@@ -18,13 +18,17 @@
 - [x] Verify structurally that no Control Plane component mounts or logs raw IDs.
 - [x] Add automated integration, privacy, and reproducibility checks.
 - [x] Generate and commit `package-lock.json` after a successful trusted install.
-- [ ] Integrate a mature circuit-PSI or secret-shared PSI backend for private join/MPC handoff.
-- [ ] Record exact runtime and test evidence.
+
+## Milestone 2: secret-shared private join handoff
+
+- [x] Integrate a fixed-shape SecretFlow SPU circuit for private join/MPC handoff.
+- [ ] Execute the two-container CHEETAH/FM128 cryptographic integration test.
+- [ ] Record exact Milestone 2 runtime and test evidence.
 
 ## Environment blocker
 
 - [x] Install the pinned OpenMined PSI dependency and run the cryptographic tests.
-- [ ] Install Docker Desktop with WSL 2 backend, or provide a Linux Docker host before SecretFlow SPU/MPC work. The current Windows environment has no Python, Docker, or WSL installation.
+- [ ] Install Docker Desktop with WSL 2 backend, or provide a Linux Docker host to execute SecretFlow SPU/MPC. The current Windows environment has no Python, Docker, or WSL installation.
 
 ## Explicitly deferred
 

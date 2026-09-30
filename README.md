@@ -6,7 +6,7 @@ KryptRoom is encrypted-compute and collaboration infrastructure for organization
 
 ## Status
 
-The repository is in its foundation phase. The first product capability is a real two-party private-set-intersection cardinality (PSI-CA) for the cancer-collaboration demo. Product claims in this repository are intentionally limited to code that has been executed and verified.
+Milestone 1 provides a runtime-verified two-party private-set-intersection cardinality (PSI-CA). Milestone 2 now contains an implemented secret-shared private join handoff into SecretFlow SPU, with its Linux cryptographic integration run still pending. Product claims are intentionally limited to the recorded evidence.
 
 The intended first demo uses two independent KryptNodes:
 
@@ -31,6 +31,18 @@ The authorized demo output contains `intersectionCardinality: 2` and no matched 
 
 Runtime verification completed on 2026-09-29: all nine automated tests passed and the end-to-end demo returned cardinality `2` without emitting matched identifiers. The use of `--ignore-scripts` avoids an unnecessary and currently broken `protoc-gen-js` installer; OpenMined PSI's distributed WebAssembly runtime is already precompiled.
 
+## Milestone 2 private join
+
+The M2 runtime compares fixed-width identifier bytes inside a two-party SecretFlow SPU and produces a fixed-shape secret handoff: a match mask and masked feature grids. Identifiers are excluded from the handoff. A second MPC call consumes the mask and reconstructs only cardinality.
+
+The demo requires a Linux Docker host or Docker Desktop with WSL 2:
+
+```bash
+npm run demo:private-join
+```
+
+The official SecretFlow 1.14.0b0 image is pinned by immutable digest. CHEETAH/FM128 is used because SEMI2K's default trusted-first-party preprocessing does not satisfy the two-party privacy model. No ML is included. This runtime has not yet been executed in the current Windows workspace, which lacks Docker, WSL, and Python.
+
 ## Principles
 
 - The Control Plane is not trusted with participant plaintext.
@@ -54,7 +66,7 @@ Read [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md), [ARCHITECTURE.md](ARCHITECTURE.md
 
 ## Runtime prerequisites
 
-The PSI-cardinality demo runs on Node.js. Future SecretFlow SPU, MPC, and Linux-native cryptographic services will require Docker Desktop with its WSL 2 backend on Windows, or an equivalent Linux Docker host.
+The PSI-cardinality demo runs on Node.js. The private-join demo requires Docker Desktop with its WSL 2 backend on Windows, or an equivalent Linux Docker host. SecretFlow 1.14.0b0 supports Python 3.10 and 3.11, not Python 3.12, so the engine stays inside its pinned Linux container.
 
 ## Security notice
 

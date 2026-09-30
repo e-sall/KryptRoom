@@ -33,3 +33,5 @@ Roadmap items are ordered dependencies, not parallel feature invitations.
 
 No milestone advances merely because source code exists. A gate requires executed tests, documented runtime evidence, updated threat-model limitations, and security claims that match the evidence.
 
+Milestone 2 source, manifests, isolated-container topology, and policy tests are implemented. Its cryptographic gate remains open until the pinned SecretFlow container runs successfully on a Linux Docker host and the evidence is recorded.
+

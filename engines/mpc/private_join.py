@@ -24,6 +24,7 @@ from secretflow.device import SPUCompilerNumReturnsPolicy
 
 
 PARTIES = ("lab-a", "lab-b")
+APPROVED_SECRETFLOW_VERSION = "1.14.0b0"
 SAFE_IDENTIFIER = re.compile(r"^[A-Za-z0-9_-]{1,128}$")
 FEATURE_LIMIT = 1_000_000
 
@@ -133,12 +134,16 @@ def load_job(path: Path) -> dict[str, Any]:
         raise ValueError("Job operation is not private-join-handoff")
     if backend != {
         "name": "SecretFlow SPU",
-        "version": "1.14.0b0",
+        "version": APPROVED_SECRETFLOW_VERSION,
         "protocol": "CHEETAH",
         "field": "FM128",
         "securityModel": "semi-honest",
     }:
         raise ValueError("Job backend does not match the approved runtime")
+    if sf.__version__ != APPROVED_SECRETFLOW_VERSION:
+        raise RuntimeError(
+            "Installed SecretFlow version does not match the approved runtime"
+        )
     if policy.get("resultMode") != "cardinality-only":
         raise ValueError("Only cardinality-only output is supported")
     if policy.get("revealMatchedIdentifiers") is not False:
@@ -197,9 +202,10 @@ def create_devices(self_party: str, job_id: str) -> tuple[dict[str, sf.PYU], sf.
         "self_party": self_party,
     }
     sf.init(
-        address="127.0.0.1:6379",
+        # SecretFlow 1.14.0b0 officially supports production scheduling with
+        # its thread-pool backend. This image intentionally has no Ray package.
+        ray_mode=False,
         cluster_config=cluster_config,
-        log_to_driver=False,
         logging_level="warning",
         job_name=job_id,
         cross_silo_comm_options={"timeout_in_ms": 300_000},

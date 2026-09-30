@@ -17,3 +17,20 @@ test('SecretFlow container is pinned by version and immutable digest', async () 
   )
   assert.doesNotMatch(compose, /secretflow[^\n]*:latest/u)
 })
+
+test('SecretFlow uses its packaged no-Ray production runtime', async () => {
+  const compose = await readFile(
+    path.join(repositoryRoot, 'compose.private-join.yml'),
+    'utf8'
+  )
+  const runtime = await readFile(
+    path.join(repositoryRoot, 'engines/mpc/private_join.py'),
+    'utf8'
+  )
+
+  assert.match(compose, /entrypoint:\s*\[\]/u)
+  assert.doesNotMatch(compose, /\bray start\b/u)
+  assert.doesNotMatch(compose, /\bpip install\b/u)
+  assert.match(runtime, /ray_mode=False/u)
+  assert.doesNotMatch(runtime, /address=["']127\.0\.0\.1:6379["']/u)
+})

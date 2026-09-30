@@ -28,7 +28,7 @@
 ## Environment blocker
 
 - [x] Install the pinned OpenMined PSI dependency and run the cryptographic tests.
-- [ ] Install Docker Desktop with WSL 2 backend, or provide a Linux Docker host to execute SecretFlow SPU/MPC. The current Windows environment has no Python, Docker, or WSL installation.
+- [x] Provide a Linux Docker host through GitHub Actions to execute SecretFlow SPU/MPC.
 
 ## Explicitly deferred
 

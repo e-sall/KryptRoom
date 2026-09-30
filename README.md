@@ -41,7 +41,7 @@ The demo requires a Linux Docker host or Docker Desktop with WSL 2:
 npm run demo:private-join
 ```
 
-The official SecretFlow 1.14.0b0 image is pinned by immutable digest. CHEETAH/FM128 is used because SEMI2K's default trusted-first-party preprocessing does not satisfy the two-party privacy model. No ML is included. This runtime has not yet been executed in the current Windows workspace, which lacks Docker, WSL, and Python.
+The official SecretFlow 1.14.0b0 image is pinned by immutable digest. Its release entrypoint is bypassed because that interactive version banner imports optional packages absent from the image; KryptRoom starts SecretFlow's documented no-Ray production scheduler directly. CHEETAH/FM128 is used because SEMI2K's default trusted-first-party preprocessing does not satisfy the two-party privacy model. No ML is included. The full Linux cryptographic integration is enforced in GitHub Actions.
 
 ## Principles
 

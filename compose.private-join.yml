@@ -2,6 +2,10 @@ name: kryptroom-private-join
 
 x-kryptroom-mpc: &kryptroom-mpc
   image: secretflow/secretflow-ubuntu:1.14.0b0@sha256:bdd43242c28466bdc0afddb99d7b50237a94748b5ca7467f8aea73667a38383b
+  # The 1.14.0b0 release image entrypoint is an interactive version banner
+  # that imports optional packages (including Ray) which are not installed.
+  # Clear it so Compose runs the production worker command below directly.
+  entrypoint: []
   init: true
   shm_size: 2gb
   networks:
@@ -22,8 +26,7 @@ services:
       - /bin/bash
       - -lc
       - >-
-        ray start --head --port=6379 --num-cpus=2 --include-dashboard=False
-        --disable-usage-stats && exec python /app/private_join.py --party lab-a
+        exec python /app/private_join.py --party lab-a
         --manifest /config/private-join-job.json --local-input /data/local.csv
 
   lab-b:
@@ -37,8 +40,7 @@ services:
       - /bin/bash
       - -lc
       - >-
-        ray start --head --port=6379 --num-cpus=2 --include-dashboard=False
-        --disable-usage-stats && exec python /app/private_join.py --party lab-b
+        exec python /app/private_join.py --party lab-b
         --manifest /config/private-join-job.json --local-input /data/local.csv
 
 networks:

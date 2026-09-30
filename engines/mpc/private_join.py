@@ -278,8 +278,19 @@ def run(self_party: str, manifest_path: Path, local_input_path: str) -> dict[str
         # grids are deliberately retained as secret SPUObjects for later M3
         # analytics; M2 does not train or evaluate any ML model.
         secret_cardinality = secure_device(intersection_cardinality)(secret_match_mask)
-        cardinality_for_local_party = secret_cardinality.to(parties[self_party])
-        cardinality = int(np.asarray(sf.reveal(cardinality_for_local_party)).item())
+        # Every controller must construct the same federated task graph. Move
+        # the authorized cardinality to both approved participants in a stable
+        # order, then reconstruct those cardinality objects together.
+        cardinality_for_participants = [
+            secret_cardinality.to(parties[party]) for party in PARTIES
+        ]
+        participant_cardinalities = [
+            int(np.asarray(value).item())
+            for value in sf.reveal(cardinality_for_participants)
+        ]
+        if len(set(participant_cardinalities)) != 1:
+            raise RuntimeError("Participants reconstructed different cardinalities")
+        cardinality = participant_cardinalities[0]
 
         # Keep references alive through authorized output reconstruction and
         # fail closed if the runtime ever returns plaintext-like objects.

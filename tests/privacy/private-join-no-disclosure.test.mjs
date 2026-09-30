@@ -31,7 +31,11 @@ test('runtime reconstructs only the cardinality object', async () => {
   const runtime = await source('engines/mpc/private_join.py')
   const revealCalls = runtime.match(/sf\.reveal\s*\(([^)]*)\)/gu) ?? []
 
-  assert.deepEqual(revealCalls, ['sf.reveal(cardinality_for_local_party)'])
+  assert.deepEqual(revealCalls, ['sf.reveal(cardinality_for_participants)'])
+  assert.match(
+    runtime,
+    /secret_cardinality\.to\(parties\[party\]\) for party in PARTIES/u
+  )
   assert.doesNotMatch(runtime, /\.psi(?:_df|_csv|_join_df|_join_csv)?\s*\(/u)
   assert.match(runtime, /user_specified_num_returns=3/u)
   assert.match(runtime, /secret_cardinality = secure_device\(intersection_cardinality\)/u)

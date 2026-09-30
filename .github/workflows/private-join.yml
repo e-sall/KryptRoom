@@ -32,11 +32,13 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v7
+      - name: Pull pinned SecretFlow image
+        run: docker compose -f compose.private-join.yml pull
       - name: Run isolated two-party SPU join
         shell: bash
         run: |
           set -o pipefail
-          docker compose -f compose.private-join.yml up --pull always 2>&1 | tee private-join.log
+          timeout --signal=TERM 10m docker compose -f compose.private-join.yml up --no-build --abort-on-container-failure 2>&1 | tee private-join.log
           test "$(docker inspect -f '{{.State.ExitCode}}' "$(docker compose -f compose.private-join.yml ps -a -q lab-a)")" -eq 0
           test "$(docker inspect -f '{{.State.ExitCode}}' "$(docker compose -f compose.private-join.yml ps -a -q lab-b)")" -eq 0
           test "$(grep -c '\"intersectionCardinality\":2' private-join.log)" -eq 2

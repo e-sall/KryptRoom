@@ -25,6 +25,7 @@ All notable project changes are recorded here. The project follows milestone-ori
 - Replaced the planned SecretFlow RR22 milestone backend with OpenMined PSI cardinality because RR22's mandatory receiver learns the intersection.
 - Selected SPU CHEETAH instead of SEMI2K's default trusted-first-party preprocessing for the two-party M2 privacy model.
 - Bypassed the SecretFlow 1.14.0b0 image's incompatible optional-dependency banner and selected its packaged no-Ray production scheduler without changing SPU, CHEETAH, or FM128.
+- Kept both production controllers on an identical cardinality-reconstruction graph and bounded the CI runtime so a failed party cannot leave its peer waiting indefinitely.
 - Updated GitHub's checkout and Node setup actions to their Node 24-based v7 releases.
 
 ### Security

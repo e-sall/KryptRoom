@@ -33,4 +33,7 @@ test('SecretFlow uses its packaged no-Ray production runtime', async () => {
   assert.doesNotMatch(compose, /\bpip install\b/u)
   assert.match(runtime, /ray_mode=False/u)
   assert.doesNotMatch(runtime, /address=["']127\.0\.0\.1:6379["']/u)
+  assert.match(runtime, /"protocol": "CHEETAH"/u)
+  assert.match(runtime, /"field": "FM128"/u)
+  assert.doesNotMatch(runtime, /spu\.(?:ProtocolKind|FieldType)/u)
 })

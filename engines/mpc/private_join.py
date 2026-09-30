@@ -19,7 +19,6 @@ from typing import Any
 import jax.numpy as jnp
 import numpy as np
 import secretflow as sf
-import spu
 from secretflow.device import SPUCompilerNumReturnsPolicy
 
 
@@ -226,8 +225,9 @@ def create_devices(self_party: str, job_id: str) -> tuple[dict[str, sf.PYU], sf.
             },
         ],
         "runtime_config": {
-            "protocol": spu.ProtocolKind.CHEETAH,
-            "field": spu.FieldType.FM128,
+            # SecretFlow 1.14.0b0 serializes this mapping as protobuf JSON.
+            "protocol": "CHEETAH",
+            "field": "FM128",
         },
     }
     secure_device = sf.SPU(

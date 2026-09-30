@@ -1,0 +1,31 @@
+name: PSI
+
+on:
+  pull_request:
+    paths:
+      - "nodes/krypt-node/**"
+      - "engines/psi/**"
+      - "demos/cancer-collaboration/**"
+      - "tests/**"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/psi.yml"
+  push:
+    branches: [main, dev]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --ignore-scripts
+      - run: npm test
+      - run: npm run demo:psi
+

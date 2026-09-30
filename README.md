@@ -6,14 +6,30 @@ KryptRoom is encrypted-compute and collaboration infrastructure for organization
 
 ## Status
 
-The repository is in its foundation phase. The first product capability is a real two-party private set intersection (PSI) for the cancer-collaboration demo. Product claims in this repository are intentionally limited to code that has been executed and verified.
+The repository is in its foundation phase. The first product capability is a real two-party private-set-intersection cardinality (PSI-CA) for the cancer-collaboration demo. Product claims in this repository are intentionally limited to code that has been executed and verified.
 
 The intended first demo uses two independent KryptNodes:
 
 - Lab A owns patient identifiers `P001`, `P002`, `P004`, and `P006`.
 - Lab B owns patient identifiers `P002`, `P003`, `P004`, and `P007`.
-- The expected intersection is `P002`, `P004`.
+- The expected intersection cardinality is `2`; matched identifiers are not an authorized output.
 - Raw input identifiers remain local to their owning KryptNode.
+
+## Milestone 1 demo
+
+The current implementation uses OpenMined PSI v2.0.6 with ECDH commutative encryption, the exact `Raw` encrypted container, and identifier disclosure disabled at both peers.
+
+Prerequisites: Node.js 20 or newer and npm.
+
+```bash
+npm install
+npm test
+npm run demo:psi
+```
+
+The authorized demo output contains `intersectionCardinality: 2` and no matched identifiers. Lab A and Lab B run as independent operating-system processes and read separate CSV files. No Control Plane process receives either dataset.
+
+The cryptographic dependency could not be downloaded or executed in the original bootstrap environment because outbound package access was blocked. Until `npm test` succeeds in an environment with the dependency installed, Milestone 1 remains implemented but not runtime-verified by KryptRoom.
 
 ## Principles
 
@@ -38,7 +54,7 @@ Read [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md), [ARCHITECTURE.md](ARCHITECTURE.md
 
 ## Runtime prerequisites
 
-The real PSI milestone targets Linux containers. Windows development requires Docker Desktop with its WSL 2 backend, or an equivalent Linux Docker host. Exact demo and verification commands will be documented with the PSI implementation.
+The PSI-cardinality demo runs on Node.js. Future SecretFlow SPU, MPC, and Linux-native cryptographic services will require Docker Desktop with its WSL 2 backend on Windows, or an equivalent Linux Docker host.
 
 ## Security notice
 

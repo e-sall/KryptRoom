@@ -10,23 +10,24 @@ Roadmap items are ordered dependencies, not parallel feature invitations.
 
 ## Privacy-preserving compute
 
-4. Real exact two-party PSI.
-5. MPC private analytics using SecretFlow SPU.
-6. Small real JAX/Flax neural network trained with MPC.
-7. Treatment-response prediction and gradient-based feature importance.
-8. Real OpenFHE encrypted analytics.
+4. Real exact two-party PSI cardinality with no matched-identifier disclosure.
+5. Circuit-PSI or secret-shared PSI handoff for a private join.
+6. MPC private analytics using SecretFlow SPU.
+7. Small real JAX/Flax neural network trained with MPC.
+8. Treatment-response prediction and gradient-based feature importance.
+9. Real OpenFHE encrypted analytics.
 
 ## Verifiability and provenance
 
-9. Canonical RunReceipt and commitments.
-10. Classical and post-quantum node signatures.
-11. Realistic SP1 proof scope for workflow, manifest, signature, policy, and commitment statements.
-12. Chain-agnostic audit anchor with an initial Base Sepolia implementation.
+10. Canonical RunReceipt and commitments.
+11. Classical and post-quantum node signatures.
+12. Realistic SP1 proof scope for workflow, manifest, signature, policy, and commitment statements.
+13. Chain-agnostic audit anchor with an initial Base Sepolia implementation.
 
 ## Product surface and hardening
 
-13. KryptRoom web experience.
-14. Integration tests, privacy regression tests, benchmarks, reproducibility, and demo hardening.
+14. KryptRoom web experience.
+15. Integration tests, privacy regression tests, benchmarks, reproducibility, and demo hardening.
 
 ## Milestone gates
 

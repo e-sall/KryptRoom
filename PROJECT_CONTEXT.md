@@ -66,5 +66,5 @@ Do not casually reorder this sequence or expand product scope without approval.
 
 ## Current milestone
 
-Milestone 1 is a real two-party PSI using independent Lab A and Lab B KryptNodes. The correct intersection is `P002`, `P004`. No server-side plaintext comparison, server-side hash intersection, custom PSI, or mock presented as cryptography is acceptable.
+Milestone 1 is a real two-party PSI-cardinality protocol using independent Lab A and Lab B KryptNodes. The authorized output is the exact cardinality `2`; matched identifiers are revealed to neither participant. No server-side plaintext comparison, server-side hash intersection, custom PSI, or mock presented as cryptography is acceptable. Any future identifier disclosure requires an explicit opt-in policy naming authorized recipients.
 

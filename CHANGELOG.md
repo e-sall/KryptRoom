@@ -14,20 +14,39 @@ All notable project changes are recorded here. The project follows milestone-ori
 - CI workflow for the PSI milestone.
 - Reproducible npm lockfile for the full PSI dependency graph.
 - Canonical PSI job manifest and schema recording the backend, participants, security model, local inputs, and disclosure policy.
+- Milestone 2 private-join manifest, schema, synthetic feature fixtures, isolated two-container topology, and SecretFlow SPU runtime.
+- Fixed-shape secret join handoff containing only a secret match mask and masked feature grids, with identifiers excluded.
+- Privacy, manifest, container-isolation, and runtime-pin tests for the private join.
+- A Linux Docker CI gate for the two-party CHEETAH/FM128 integration test.
+- Immutable RoomState, ArtifactRef, StateTransition, StatePolicy, CryptoContext, and StateCommitment contracts.
+- Node-local AES-256-GCM persistence for native SecretFlow SPU shares, with authenticated crypto-context bindings.
+- A two-phase M2.5 integration gate that creates S1, terminates both nodes, restarts without source-data mounts, reloads S1, and executes a private aggregate.
 
 ### Changed
 
+- Made PR events authoritative for feature-branch M2.5 integration, retained main/dev push validation, and serialized M2.5 runs without cancelling an active run. The initial cancelled jobs never acquired hosted runners; no cryptographic execution failure was observed.
+
 - Adopted the product default that matched identifiers are disclosed to neither participant; only cardinality is authorized.
 - Replaced the planned SecretFlow RR22 milestone backend with OpenMined PSI cardinality because RR22's mandatory receiver learns the intersection.
+- Selected SPU CHEETAH instead of SEMI2K's default trusted-first-party preprocessing for the two-party M2 privacy model.
+- Bypassed the SecretFlow 1.14.0b0 image's incompatible optional-dependency banner and selected its packaged no-Ray production scheduler without changing SPU, CHEETAH, or FM128.
+- Passed CHEETAH/FM128 as the protobuf JSON names required by the pinned SecretFlow SPU constructor.
+- Kept both production controllers on an identical cardinality-reconstruction graph and bounded the CI runtime so a failed party cannot leave its peer waiting indefinitely.
+- Updated GitHub's checkout and Node setup actions to their Node 24-based v7 releases.
+- Reframed the project core as a persistent encrypted state machine and inserted M2.5 before private analytics.
 
 ### Security
 
 - Established the rule that no privacy or security claim may exceed tested implementation evidence.
 - Enforced `revealIntersection=false` at both PSI peers and selected the exact `Raw` encrypted container.
+- Enforced fixed-shape MPC output, excluded identifiers from the handoff, and limited reconstruction to cardinality.
+- Enforced default-deny state disclosure, create-exclusive immutable state files, per-node encryption keys, and explicit authorization for every reconstruction.
 
 ### Verified
 
 - Nine automated tests pass, including a real two-process cryptographic PSI-cardinality integration test.
 - The cancer-collaboration demo returns cardinality `2` with `matchedIdentifiersRevealed: false`.
 - The locally cached production dependency audit reports zero known vulnerabilities.
+- The two-container SecretFlow integration executed CHEETAH over a 128-bit ring, returned cardinality `2` at both participants, exited cleanly, and emitted none of the synthetic participant identifiers.
+- Twenty-eight local unit, privacy, integration, and reproducibility tests pass for M1, M2, and the M2.5 contracts. Linux M2.5 cryptographic restart/reload evidence remains pending CI.
 

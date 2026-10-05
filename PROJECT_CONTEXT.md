@@ -2,7 +2,7 @@
 
 ## Product
 
-KryptRoom is horizontal trust infrastructure for sensitive cross-organization collaboration. Its core product is encrypted compute plus collaboration—not encrypted storage, a blockchain application, a biotech company, or merely a machine-learning wrapper.
+KryptRoom is a persistent encrypted state machine for collaboration between mutually distrustful organizations. Private computations evolve immutable `RoomState` objects whose artifacts remain secret-shared and locally encrypted at participant-owned KryptNodes. KryptRoom is not a central encrypted-storage service, a blockchain application, a biotech company, or a machine-learning wrapper.
 
 The hero use case is collaboration between two cancer-research labs. Lab A holds genomic or gene-expression features. Lab B holds clinical and treatment-response information for an overlapping patient population. Neither party authorizes raw-data disclosure to the other party, KryptRoom, or a central operator.
 
@@ -14,18 +14,20 @@ The long-term workflow is private schema mapping, matching, deduplication, quali
 - Every organization runs its own KryptNode.
 - A KryptNode reads and preprocesses local data, owns private keys, encrypts or secret-shares locally, validates jobs, participates in cryptographic protocols, signs contributions, and releases only authorized outputs.
 - The Control Plane may handle metadata, signed manifests, protocol ciphertexts or designated shares, commitments, proofs, and authorized results. It must never receive raw datasets or plaintext data-encryption keys.
+- A `RoomState` is immutable. It names zero or more parent states through a list-valued `parent_state_ids`, binds each `ArtifactRef` to a `CryptoContext`, records the authorized `StateTransition` and `StatePolicy`, and carries a deterministic `StateCommitment`.
+- Secret-share artifacts are stored only in the participant-owned KryptNode that holds the share. Persisted shares are encrypted at rest; a RoomState never embeds plaintext shares, matched identifiers, or joined rows.
 
 ## Approved technologies
 
-- Backend: Python 3.12, FastAPI, Pydantic, PostgreSQL, Temporal, and gRPC where appropriate.
+- Backend: Python 3.12, FastAPI, Pydantic, PostgreSQL, Temporal, and gRPC where appropriate. SecretFlow 1.14.0b0 is isolated in its official Linux image because that release supports Python 3.10/3.11 rather than Python 3.12.
 - Packaging and CI: Docker, Docker Compose, and GitHub Actions.
 - PSI: SecretFlow PSI, initially real two-party exact PSI; RR22 when practical.
-- MPC: SecretFlow SPU with JAX and Flax; initial target SEMI2K, FM128, two parties, honest-but-curious.
+- MPC: SecretFlow SPU with JAX and Flax; FM128, two parties, honest-but-curious. SEMI2K remains a target only with safe preprocessing; the current two-party private join uses CHEETAH to avoid SEMI2K's trusted-first-party default.
 - Private ML: a small real JAX/Flax neural network on SPU, with features, labels, gradients, weights, and loss private by default.
 - FHE: OpenFHE Python bindings where practical; BFV/BGV for exact arithmetic and CKKS for approximate vector arithmetic.
 - ZK: SP1 zkVM for realistic manifest, signature, commitment, policy, and output-authorization statements—not a false claim of proving full MPC training.
 - Post-quantum target: OpenSSL 3.5 or newer, ML-KEM, ML-DSA, and hybrid X25519 + ML-KEM-768 key establishment.
-- Artifact encryption target: random 256-bit DEK with AES-256-GCM; no plaintext DEK at the Control Plane.
+- Artifact encryption: AES-256-GCM with random nonces and node-local 256-bit keys for M2.5. No plaintext key reaches another participant or the Control Plane. Production KMS/HSM integration remains future work.
 - Audit target: chain-agnostic `BlockchainAnchor`, initially Base Sepolia, storing commitments and provenance only.
 - Frontend, later: Next.js, TypeScript, Tailwind, shadcn/ui, and React Flow.
 
@@ -51,20 +53,24 @@ The long-term workflow is private schema mapping, matching, deduplication, quali
 1. Monorepo, Docker, and common schemas.
 2. Two independent KryptNodes.
 3. Real PSI private matching.
-4. MPC private analytics.
-5. MPC neural-network training.
-6. Treatment-response prediction and private feature importance.
-7. OpenFHE private analytics.
-8. Canonical RunReceipt and commitments.
-9. Post-quantum signatures.
-10. SP1 proof.
-11. Base Sepolia registry.
-12. UI.
-13. Integration tests, benchmarks, and demo hardening.
+4. Secret-shared private join handoff into MPC.
+5. Persistent encrypted RoomState layer.
+6. MPC private analytics that consume and evolve RoomStates.
+7. MPC neural-network training.
+8. Treatment-response prediction and private feature importance.
+9. OpenFHE private analytics.
+10. Canonical RunReceipt and provenance commitments.
+11. Post-quantum signatures.
+12. SP1 proof.
+13. Base Sepolia registry.
+14. UI.
+15. Integration tests, benchmarks, and demo hardening.
 
 Do not casually reorder this sequence or expand product scope without approval.
 
 ## Current milestone
 
-Milestone 1 is a real two-party PSI-cardinality protocol using independent Lab A and Lab B KryptNodes. The authorized output is the exact cardinality `2`; matched identifiers are revealed to neither participant. No server-side plaintext comparison, server-side hash intersection, custom PSI, or mock presented as cryptography is acceptable. Any future identifier disclosure requires an explicit opt-in policy naming authorized recipients.
+Milestone 2.5 persists the already-validated M2 handoff as immutable RoomState S1. Each KryptNode encrypts its local SPU shares at rest with AES-256-GCM; authenticated-data bindings cover the room, state, artifact, party, and crypto-context identifiers. After both node containers terminate, new containers can load S1 through SecretFlow's native SPU share dump/load boundary and run a minimal private aggregate without remounting source CSVs.
+
+The disclosure default remains deny. Cardinality may be released to Lab A, Lab B, and the UI. The synthetic post-restart aggregate is explicitly authorized only to Lab A and Lab B. Matched identifiers and plaintext joined rows remain forbidden, and any future identifier disclosure requires a separate explicit opt-in policy. M3 analytics, ML, FHE, ZK, blockchain, frontend, branching/merge behavior, and dynamic membership remain out of scope.
 

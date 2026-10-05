@@ -18,6 +18,9 @@ All notable project changes are recorded here. The project follows milestone-ori
 - Fixed-shape secret join handoff containing only a secret match mask and masked feature grids, with identifiers excluded.
 - Privacy, manifest, container-isolation, and runtime-pin tests for the private join.
 - A Linux Docker CI gate for the two-party CHEETAH/FM128 integration test.
+- Immutable RoomState, ArtifactRef, StateTransition, StatePolicy, CryptoContext, and StateCommitment contracts.
+- Node-local AES-256-GCM persistence for native SecretFlow SPU shares, with authenticated crypto-context bindings.
+- A two-phase M2.5 integration gate that creates S1, terminates both nodes, restarts without source-data mounts, reloads S1, and executes a private aggregate.
 
 ### Changed
 
@@ -28,12 +31,14 @@ All notable project changes are recorded here. The project follows milestone-ori
 - Passed CHEETAH/FM128 as the protobuf JSON names required by the pinned SecretFlow SPU constructor.
 - Kept both production controllers on an identical cardinality-reconstruction graph and bounded the CI runtime so a failed party cannot leave its peer waiting indefinitely.
 - Updated GitHub's checkout and Node setup actions to their Node 24-based v7 releases.
+- Reframed the project core as a persistent encrypted state machine and inserted M2.5 before private analytics.
 
 ### Security
 
 - Established the rule that no privacy or security claim may exceed tested implementation evidence.
 - Enforced `revealIntersection=false` at both PSI peers and selected the exact `Raw` encrypted container.
 - Enforced fixed-shape MPC output, excluded identifiers from the handoff, and limited reconstruction to cardinality.
+- Enforced default-deny state disclosure, create-exclusive immutable state files, per-node encryption keys, and explicit authorization for every reconstruction.
 
 ### Verified
 
@@ -41,4 +46,5 @@ All notable project changes are recorded here. The project follows milestone-ori
 - The cancer-collaboration demo returns cardinality `2` with `matchedIdentifiersRevealed: false`.
 - The locally cached production dependency audit reports zero known vulnerabilities.
 - The two-container SecretFlow integration executed CHEETAH over a 128-bit ring, returned cardinality `2` at both participants, exited cleanly, and emitted none of the synthetic participant identifiers.
+- Twenty-eight local unit, privacy, integration, and reproducibility tests pass for M1, M2, and the M2.5 contracts. Linux M2.5 cryptographic restart/reload evidence remains pending CI.
 

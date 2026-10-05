@@ -12,26 +12,27 @@ Roadmap items are ordered dependencies, not parallel feature invitations.
 
 4. Real exact two-party PSI cardinality with no matched-identifier disclosure.
 5. Circuit-PSI or secret-shared PSI handoff for a private join.
-6. MPC private analytics using SecretFlow SPU.
-7. Small real JAX/Flax neural network trained with MPC.
-8. Treatment-response prediction and gradient-based feature importance.
-9. Real OpenFHE encrypted analytics.
+6. Persistent encrypted RoomState layer with restart/reload continuity.
+7. MPC private analytics that consume and evolve RoomStates using SecretFlow SPU.
+8. Small real JAX/Flax neural network trained with MPC.
+9. Treatment-response prediction and gradient-based feature importance.
+10. Real OpenFHE encrypted analytics.
 
 ## Verifiability and provenance
 
-10. Canonical RunReceipt and commitments.
-11. Classical and post-quantum node signatures.
-12. Realistic SP1 proof scope for workflow, manifest, signature, policy, and commitment statements.
-13. Chain-agnostic audit anchor with an initial Base Sepolia implementation.
+11. Canonical RunReceipt and provenance commitments.
+12. Classical and post-quantum node signatures.
+13. Realistic SP1 proof scope for workflow, manifest, signature, policy, and commitment statements.
+14. Chain-agnostic audit anchor with an initial Base Sepolia implementation.
 
 ## Product surface and hardening
 
-14. KryptRoom web experience.
-15. Integration tests, privacy regression tests, benchmarks, reproducibility, and demo hardening.
+15. KryptRoom web experience.
+16. Integration tests, privacy regression tests, benchmarks, reproducibility, and demo hardening.
 
 ## Milestone gates
 
 No milestone advances merely because source code exists. A gate requires executed tests, documented runtime evidence, updated threat-model limitations, and security claims that match the evidence.
 
-Milestone 2 source, manifests, isolated-container topology, and policy tests are implemented. Its cryptographic gate remains open until the pinned SecretFlow container runs successfully on a Linux Docker host and the evidence is recorded.
+Milestones 1 and 2 are runtime-verified. Milestone 2.5 source, manifests, encrypted local state store, restart topology, and policy tests are implemented. Its gate remains open until the pinned SecretFlow container creates S1, both nodes terminate, new nodes reload S1 without source-input mounts, CHEETAH/FM128 returns the expected aggregate, and privacy/storage checks pass on a Linux Docker host.
 

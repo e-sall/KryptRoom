@@ -25,6 +25,15 @@
 - [x] Execute the two-container CHEETAH/FM128 cryptographic integration test.
 - [x] Record exact Milestone 2 runtime and test evidence.
 
+## Milestone 2.5: persistent encrypted RoomState
+
+- [x] Define immutable RoomState, ArtifactRef, StateTransition, StatePolicy, CryptoContext, and StateCommitment contracts.
+- [x] Persist each node's native SPU shares with node-local AES-256-GCM encryption and context-bound authenticated data.
+- [x] Support list-valued `parentStateIds` while limiting M2.5 to parentless S1 creation.
+- [x] Add a restart phase with no source CSV mounts and a policy-authorized private aggregate from reloaded S1.
+- [x] Add unit, privacy, reproducibility, storage-layout, and cryptographic CI checks.
+- [ ] Run and record the Linux create/terminate/restart/reload CHEETAH/FM128 evidence.
+
 ## Environment blocker
 
 - [x] Install the pinned OpenMined PSI dependency and run the cryptographic tests.
@@ -32,9 +41,10 @@
 
 ## Explicitly deferred
 
-- MPC analytics and neural-network training.
+- General MPC analytics (M3) and neural-network training.
 - FHE analytics.
 - ZK proofs, post-quantum identity, and RunReceipts.
 - Blockchain anchoring.
 - Web frontend.
+- RoomState branch UI, merge implementation, and dynamic membership.
 

@@ -1,0 +1,59 @@
+name: kryptroom-persistent-state
+
+x-kryptroom-state: &kryptroom-state
+  image: secretflow/secretflow-ubuntu:1.14.0b0@sha256:bdd43242c28466bdc0afddb99d7b50237a94748b5ca7467f8aea73667a38383b
+  # The pinned image's banner entrypoint imports optional Ray. The production
+  # no-Ray scheduler and SPU runtime are invoked directly, as in M2.
+  entrypoint: []
+  init: true
+  shm_size: 2gb
+  networks:
+    - private-compute
+  volumes:
+    - ./engines/mpc/private_join.py:/app/private_join.py:ro
+    - ./engines/mpc/room_state.py:/app/room_state.py:ro
+    - ./engines/mpc/persistent_room_state.py:/app/persistent_room_state.py:ro
+    - ./demos/cancer-collaboration/private-join-job.json:/config/private-join-job.json:ro
+    - ./demos/cancer-collaboration/persistent-state-job.json:/config/persistent-state-job.json:ro
+
+services:
+  lab-a:
+    <<: *kryptroom-state
+    hostname: lab-a
+    volumes:
+      - ./engines/mpc/private_join.py:/app/private_join.py:ro
+      - ./engines/mpc/room_state.py:/app/room_state.py:ro
+      - ./engines/mpc/persistent_room_state.py:/app/persistent_room_state.py:ro
+      - ./demos/cancer-collaboration/private-join-job.json:/config/private-join-job.json:ro
+      - ./demos/cancer-collaboration/persistent-state-job.json:/config/persistent-state-job.json:ro
+      - ${KRYPTROOM_LAB_A_STATE_DIR:-./.runtime/persistent-state/lab-a}:/state
+    command:
+      - /bin/bash
+      - -lc
+      - >-
+        exec python /app/persistent_room_state.py --phase analytics --party lab-a
+        --private-join-manifest /config/private-join-job.json
+        --state-manifest /config/persistent-state-job.json --state-root /state
+
+  lab-b:
+    <<: *kryptroom-state
+    hostname: lab-b
+    volumes:
+      - ./engines/mpc/private_join.py:/app/private_join.py:ro
+      - ./engines/mpc/room_state.py:/app/room_state.py:ro
+      - ./engines/mpc/persistent_room_state.py:/app/persistent_room_state.py:ro
+      - ./demos/cancer-collaboration/private-join-job.json:/config/private-join-job.json:ro
+      - ./demos/cancer-collaboration/persistent-state-job.json:/config/persistent-state-job.json:ro
+      - ${KRYPTROOM_LAB_B_STATE_DIR:-./.runtime/persistent-state/lab-b}:/state
+    command:
+      - /bin/bash
+      - -lc
+      - >-
+        exec python /app/persistent_room_state.py --phase analytics --party lab-b
+        --private-join-manifest /config/private-join-job.json
+        --state-manifest /config/persistent-state-job.json --state-root /state
+
+networks:
+  private-compute:
+    driver: bridge
+    internal: true

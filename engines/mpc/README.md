@@ -34,3 +34,20 @@ Python 3.10 or 3.11; it does not support Python 3.12.
 
 This remains pre-release research software. The SecretFlow 1.14.0b0 release is
 a beta and is not approved here for real medical or regulated data.
+
+## Persistent RoomState layer
+
+M2.5 leaves `private_join.py` unchanged and consumes its three SPUObjects through
+SecretFlow's public `SPU.dump` and `SPU.load` APIs. `room_state.py` defines the
+immutable state contracts and AES-256-GCM stream adapters.
+`persistent_room_state.py` provides two deliberately separate phases:
+
+1. `persist` executes the existing private join and stores S1 in two local node
+   state roots.
+2. `analytics` starts without source-data mounts, reloads S1, and evaluates a
+   minimal matched-feature sum inside the same CHEETAH/FM128 SPU.
+
+The encrypted share envelope uses a node-local 256-bit key, a random 96-bit
+nonce, and context-bound authenticated data. The public RoomState includes
+ciphertext hashes and sizes but no secret shares, feature values, joined rows,
+or patient identifiers. Only policy-authorized calls reach `sf.reveal`.

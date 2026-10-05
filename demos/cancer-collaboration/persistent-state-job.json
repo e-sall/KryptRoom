@@ -1,0 +1,51 @@
+{
+  "version": "1",
+  "operation": "persist-private-join",
+  "sourceJobId": "cancer-collaboration-private-join-v1",
+  "roomId": "cancer-collaboration-room",
+  "stateId": "S1",
+  "transition": {
+    "id": "private-join-to-S1",
+    "operation": "private-join",
+    "parentStateIds": [],
+    "outputArtifactIds": [
+      "match-mask",
+      "lab-a-features",
+      "lab-b-features"
+    ],
+    "effectiveAt": "2026-10-05T00:00:00Z"
+  },
+  "cryptoContext": {
+    "id": "secretflow-spu-cheetah-fm128-v1",
+    "backend": "SecretFlow SPU",
+    "backendVersion": "1.14.0b0",
+    "protocol": "CHEETAH",
+    "field": "FM128",
+    "securityModel": "semi-honest",
+    "participants": ["lab-a", "lab-b"],
+    "artifactCipher": "AES-256-GCM",
+    "keyScope": "per-kryptnode-local"
+  },
+  "statePolicy": {
+    "defaultReveal": "deny",
+    "plaintextMaterialization": "forbidden",
+    "matchedIdentifierReveal": "forbidden",
+    "futureIdentifierDisclosure": {
+      "requiresExplicitOptIn": true
+    },
+    "authorizedReveals": [
+      {
+        "name": "intersection-cardinality",
+        "recipients": ["lab-a", "lab-b", "ui"]
+      },
+      {
+        "name": "ciphertext-metadata",
+        "recipients": ["lab-a", "lab-b"]
+      },
+      {
+        "name": "matched-feature-sum",
+        "recipients": ["lab-a", "lab-b"]
+      }
+    ]
+  }
+}

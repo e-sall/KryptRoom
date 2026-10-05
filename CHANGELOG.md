@@ -24,6 +24,8 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Changed
 
+- Made PR events authoritative for feature-branch M2.5 integration, retained main/dev push validation, and serialized M2.5 runs without cancelling an active run. The initial cancelled jobs never acquired hosted runners; no cryptographic execution failure was observed.
+
 - Adopted the product default that matched identifiers are disclosed to neither participant; only cardinality is authorized.
 - Replaced the planned SecretFlow RR22 milestone backend with OpenMined PSI cardinality because RR22's mandatory receiver learns the intersection.
 - Selected SPU CHEETAH instead of SEMI2K's default trusted-first-party preprocessing for the two-party M2 privacy model.

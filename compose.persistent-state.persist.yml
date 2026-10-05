@@ -1,0 +1,24 @@
+services:
+  lab-a:
+    volumes:
+      - ./demos/cancer-collaboration/lab-a/private-join.csv:/data/local.csv:ro
+    command:
+      - /bin/bash
+      - -lc
+      - >-
+        exec python /app/persistent_room_state.py --phase persist --party lab-a
+        --private-join-manifest /config/private-join-job.json
+        --state-manifest /config/persistent-state-job.json
+        --local-input /data/local.csv --state-root /state
+
+  lab-b:
+    volumes:
+      - ./demos/cancer-collaboration/lab-b/private-join.csv:/data/local.csv:ro
+    command:
+      - /bin/bash
+      - -lc
+      - >-
+        exec python /app/persistent_room_state.py --phase persist --party lab-b
+        --private-join-manifest /config/private-join-job.json
+        --state-manifest /config/persistent-state-job.json
+        --local-input /data/local.csv --state-root /state

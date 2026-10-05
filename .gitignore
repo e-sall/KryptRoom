@@ -27,6 +27,7 @@ Thumbs.db
 **/*.key
 **/*.pem
 **/*.secret
+.runtime/
 
 # Build artifacts
 dist/

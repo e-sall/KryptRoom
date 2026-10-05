@@ -72,5 +72,29 @@
 
 **Consequences:** The join is exact for accepted identifiers and has O(n*m) work, so it is bounded to small public capacities. The configured capacity and tensor shapes are public. SecretFlow 1.14.0b0 supports Python 3.10/3.11 rather than Python 3.12, so this engine is isolated in its pinned official Linux image even though the future application backend targets Python 3.12. The beta runtime remains non-production until further review.
 
-**Status:** Accepted and implemented; Linux two-container runtime verification pending.
+**Status:** Accepted and runtime-verified on the synthetic two-container fixture.
+
+## ADR-008 — Immutable RoomState is the persistent computation boundary
+
+**Decision:** Represent persistent private-computation state with an immutable `RoomState`. Every state has a list-valued `parentStateIds`, `ArtifactRef` entries, a `StateTransition`, a default-deny `StatePolicy`, a `CryptoContext`, and a `StateCommitment`. State and artifact paths use create-exclusive semantics; an existing state ID is never replaced.
+
+**Reason:** Independent jobs lose the privacy-preserving intermediate state needed by later collaboration steps. An explicit state contract allows a subsequent MPC computation to consume prior secret artifacts without reconstructing them, while recording parentage, policy, and cryptographic compatibility.
+
+**Alternatives:** Store anonymous job outputs; rejected because policy, lineage, and crypto binding would be implicit. Store a plaintext joined table; rejected because it violates the product privacy boundary. Implement branch merging now; rejected as outside M2.5.
+
+**Consequences:** Parent IDs are modeled as a list so future state graphs are representable, but M2.5 implements only creation of the parentless S1 state. Branch UI and merge semantics are not implemented. SHA-256 state commitments identify deterministic public state content but do not replace signatures or defend against a malicious node owner who can rewrite both a document and its unsigned commitment.
+
+**Status:** Accepted and implemented; Linux restart/reload runtime verification pending.
+
+## ADR-009 — Persist native SPU shares with node-local authenticated encryption
+
+**Decision:** Persist the three M2 SPUObjects through SecretFlow's native `SPU.dump`/`SPU.load` interface. Encrypt each local serialized share with AES-256-GCM under a participant-local 256-bit key and a fresh 96-bit nonce. Bind room, state, artifact, participant, cipher, and crypto-context identifiers as authenticated data. Exchange only ciphertext hashes and sizes as explicitly authorized metadata.
+
+**Reason:** SecretFlow already owns the version-specific SPU metadata and share serialization. Using its public persistence boundary avoids inventing a secret-sharing format. Authenticated encryption protects local shares at rest and detects wrong-key, wrong-context, or modified-ciphertext loads before MPC resumes.
+
+**Alternatives:** Serialize SPU internals directly; rejected as brittle and unsafe. Install a new database or central object store; rejected because it expands scope and trust boundaries. Share one encryption key between participants; rejected because a KryptNode should not be able to decrypt the other node's persisted share. Persist plaintext share files; rejected because at-rest encryption is required.
+
+**Consequences:** The current demo key is a permission-restricted local file inside each node's state root. Production KMS/HSM integration, key rotation, backup policy, rollback protection, and crash-atomic multi-party commit are deferred. AES-GCM protects encrypted artifact confidentiality and authenticity against storage readers without the key; it does not protect a compromised running host.
+
+**Status:** Accepted and implemented; Linux restart/reload runtime verification pending.
 

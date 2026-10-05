@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kryptroom.dev/schemas/persistent-state-job.schema.json",
+  "title": "KryptRoom persistent-state job",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "operation",
+    "sourceJobId",
+    "roomId",
+    "stateId",
+    "transition",
+    "cryptoContext",
+    "statePolicy"
+  ],
+  "properties": {
+    "version": { "const": "1" },
+    "operation": { "const": "persist-private-join" },
+    "sourceJobId": { "$ref": "room-state.schema.json#/$defs/id" },
+    "roomId": { "$ref": "room-state.schema.json#/$defs/id" },
+    "stateId": { "$ref": "room-state.schema.json#/$defs/id" },
+    "transition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "operation",
+        "parentStateIds",
+        "outputArtifactIds",
+        "effectiveAt"
+      ],
+      "properties": {
+        "id": { "$ref": "room-state.schema.json#/$defs/id" },
+        "operation": { "const": "private-join" },
+        "parentStateIds": {
+          "type": "array",
+          "items": { "$ref": "room-state.schema.json#/$defs/id" },
+          "uniqueItems": true
+        },
+        "outputArtifactIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "room-state.schema.json#/$defs/id" },
+          "uniqueItems": true
+        },
+        "effectiveAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "cryptoContext": {
+      "$ref": "room-state.schema.json#/$defs/cryptoContext"
+    },
+    "statePolicy": {
+      "$ref": "room-state.schema.json#/$defs/statePolicy"
+    }
+  }
+}

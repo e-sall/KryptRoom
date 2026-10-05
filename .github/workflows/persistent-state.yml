@@ -7,10 +7,17 @@ on:
       - dev
       - "feat/**"
   push:
+    # Feature branches are validated by the PR event only, avoiding a second
+    # restart/reload run for the same change. Branch pushes cover integration.
     branches:
       - main
       - dev
-      - "feat/**"
+
+# Keep an active cryptographic run alive when a newer PR revision arrives.
+# This group is specific to M2.5 and cannot cancel M1/M2 workflows.
+concurrency:
+  group: persistent-room-state-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
 
 permissions:
   contents: read
@@ -28,6 +35,7 @@ jobs:
       - run: npm test
 
   cryptographic-integration:
+    name: M2.5 persistent-state cryptographic integration
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:

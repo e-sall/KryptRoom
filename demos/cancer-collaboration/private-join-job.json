@@ -1,0 +1,48 @@
+{
+  "version": "1",
+  "jobId": "cancer-collaboration-private-join-v1",
+  "operation": "private-join-handoff",
+  "backend": {
+    "name": "SecretFlow SPU",
+    "version": "1.14.0b0",
+    "protocol": "CHEETAH",
+    "field": "FM128",
+    "securityModel": "semi-honest"
+  },
+  "participants": [
+    {
+      "id": "lab-a",
+      "role": "left",
+      "input": "local://lab-a/private-join.csv",
+      "featureColumn": "genomic_score"
+    },
+    {
+      "id": "lab-b",
+      "role": "right",
+      "input": "local://lab-b/private-join.csv",
+      "featureColumn": "treatment_response"
+    }
+  ],
+  "join": {
+    "key": "patient_id",
+    "identifierEncoding": "fixed-width-utf8",
+    "maxIdentifierBytes": 128,
+    "maxRowsPerParticipant": 4
+  },
+  "mpcHandoff": {
+    "format": "fixed-shape-join-grid",
+    "visibility": "secret-shared",
+    "includesIdentifiers": false,
+    "recipient": "mpc"
+  },
+  "outputPolicy": {
+    "version": "1",
+    "resultMode": "cardinality-only",
+    "revealMatchedIdentifiers": false,
+    "cardinalityRecipients": ["lab-a", "lab-b", "ui"],
+    "futureIdentifierDisclosure": {
+      "requiresExplicitOptIn": true
+    }
+  },
+  "controlPlaneDataAccess": "none"
+}

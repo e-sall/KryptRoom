@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kryptroom.dev/schemas/private-join-job.schema.json",
+  "title": "KryptRoom Private Join Handoff Job",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "jobId",
+    "operation",
+    "backend",
+    "participants",
+    "join",
+    "mpcHandoff",
+    "outputPolicy",
+    "controlPlaneDataAccess"
+  ],
+  "properties": {
+    "version": { "const": "1" },
+    "jobId": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "operation": { "const": "private-join-handoff" },
+    "backend": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version", "protocol", "field", "securityModel"],
+      "properties": {
+        "name": { "const": "SecretFlow SPU" },
+        "version": { "const": "1.14.0b0" },
+        "protocol": { "const": "CHEETAH" },
+        "field": { "const": "FM128" },
+        "securityModel": { "const": "semi-honest" }
+      }
+    },
+    "participants": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "role", "input", "featureColumn"],
+        "properties": {
+          "id": { "enum": ["lab-a", "lab-b"] },
+          "role": { "enum": ["left", "right"] },
+          "input": { "type": "string", "pattern": "^local://" },
+          "featureColumn": { "type": "string", "minLength": 1, "maxLength": 128 }
+        }
+      }
+    },
+    "join": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "identifierEncoding", "maxIdentifierBytes", "maxRowsPerParticipant"],
+      "properties": {
+        "key": { "const": "patient_id" },
+        "identifierEncoding": { "const": "fixed-width-utf8" },
+        "maxIdentifierBytes": { "type": "integer", "minimum": 1, "maximum": 128 },
+        "maxRowsPerParticipant": { "type": "integer", "minimum": 1, "maximum": 1024 }
+      }
+    },
+    "mpcHandoff": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["format", "visibility", "includesIdentifiers", "recipient"],
+      "properties": {
+        "format": { "const": "fixed-shape-join-grid" },
+        "visibility": { "const": "secret-shared" },
+        "includesIdentifiers": { "const": false },
+        "recipient": { "const": "mpc" }
+      }
+    },
+    "outputPolicy": {
+      "$ref": "psi-cardinality-policy.schema.json"
+    },
+    "controlPlaneDataAccess": { "const": "none" }
+  }
+}

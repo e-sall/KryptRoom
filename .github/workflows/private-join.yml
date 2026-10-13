@@ -1,0 +1,52 @@
+name: Private join
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+      - "feat/**"
+  push:
+    branches:
+      - main
+      - dev
+      - "feat/**"
+
+permissions:
+  contents: read
+
+jobs:
+  policy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts
+      - run: npm test
+
+  cryptographic-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - name: Pull pinned SecretFlow image
+        run: docker compose -f compose.private-join.yml pull
+      - name: Run isolated two-party SPU join
+        shell: bash
+        run: |
+          set -o pipefail
+          timeout --signal=TERM 10m docker compose -f compose.private-join.yml up --no-build --abort-on-container-failure 2>&1 | tee private-join.log
+          test "$(docker inspect -f '{{.State.ExitCode}}' "$(docker compose -f compose.private-join.yml ps -a -q lab-a)")" -eq 0
+          test "$(docker inspect -f '{{.State.ExitCode}}' "$(docker compose -f compose.private-join.yml ps -a -q lab-b)")" -eq 0
+          test "$(grep -c '\"intersectionCardinality\":2' private-join.log)" -eq 2
+          test "$(grep -c '\"matchedIdentifiersRevealed\":false' private-join.log)" -eq 2
+          if grep -Eq 'P00[1-7]' private-join.log; then
+            echo "Participant identifier appeared in SPU logs" >&2
+            exit 1
+          fi
+      - name: Stop containers
+        if: always()
+        run: docker compose -f compose.private-join.yml down --volumes

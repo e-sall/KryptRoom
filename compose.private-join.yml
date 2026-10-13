@@ -1,0 +1,49 @@
+name: kryptroom-private-join
+
+x-kryptroom-mpc: &kryptroom-mpc
+  image: secretflow/secretflow-ubuntu:1.14.0b0@sha256:bdd43242c28466bdc0afddb99d7b50237a94748b5ca7467f8aea73667a38383b
+  # The 1.14.0b0 release image entrypoint is an interactive version banner
+  # that imports optional packages (including Ray) which are not installed.
+  # Clear it so Compose runs the production worker command below directly.
+  entrypoint: []
+  init: true
+  shm_size: 2gb
+  networks:
+    - private-compute
+  volumes:
+    - ./engines/mpc/private_join.py:/app/private_join.py:ro
+    - ./demos/cancer-collaboration/private-join-job.json:/config/private-join-job.json:ro
+
+services:
+  lab-a:
+    <<: *kryptroom-mpc
+    hostname: lab-a
+    volumes:
+      - ./engines/mpc/private_join.py:/app/private_join.py:ro
+      - ./demos/cancer-collaboration/private-join-job.json:/config/private-join-job.json:ro
+      - ./demos/cancer-collaboration/lab-a/private-join.csv:/data/local.csv:ro
+    command:
+      - /bin/bash
+      - -lc
+      - >-
+        exec python /app/private_join.py --party lab-a
+        --manifest /config/private-join-job.json --local-input /data/local.csv
+
+  lab-b:
+    <<: *kryptroom-mpc
+    hostname: lab-b
+    volumes:
+      - ./engines/mpc/private_join.py:/app/private_join.py:ro
+      - ./demos/cancer-collaboration/private-join-job.json:/config/private-join-job.json:ro
+      - ./demos/cancer-collaboration/lab-b/private-join.csv:/data/local.csv:ro
+    command:
+      - /bin/bash
+      - -lc
+      - >-
+        exec python /app/private_join.py --party lab-b
+        --manifest /config/private-join-job.json --local-input /data/local.csv
+
+networks:
+  private-compute:
+    driver: bridge
+    internal: true

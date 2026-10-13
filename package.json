@@ -1,0 +1,24 @@
+{
+  "name": "kryptroom",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "demo:private-join": "docker compose -f compose.private-join.yml up --pull always",
+    "demo:persistent-state:create": "docker compose -f compose.persistent-state.yml -f compose.persistent-state.persist.yml up --pull always",
+    "demo:persistent-state:analytics": "docker compose -f compose.persistent-state.yml up --pull always",
+    "demo:psi": "node demos/cancer-collaboration/run-demo.mjs",
+    "test": "node --test tests/unit/*.test.mjs tests/privacy/*.test.mjs tests/reproducibility/*.test.mjs tests/integration/*.test.mjs",
+    "test:integration": "node --test tests/integration/psi-cardinality.test.mjs",
+    "test:privacy": "node --test tests/privacy/*.test.mjs",
+    "test:reproducibility": "node --test tests/reproducibility/*.test.mjs",
+    "test:unit": "node --test tests/unit/*.test.mjs"
+  },
+  "dependencies": {
+    "@openmined/psi.js": "2.0.6"
+  }
+}
+

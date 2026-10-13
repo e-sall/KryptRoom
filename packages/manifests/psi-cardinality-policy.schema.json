@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kryptroom.dev/schemas/psi-cardinality-policy.schema.json",
+  "title": "PSI Cardinality Disclosure Policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "resultMode",
+    "revealMatchedIdentifiers",
+    "cardinalityRecipients",
+    "futureIdentifierDisclosure"
+  ],
+  "properties": {
+    "version": {
+      "const": "1"
+    },
+    "resultMode": {
+      "const": "cardinality-only"
+    },
+    "revealMatchedIdentifiers": {
+      "const": false
+    },
+    "cardinalityRecipients": {
+      "type": "array",
+      "items": {
+        "enum": ["lab-a", "lab-b", "ui"]
+      },
+      "uniqueItems": true
+    },
+    "futureIdentifierDisclosure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requiresExplicitOptIn"],
+      "properties": {
+        "requiresExplicitOptIn": {
+          "const": true
+        }
+      }
+    }
+  }
+}
+

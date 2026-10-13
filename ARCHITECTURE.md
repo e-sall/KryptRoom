@@ -2,7 +2,7 @@
 
 ## Current implemented state
 
-KryptRoom has runtime-verified M1 PSI cardinality and M2 two-container SPU private join paths. M2.5 adds an immutable persistent state layer and a two-phase create/terminate/restart/reload integration path. M2.5 is not considered runtime-verified until its Linux cryptographic CI gate passes.
+KryptRoom has runtime-verified M1 PSI cardinality, M2 two-container SPU private join, and M2.5 persistent encrypted RoomState paths. The M2.5 Linux cryptographic CI gate verified the two-phase create/terminate/restart/reload path on the synthetic fixture.
 
 ## Target system boundary
 

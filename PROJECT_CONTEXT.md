@@ -10,7 +10,7 @@ The long-term workflow is private schema mapping, matching, deduplication, quali
 
 ## Approved architecture (target and implementation boundaries)
 
-M1 and M2 are runtime-verified on synthetic fixtures. M2.5 is implemented, pending CI validation. The Control Plane, node identity, signatures, proofs, and production job orchestration below are architectural targets, not deployed capabilities. See ARCHITECTURE.md for the current runtime boundary.
+M1, M2, and M2.5 are runtime-verified on synthetic fixtures. The Control Plane, node identity, signatures, proofs, and production job orchestration below are architectural targets, not deployed capabilities. See ARCHITECTURE.md for the current runtime boundary.
 
 - A KryptRoom Control Plane coordinates metadata and authorized artifacts but is not trusted with participant raw data.
 - Every organization runs its own KryptNode.
@@ -72,7 +72,7 @@ Do not casually reorder this sequence or expand product scope without approval.
 
 ## Current milestone
 
-Milestone 2.5 implements persistence of the already-validated M2 handoff as immutable RoomState S1. Each KryptNode encrypts its local SPU shares at rest with AES-256-GCM; authenticated-data bindings cover the room, state, artifact, party, and crypto-context identifiers. The acceptance test is intended to terminate both node containers, load S1 in new containers through SecretFlow's native SPU share dump/load boundary, and run a minimal private aggregate without remounting source CSVs. This restart/reload path is implemented, pending CI validation; hosted-runner cancellations do not establish successful execution.
+Milestone 2.5 persists the validated M2 handoff as immutable RoomState S1. Each KryptNode encrypts its local SPU shares at rest with AES-256-GCM; authenticated-data bindings cover the room, state, artifact, party, and crypto-context identifiers. The Linux acceptance test terminated both node containers, loaded S1 in new containers through SecretFlow's native SPU share dump/load boundary, and ran a minimal private aggregate without remounting source CSVs. The verified result is specific to the synthetic fixture and current pinned runtime.
 
 The disclosure default remains deny. Cardinality may be released to Lab A, Lab B, and the UI. The synthetic post-restart aggregate is explicitly authorized only to Lab A and Lab B. Matched identifiers and plaintext joined rows remain forbidden, and any future identifier disclosure requires a separate explicit opt-in policy. M3 analytics, ML, FHE, ZK, blockchain, frontend, branching/merge behavior, and dynamic membership remain out of scope.
 

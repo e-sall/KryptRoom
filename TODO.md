@@ -32,7 +32,7 @@
 - [x] Support list-valued `parentStateIds` while limiting M2.5 to parentless S1 creation.
 - [x] Add a restart phase with no source CSV mounts and a policy-authorized private aggregate from reloaded S1.
 - [x] Add unit, privacy, reproducibility, storage-layout, and cryptographic CI checks.
-- [ ] Run and record the Linux create/terminate/restart/reload CHEETAH/FM128 evidence.
+- [x] Run and record the Linux create/terminate/restart/reload CHEETAH/FM128 evidence.
 - [x] Diagnose initial CI cancellations as hosted-runner acquisition failures and remove duplicate feature push/PR M2.5 runs.
 
 ## Environment blocker

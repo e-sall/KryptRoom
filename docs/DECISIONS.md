@@ -84,7 +84,7 @@
 
 **Consequences:** Parent IDs are modeled as a list so future state graphs are representable, but M2.5 implements only creation of the parentless S1 state. Branch UI and merge semantics are not implemented. SHA-256 state commitments identify deterministic public state content but do not replace signatures or defend against a malicious node owner who can rewrite both a document and its unsigned commitment.
 
-**Status:** Accepted and implemented; Linux restart/reload runtime verification pending.
+**Status:** Accepted and runtime-verified on the synthetic Linux restart/reload fixture.
 
 ## ADR-009 — Persist native SPU shares with node-local authenticated encryption
 
@@ -96,5 +96,5 @@
 
 **Consequences:** The current demo key is a permission-restricted local file inside each node's state root. Production KMS/HSM integration, key rotation, backup policy, rollback protection, and crash-atomic multi-party commit are deferred. AES-GCM protects encrypted artifact confidentiality and authenticity against storage readers without the key; it does not protect a compromised running host.
 
-**Status:** Accepted and implemented; Linux restart/reload runtime verification pending.
+**Status:** Accepted and runtime-verified on the synthetic Linux restart/reload fixture.
 

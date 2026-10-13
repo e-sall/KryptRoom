@@ -2,7 +2,7 @@
 
 ## Scope
 
-This document describes the verified M1 PSI-cardinality and M2 private-join paths plus the implemented, not-yet-runtime-verified M2.5 persistent RoomState layer. It must be revised when execution evidence changes.
+This document describes the runtime-verified M1 PSI-cardinality, M2 private-join, and M2.5 persistent encrypted RoomState paths. Verification covers the synthetic fixtures and pinned runtimes, not a general security audit.
 
 ## Assets
 

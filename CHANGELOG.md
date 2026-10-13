@@ -50,6 +50,7 @@ All notable project changes are recorded here. The project follows milestone-ori
 - The cancer-collaboration demo returns cardinality `2` with `matchedIdentifiersRevealed: false`.
 - The initial locally cached production dependency audit reported zero known vulnerabilities; this is historical evidence, not a current vulnerability assessment.
 - The two-container SecretFlow integration executed CHEETAH over a 128-bit ring, returned cardinality `2` at both participants, exited cleanly, and emitted none of the synthetic participant identifiers.
-- Twenty-eight local unit, privacy, integration, and reproducibility tests pass for M1, M2, and the M2.5 contracts. Linux M2.5 cryptographic restart/reload evidence remains pending CI.
+- Twenty-eight local unit, privacy, integration, and reproducibility tests pass for M1, M2, and the M2.5 contracts.
+- The Linux M2.5 cryptographic integration created encrypted RoomState S1, terminated both nodes, restarted without source-input mounts, reloaded the persisted SPU shares, returned the authorized synthetic aggregate `68` through CHEETAH/FM128, and passed privacy/storage checks.
 - Public-repository pass (2026-10-13): all 28 tests and the real PSI demo passed with local networking permitted; documentation links and ignore rules checked. No runtime, workflow, or test implementation changed. Docker was unavailable locally, so SPU was not re-executed in this pass.
 

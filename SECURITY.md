@@ -15,7 +15,7 @@ Include the affected commit and component, expected versus observed behavior, an
 - The protocol model is two-party honest-but-curious (semi-honest), not malicious security.
 - Neither participant is authorized to receive matched identifiers or plaintext joined rows. Cardinality is an intentional disclosure; the M2.5 continuity fixture additionally authorizes a specific aggregate to both labs.
 - Demo transport has no production peer authentication. Host compromise, collusion, side channels, and repeated-query inference are not prevented.
-- M2.5's encrypted persistence is implemented, pending full restart/reload CI validation. Local key files are not a production KMS/HSM; rotation, recovery, anti-rollback, and crash-atomic multi-party commits are not implemented.
+- M2.5's encrypted persistence and restart/reload continuity are verified on the synthetic CI fixture. Local key files are not a production KMS/HSM; rotation, recovery, anti-rollback, and crash-atomic multi-party commits are not implemented.
 - Unsigned state commitments are content identifiers, not proofs of correct computation or protection against a malicious host rewriting state.
 
 See [the threat model](THREAT_MODEL.md), [architecture](ARCHITECTURE.md), and [current validation status](README.md). Passing tests covers their fixtures, not a general security audit.

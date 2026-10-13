@@ -12,10 +12,9 @@ Organizations often need answers from combined data without being able to share 
 
 - **M1 — verified two-party PSI cardinality.** Two independent processes use OpenMined PSI 2.0.6, ECDH, and the exact `Raw` container. Both peers disable matched-identifier revelation. The synthetic fixture returns intersection cardinality `2`; the [integration test](tests/integration/psi-cardinality.test.mjs) checks the result and output.
 - **M2 — verified private join inside SecretFlow SPU.** Two isolated containers execute **CHEETAH / FM128**. The match mask and masked feature grids remain secret-shared, identifiers are excluded from the handoff, and a second MPC call reconstructs only cardinality. [Recorded successful Linux run](https://github.com/e-sall/KryptRoom/actions/runs/36731809790).
+- **M2.5 — verified persistent encrypted RoomState.** Immutable `RoomState`, `ArtifactRef`, `StateTransition`, `StatePolicy`, `CryptoContext`, and `StateCommitment` contracts bind native SPU shares to their cryptographic context. Each KryptNode encrypts its local persisted shares with AES-256-GCM under a node-local key. In the [successful Linux CI run](https://github.com/e-sall/KryptRoom/actions/runs/38424886677), both nodes created S1, terminated, restarted without source CSV mounts, reloaded the encrypted secret state, and returned the authorized synthetic aggregate `68` through CHEETAH/FM128 without materializing a plaintext joined dataset.
 
 These results establish behavior for the tested fixtures and stated threat model, not an independent security audit or a performance benchmark.
-
-**M2.5 — implemented, pending CI validation.** The code defines immutable `RoomState`, `ArtifactRef`, `StateTransition`, `StatePolicy`, `CryptoContext`, and `StateCommitment` contracts, including list-valued `parent_state_ids` (`parentStateIds` in JSON). It uses native SPU share persistence with AES-256-GCM encryption under node-local keys and context-bound authenticated data. The intended restart test reloads S1 without source CSV mounts and computes a private aggregate. End-to-end persistence and restart continuity are **not yet verified**: the [latest checked run](https://github.com/e-sall/KryptRoom/actions/runs/37374192474) was cancelled before acquiring a hosted runner (status checked 2026-10-13).
 
 ## Hero use case: cancer-research collaboration
 
@@ -25,8 +24,7 @@ The repository uses only small synthetic fixtures. M1 privately counts the overl
 
 ```text
 Private Matching → Private Join → Persistent Encrypted State → Private Analytics → Private ML → Proof → Audit
-M1 verified        M2 verified    M2.5 implemented,             M3 next            Future       Future  Future
-                                 pending CI validation
+M1 verified        M2 verified    M2.5 verified                  M3 next            Future       Future  Future
 ```
 
 The M2.5 aggregate is a narrow continuity test, not the general M3 analytics API. No real patient data, clinical claims, ML training, FHE computation, ZK proof, or blockchain integration is included today.
@@ -38,19 +36,19 @@ flowchart LR
   subgraph A[Lab A KryptNode]
     DA[Local raw data]
     RA[PSI peer / SPU party A]
-    EA[Local encrypted share artifacts - M2.5 pending]
+    EA[Local encrypted share artifacts - M2.5 verified]
     DA --> RA
     RA --> EA
   end
   subgraph B[Lab B KryptNode]
     DB[Local raw data]
     RB[PSI peer / SPU party B]
-    EB[Local encrypted share artifacts - M2.5 pending]
+    EB[Local encrypted share artifacts - M2.5 verified]
     DB --> RB
     RB --> EB
   end
   RA <-->|PSI or MPC / SPU protocol traffic| RB
-  EA -. public artifact references .-> S[RoomState / StateTransition - M2.5 pending]
+  EA -. public artifact references .-> S[RoomState / StateTransition - M2.5 verified]
   EB -. public artifact references .-> S
   S -. metadata only .-> CP[Control Plane - planned, absent from demos]
 ```
@@ -80,7 +78,7 @@ docker compose -f compose.private-join.yml down
 
 SecretFlow 1.14.0b0 is pinned by immutable image digest. The reviewed runtime uses its no-Ray production scheduler with CHEETAH/FM128. Its Python environment remains inside the container.
 
-To exercise the **pending-validation** M2.5 acceptance path:
+To exercise the verified M2.5 acceptance path:
 
 ```bash
 docker compose -f compose.persistent-state.yml -f compose.persistent-state.persist.yml up --abort-on-container-failure
@@ -99,10 +97,10 @@ Peer authentication, malicious security, host compromise resistance, signed stat
 
 ## Roadmap and repository guide
 
-The next gate is real M2.5 restart/reload validation, followed by M3 analytics that consume and evolve persistent RoomStates. Later work includes private ML, bounded proof statements, and audit provenance; none is claimed as implemented. See the [ordered roadmap](docs/ROADMAP.md) and [milestone checklist](TODO.md).
+The next milestone is M3 analytics that consume and evolve persistent RoomStates. Later work includes private ML, bounded proof statements, and audit provenance; none is claimed as implemented. See the [ordered roadmap](docs/ROADMAP.md) and [milestone checklist](TODO.md).
 
 - `nodes/krypt-node/`: participant PSI processes and local input boundary.
-- `engines/mpc/`: SPU join and pending-validation persistence implementation.
+- `engines/mpc/`: verified SPU join and persistent encrypted RoomState implementation.
 - `packages/manifests/`: job, policy, and RoomState schemas.
 - `demos/cancer-collaboration/`: synthetic fixtures and manifests.
 - `tests/` and `.github/workflows/`: integration, privacy, and reproducibility checks.

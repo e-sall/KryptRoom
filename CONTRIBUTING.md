@@ -18,6 +18,6 @@ npm test
 npm run demo:psi
 ```
 
-The test suite includes integration, privacy, and reproducibility checks, but local Node tests do not establish successful SPU execution. Changes affecting cryptographic runtime or persistence also require the real Linux Docker integration gates described in [README.md](README.md) and [the MPC runtime guide](engines/mpc/README.md). M2.5 remains pending validation until its create/terminate/restart/reload gate succeeds.
+The test suite includes integration, privacy, and reproducibility checks, but local Node tests do not establish successful SPU execution. Changes affecting cryptographic runtime or persistence also require the real Linux Docker integration gates described in [README.md](README.md) and [the MPC runtime guide](engines/mpc/README.md). M2.5's create/terminate/restart/reload gate has succeeded for the pinned synthetic fixture; future changes must keep that gate green.
 
 Describe commands run, exact outcomes, skipped checks, and limitations in the pull request. Update relevant architecture, decisions, context, changelog, and milestone status when behavior changes. Report vulnerabilities through [SECURITY.md](SECURITY.md), not a public issue containing sensitive details.

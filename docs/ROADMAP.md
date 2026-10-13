@@ -34,5 +34,5 @@ Roadmap items are ordered dependencies, not parallel feature invitations.
 
 No milestone advances merely because source code exists. A gate requires executed tests, documented runtime evidence, updated threat-model limitations, and security claims that match the evidence.
 
-Milestones 1 and 2 are runtime-verified. Milestone 2.5 source, manifests, encrypted local state store, restart topology, and policy tests are implemented. Its gate remains open until the pinned SecretFlow container creates S1, both nodes terminate, new nodes reload S1 without source-input mounts, CHEETAH/FM128 returns the expected aggregate, and privacy/storage checks pass on a Linux Docker host.
+Milestones 1, 2, and 2.5 are runtime-verified on their synthetic fixtures. The M2.5 Linux gate created S1 with the pinned SecretFlow container, terminated both nodes, reloaded S1 in new nodes without source-input mounts, returned the expected aggregate through CHEETAH/FM128, and passed the privacy/storage checks. The next milestone is M3 private analytics that consume and evolve RoomStates.
 

@@ -8,7 +8,7 @@
 
 **Alternatives:** SecretFlow SPU's older `psi_csv` interface; another maintained PSI library; a custom protocol. The standalone v2 library has the clearest current RR22 path. Custom PSI is rejected.
 
-**Status:** Accepted; execution evidence pending.
+**Status:** Superseded for M1 by ADR-006. Retained as historical rationale, not a description of the implemented backend.
 
 ## ADR-002 — Two isolated containers for Milestone 1
 
@@ -18,11 +18,11 @@
 
 **Alternatives:** Two processes in one Python runtime; Kubernetes; two physical hosts. Containers are the minimum reproducible local boundary, but they are not equivalent to physical host isolation.
 
-**Status:** Accepted; runtime validation pending.
+**Status:** Superseded for M1, which uses two independent processes (ADR-006). The two-container boundary is implemented and runtime-verified for M2 (ADR-007).
 
 ## ADR-003 — No Control Plane data-plane component in Milestone 1
 
-**Decision:** The Milestone 1 demo has no Control Plane process in the protocol path. Orchestration is limited to starting the two participant containers and collecting exit status.
+**Decision:** The Milestone 1 demo has no Control Plane process in the protocol path. Orchestration is limited to starting two independent participant processes and collecting exit status. M2 uses two containers.
 
 **Reason:** A premature service adds unnecessary exposure. The milestone can prove the fundamental PSI capability while making the zero-raw-ID Control Plane property structurally obvious.
 
@@ -61,4 +61,40 @@
 **Consequences:** The backend does not create secret-shared matched rows. Private join/MPC handoff remains a separate gate requiring a mature circuit-PSI or secret-shared PSI implementation. The current security model remains honest-but-curious.
 
 **Status:** Accepted and runtime-verified on the synthetic Milestone 1 fixture.
+
+## ADR-007 — Fixed-shape private join inside two-party SPU
+
+**Decision:** Recompute identifier equality inside SecretFlow SPU and keep the match mask and masked feature grids as fixed-shape secret SPU objects. Reconstruct only the intersection cardinality. Use CHEETAH with FM128 for the two-party runtime.
+
+**Reason:** SecretFlow's receiver-oriented PSI interfaces materialize matched rows at a participant, which violates ADR-005. A fixed-shape MPC circuit can transfer each owner's input directly from PYU to secret shares, compare exact fixed-width identifier bytes, exclude identifiers from the handoff, and feed secret outputs into subsequent MPC calls. CHEETAH provides a two-party semi-honest backend without adding a preprocessing trust party.
+
+**Alternatives:** Use `psi_df`/`psi_csv` and hide the result path; rejected because a participant controls the receiver host. Use SEMI2K's default trusted-first-party Beaver provider; rejected because it weakens the two-party privacy model and is documented as unsafe/debug-only. Add a trusted-third-party Beaver service; deferred because it expands the trust model. Implement a custom PSI protocol; rejected. Compact the joined rows; rejected because compaction reveals match positions or secret-dependent shapes.
+
+**Consequences:** The join is exact for accepted identifiers and has O(n*m) work, so it is bounded to small public capacities. The configured capacity and tensor shapes are public. SecretFlow 1.14.0b0 supports Python 3.10/3.11 rather than Python 3.12, so this engine is isolated in its pinned official Linux image even though the future application backend targets Python 3.12. The beta runtime remains non-production until further review.
+
+**Status:** Accepted and runtime-verified on the synthetic two-container fixture.
+
+## ADR-008 — Immutable RoomState is the persistent computation boundary
+
+**Decision:** Represent persistent private-computation state with an immutable `RoomState`. Every state has a list-valued `parentStateIds`, `ArtifactRef` entries, a `StateTransition`, a default-deny `StatePolicy`, a `CryptoContext`, and a `StateCommitment`. State and artifact paths use create-exclusive semantics; an existing state ID is never replaced.
+
+**Reason:** Independent jobs lose the privacy-preserving intermediate state needed by later collaboration steps. An explicit state contract allows a subsequent MPC computation to consume prior secret artifacts without reconstructing them, while recording parentage, policy, and cryptographic compatibility.
+
+**Alternatives:** Store anonymous job outputs; rejected because policy, lineage, and crypto binding would be implicit. Store a plaintext joined table; rejected because it violates the product privacy boundary. Implement branch merging now; rejected as outside M2.5.
+
+**Consequences:** Parent IDs are modeled as a list so future state graphs are representable, but M2.5 implements only creation of the parentless S1 state. Branch UI and merge semantics are not implemented. SHA-256 state commitments identify deterministic public state content but do not replace signatures or defend against a malicious node owner who can rewrite both a document and its unsigned commitment.
+
+**Status:** Accepted and implemented; Linux restart/reload runtime verification pending.
+
+## ADR-009 — Persist native SPU shares with node-local authenticated encryption
+
+**Decision:** Persist the three M2 SPUObjects through SecretFlow's native `SPU.dump`/`SPU.load` interface. Encrypt each local serialized share with AES-256-GCM under a participant-local 256-bit key and a fresh 96-bit nonce. Bind room, state, artifact, participant, cipher, and crypto-context identifiers as authenticated data. Exchange only ciphertext hashes and sizes as explicitly authorized metadata.
+
+**Reason:** SecretFlow already owns the version-specific SPU metadata and share serialization. Using its public persistence boundary avoids inventing a secret-sharing format. Authenticated encryption protects local shares at rest and detects wrong-key, wrong-context, or modified-ciphertext loads before MPC resumes.
+
+**Alternatives:** Serialize SPU internals directly; rejected as brittle and unsafe. Install a new database or central object store; rejected because it expands scope and trust boundaries. Share one encryption key between participants; rejected because a KryptNode should not be able to decrypt the other node's persisted share. Persist plaintext share files; rejected because at-rest encryption is required.
+
+**Consequences:** The current demo key is a permission-restricted local file inside each node's state root. Production KMS/HSM integration, key rotation, backup policy, rollback protection, and crash-atomic multi-party commit are deferred. AES-GCM protects encrypted artifact confidentiality and authenticity against storage readers without the key; it does not protect a compromised running host.
+
+**Status:** Accepted and implemented; Linux restart/reload runtime verification pending.
 

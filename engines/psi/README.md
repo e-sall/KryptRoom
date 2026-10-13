@@ -9,7 +9,7 @@ Milestone 1 uses OpenMined PSI v2.0.6 in exact cardinality-only mode:
 
 SecretFlow RR22 was evaluated first, as originally approved. Its v2 symmetric PSI API always designates a receiver that obtains the intersection; `broadcast_result=false` only prevents the sender from receiving it. That API therefore cannot satisfy KryptRoom's default no-identifier-disclosure policy.
 
-This backend does not produce secret shares of matched rows. It is suitable for the current cardinality milestone but not yet the private join/MPC handoff. That handoff requires a separately reviewed circuit-PSI or secret-shared PSI backend; do not claim it is implemented.
+This backend does not produce secret shares of matched rows. M2 implements a separate fixed-shape join inside SecretFlow SPU, recomputing identifier equality privately rather than extracting matches from PSI cardinality. That two-container CHEETAH/FM128 path is runtime-verified on the synthetic fixture; see [the MPC runtime](../mpc/README.md). This is not a claim that the PSI backend itself emits a secret-shared alignment.
 
 ## Verification
 

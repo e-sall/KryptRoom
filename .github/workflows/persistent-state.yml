@@ -1,0 +1,145 @@
+name: Persistent RoomState
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+      - "feat/**"
+  push:
+    # Feature branches are validated by the PR event only, avoiding a second
+    # restart/reload run for the same change. Branch pushes cover integration.
+    branches:
+      - main
+      - dev
+
+# Keep an active cryptographic run alive when a newer PR revision arrives.
+# This group is specific to M2.5 and cannot cancel M1/M2 workflows.
+concurrency:
+  group: persistent-room-state-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  policy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts
+      - run: npm test
+
+  cryptographic-integration:
+    name: M2.5 persistent-state cryptographic integration
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Create isolated KryptNode state directories
+        shell: bash
+        run: |
+          state_root="${RUNNER_TEMP}/kryptroom-state-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          mkdir -p "${state_root}/lab-a" "${state_root}/lab-b"
+          echo "KRYPTROOM_LAB_A_STATE_DIR=${state_root}/lab-a" >> "${GITHUB_ENV}"
+          echo "KRYPTROOM_LAB_B_STATE_DIR=${state_root}/lab-b" >> "${GITHUB_ENV}"
+
+      - name: Pull pinned SecretFlow image
+        run: docker compose -f compose.persistent-state.yml pull
+
+      - name: Create encrypted RoomState S1 from the private join
+        shell: bash
+        run: |
+          set -o pipefail
+          timeout --signal=TERM 12m docker compose \
+            -f compose.persistent-state.yml \
+            -f compose.persistent-state.persist.yml \
+            up --no-build --abort-on-container-failure 2>&1 | tee persistent-state-create.log
+          test "$(docker inspect -f '{{.State.ExitCode}}' "$(docker compose -f compose.persistent-state.yml -f compose.persistent-state.persist.yml ps -a -q lab-a)")" -eq 0
+          test "$(docker inspect -f '{{.State.ExitCode}}' "$(docker compose -f compose.persistent-state.yml -f compose.persistent-state.persist.yml ps -a -q lab-b)")" -eq 0
+          test "$(grep -c '\"intersectionCardinality\":2' persistent-state-create.log)" -eq 2
+          test "$(grep -c '\"roomStateId\":\"S1\"' persistent-state-create.log)" -eq 2
+          test "$(grep -c '\"plaintextJoinMaterialized\":false' persistent-state-create.log)" -eq 2
+          if grep -Eq 'P00[1-7]' persistent-state-create.log; then
+            echo "Participant identifier appeared in state-creation logs" >&2
+            exit 1
+          fi
+
+      - name: Terminate both KryptNodes
+        run: |
+          docker compose \
+            -f compose.persistent-state.yml \
+            -f compose.persistent-state.persist.yml \
+            down
+          test -z "$(docker compose -f compose.persistent-state.yml ps -q)"
+
+      - name: Verify immutable encrypted state at rest
+        shell: bash
+        run: |
+          sudo -E python - "${KRYPTROOM_LAB_A_STATE_DIR}" "${KRYPTROOM_LAB_B_STATE_DIR}" <<'PY'
+          import json
+          import pathlib
+          import sys
+
+          roots = [pathlib.Path(value) for value in sys.argv[1:]]
+          magic = b"KRYPTROOM-ROOMSTATE-AES256GCM-V1\x00"
+          relative_state = pathlib.Path(
+              "rooms/cancer-collaboration-room/states/S1/state.json"
+          )
+          states = []
+          for root in roots:
+              files = {path.relative_to(root).as_posix() for path in root.rglob("*") if path.is_file()}
+              expected = {
+                  "keys/room-state-v1.key",
+                  relative_state.as_posix(),
+                  "rooms/cancer-collaboration-room/states/S1/artifacts/match-mask.share.enc",
+                  "rooms/cancer-collaboration-room/states/S1/artifacts/lab-a-features.share.enc",
+                  "rooms/cancer-collaboration-room/states/S1/artifacts/lab-b-features.share.enc",
+              }
+              assert files == expected, files
+              assert (root / "keys/room-state-v1.key").stat().st_size == 32
+              for artifact in (root / relative_state.parent / "artifacts").glob("*.share.enc"):
+                  assert artifact.read_bytes().startswith(magic)
+              state_bytes = (root / relative_state).read_bytes()
+              assert not any(identifier in state_bytes for identifier in (b"P001", b"P002", b"P004", b"P006"))
+              state = json.loads(state_bytes)
+              assert state["id"] == "S1"
+              assert state["parentStateIds"] == []
+              assert state["policy"]["defaultReveal"] == "deny"
+              assert all(not artifact["includesIdentifiers"] for artifact in state["artifacts"])
+              states.append(state_bytes)
+          assert states[0] == states[1]
+          assert (roots[0] / "keys/room-state-v1.key").read_bytes() != (
+              roots[1] / "keys/room-state-v1.key"
+          ).read_bytes()
+          PY
+
+      - name: Restart KryptNodes without source inputs and run private analytics
+        shell: bash
+        run: |
+          set -o pipefail
+          timeout --signal=TERM 12m docker compose \
+            -f compose.persistent-state.yml \
+            up --no-build --abort-on-container-failure 2>&1 | tee persistent-state-analytics.log
+          test "$(docker inspect -f '{{.State.ExitCode}}' "$(docker compose -f compose.persistent-state.yml ps -a -q lab-a)")" -eq 0
+          test "$(docker inspect -f '{{.State.ExitCode}}' "$(docker compose -f compose.persistent-state.yml ps -a -q lab-b)")" -eq 0
+          test "$(grep -c '\"privateAggregate\":68' persistent-state-analytics.log)" -eq 2
+          test "$(grep -c '\"stateReloaded\":true' persistent-state-analytics.log)" -eq 2
+          test "$(grep -c '\"plaintextJoinMaterialized\":false' persistent-state-analytics.log)" -eq 2
+          if grep -Eq 'P00[1-7]' persistent-state-analytics.log; then
+            echo "Participant identifier appeared in post-restart analytics logs" >&2
+            exit 1
+          fi
+          create_commitment="$(grep -o '\"stateCommitment\":\"[a-f0-9]\{64\}\"' persistent-state-create.log | head -n 1)"
+          test -n "${create_commitment}"
+          test "$(grep -c "${create_commitment}" persistent-state-create.log)" -eq 2
+          test "$(grep -c "${create_commitment}" persistent-state-analytics.log)" -eq 2
+
+      - name: Stop containers
+        if: always()
+        run: docker compose -f compose.persistent-state.yml down

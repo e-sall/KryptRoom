@@ -1,25 +1,67 @@
 # KryptRoom
 
-> Compute together. Reveal nothing.
+**Compute together. Reveal nothing.**
 
-KryptRoom is encrypted-compute and collaboration infrastructure for organizations that need to work together without disclosing their raw data to one another, KryptRoom, or a central cloud operator.
+KryptRoom is a persistent encrypted state machine for collaboration between mutually distrustful organizations.
 
-## Status
+Organizations often need answers from combined data without being able to share the underlying records. KryptRoom explores how independent, organization-owned **KryptNodes** can match and join data privately, retain secret computation state, and authorize specific results. Persistent state is intended to let collaboration continue across computations and node restarts.
 
-The repository is in its foundation phase. The first product capability is a real two-party private-set-intersection cardinality (PSI-CA) for the cancer-collaboration demo. Product claims in this repository are intentionally limited to code that has been executed and verified.
+**Experimental research prototype.** Current protocols target two non-colluding, semi-honest participants on trusted hosts. There is no malicious-party or compromised-host protection, production KMS/HSM, key rotation, or production-grade distributed recovery/anti-rollback. The tagline expresses the privacy goal: authorized outputs such as cardinality are intentionally revealed. See the [threat model](THREAT_MODEL.md).
 
-The intended first demo uses two independent KryptNodes:
+## What works today
 
-- Lab A owns patient identifiers `P001`, `P002`, `P004`, and `P006`.
-- Lab B owns patient identifiers `P002`, `P003`, `P004`, and `P007`.
-- The expected intersection cardinality is `2`; matched identifiers are not an authorized output.
-- Raw input identifiers remain local to their owning KryptNode.
+- **M1 — verified two-party PSI cardinality.** Two independent processes use OpenMined PSI 2.0.6, ECDH, and the exact `Raw` container. Both peers disable matched-identifier revelation. The synthetic fixture returns intersection cardinality `2`; the [integration test](tests/integration/psi-cardinality.test.mjs) checks the result and output.
+- **M2 — verified private join inside SecretFlow SPU.** Two isolated containers execute **CHEETAH / FM128**. The match mask and masked feature grids remain secret-shared, identifiers are excluded from the handoff, and a second MPC call reconstructs only cardinality. [Recorded successful Linux run](https://github.com/e-sall/KryptRoom/actions/runs/36731809790).
 
-## Milestone 1 demo
+These results establish behavior for the tested fixtures and stated threat model, not an independent security audit or a performance benchmark.
 
-The current implementation uses OpenMined PSI v2.0.6 with ECDH commutative encryption, the exact `Raw` encrypted container, and identifier disclosure disabled at both peers.
+**M2.5 — implemented, pending CI validation.** The code defines immutable `RoomState`, `ArtifactRef`, `StateTransition`, `StatePolicy`, `CryptoContext`, and `StateCommitment` contracts, including list-valued `parent_state_ids` (`parentStateIds` in JSON). It uses native SPU share persistence with AES-256-GCM encryption under node-local keys and context-bound authenticated data. The intended restart test reloads S1 without source CSV mounts and computes a private aggregate. End-to-end persistence and restart continuity are **not yet verified**: the [latest checked run](https://github.com/e-sall/KryptRoom/actions/runs/37374192474) was cancelled before acquiring a hosted runner (status checked 2026-10-13).
 
-Prerequisites: Node.js 20 or newer and npm.
+## Hero use case: cancer-research collaboration
+
+Lab A holds genomic features; Lab B holds clinical treatment-response information for an overlapping population. Each lab wants to study the overlap without handing patient identifiers or raw records to the other lab or a central operator.
+
+The repository uses only small synthetic fixtures. M1 privately counts the overlap. M2 independently compares identifiers inside MPC and creates a secret-shared join; M1 does not export hidden matches into M2. The persistence layer is intended to keep that join available for later authorized computations.
+
+```text
+Private Matching → Private Join → Persistent Encrypted State → Private Analytics → Private ML → Proof → Audit
+M1 verified        M2 verified    M2.5 implemented,             M3 next            Future       Future  Future
+                                 pending CI validation
+```
+
+The M2.5 aggregate is a narrow continuity test, not the general M3 analytics API. No real patient data, clinical claims, ML training, FHE computation, ZK proof, or blockchain integration is included today.
+
+## Architecture
+
+```mermaid
+flowchart LR
+  subgraph A[Lab A KryptNode]
+    DA[Local raw data]
+    RA[PSI peer / SPU party A]
+    EA[Local encrypted share artifacts - M2.5 pending]
+    DA --> RA
+    RA --> EA
+  end
+  subgraph B[Lab B KryptNode]
+    DB[Local raw data]
+    RB[PSI peer / SPU party B]
+    EB[Local encrypted share artifacts - M2.5 pending]
+    DB --> RB
+    RB --> EB
+  end
+  RA <-->|PSI or MPC / SPU protocol traffic| RB
+  EA -. public artifact references .-> S[RoomState / StateTransition - M2.5 pending]
+  EB -. public artifact references .-> S
+  S -. metadata only .-> CP[Control Plane - planned, absent from demos]
+```
+
+Raw data is read locally by its owner. The M2 handoff stays secret-shared across both nodes; the M2.5 code additionally encrypts each persisted local share at rest. Public state metadata describes policy, parentage, crypto context, and ciphertext commitments. The Control Plane is a future metadata coordinator and receives no raw datasets in the current demos because it is absent from their data path.
+
+The fixed-shape join takes O(n×m) work and targets small, public capacities. AES-GCM at-rest encryption is separate from MPC confidentiality. State commitments are unsigned SHA-256 hashes, not proofs or signatures. Details: [architecture](ARCHITECTURE.md), [decisions](docs/DECISIONS.md), [runtime notes](engines/mpc/README.md).
+
+## Run the synthetic demos
+
+Use Node.js 22 (the CI version) and npm for PSI and the local test suite:
 
 ```bash
 npm ci --ignore-scripts
@@ -27,36 +69,48 @@ npm test
 npm run demo:psi
 ```
 
-The authorized demo output contains `intersectionCardinality: 2` and no matched identifiers. Lab A and Lab B run as independent operating-system processes and read separate CSV files. No Control Plane process receives either dataset.
+The PSI package includes precompiled WebAssembly. `--ignore-scripts` avoids an unnecessary dependency installer; it does not replace the cryptographic runtime.
 
-Runtime verification completed on 2026-09-29: all nine automated tests passed and the end-to-end demo returned cardinality `2` without emitting matched identifiers. The use of `--ignore-scripts` avoids an unnecessary and currently broken `protoc-gen-js` installer; OpenMined PSI's distributed WebAssembly runtime is already precompiled.
+M2 requires Linux containers and Docker Compose:
 
-## Principles
+```bash
+docker compose -f compose.private-join.yml up --abort-on-container-failure
+docker compose -f compose.private-join.yml down
+```
 
-- The Control Plane is not trusted with participant plaintext.
-- Privacy-preserving claims must match the implementation and threat model.
-- Mature cryptographic libraries are preferred over custom cryptography.
-- Simulated components must be labelled as simulated.
-- Blockchain is reserved for commitments and audit provenance, never datasets or model material.
+SecretFlow 1.14.0b0 is pinned by immutable image digest. The reviewed runtime uses its no-Ray production scheduler with CHEETAH/FM128. Its Python environment remains inside the container.
 
-## Repository map
+To exercise the **pending-validation** M2.5 acceptance path:
 
-- `nodes/`: organization-owned KryptNode components.
-- `engines/`: adapters and runtime configuration for PSI, MPC, FHE, and ZK systems.
-- `services/`: Control Plane services, added only as milestones require them.
-- `workflows/`: composable private-compute workflows.
-- `packages/`: shared manifests, protocol types, and SDKs.
-- `demos/`: synthetic end-to-end demonstrations.
-- `tests/`: integration, privacy, and reproducibility checks.
-- `docs/`: roadmap and architectural decision records.
+```bash
+docker compose -f compose.persistent-state.yml -f compose.persistent-state.persist.yml up --abort-on-container-failure
+docker compose -f compose.persistent-state.yml -f compose.persistent-state.persist.yml down
+docker compose -f compose.persistent-state.yml up --abort-on-container-failure
+docker compose -f compose.persistent-state.yml down
+```
 
-Read [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md), [ARCHITECTURE.md](ARCHITECTURE.md), and [THREAT_MODEL.md](THREAT_MODEL.md) before making implementation changes.
+The expected post-restart aggregate is `68`. The second phase has no source CSV mounts. State lives under ignored `.runtime/persistent-state/`; existing S1 files cannot be overwritten through the storage API. Keep these files and their keys private. Losing a node's key/share makes this demo state unrecoverable; there is no automated recovery procedure.
 
-## Runtime prerequisites
+## Security model
 
-The PSI-cardinality demo runs on Node.js. Future SecretFlow SPU, MPC, and Linux-native cryptographic services will require Docker Desktop with its WSL 2 backend on Windows, or an equivalent Linux Docker host.
+The protocols assume participants follow the reviewed code. Matched identifiers are disclosed to neither participant by the authorized interfaces; future identifier disclosure requires explicit opt-in. Cardinality and other explicitly authorized aggregates can still reveal information through small or repeated queries. Public capacities, tensor shapes, and protocol traffic also disclose metadata.
 
-## Security notice
+Peer authentication, malicious security, host compromise resistance, signed state commitments, production key custody, anti-rollback, and distributed recovery are not implemented. The demos have no production deployment approval or independent security audit and must not be used with real medical or regulated data. See [SECURITY.md](SECURITY.md) and [THREAT_MODEL.md](THREAT_MODEL.md).
 
-KryptRoom is pre-release research software. It has not been independently audited and must not be used with real medical or regulated data.
+## Roadmap and repository guide
+
+The next gate is real M2.5 restart/reload validation, followed by M3 analytics that consume and evolve persistent RoomStates. Later work includes private ML, bounded proof statements, and audit provenance; none is claimed as implemented. See the [ordered roadmap](docs/ROADMAP.md) and [milestone checklist](TODO.md).
+
+- `nodes/krypt-node/`: participant PSI processes and local input boundary.
+- `engines/mpc/`: SPU join and pending-validation persistence implementation.
+- `packages/manifests/`: job, policy, and RoomState schemas.
+- `demos/cancer-collaboration/`: synthetic fixtures and manifests.
+- `tests/` and `.github/workflows/`: integration, privacy, and reproducibility checks.
+- `services/`, `apps/`, `chain/`, and FHE/ZK engine directories: future component placeholders.
+
+[Project context](PROJECT_CONTEXT.md) preserves technical direction. [CONTRIBUTING.md](CONTRIBUTING.md) describes the review and evidence expectations.
+
+## License status
+
+No project license has been selected. Public visibility does not by itself grant a general reuse license; dependency licenses remain their own. A license decision will be made explicitly before encouraging downstream adoption.
 

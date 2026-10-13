@@ -8,7 +8,7 @@
 
 **Alternatives:** SecretFlow SPU's older `psi_csv` interface; another maintained PSI library; a custom protocol. The standalone v2 library has the clearest current RR22 path. Custom PSI is rejected.
 
-**Status:** Accepted; execution evidence pending.
+**Status:** Superseded for M1 by ADR-006. Retained as historical rationale, not a description of the implemented backend.
 
 ## ADR-002 — Two isolated containers for Milestone 1
 
@@ -18,11 +18,11 @@
 
 **Alternatives:** Two processes in one Python runtime; Kubernetes; two physical hosts. Containers are the minimum reproducible local boundary, but they are not equivalent to physical host isolation.
 
-**Status:** Accepted; runtime validation pending.
+**Status:** Superseded for M1, which uses two independent processes (ADR-006). The two-container boundary is implemented and runtime-verified for M2 (ADR-007).
 
 ## ADR-003 — No Control Plane data-plane component in Milestone 1
 
-**Decision:** The Milestone 1 demo has no Control Plane process in the protocol path. Orchestration is limited to starting the two participant containers and collecting exit status.
+**Decision:** The Milestone 1 demo has no Control Plane process in the protocol path. Orchestration is limited to starting two independent participant processes and collecting exit status. M2 uses two containers.
 
 **Reason:** A premature service adds unnecessary exposure. The milestone can prove the fundamental PSI capability while making the zero-raw-ID Control Plane property structurally obvious.
 

@@ -42,6 +42,9 @@
 
 ## Explicitly deferred
 
+- [ ] Choose project licensing terms before encouraging substantial third-party code contributions.
+- [ ] Confirm a private vulnerability-reporting channel in repository settings.
+
 - General MPC analytics (M3) and neural-network training.
 - FHE analytics.
 - ZK proofs, post-quantum identity, and RunReceipts.

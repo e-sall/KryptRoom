@@ -11,7 +11,7 @@ Roadmap items are ordered dependencies, not parallel feature invitations.
 ## Privacy-preserving compute
 
 4. Real exact two-party PSI cardinality with no matched-identifier disclosure.
-5. Circuit-PSI or secret-shared PSI handoff for a private join.
+5. Fixed-shape private join and secret-shared handoff inside SecretFlow SPU (M2).
 6. Persistent encrypted RoomState layer with restart/reload continuity.
 7. MPC private analytics that consume and evolve RoomStates using SecretFlow SPU.
 8. Small real JAX/Flax neural network trained with MPC.

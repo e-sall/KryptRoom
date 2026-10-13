@@ -24,6 +24,8 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Changed
 
+- Reworked the public README around verified capabilities, synthetic cancer-research collaboration, explicit experimental limitations, and the persistent-state roadmap. Corrected historical architecture/backend wording, added contribution and security-reporting guidance, and expanded local-artifact ignore rules without changing runtime code or selecting a license.
+
 - Made PR events authoritative for feature-branch M2.5 integration, retained main/dev push validation, and serialized M2.5 runs without cancelling an active run. The initial cancelled jobs never acquired hosted runners; no cryptographic execution failure was observed.
 
 - Adopted the product default that matched identifiers are disclosed to neither participant; only cardinality is authorized.
@@ -44,9 +46,10 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Verified
 
-- Nine automated tests pass, including a real two-process cryptographic PSI-cardinality integration test.
+- Initial M1 validation passed nine automated tests, including a real two-process cryptographic PSI-cardinality integration test.
 - The cancer-collaboration demo returns cardinality `2` with `matchedIdentifiersRevealed: false`.
-- The locally cached production dependency audit reports zero known vulnerabilities.
+- The initial locally cached production dependency audit reported zero known vulnerabilities; this is historical evidence, not a current vulnerability assessment.
 - The two-container SecretFlow integration executed CHEETAH over a 128-bit ring, returned cardinality `2` at both participants, exited cleanly, and emitted none of the synthetic participant identifiers.
 - Twenty-eight local unit, privacy, integration, and reproducibility tests pass for M1, M2, and the M2.5 contracts. Linux M2.5 cryptographic restart/reload evidence remains pending CI.
+- Public-repository pass (2026-10-13): all 28 tests and the real PSI demo passed with local networking permitted; documentation links and ignore rules checked. No runtime, workflow, or test implementation changed. Docker was unavailable locally, so SPU was not re-executed in this pass.
 

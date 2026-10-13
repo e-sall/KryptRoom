@@ -4,7 +4,9 @@
 
 KryptRoom has runtime-verified M1 PSI cardinality and M2 two-container SPU private join paths. M2.5 adds an immutable persistent state layer and a two-phase create/terminate/restart/reload integration path. M2.5 is not considered runtime-verified until its Linux cryptographic CI gate passes.
 
-## System boundary
+## Target system boundary
+
+The Control Plane and signed metadata in this target diagram are planned. Neither participates in the current demos; only participant runtimes and their local storage are implemented.
 
 ```text
 Organization A                          Organization B
@@ -25,7 +27,7 @@ Organization A                          Organization B
                     +-----------------------+
 ```
 
-Each organization controls its KryptNode and local storage. Cryptographic protocol traffic flows directly between participating nodes when the selected backend supports that topology. The Control Plane coordinates jobs through manifests and status metadata; it is outside the trust boundary for plaintext inputs.
+Each organization controls its KryptNode and local storage. Cryptographic protocol traffic flows directly between participating nodes when the selected backend supports that topology. The planned Control Plane will coordinate jobs through manifests and status metadata; it is outside the trust boundary for plaintext inputs.
 
 ## Milestone 1 design
 

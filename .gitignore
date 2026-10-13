@@ -29,6 +29,27 @@ Thumbs.db
 **/*.secret
 .runtime/
 
+# Local credentials and generated runtime material (fixtures remain tracked)
+.aws/
+.ssh/
+.npmrc
+.pypirc
+credentials.json
+*service-account*.json
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.share.enc
+*.log
+*.log.*
+*.dump
+*.sqlite
+*.sqlite3
+*.db
+*.tmp
+*.bak
+
 # Build artifacts
 dist/
 build/

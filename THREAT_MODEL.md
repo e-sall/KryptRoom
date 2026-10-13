@@ -17,7 +17,7 @@ This document describes the verified M1 PSI-cardinality and M2 private-join path
 
 - Each KryptNode and its local storage are trusted by its owning organization.
 - The network between KryptNodes is untrusted for confidentiality and integrity unless the protocol or a future authenticated transport provides those properties.
-- The Control Plane is honest for coordination but untrusted with participant plaintext.
+- The planned Control Plane is assumed honest for coordination but untrusted with participant plaintext; it is absent from current demos.
 - Container images, host kernels, Docker daemons, operating systems, and third-party dependencies are supply-chain and execution trust dependencies.
 
 ## Initial adversary model
@@ -30,9 +30,9 @@ Milestones 1, 2, and 2.5 target two non-colluding, semi-honest (honest-but-curio
 - Lab B learns the exact intersection cardinality; Lab A need not receive the result.
 - A party does not receive the other party's non-intersecting raw identifiers through the authorized interface.
 - The Control Plane receives no raw input identifiers because it is absent from the PSI data path.
-- Raw CSV inputs are mounted only into their owning KryptNode container.
+- Each PSI process is configured to read only its owner's CSV. Both demo processes share a host; this is not OS-enforced cross-process or cross-user isolation.
 
-These properties depend on correct OpenMined PSI configuration, isolated mounts, non-collusion, the semi-honest assumption, and uncompromised hosts and dependencies.
+These properties depend on correct OpenMined PSI configuration, owner-local input handling, non-collusion, the semi-honest assumption, and uncompromised hosts and dependencies.
 
 ## Protected properties targeted by Milestone 2
 
@@ -40,7 +40,7 @@ These properties depend on correct OpenMined PSI configuration, isolated mounts,
 - Identifiers are converted locally to fixed-width byte tensors and transferred from their owner PYU to SPU secret shares; neither participant receives the other party's plaintext tensor.
 - Equality, padding-mask application, and feature masking execute inside a two-party SPU computation.
 - The handoff contains a secret match mask and secret masked feature grids at a public fixed shape. It contains no identifier tensor.
-- A second SPU computation consumes the match mask and reconstructs only the authorized cardinality to the local participant.
+- A second SPU computation consumes the match mask and reconstructs only the authorized cardinality to both participants.
 - The Control Plane remains absent from the data path.
 
 M2 uses SecretFlow SPU CHEETAH with FM128. CHEETAH is selected over the initial SEMI2K target because the latter defaults to an unsafe trusted-first-party Beaver provider. M2 does not add a third trusted party and does not silently weaken the two-party privacy policy.

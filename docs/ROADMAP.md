@@ -1,5 +1,9 @@
 # Roadmap
 
+M5 committed model-evaluation proof is implemented / pending real SP1 Groth16
+validation. Its bounded statement is metadata consistency; MPC arithmetic and
+participant signatures are not proved. See STATE_PROOF.md.
+
 Roadmap items are ordered dependencies, not parallel feature invitations.
 
 ## Foundation

@@ -57,6 +57,17 @@
 - [x] Add M4 contract, privacy, persistence, restart, and regression test coverage.
 - [x] Execute and record the authoritative real CHEETAH/FM128 S1→S3→restart→S4→restart→reveal gate.
 
+## Milestone 5: committed evaluation metadata proof
+
+- [x] Implement the bounded SP1 relation, receipt/StateProof schemas and standalone verifier.
+- [x] Add metadata-only fixtures, cross-language vectors and negative/privacy checks.
+- [ ] Pass real CPU Groth16 generation and independent verification in Linux CI.
+
+Status: implemented / pending real SP1 Groth16 validation.
+Two hosted attempts ended with runner shutdown under measured memory/swap
+pressure. Provide isolated runner capacity and rerun the unchanged real gate;
+see [M5 validation](docs/M5_VALIDATION.md). Do not mark complete from guest tests alone.
+
 ## Explicitly deferred
 
 - [ ] Choose project licensing terms before encouraging substantial third-party code contributions.
@@ -64,7 +75,7 @@
 
 - Analytics beyond COUNT/SUM/MEAN/CROSS_MEAN and ML beyond the fixed M4 network.
 - FHE analytics.
-- ZK proofs, post-quantum identity, and RunReceipts.
+- Proofs beyond M5's bounded metadata relation, post-quantum identity, and RunReceipts.
 - Blockchain anchoring.
 - Web frontend.
 - RoomState branch UI, merge implementation, and dynamic membership.

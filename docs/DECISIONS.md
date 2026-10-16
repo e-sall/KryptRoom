@@ -1,5 +1,26 @@
 # Architectural decisions
 
+## ADR-012 — Bounded M5 committed evaluation proof
+
+Use SP1 6.9.0 CPU Groth16 for exactly one M4 evaluation metadata relation.
+Preserve M1–M4 state formats and json-sort-keys-v1 hashes. Hash historical S3
+content as exact Python bytes; recompute only float-free evaluation semantics.
+Keep full policy/context/holder metadata private; expose a domain-separated
+64-byte public claim. External StateProof avoids circular S4 commitments.
+Derive verifier identity from its embedded ELF. Metadata fixtures use synthetic
+ciphertext descriptors; M4's independent regression tests actual MPC execution.
+Do not claim computation correctness or participant approval. Signatures remain
+deferred to M5.1. Status and limits: STATE_PROOF.md.
+
+**Validation status:** Implemented, not Groth16-validated. Two hosted attempts
+passed native contracts and real guest tests, then received runner shutdown
+signal 143 under measured memory/swap pressure. OOM is not confirmed. Keep the
+real CPU proof/standalone-verification gate unchanged; do not substitute mock,
+network proving, execution-only success or weaker claims. Official SP1 trace
+memory controls are allowed scheduling options, not weakened verification.
+Provide an isolated pre-provisioned Linux runner through `KRYPTROOM_M5_RUNNER`
+if needed; no capacity is provisioned automatically. See [measurements](M5_VALIDATION.md).
+
 ## ADR-011 — Persistent private NN model and exact multi-parent evaluation
 
 **Decision:** Train one fixed direct-JAX Dense 1→2, square, Dense 2→1 network directly from S1 under CHEETAH/FM128. Use public deterministic SHA-256 initialization, four full-batch gradient-descent steps, and secret masked MSE. Persist only four final secret parameter tensors in S3. After runtime destruction, evaluate by loading exact parents `[S3_model, S1]`, persist only secret MSE in S4, and reuse RevealService for the sole `model.evaluation.mse` disclosure.

@@ -119,7 +119,7 @@
           "additionalProperties": false,
           "properties": {
             "cohortCardinality": {"type": "integer", "minimum": 0},
-            "operator": {"const": "private_analytics"},
+            "operator": {"enum": ["private_analytics", "private_nn_training", "private_model_evaluation"]},
             "request": {"type": "object"},
             "outputStateId": {"$ref": "#/$defs/id"},
             "outputArtifactCommitments": {"type": "array", "items": {"type": "string", "pattern": "^[a-f0-9]{64}$"}},
@@ -158,7 +158,7 @@
       ],
       "properties": {
         "defaultReveal": { "const": "deny" },
-        "allowedOperators": {"type": "array", "uniqueItems": true, "items": {"const": "private_analytics"}},
+        "allowedOperators": {"type": "array", "uniqueItems": true, "items": {"enum": ["private_analytics", "private_nn_training", "private_model_evaluation"]}},
         "allowedInputArtifactIds": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
         "plaintextMaterialization": { "const": "forbidden" },
         "matchedIdentifierReveal": { "const": "forbidden" },

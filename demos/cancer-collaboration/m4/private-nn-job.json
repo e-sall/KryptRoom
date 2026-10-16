@@ -1,0 +1,47 @@
+{
+  "version": "1",
+  "roomId": "cancer-collaboration-room",
+  "cryptoContextId": "secretflow-spu-cheetah-fm128-v1",
+  "keyEpoch": "room-state-v1",
+  "modelSpec": {
+    "type": "feedforward_neural_network",
+    "inputDim": 1,
+    "layers": [
+      {"type": "dense", "inputDim": 1, "outputDim": 2},
+      {"type": "square"},
+      {"type": "dense", "inputDim": 2, "outputDim": 1}
+    ],
+    "outputInterpretation": "normalized_continuous_treatment_response"
+  },
+  "trainingSpec": {
+    "loss": "masked_mse",
+    "optimizer": "full_batch_gradient_descent",
+    "learningRate": 0.4,
+    "steps": 4,
+    "shuffle": false,
+    "feature": {"artifact": "lab-a-features", "column": 0, "divideBy": 10},
+    "label": {"artifact": "lab-b-features", "column": 0, "divideBy": 1000},
+    "initializer": {"algorithm": "kryptroom-sha256-uniform-v1", "seed": 1, "scale": 0.30}
+  },
+  "trainingTransition": {
+    "operator": "private_nn_training",
+    "inputStateIds": ["S1"],
+    "outputStateId": "S3_model",
+    "transitionId": "private-nn-training-to-S3",
+    "effectiveAt": "2026-10-16T00:01:00Z",
+    "requestedReveals": []
+  },
+  "evaluationSpec": {
+    "loss": "masked_mse",
+    "feature": {"artifact": "lab-a-features", "column": 0, "divideBy": 10},
+    "label": {"artifact": "lab-b-features", "column": 0, "divideBy": 1000}
+  },
+  "evaluationTransition": {
+    "operator": "private_model_evaluation",
+    "inputStateIds": ["S3_model", "S1"],
+    "outputStateId": "S4_eval",
+    "transitionId": "private-model-evaluation-to-S4",
+    "effectiveAt": "2026-10-16T00:02:00Z",
+    "requestedReveals": ["model.evaluation.mse"]
+  }
+}

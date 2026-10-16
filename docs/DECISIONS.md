@@ -1,5 +1,15 @@
 # Architectural decisions
 
+## ADR-011 — Persistent private NN model and exact multi-parent evaluation
+
+**Decision:** Train one fixed direct-JAX Dense 1→2, square, Dense 2→1 network directly from S1 under CHEETAH/FM128. Use public deterministic SHA-256 initialization, four full-batch gradient-descent steps, and secret masked MSE. Persist only four final secret parameter tensors in S3. After runtime destruction, evaluate by loading exact parents `[S3_model, S1]`, persist only secret MSE in S4, and reuse RevealService for the sole `model.evaluation.mse` disclosure.
+
+**Reason:** M4 must prove persistent collaborative secret data can evolve into a persistent secret model and participate in a later computation without plaintext recovery. Exact parent, input, model, training/evaluation, initializer, code, workflow, context, policy, reveal, and output descriptor bindings preserve the existing immutable RoomState architecture.
+
+**Consequences:** S2 is not a parent. S1 data is not copied into S3. Legacy and M3-only S1 states receive no M4 permission. The model, optimizer, fixture, normalization, and MSE bound are fixed; this is not general private ML or a biomedical claim. Existing semi-honest/trusted-host/key-management limitations remain.
+
+**Status:** Accepted and implemented; pending the authoritative real CHEETAH/FM128 persistence/restart integration gate. See [M4 design](PRIVATE_NN.md).
+
 ## ADR-010 — Persistent private cohort analytics consumes S1 and produces S2
 
 **Decision:** Extend the existing StatePolicy with opt-in operator/input permissions and StateTransition with optional canonical bindings. Preserve legacy encodings. Retain the already-authorized cardinality at S1 creation for empty-cohort preconditions. Reuse the existing ArtifactRefs, RoomState commitment, native SPU dump/load and AES-GCM share store; implement exactly COUNT, SUM, MEAN and CROSS_MEAN. A separate RevealService checks committed requests and policy before reconstruction.

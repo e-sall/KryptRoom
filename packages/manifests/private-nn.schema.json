@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kryptroom.dev/schemas/private-nn.schema.json",
+  "title": "KryptRoom M4 private neural network job",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "roomId", "cryptoContextId", "keyEpoch", "modelSpec", "trainingSpec", "trainingTransition", "evaluationSpec", "evaluationTransition"],
+  "properties": {
+    "version": {"const": "1"},
+    "roomId": {"$ref": "#/$defs/id"},
+    "cryptoContextId": {"const": "secretflow-spu-cheetah-fm128-v1"},
+    "keyEpoch": {"const": "room-state-v1"},
+    "modelSpec": {"$ref": "#/$defs/model"},
+    "trainingSpec": {"$ref": "#/$defs/training"},
+    "trainingTransition": {"$ref": "#/$defs/trainingTransition"},
+    "evaluationSpec": {"$ref": "#/$defs/evaluation"},
+    "evaluationTransition": {"$ref": "#/$defs/evaluationTransition"}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"},
+    "selector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact", "column", "divideBy"],
+      "properties": {
+        "artifact": {"enum": ["lab-a-features", "lab-b-features"]},
+        "column": {"const": 0},
+        "divideBy": {"enum": [10, 1000]}
+      }
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "inputDim", "layers", "outputInterpretation"],
+      "properties": {
+        "type": {"const": "feedforward_neural_network"},
+        "inputDim": {"const": 1},
+        "layers": {
+          "type": "array",
+          "prefixItems": [
+            {"type": "object", "additionalProperties": false, "required": ["type", "inputDim", "outputDim"], "properties": {"type": {"const": "dense"}, "inputDim": {"const": 1}, "outputDim": {"const": 2}}},
+            {"type": "object", "additionalProperties": false, "required": ["type"], "properties": {"type": {"const": "square"}}},
+            {"type": "object", "additionalProperties": false, "required": ["type", "inputDim", "outputDim"], "properties": {"type": {"const": "dense"}, "inputDim": {"const": 2}, "outputDim": {"const": 1}}}
+          ],
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "outputInterpretation": {"const": "normalized_continuous_treatment_response"}
+      }
+    },
+    "training": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["loss", "optimizer", "learningRate", "steps", "shuffle", "feature", "label", "initializer"],
+      "properties": {
+        "loss": {"const": "masked_mse"},
+        "optimizer": {"const": "full_batch_gradient_descent"},
+        "learningRate": {"const": 0.4},
+        "steps": {"const": 4},
+        "shuffle": {"const": false},
+        "feature": {"allOf": [{"$ref": "#/$defs/selector"}, {"properties": {"artifact": {"const": "lab-a-features"}, "divideBy": {"const": 10}}}]},
+        "label": {"allOf": [{"$ref": "#/$defs/selector"}, {"properties": {"artifact": {"const": "lab-b-features"}, "divideBy": {"const": 1000}}}]},
+        "initializer": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["algorithm", "seed", "scale"],
+          "properties": {
+            "algorithm": {"const": "kryptroom-sha256-uniform-v1"},
+            "seed": {"const": 1},
+            "scale": {"const": 0.3}
+          }
+        }
+      }
+    },
+    "evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["loss", "feature", "label"],
+      "properties": {
+        "loss": {"const": "masked_mse"},
+        "feature": {"allOf": [{"$ref": "#/$defs/selector"}, {"properties": {"artifact": {"const": "lab-a-features"}, "divideBy": {"const": 10}}}]},
+        "label": {"allOf": [{"$ref": "#/$defs/selector"}, {"properties": {"artifact": {"const": "lab-b-features"}, "divideBy": {"const": 1000}}}]}
+      }
+    },
+    "trainingTransition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operator", "inputStateIds", "outputStateId", "transitionId", "effectiveAt", "requestedReveals"],
+      "properties": {
+        "operator": {"const": "private_nn_training"},
+        "inputStateIds": {"const": ["S1"]},
+        "outputStateId": {"const": "S3_model"},
+        "transitionId": {"$ref": "#/$defs/id"},
+        "effectiveAt": {"type": "string", "format": "date-time"},
+        "requestedReveals": {"const": []}
+      }
+    },
+    "evaluationTransition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operator", "inputStateIds", "outputStateId", "transitionId", "effectiveAt", "requestedReveals"],
+      "properties": {
+        "operator": {"const": "private_model_evaluation"},
+        "inputStateIds": {"const": ["S3_model", "S1"]},
+        "outputStateId": {"const": "S4_eval"},
+        "transitionId": {"$ref": "#/$defs/id"},
+        "effectiveAt": {"type": "string", "format": "date-time"},
+        "requestedReveals": {"const": ["model.evaluation.mse"]}
+      }
+    }
+  }
+}

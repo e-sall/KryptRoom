@@ -1,0 +1,14 @@
+# Only M4 S1 creation mounts sources. Training, evaluation, and reveal never use this file.
+services:
+  lab-a:
+    volumes:
+      - ${KRYPTROOM_M4_JOIN_JOB:?M4 private-join manifest required}:/config/private-join-job.json:ro
+      - ${KRYPTROOM_M4_STATE_JOB:?M4 persistent-state manifest required}:/config/persistent-state-job.json:ro
+      - ${KRYPTROOM_M4_INPUT_A:?isolated M4 source required}:/data/local.csv:ro
+    command: [/bin/bash, -lc, "exec python /app/persistent_room_state.py --phase persist --party lab-a --private-join-manifest /config/private-join-job.json --state-manifest /config/persistent-state-job.json --local-input /data/local.csv --state-root /state"]
+  lab-b:
+    volumes:
+      - ${KRYPTROOM_M4_JOIN_JOB:?M4 private-join manifest required}:/config/private-join-job.json:ro
+      - ${KRYPTROOM_M4_STATE_JOB:?M4 persistent-state manifest required}:/config/persistent-state-job.json:ro
+      - ${KRYPTROOM_M4_INPUT_B:?isolated M4 source required}:/data/local.csv:ro
+    command: [/bin/bash, -lc, "exec python /app/persistent_room_state.py --phase persist --party lab-b --private-join-manifest /config/private-join-job.json --state-manifest /config/persistent-state-job.json --local-input /data/local.csv --state-root /state"]

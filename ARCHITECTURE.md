@@ -2,7 +2,7 @@
 
 ## Current implemented state
 
-KryptRoom has runtime-verified M1 PSI cardinality, M2 two-container SPU private join, and M2.5 persistent encrypted RoomState paths. The M2.5 Linux cryptographic CI gate verified the two-phase create/terminate/restart/reload path on the synthetic fixture.
+KryptRoom has runtime-verified M1 PSI cardinality, M2 two-container SPU private join, M2.5 persistent encrypted RoomState paths, and M3 persistent private analytics. M4 persistent private NN training/evaluation is implemented but pending its real Linux CHEETAH/FM128 gate.
 
 ## Target system boundary
 
@@ -61,6 +61,8 @@ The acceptance topology has two separate phases. The create phase mounts each no
 
 M3 adds persistent scalar analytics over S1 and an immutable child S2 using the same RoomState/share storage. Its contract and kernel are separate from the policy-controlled reveal service. Status: verified on the synthetic Linux CHEETAH/FM128 fixture, including two restarts. See [M3 architecture and evidence](docs/PRIVATE_ANALYTICS.md).
 
+M4 is a sibling transition from S1, not a child of S2. Training produces immutable S3 with four encrypted local model-share artifacts. Evaluation consumes exact ordered parents `[S3_model, S1]`, persists only secret MSE in S4, and reuses the single RevealService reconstruction boundary. Status: implemented, pending real CHEETAH/FM128 validation. See [M4 design and gate](docs/PRIVATE_NN.md).
+
 - `apps/web`: future user interface; intentionally empty during PSI work.
 - `services/control-api`: future metadata and room API.
 - `services/orchestrator`: future Temporal workflows.
@@ -72,7 +74,7 @@ M3 adds persistent scalar analytics over S1 and an immutable child S2 using the 
 - `chain`: future audit anchoring only.
 - `demos/cancer-collaboration`: synthetic, non-medical demo data and run instructions.
 
-## Non-goals for Milestone 2.5
+## Current non-goals
 
-The current milestone does not implement the M3 analytics surface, ML, FHE, ZK, blockchain, a frontend, branch/merge operations, dynamic membership, post-quantum identity, real medical data, production key management, or a production Control Plane.
+The current milestone does not implement general-purpose private ML, private inference APIs, model export, optimizer checkpoints, ML beyond the fixed M4 network, FHE, ZK, blockchain, a frontend, branch/merge operations, dynamic membership, post-quantum identity, real medical data, production key management, or a production Control Plane.
 

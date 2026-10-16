@@ -6,6 +6,9 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Added
 
+- M4 fixed direct-JAX Dense 1→2→1 square-activation training over persisted S1, encrypted final model persistence in S3, exact `[S3_model, S1]` private evaluation into secret MSE state S4, and MSE-only policy-controlled disclosure. Status: implemented, pending real CHEETAH/FM128 validation.
+- M4 canonical model/training/evaluation contracts, deterministic SHA-256 initializer, two transition commitment bindings, dedicated synthetic fixture, privacy/state/storage tests, and authoritative Linux CI chain.
+
 - M3 persistent cohort analytics contracts, four-operation SPU kernel, centralized scalar reveal service, exact input/transition/output commitment bindings, and S2 persistence using the existing M2.5 encrypted share store.
 - M3 state/policy/privacy/storage tests and a real Linux two-restart CI gate, including an isolated explicitly authorized correctness fixture. Status: M3 verified on the synthetic fixture.
 

@@ -26,6 +26,22 @@ class RevealService:
     def scalar(self, spec, name, load_secret):
         artifact_id = self.authorize(spec, name)
         # Authorization precedes loading, SPU->PYU transfer and reconstruction.
+        return self._scalar_from_artifact(artifact_id, load_secret)
+
+    def authorize_named(self, requested_reveals, name, artifact_by_reveal):
+        """Authorize a committed non-M3 scalar without adding a reveal boundary."""
+        validate_policy(self.policy)
+        if (name not in requested_reveals or name not in artifact_by_reveal
+                or not self.policy.authorizes(name, PARTIES)):
+            raise PermissionError("Named scalar reveal is not authorized")
+        return artifact_by_reveal[name]
+
+    def named_scalar(self, requested_reveals, name, artifact_by_reveal, load_secret):
+        artifact_id = self.authorize_named(requested_reveals, name, artifact_by_reveal)
+        # Authorization precedes loading, SPU->PYU transfer and reconstruction.
+        return self._scalar_from_artifact(artifact_id, load_secret)
+
+    def _scalar_from_artifact(self, artifact_id, load_secret):
         secret = load_secret(artifact_id)
         values = self._reconstruct([secret.to(self.parties[p]) for p in PARTIES])
         scalars = [self._scalarize(v) for v in values]

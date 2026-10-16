@@ -222,6 +222,8 @@ class StatePolicy:
     matched_identifier_reveal: str
     future_identifier_disclosure_requires_opt_in: bool
     authorized_reveals: tuple[AuthorizedReveal, ...]
+    allowed_operators: tuple[str, ...] = ()
+    allowed_input_artifact_ids: tuple[str, ...] = ()
 
     def authorizes(self, name: str, recipients: tuple[str, ...]) -> bool:
         return any(
@@ -230,7 +232,7 @@ class StatePolicy:
         )
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        value = {
             "defaultReveal": self.default_reveal,
             "plaintextMaterialization": self.plaintext_materialization,
             "matchedIdentifierReveal": self.matched_identifier_reveal,
@@ -241,6 +243,10 @@ class StatePolicy:
                 reveal.to_dict() for reveal in self.authorized_reveals
             ],
         }
+        if self.allowed_operators or self.allowed_input_artifact_ids:
+            value["allowedOperators"] = list(self.allowed_operators)
+            value["allowedInputArtifactIds"] = list(self.allowed_input_artifact_ids)
+        return value
 
 
 @dataclass(frozen=True)
@@ -293,9 +299,11 @@ class StateTransition:
     input_job_id: str
     output_artifact_ids: tuple[str, ...]
     effective_at: str
+    # Canonical JSON keeps the optional extension immutable and legacy encodings unchanged.
+    bindings_json: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        value = {
             "id": self.id,
             "operation": self.operation,
             "parentStateIds": list(self.parent_state_ids),
@@ -303,6 +311,9 @@ class StateTransition:
             "outputArtifactIds": list(self.output_artifact_ids),
             "effectiveAt": self.effective_at,
         }
+        if self.bindings_json is not None:
+            value["bindings"] = json.loads(self.bindings_json)
+        return value
 
 
 @dataclass(frozen=True)
@@ -459,6 +470,8 @@ def room_state_from_dict(value: dict[str, Any]) -> RoomState:
             AuthorizedReveal(item["name"], tuple(item["recipients"]))
             for item in policy_value["authorizedReveals"]
         ),
+        allowed_operators=tuple(policy_value.get("allowedOperators", [])),
+        allowed_input_artifact_ids=tuple(policy_value.get("allowedInputArtifactIds", [])),
     )
     artifacts = tuple(
         ArtifactRef(
@@ -489,6 +502,8 @@ def room_state_from_dict(value: dict[str, Any]) -> RoomState:
         input_job_id=transition_value["inputJobId"],
         output_artifact_ids=tuple(transition_value["outputArtifactIds"]),
         effective_at=transition_value["effectiveAt"],
+        bindings_json=(canonical_json(transition_value["bindings"]).decode("utf-8")
+                       if "bindings" in transition_value else None),
     )
     state = RoomState(
         schema_version=value["schemaVersion"],

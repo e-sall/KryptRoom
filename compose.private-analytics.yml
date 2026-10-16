@@ -1,0 +1,32 @@
+name: kryptroom-private-analytics
+
+x-analytics: &analytics
+  image: secretflow/secretflow-ubuntu:1.14.0b0@sha256:bdd43242c28466bdc0afddb99d7b50237a94748b5ca7467f8aea73667a38383b
+  entrypoint: []
+  init: true
+  shm_size: 2gb
+  networks: [private-compute]
+
+services:
+  lab-a:
+    <<: *analytics
+    hostname: lab-a
+    volumes:
+      - ./engines/mpc:/app:ro
+      - ./.github/workflows/private-analytics.yml:/config/workflow.yml:ro
+      - ${KRYPTROOM_ANALYTICS_JOB:?bound public analytics request required}:/config/job.json:ro
+      - ${KRYPTROOM_LAB_A_STATE_DIR:?node A state required}:/state
+    command: [/bin/bash, -lc, "exec python /app/private_analytics.py --phase ${KRYPTROOM_ANALYTICS_PHASE:-compute} --party lab-a --state-root /state --job /config/job.json --workflow /config/workflow.yml ${KRYPTROOM_REVEAL_ARGUMENT:-}"]
+  lab-b:
+    <<: *analytics
+    hostname: lab-b
+    volumes:
+      - ./engines/mpc:/app:ro
+      - ./.github/workflows/private-analytics.yml:/config/workflow.yml:ro
+      - ${KRYPTROOM_ANALYTICS_JOB:?bound public analytics request required}:/config/job.json:ro
+      - ${KRYPTROOM_LAB_B_STATE_DIR:?node B state required}:/state
+    command: [/bin/bash, -lc, "exec python /app/private_analytics.py --phase ${KRYPTROOM_ANALYTICS_PHASE:-compute} --party lab-b --state-root /state --job /config/job.json --workflow /config/workflow.yml ${KRYPTROOM_REVEAL_ARGUMENT:-}"]
+networks:
+  private-compute:
+    driver: bridge
+    internal: true

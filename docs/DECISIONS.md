@@ -1,5 +1,15 @@
 # Architectural decisions
 
+## ADR-010 — Persistent private cohort analytics consumes S1 and produces S2
+
+**Decision:** Extend the existing StatePolicy with opt-in operator/input permissions and StateTransition with optional canonical bindings. Preserve legacy encodings. Retain the already-authorized cardinality at S1 creation for empty-cohort preconditions. Reuse the existing ArtifactRefs, RoomState commitment, native SPU dump/load and AES-GCM share store; implement exactly COUNT, SUM, MEAN and CROSS_MEAN. A separate RevealService checks committed requests and policy before reconstruction.
+
+**Reason:** M3 needs exact input lineage, a second persistent state and policy-controlled scalar outputs without extracting a plaintext join. Bind the exact input ciphertext descriptors and parent commitment, public spec, code/workflow hashes, context, policy, requested reveals and output descriptors. Zero cohorts reject means before division, without a new comparison circuit.
+
+**Consequences:** Previously created states do not gain permission retroactively. Only new explicitly opted-in S1 fixtures can execute M3. The absolute fixed-point fixture tolerance is 0.001; hashes remain unsigned and fresh ciphertexts have different digests. The architecture still has no production KMS, key rotation, context migration or malicious-host protection. See [full design](PRIVATE_ANALYTICS.md).
+
+**Status:** Accepted and runtime-verified on the synthetic two-restart Linux fixture; [CI evidence](https://github.com/e-sall/KryptRoom/actions/runs/38841137327).
+
 ## ADR-001 — SecretFlow PSI for initial exact matching
 
 **Decision:** Use the maintained SecretFlow standalone PSI library and its v2 API for the first exact two-party PSI capability. Prefer `PROTOCOL_RR22` after runtime verification.

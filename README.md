@@ -16,6 +16,8 @@ Organizations often need answers from combined data without being able to share 
 
 These results establish behavior for the tested fixtures and stated threat model, not an independent security audit or a performance benchmark.
 
+**M3 — verified Persistent Private Cohort Analytics.** M3 consumes S1's encrypted local SPU shares, executes COUNT, SUM, MEAN, or cross-party CROSS_MEAN, and persists secret scalar artifacts into a new S2. Computation and scalar disclosure have separate policy gates. The [successful Linux CI gate](https://github.com/e-sall/KryptRoom/actions/runs/38841137327) restarted twice, revealed only authorized `mean-a`, and rejected CROSS_MEAN before reconstruction; a separate explicitly authorized synthetic correctness case verified all six scalar outputs. See [the M3 design and validation guide](docs/PRIVATE_ANALYTICS.md).
+
 ## Hero use case: cancer-research collaboration
 
 Lab A holds genomic features; Lab B holds clinical treatment-response information for an overlapping population. Each lab wants to study the overlap without handing patient identifiers or raw records to the other lab or a central operator.
@@ -24,7 +26,7 @@ The repository uses only small synthetic fixtures. M1 privately counts the overl
 
 ```text
 Private Matching → Private Join → Persistent Encrypted State → Private Analytics → Private ML → Proof → Audit
-M1 verified        M2 verified    M2.5 verified                  M3 next            Future       Future  Future
+M1 verified        M2 verified    M2.5 verified                  M3 verified        Future       Future  Future
 ```
 
 The M2.5 aggregate is a narrow continuity test, not the general M3 analytics API. No real patient data, clinical claims, ML training, FHE computation, ZK proof, or blockchain integration is included today.
@@ -97,7 +99,7 @@ Peer authentication, malicious security, host compromise resistance, signed stat
 
 ## Roadmap and repository guide
 
-The next milestone is M3 analytics that consume and evolve persistent RoomStates. Later work includes private ML, bounded proof statements, and audit provenance; none is claimed as implemented. See the [ordered roadmap](docs/ROADMAP.md) and [milestone checklist](TODO.md).
+M3's persistent analytics gate is verified on the synthetic fixture. Later work includes private ML, bounded proof statements, and audit provenance; none is claimed as implemented. See the [ordered roadmap](docs/ROADMAP.md) and [milestone checklist](TODO.md).
 
 - `nodes/krypt-node/`: participant PSI processes and local input boundary.
 - `engines/mpc/`: verified SPU join and persistent encrypted RoomState implementation.

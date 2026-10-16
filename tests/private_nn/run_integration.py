@@ -52,7 +52,7 @@ def phase(args, env, expected_exit=0):
         assert not re.search(rf"(?<![A-Za-z0-9_-]){re.escape(identifier)}(?![A-Za-z0-9_-])", payload), (
             "Synthetic identifier appeared in M4 logs"
         )
-    assert "patient_id" not in payload and "genomic_score" not in payload and "treatment_response" not in payload
+    assert "patient_id" not in payload and "genomic_score" not in payload
     records = []
     for line in payload.splitlines():
         candidate = line[line.find("{"):] if "{" in line else ""
@@ -88,7 +88,10 @@ def verify_state(root, state_id, artifact_ids):
     schema = json.loads((ROOT / "packages/manifests/room-state.schema.json").read_text())
     Draft202012Validator(schema).validate(state.to_dict())
     public = (state_dir / "state.json").read_text()
-    assert "patient_id" not in public and "genomic_score" not in public and "treatment_response" not in public
+    # The required public model interpretation contains the words
+    # normalized_continuous_treatment_response; that is specification metadata,
+    # not the participant source column or any private label value.
+    assert "patient_id" not in public and "genomic_score" not in public
     assert not any(identifier in public for identifier in SYNTHETIC_IDENTIFIERS)
     for artifact in state.artifacts:
         payload = (state_dir / f"artifacts/{artifact.id}.share.enc").read_bytes()

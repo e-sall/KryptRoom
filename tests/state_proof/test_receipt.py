@@ -4,6 +4,8 @@ import json
 import sys
 import tempfile
 import unittest
+from types import SimpleNamespace
+from unittest.mock import patch
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -16,6 +18,16 @@ def fixture():
     return tuple(load_state(FIXTURES / f"{s}.json") for s in ("S3_model", "S1", "S4_eval"))
 
 class ReceiptTests(unittest.TestCase):
+    def test_child_log_leak_guard_fails_without_echoing_secret(self):
+        from run_integration import run
+        for stream in ("stdout", "stderr"):
+            result = SimpleNamespace(returncode=0, stdout="", stderr="")
+            setattr(result, stream, "local://private-holder-do-not-echo")
+            with patch("run_integration.subprocess.run", return_value=result):
+                with self.assertRaisesRegex(RuntimeError, "Private metadata marker") as error:
+                    run(["synthetic-binary", "hash"])
+                self.assertNotIn("private-holder", str(error.exception))
+
     def test_existing_m4_validation_and_receipt(self):
         states = fixture()
         job = strict_load(ROOT / "demos/cancer-collaboration/m4/private-nn-job.json")

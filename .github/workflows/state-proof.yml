@@ -73,7 +73,9 @@ jobs:
           git diff --exit-code -- tests/state_proof/fixtures
 
   real-sp1-groth16-proof:
-    runs-on: ubuntu-24.04
+    # Optional repository variable: a pre-provisioned isolated Linux x64 runner
+    # label. No paid capacity is provisioned and no proof gate is skipped here.
+    runs-on: ${{ vars.KRYPTROOM_M5_RUNNER || 'ubuntu-24.04' }}
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v7

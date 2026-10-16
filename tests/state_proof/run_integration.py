@@ -19,6 +19,13 @@ from proof_receipt import *
 F = Path(__file__).parent / "fixtures"
 def run(command, success=True, env=None, cwd=None, expected_error=None):
     p = subprocess.run([str(v) for v in command], capture_output=True, text=True, env=env, cwd=cwd)
+    # Check captured child logs as well as stored public files, without ever
+    # echoing a private value when this guard fails.
+    for marker in ("local://", "ciphertexts", "backendVersion", "authorizedReveals", "modelParentContentBase64",
+                   "dataParentContentBase64", "childContentBase64", ".share.enc",
+                   "room-state-v1.key"):
+        if marker in p.stdout or marker in p.stderr:
+            raise RuntimeError("Private metadata marker found in captured child logs")
     # Never print witness or captured guest/prover diagnostics containing witness.
     unexpected_status = (p.returncode == 0) != success
     unexpected_stage = expected_error is not None and expected_error not in p.stderr
@@ -161,6 +168,8 @@ def main():
         public=rpath.read_bytes()+spath.read_bytes()+public_claim(receipt)
         for forbidden in (b"local://",b"ciphertexts",b"authorizedReveals",b"backendVersion",b"room-state-v1.key",b"patient_id",b"p1\"",b"p2\"",b"252,",b"438,"):
             assert forbidden not in public
+        for forbidden in (b"local://",b"ciphertexts",b"authorizedReveals",b"backendVersion",b"room-state-v1.key",b"patient_id",b"modelParentContentBase64",b"dataParentContentBase64",b"childContentBase64"):
+            assert forbidden not in proof
         assert set(p.name for p in directory.iterdir())=={"receipt.json","proof.bin","state-proof.json"}
         metrics.update(realGroth16=True,independentVerification=True,verifierDockerDisabled=True,verifierNetworkProxiesDisabled=True,negativeTestsPassed=True,witnessDeleted=True,noSecretPayloadReads=True,totalSeconds=time.monotonic()-started)
         # Only public metrics and cryptographic identities leave this process.

@@ -159,10 +159,13 @@ fn main() -> Result<()> {
         // The official execution-only backend runs the real guest and cannot
         // generate a proof. It is not a mock or a final proof mode.
         let client = ProverClient::builder().light().build();
-        let (pv, _) = client
+        let (pv, report) = client
             .execute(ELF.into(), stdin)
             .run()
             .map_err(|_| anyhow::anyhow!("guest rejected"))?;
+        // SDK execution may return Ok with a nonzero guest exit code. A
+        // guest panic is rejection, never successful execution/public values.
+        ensure!(report.exit_code == 0, "guest rejected");
         ensure!(
             pv.as_slice() == r.claim().map_err(anyhow::Error::msg)?,
             "claim mismatch"

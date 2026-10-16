@@ -32,6 +32,8 @@ Roadmap items are ordered dependencies, not parallel feature invitations.
 
 ## Milestone gates
 
+M3 Persistent Private Cohort Analytics is implemented, pending cryptographic integration validation: exactly COUNT, SUM, MEAN and CROSS_MEAN over persisted S1, producing secret scalar artifacts in S2 and a separate policy-controlled reveal after restart.
+
 No milestone advances merely because source code exists. A gate requires executed tests, documented runtime evidence, updated threat-model limitations, and security claims that match the evidence.
 
 Milestones 1, 2, and 2.5 are runtime-verified on their synthetic fixtures. The M2.5 Linux gate created S1 with the pinned SecretFlow container, terminated both nodes, reloaded S1 in new nodes without source-input mounts, returned the expected aggregate through CHEETAH/FM128, and passed the privacy/storage checks. The next milestone is M3 private analytics that consume and evolve RoomStates.

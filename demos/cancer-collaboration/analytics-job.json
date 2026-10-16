@@ -1,0 +1,20 @@
+{
+  "version": "1",
+  "operator": "private_analytics",
+  "roomId": "cancer-collaboration-room",
+  "inputStateIds": ["S1"],
+  "outputStateId": "S2",
+  "transitionId": "private-analytics-to-S2",
+  "effectiveAt": "2026-10-15T00:00:00Z",
+  "cryptoContextId": "secretflow-spu-cheetah-fm128-v1",
+  "keyEpoch": "room-state-v1",
+  "metrics": [
+    {"id": "matched-count", "op": "COUNT"},
+    {"id": "sum-a", "op": "SUM", "input": {"artifact": "lab-a-features", "column": 0}},
+    {"id": "sum-b", "op": "SUM", "input": {"artifact": "lab-b-features", "column": 0}},
+    {"id": "mean-a", "op": "MEAN", "input": {"artifact": "lab-a-features", "column": 0}},
+    {"id": "mean-b", "op": "MEAN", "input": {"artifact": "lab-b-features", "column": 0}},
+    {"id": "cross-ab", "op": "CROSS_MEAN", "left": {"artifact": "lab-a-features", "column": 0}, "right": {"artifact": "lab-b-features", "column": 0}}
+  ],
+  "requestedReveals": ["analytics.mean.mean-a"]
+}

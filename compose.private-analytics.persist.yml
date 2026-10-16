@@ -1,0 +1,12 @@
+# Only S1 creation mounts source inputs; this file is never used for M3 phases.
+services:
+  lab-a:
+    volumes:
+      - ${KRYPTROOM_M3_PARENT_JOB:?parent manifest required}:/config/persistent-state-job.json:ro
+      - ${KRYPTROOM_M3_INPUT_A:?isolated synthetic source required}:/data/local.csv:ro
+    command: [/bin/bash, -lc, "exec python /app/persistent_room_state.py --phase persist --party lab-a --private-join-manifest /config/private-join-job.json --state-manifest /config/persistent-state-job.json --local-input /data/local.csv --state-root /state"]
+  lab-b:
+    volumes:
+      - ${KRYPTROOM_M3_PARENT_JOB:?parent manifest required}:/config/persistent-state-job.json:ro
+      - ${KRYPTROOM_M3_INPUT_B:?isolated synthetic source required}:/data/local.csv:ro
+    command: [/bin/bash, -lc, "exec python /app/persistent_room_state.py --phase persist --party lab-b --private-join-manifest /config/private-join-job.json --state-manifest /config/persistent-state-job.json --local-input /data/local.csv --state-root /state"]

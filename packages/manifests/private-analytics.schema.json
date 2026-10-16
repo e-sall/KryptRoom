@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kryptroom.dev/schemas/private-analytics.schema.json",
+  "title": "KryptRoom Private Analytics Specification",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "operator", "roomId", "inputStateIds", "outputStateId", "transitionId", "effectiveAt", "cryptoContextId", "keyEpoch", "metrics", "requestedReveals"],
+  "properties": {
+    "version": {"const": "1"},
+    "operator": {"const": "private_analytics"},
+    "roomId": {"$ref": "#/$defs/id"},
+    "inputStateIds": {"type": "array", "minItems": 1, "maxItems": 1, "items": {"$ref": "#/$defs/id"}},
+    "outputStateId": {"$ref": "#/$defs/id"},
+    "transitionId": {"$ref": "#/$defs/id"},
+    "effectiveAt": {"type": "string", "format": "date-time"},
+    "cryptoContextId": {"const": "secretflow-spu-cheetah-fm128-v1"},
+    "keyEpoch": {"const": "room-state-v1"},
+    "metrics": {"type": "array", "minItems": 1, "maxItems": 16, "items": {"$ref": "#/$defs/metric"}},
+    "requestedReveals": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^analytics\\.(count|sum|mean|cross_mean)\\.[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"}}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"},
+    "selector": {
+      "type": "object", "additionalProperties": false, "required": ["artifact", "column"],
+      "properties": {"artifact": {"enum": ["lab-a-features", "lab-b-features"]}, "column": {"type": "integer", "minimum": 0}}
+    },
+    "metric": {
+      "type": "object", "additionalProperties": false, "required": ["id", "op"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "op": {"enum": ["COUNT", "SUM", "MEAN", "CROSS_MEAN"]},
+        "input": {"$ref": "#/$defs/selector"}, "left": {"$ref": "#/$defs/selector"}, "right": {"$ref": "#/$defs/selector"}
+      },
+      "oneOf": [
+        {"properties": {"op": {"const": "COUNT"}}, "maxProperties": 2},
+        {"properties": {"op": {"enum": ["SUM", "MEAN"]}}, "required": ["input"], "maxProperties": 3},
+        {"properties": {"op": {"const": "CROSS_MEAN"}}, "required": ["left", "right"], "maxProperties": 4}
+      ]
+    }
+  }
+}

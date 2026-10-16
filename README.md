@@ -16,6 +16,8 @@ Organizations often need answers from combined data without being able to share 
 
 These results establish behavior for the tested fixtures and stated threat model, not an independent security audit or a performance benchmark.
 
+**M3 — implemented, pending cryptographic integration validation.** Persistent Private Cohort Analytics consumes S1's encrypted local SPU shares, executes COUNT, SUM, MEAN, or cross-party CROSS_MEAN, and persists secret scalar artifacts into a new S2. Computation and scalar disclosure have separate policy gates. The Linux acceptance gate restarts twice and permits only `mean-a`; a separate explicitly authorized synthetic correctness case checks all metrics. See [the M3 design and validation guide](docs/PRIVATE_ANALYTICS.md).
+
 ## Hero use case: cancer-research collaboration
 
 Lab A holds genomic features; Lab B holds clinical treatment-response information for an overlapping population. Each lab wants to study the overlap without handing patient identifiers or raw records to the other lab or a central operator.
@@ -97,7 +99,7 @@ Peer authentication, malicious security, host compromise resistance, signed stat
 
 ## Roadmap and repository guide
 
-The next milestone is M3 analytics that consume and evolve persistent RoomStates. Later work includes private ML, bounded proof statements, and audit provenance; none is claimed as implemented. See the [ordered roadmap](docs/ROADMAP.md) and [milestone checklist](TODO.md).
+The current gate is M3's real persistent analytics integration. Later work includes private ML, bounded proof statements, and audit provenance; none is claimed as implemented. See the [ordered roadmap](docs/ROADMAP.md) and [milestone checklist](TODO.md).
 
 - `nodes/krypt-node/`: participant PSI processes and local input boundary.
 - `engines/mpc/`: verified SPU join and persistent encrypted RoomState implementation.

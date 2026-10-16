@@ -6,6 +6,9 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Added
 
+- M3 persistent cohort analytics contracts, four-operation SPU kernel, centralized scalar reveal service, exact input/transition/output commitment bindings, and S2 persistence using the existing M2.5 encrypted share store.
+- M3 state/policy/privacy/storage tests and a real Linux two-restart CI gate, including an isolated explicitly authorized correctness fixture. Status: implemented, pending cryptographic integration validation.
+
 - Initial project documentation and persistent engineering context.
 - Monorepo boundaries for applications, services, nodes, cryptographic engines, workflows, shared packages, chain code, demos, infrastructure, and tests.
 - Initial architecture and honest-but-curious threat model for two-party PSI.

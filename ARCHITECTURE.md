@@ -59,6 +59,8 @@ The acceptance topology has two separate phases. The create phase mounts each no
 
 ## Repository boundaries
 
+M3 adds persistent scalar analytics over S1 and an immutable child S2 using the same RoomState/share storage. Its contract and kernel are separate from the policy-controlled reveal service. Status: implemented, pending cryptographic integration validation. See [M3 architecture](docs/PRIVATE_ANALYTICS.md).
+
 - `apps/web`: future user interface; intentionally empty during PSI work.
 - `services/control-api`: future metadata and room API.
 - `services/orchestrator`: future Temporal workflows.

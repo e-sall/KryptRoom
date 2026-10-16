@@ -69,7 +69,7 @@ test('RoomState types are immutable and committed before storage', async () => {
   ]
 
   for (const type of requiredTypes) {
-    assert.match(runtime, new RegExp(`@dataclass\\(frozen=True\\)\\nclass ${type}:`, 'u'))
+    assert.match(runtime, new RegExp(`@dataclass\\(frozen=True\\)\\r?\\nclass ${type}:`, 'u'))
   }
   assert.match(runtime, /os\.O_CREAT \| os\.O_EXCL/u)
   assert.match(runtime, /state\.verify\(\)/u)

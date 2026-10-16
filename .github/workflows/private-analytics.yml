@@ -1,0 +1,46 @@
+name: Persistent Private Analytics
+
+on:
+  pull_request:
+    branches: [dev, main]
+  push:
+    branches: [dev, main]
+
+concurrency:
+  group: private-analytics-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  contract-and-privacy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      - run: pip install -r tests/private_analytics/requirements.txt
+      - run: python -m unittest discover -s tests/private_analytics -p 'test_*.py' -v
+
+  cryptographic-integration:
+    name: M3 real persistent CHEETAH FM128
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - run: pip install -r tests/private_analytics/requirements.txt
+      - name: Pull the verified immutable SecretFlow image
+        run: docker compose -f compose.persistent-state.yml pull
+      - name: M2 to S1 to restart to M3 to S2 to restart to authorized reveal
+        run: sudo -E $(which python) tests/private_analytics/run_integration.py

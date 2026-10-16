@@ -114,6 +114,22 @@
           "uniqueItems": true
         },
         "effectiveAt": { "type": "string", "format": "date-time" }
+        ,"bindings": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "cohortCardinality": {"type": "integer", "minimum": 0},
+            "operator": {"const": "private_analytics"},
+            "request": {"type": "object"},
+            "outputStateId": {"$ref": "#/$defs/id"},
+            "outputArtifactCommitments": {"type": "array", "items": {"type": "string", "pattern": "^[a-f0-9]{64}$"}},
+            "transitionCommitment": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+          },
+          "oneOf": [
+            {"required": ["cohortCardinality"], "maxProperties": 1},
+            {"required": ["operator", "request", "outputStateId", "outputArtifactCommitments", "transitionCommitment"], "maxProperties": 5}
+          ]
+        }
       }
     },
     "authorizedReveal": {
@@ -142,6 +158,8 @@
       ],
       "properties": {
         "defaultReveal": { "const": "deny" },
+        "allowedOperators": {"type": "array", "uniqueItems": true, "items": {"const": "private_analytics"}},
+        "allowedInputArtifactIds": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
         "plaintextMaterialization": { "const": "forbidden" },
         "matchedIdentifierReveal": { "const": "forbidden" },
         "futureIdentifierDisclosure": {

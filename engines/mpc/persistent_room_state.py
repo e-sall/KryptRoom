@@ -36,6 +36,7 @@ from room_state import (
     inspect_ciphertexts,
     load_room_state,
     write_room_state_exclusive,
+    canonical_json,
 )
 
 
@@ -97,13 +98,27 @@ def load_state_job(path: Path, private_join_job: dict[str, Any]) -> dict[str, An
         {"name": "ciphertext-metadata", "recipients": list(PARTIES)},
         {"name": "matched-feature-sum", "recipients": list(PARTIES)},
     ]
-    if policy != {
+    expected_policy = {
         "defaultReveal": "deny",
         "plaintextMaterialization": "forbidden",
         "matchedIdentifierReveal": "forbidden",
         "futureIdentifierDisclosure": {"requiresExplicitOptIn": True},
         "authorizedReveals": expected_reveals,
-    }:
+    }
+    # Explicit M3 opt-in at S1 creation; the legacy M2.5 policy remains exact.
+    if "allowedOperators" in policy:
+        expected_policy["allowedOperators"] = ["private_analytics"]
+        expected_policy["allowedInputArtifactIds"] = list(ARTIFACT_IDS)
+        analytics_reveals = policy.get("authorizedReveals", [])[len(expected_reveals):]
+        if len(analytics_reveals) > 16 or any(
+            set(entry) != {"name", "recipients"}
+            or re.fullmatch(r"analytics\.(count|sum|mean|cross_mean)\.[A-Za-z0-9][A-Za-z0-9._-]{0,127}", entry.get("name", "")) is None
+            or entry.get("recipients") != list(PARTIES)
+            for entry in analytics_reveals
+        ):
+            raise ValueError("Invalid explicit analytics scalar authorization")
+        expected_policy["authorizedReveals"] = [*expected_reveals, *analytics_reveals]
+    if policy != expected_policy:
         raise ValueError("Persistent-state disclosure policy is not approved")
 
     _require_safe_component("roomId", room_id)
@@ -139,6 +154,8 @@ def build_policy(manifest: dict[str, Any]) -> StatePolicy:
             AuthorizedReveal(item["name"], tuple(item["recipients"]))
             for item in value["authorizedReveals"]
         ),
+        allowed_operators=tuple(value.get("allowedOperators", [])),
+        allowed_input_artifact_ids=tuple(value.get("allowedInputArtifactIds", [])),
     )
 
 
@@ -350,6 +367,8 @@ def persist_private_join(
             input_job_id=private_join_job["jobId"],
             output_artifact_ids=tuple(transition_value["outputArtifactIds"]),
             effective_at=transition_value["effectiveAt"],
+            bindings_json=(canonical_json({"cohortCardinality": cardinality}).decode("utf-8")
+                           if policy.allowed_operators else None),
         )
         state = create_room_state(
             state_id=state_id,

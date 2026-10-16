@@ -66,6 +66,8 @@ M2 uses SecretFlow SPU CHEETAH with FM128. CHEETAH is selected over the initial 
 
 ## Not yet protected
 
+M3 is implemented, pending cryptographic integration validation. It inherits the same two-party semi-honest model. Analytics operation/input authorization is separate from reveal authorization; wrong contexts and zero-cardinality means fail before computation. Only public ciphertext descriptors cross the metadata boundary. See [M3 details and limits](docs/PRIVATE_ANALYTICS.md).
+
 - Malicious parties that deviate from the protocol.
 - Collusion between participating parties, the Control Plane, or host operators.
 - Compromised participant hosts, Docker daemons, kernels, or container images.

@@ -144,8 +144,11 @@ def main():
         for _ in range(5):
             length=struct.unpack_from("<Q",proof,offset)[0];offset+=8+length
         length=struct.unpack_from("<Q",proof,offset)[0];offset+=8
-        assert length>=512 and all(c in b"0123456789abcdefABCDEF" for c in proof[offset:offset+length])
-        cryptographic_tamper=bytearray(proof);cryptographic_tamper[offset]=ord("0") if proof[offset]!=ord("0") else ord("1")
+        assert length>=704 and all(c in b"0123456789abcdefABCDEF" for c in proof[offset:offset+length])
+        # SDK v6.9.0 prefixes encoded Groth16 with exit code, VK root and
+        # nonce (96 bytes). Change the curve-proof material, not that header.
+        curve_offset=offset+96*2
+        cryptographic_tamper=bytearray(proof);cryptographic_tamper[curve_offset]=ord("0") if proof[curve_offset]!=ord("0") else ord("1")
         for data in (proof[:-1],bytes([proof[0]^1])+proof[1:],bytes(cryptographic_tamper)):
             p=temp/"altered.bin";p.write_bytes(data);verify(p=p,success=False)
             # Update public descriptor/id too, forcing real cryptographic/deserialization rejection.

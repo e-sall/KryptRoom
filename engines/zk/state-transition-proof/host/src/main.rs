@@ -10,6 +10,7 @@ use sp1_sdk::{
 use std::{collections::BTreeMap, fs, io::Write, path::Path, time::Instant};
 // Trusted identity is embedded at build time, never taken from StateProof/URI.
 const ELF: &[u8] = include_bytes!(env!("KRYPTROOM_M5_ELF"));
+const GNARK_IMAGE: &str = "ghcr.io/succinctlabs/sp1-gnark:v6.1.0@sha256:e1a1cd62838b561ca301f9b2c26475c4a92bfe0e2c916e9bba213062e1548c4d";
 fn read_json<T: serde::de::DeserializeOwned>(p: &str) -> Result<T> {
     Ok(serde_json::from_slice(&read_document(
         p, "json", 2_000_000,
@@ -69,6 +70,13 @@ fn main() -> Result<()> {
         std::env::var("SP1_PROVER").unwrap_or_else(|_| "cpu".into()) == "cpu",
         "SP1_PROVER must be cpu"
     );
+    if let Ok(image) = std::env::var("SP1_GNARK_IMAGE") {
+        ensure!(
+            image == GNARK_IMAGE,
+            "unexpected local Groth16 wrapping image"
+        );
+    }
+    std::env::set_var("SP1_GNARK_IMAGE", GNARK_IMAGE);
     if let Some(p) = args.get("--candidate-elf") {
         ensure!(
             read_document(p, "elf", 20_000_000)? == ELF,
@@ -117,9 +125,8 @@ fn main() -> Result<()> {
                 && hash(proof.public_values.as_slice()) == s.public_values_sha256,
             "public values mismatch"
         );
-        client
-            .verify(&proof, vk, None)
-            .context("SP1 verification failed")?;
+        // Independent verification uses the official pure Rust verifier. It
+        // requires no Docker daemon, circuit files, or prover witness.
         sp1_verifier::Groth16Verifier::verify(
             &proof.bytes(),
             proof.public_values.as_slice(),

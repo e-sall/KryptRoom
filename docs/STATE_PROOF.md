@@ -26,6 +26,16 @@ There is no mock/network prover fallback. Setup may download public dependencies
 and circuit material; the metadata witness never goes to a prover service.
 Resource feasibility remains subject to the actual Linux CI gate.
 
+The SDK's default final CPU wrapper uses the official local Gnark container for
+circuit v6.1.0. M5 additionally pins it to
+`ghcr.io/succinctlabs/sp1-gnark:v6.1.0@sha256:e1a1cd62838b561ca301f9b2c26475c4a92bfe0e2c916e9bba213062e1548c4d`.
+This is a local CPU process, not a network prover. Standalone verification uses
+the official pure Rust Groth16 verifier and does not require that Docker image.
+The independent-process test receives only three public proof documents and the
+verifier binary in its working directory, with Docker connectivity disabled and
+HTTP(S) proxies pointing to a closed local port. This checks dependency independence;
+it is not a hardened network sandbox or compromised-host protection.
+
 The `kryptroom-proof verify` binary embeds the expected ELF at build time,
 independently derives its programVKey and checks its SHA-256. It checks strict
 receipt/StateProof structures, receipt/proof hashes, exact 64-byte public claim,

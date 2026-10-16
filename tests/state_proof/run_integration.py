@@ -17,8 +17,8 @@ sys.path.insert(0, str(ROOT / "engines/zk"))
 from proof_receipt import *
 
 F = Path(__file__).parent / "fixtures"
-def run(command, success=True):
-    p = subprocess.run([str(v) for v in command], capture_output=True, text=True)
+def run(command, success=True, env=None, cwd=None):
+    p = subprocess.run([str(v) for v in command], capture_output=True, text=True, env=env, cwd=cwd)
     # Never print witness or captured guest/prover diagnostics containing witness.
     if (p.returncode == 0) != success:
         forbidden = ("local://", "authorizedReveals", "ContentBase64", "ciphertexts", "artifactRef")
@@ -68,11 +68,19 @@ def main():
         stateproof=strict_load(spath);validate_schema(stateproof,"state-proof.schema.json")
         assert stateproof["receiptHash"]==receipt_hash(receipt)
         assert stateproof["publicValuesSha256"]==hashlib.sha256(public_claim(receipt)).hexdigest()
+        standalone=temp/"standalone-public";standalone.mkdir()
+        for source in (rpath,spath,ppath,binary):shutil.copy2(source,standalone/source.name)
+        assert set(x.name for x in standalone.iterdir())=={"receipt.json","state-proof.json","proof.bin",binary.name}
+        verifier_env={**os.environ,"DOCKER_HOST":"tcp://127.0.0.1:9",
+                      "HTTP_PROXY":"http://127.0.0.1:9","HTTPS_PROXY":"http://127.0.0.1:9",
+                      "ALL_PROXY":"http://127.0.0.1:9","NO_PROXY":""}
         def verify(r=rpath,s=spath,p=ppath,extra=(),success=True,expect=True):
             expectations=["--expect-room",receipt["roomId"],"--expect-transition",receipt["transitionId"]] if expect else []
-            return run([binary,"verify","--receipt",r,"--state-proof",s,"--proof",p,*expectations,*extra],success)
+            return run([binary,"verify","--receipt",r,"--state-proof",s,"--proof",p,*expectations,*extra],success,env=verifier_env,cwd=standalone)
         # A separate process with only PUBLIC documents, no metadata/witness cwd.
-        verify_started=time.monotonic();assert "VERIFIED" in verify();metrics["standaloneVerificationSeconds"]=time.monotonic()-verify_started
+        verify_started=time.monotonic()
+        assert "VERIFIED" in run([standalone/binary.name,"verify","--receipt","receipt.json","--state-proof","state-proof.json","--proof","proof.bin","--expect-room",receipt["roomId"],"--expect-transition",receipt["transitionId"]],env=verifier_env,cwd=standalone)
+        metrics["standaloneVerificationSeconds"]=time.monotonic()-verify_started
         # Class B: tampering public receipts without regenerating proof.
         edits={"roomId":"another-room","transitionId":"another-transition","operator":"private_nn_training","outputStateCommitment":"0"*64,"requestedReveals":["model.evaluation.rmse"],"codeHash":"1"*64,"workflowHash":"2"*64,"transitionCommitment":"3"*64,"outputStateId":"another-state","keyEpoch":"wrong","cryptoContextHash":"4"*64,"requestedRevealsHash":"5"*64,"outputPolicyHash":"6"*64}
         for key,value in edits.items():
@@ -118,7 +126,7 @@ def main():
         for forbidden in (b"local://",b"ciphertexts",b"authorizedReveals",b"backendVersion",b"room-state-v1.key",b"patient_id",b"p1\"",b"p2\"",b"252,",b"438,"):
             assert forbidden not in public
         assert set(p.name for p in directory.iterdir())=={"receipt.json","proof.bin","state-proof.json"}
-        metrics.update(realGroth16=True,independentVerification=True,negativeTestsPassed=True,witnessDeleted=True,noSecretPayloadReads=True,totalSeconds=time.monotonic()-started)
+        metrics.update(realGroth16=True,independentVerification=True,verifierDockerDisabled=True,verifierNetworkProxiesDisabled=True,negativeTestsPassed=True,witnessDeleted=True,noSecretPayloadReads=True,totalSeconds=time.monotonic()-started)
         # Only public metrics and cryptographic identities leave this process.
         print(json.dumps(metrics,sort_keys=True))
 

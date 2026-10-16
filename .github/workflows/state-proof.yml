@@ -31,6 +31,12 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install -r tests/state_proof/requirements.txt
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: m5-contract-rust196-sp169-${{ hashFiles('engines/zk/state-transition-proof/Cargo.lock') }}
       - run: python -m unittest discover -s tests/state_proof -p 'test_*.py' -v
       - name: Pin Rust and test native guest relation with cross-language vectors
         run: |
@@ -50,6 +56,13 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install -r tests/state_proof/requirements.txt
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          # Dependency sources only. Never cache private SP1/runtime temp files.
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: m5-proof-rust196-sp169-${{ hashFiles('engines/zk/state-transition-proof/Cargo.lock') }}
       - name: Record actual runner resources
         run: |
           free -h
@@ -75,6 +88,10 @@ jobs:
           /usr/bin/time -v cargo build --locked --release -p kryptroom-proof
       - name: Execute relation tests in real SP1 guest
         run: python tests/state_proof/run_integration.py --binary engines/zk/state-transition-proof/target/release/kryptroom-proof --output-root "$RUNNER_TEMP/m5-public" --execute-only
+      - name: Pull the SDK's official local CPU Groth16 wrapping image by digest
+        run: |
+          docker pull ghcr.io/succinctlabs/sp1-gnark:v6.1.0@sha256:e1a1cd62838b561ca301f9b2c26475c4a92bfe0e2c916e9bba213062e1548c4d
+          docker image inspect ghcr.io/succinctlabs/sp1-gnark:v6.1.0@sha256:e1a1cd62838b561ca301f9b2c26475c4a92bfe0e2c916e9bba213062e1548c4d --format '{{json .RepoDigests}}'
       - name: Real CPU Groth16 and independent verification with negatives
         run: |
           /usr/bin/time -v python tests/state_proof/run_integration.py --binary engines/zk/state-transition-proof/target/release/kryptroom-proof --output-root "$RUNNER_TEMP/m5-public"

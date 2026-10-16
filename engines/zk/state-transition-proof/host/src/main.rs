@@ -110,6 +110,12 @@ fn main() -> Result<()> {
         let vkey = vk.bytes32();
         ensure!(s.program_v_key == vkey, "program verification key mismatch");
         let proof = SP1ProofWithPublicValues::load(flag(&args, "--proof")?)?;
+        // SDK load also accepts a shorter network transport format. M5 uses
+        // one exact SDK serialization, rejecting truncation and trailing data.
+        ensure!(
+            bincode::serialize(&proof)? == bytes,
+            "noncanonical proof serialization"
+        );
         ensure!(
             matches!(proof.proof, SP1Proof::Groth16(_))
                 && !proof.bytes().is_empty()

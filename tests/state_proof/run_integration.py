@@ -17,7 +17,7 @@ sys.path.insert(0, str(ROOT / "engines/zk"))
 from proof_receipt import *
 
 F = Path(__file__).parent / "fixtures"
-def run(command, success=True, env=None, cwd=None):
+def run(command, success=True, env=None, cwd=None, expected_error=None):
     p = subprocess.run([str(v) for v in command], capture_output=True, text=True, env=env, cwd=cwd)
     # Never print witness or captured guest/prover diagnostics containing witness.
     if (p.returncode == 0) != success:
@@ -26,6 +26,8 @@ def run(command, success=True, env=None, cwd=None):
             if any(x in line.lower() for x in ("error:", "failed", "memory", "killed", "sigkill", "panic")) and not any(x in line for x in forbidden):
                 print(line[:500], file=sys.stderr)
         raise RuntimeError(f"Unexpected status {p.returncode} for {Path(str(command[0])).name} {command[1]}")
+    if expected_error is not None and expected_error not in p.stderr:
+        raise RuntimeError("Negative test failed at an unexpected validation stage")
     return p.stdout
 
 def dump(path,value): path.write_bytes(canonical_json(value))
@@ -55,7 +57,7 @@ def main():
             rr=copy.deepcopy(receipt);rr["orderedParents"][1]["stateCommitment"]=digest(d);rr["orderedParents"][1]["policyHash"]=digest(d["policy"])
             w["dataParentContentBase64"]=base64.b64encode(canonical_json(d)).decode();w["receiptCanonicalBase64"]=base64.b64encode(canonical_json(rr)).decode()
             p=temp/f"witness-{name}.json";dump(p,w)
-            run([binary,"execute","--witness",p],success=False)
+            run([binary,"execute","--witness",p],success=False,expected_error="guest rejected")
             p.unlink(missing_ok=True)
         p=temp/"witness-valid.json";dump(p,witness)
         if args.execute_only:
@@ -74,9 +76,9 @@ def main():
         verifier_env={**os.environ,"DOCKER_HOST":"tcp://127.0.0.1:9",
                       "HTTP_PROXY":"http://127.0.0.1:9","HTTPS_PROXY":"http://127.0.0.1:9",
                       "ALL_PROXY":"http://127.0.0.1:9","NO_PROXY":""}
-        def verify(r=rpath,s=spath,p=ppath,extra=(),success=True,expect=True):
+        def verify(r=rpath,s=spath,p=ppath,extra=(),success=True,expect=True,expected_error=None):
             expectations=["--expect-room",receipt["roomId"],"--expect-transition",receipt["transitionId"]] if expect else []
-            return run([binary,"verify","--receipt",r,"--state-proof",s,"--proof",p,*expectations,*extra],success,env=verifier_env,cwd=standalone)
+            return run([binary,"verify","--receipt",r,"--state-proof",s,"--proof",p,*expectations,*extra],success,env=verifier_env,cwd=standalone,expected_error=expected_error)
         # A separate process with only PUBLIC documents, no metadata/witness cwd.
         verify_started=time.monotonic()
         assert "VERIFIED" in run([standalone/binary.name,"verify","--receipt","receipt.json","--state-proof","state-proof.json","--proof","proof.bin","--expect-room",receipt["roomId"],"--expect-transition",receipt["transitionId"]],env=verifier_env,cwd=standalone)
@@ -93,7 +95,7 @@ def main():
             for field in ("roomId","transitionId","outputStateId","outputStateCommitment","transitionCommitment"):ss[field]=rr[field]
             ss["receiptHash"]=receipt_hash(rr);ss["proofId"]=proof_id(ss["receiptHash"],ss["programVKey"],ss["proofArtifact"]["sha256"])
             ss["proofArtifact"]["uri"]=f'proofs/rooms/{ss["roomId"]}/transitions/{ss["transitionId"]}/{ss["proofId"]}/proof.bin'
-            s=temp/"state-proof-rebound.json";dump(s,ss);verify(r=p,s=s,success=False,expect=False)
+            s=temp/"state-proof-rebound.json";dump(s,ss);verify(r=p,s=s,success=False,expect=False,expected_error="public values mismatch")
         for field,key in (("orderedParents","stateCommitment"),("orderedParents","stateId"),("orderedParents","policyHash"),("orderedInputs","artifactCommitment"),("orderedInputs","artifactId"),("orderedOutputs","artifactCommitment"),("orderedOutputs","artifactId")):
             rr=copy.deepcopy(receipt);rr[field][0][key]="0"*64;p=temp/"receipt-tampered.json";dump(p,rr);verify(r=p,success=False)
         for field in ("orderedParents","orderedInputs"):
@@ -120,7 +122,8 @@ def main():
             ss=copy.deepcopy(stateproof);ss["proofArtifact"]["sha256"]=hashlib.sha256(data).hexdigest();ss["proofArtifact"]["sizeBytes"]=len(data)
             ss["proofId"]=proof_id(ss["receiptHash"],ss["programVKey"],ss["proofArtifact"]["sha256"])
             ss["proofArtifact"]["uri"]=f'proofs/rooms/{ss["roomId"]}/transitions/{ss["transitionId"]}/{ss["proofId"]}/proof.bin'
-            s=temp/"state-proof-altered.json";dump(s,ss);verify(s=s,p=p,success=False)
+            s=temp/"state-proof-altered.json";dump(s,ss)
+            verify(s=s,p=p,success=False,expected_error="encoded Groth16 verification failed" if data==bytes(cryptographic_tamper) else None)
         wrong=temp/"wrong.elf";wrong.write_bytes(b"not the M5 program");verify(extra=["--candidate-elf",wrong],success=False)
         public=rpath.read_bytes()+spath.read_bytes()+public_claim(receipt)
         for forbidden in (b"local://",b"ciphertexts",b"authorizedReveals",b"backendVersion",b"room-state-v1.key",b"patient_id",b"p1\"",b"p2\"",b"252,",b"438,"):

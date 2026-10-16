@@ -7,7 +7,7 @@ All notable project changes are recorded here. The project follows milestone-ori
 ### Added
 
 - M3 persistent cohort analytics contracts, four-operation SPU kernel, centralized scalar reveal service, exact input/transition/output commitment bindings, and S2 persistence using the existing M2.5 encrypted share store.
-- M3 state/policy/privacy/storage tests and a real Linux two-restart CI gate, including an isolated explicitly authorized correctness fixture. Status: implemented, pending cryptographic integration validation.
+- M3 state/policy/privacy/storage tests and a real Linux two-restart CI gate, including an isolated explicitly authorized correctness fixture. Status: M3 verified on the synthetic fixture.
 
 - Initial project documentation and persistent engineering context.
 - Monorepo boundaries for applications, services, nodes, cryptographic engines, workflows, shared packages, chain code, demos, infrastructure, and tests.
@@ -48,6 +48,9 @@ All notable project changes are recorded here. The project follows milestone-ori
 - Enforced default-deny state disclosure, create-exclusive immutable state files, per-node encryption keys, and explicit authorization for every reconstruction.
 
 ### Verified
+
+- M3 Linux CI passed the full M2 -> S1 -> runtime destruction -> CSV removal -> real CHEETAH/FM128 analytics -> S2 -> runtime destruction -> reload -> authorized mean -> denied cross-mean chain. A separate explicitly authorized fixture verified COUNT, SUM, MEAN and CROSS_MEAN. Evidence: https://github.com/e-sall/KryptRoom/actions/runs/38841137327.
+- All 28 existing Node regressions and 17 executable Python M3 contract/privacy/state/storage tests pass. The existing immutability source assertion now accepts both LF and CRLF while preserving its semantic requirement.
 
 - Initial M1 validation passed nine automated tests, including a real two-process cryptographic PSI-cardinality integration test.
 - The cancer-collaboration demo returns cardinality `2` with `matchedIdentifiersRevealed: false`.

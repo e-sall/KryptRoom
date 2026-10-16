@@ -72,7 +72,7 @@ Do not casually reorder this sequence or expand product scope without approval.
 
 ## Current milestone
 
-M3 Persistent Private Cohort Analytics is implemented, pending cryptographic integration validation. It reuses S1's persisted share grids for exactly COUNT, SUM, MEAN and CROSS_MEAN, persists scalar artifacts in S2, and separates computation authorization from scalar reveal authorization. See docs/PRIVATE_ANALYTICS.md for exact bindings, numeric tolerance and acceptance topology.
+M3 Persistent Private Cohort Analytics is verified on the synthetic Linux CHEETAH/FM128 fixture. It reuses S1's persisted share grids for exactly COUNT, SUM, MEAN and CROSS_MEAN, persists scalar artifacts in S2, and separates computation authorization from scalar reveal authorization. See docs/PRIVATE_ANALYTICS.md for exact bindings, numeric tolerance and acceptance evidence.
 
 Milestone 2.5 persists the validated M2 handoff as immutable RoomState S1. Each KryptNode encrypts its local SPU shares at rest with AES-256-GCM; authenticated-data bindings cover the room, state, artifact, party, and crypto-context identifiers. The Linux acceptance test terminated both node containers, loaded S1 in new containers through SecretFlow's native SPU share dump/load boundary, and ran a minimal private aggregate without remounting source CSVs. The verified result is specific to the synthetic fixture and current pinned runtime.
 

@@ -46,7 +46,7 @@
 - [x] Bind exact parent/input descriptors, specification, code/workflow, policy and context into a transition and new immutable S2.
 - [x] Separate computation permission from scalar reveal permission; fail closed on empty cohort and wrong context.
 - [x] Add executable state/privacy/storage tests and real Linux CI chain.
-- [ ] Execute and record the full M2/S1/restart/M3/S2/restart/reveal cryptographic gate.
+- [x] Execute and record the full M2/S1/restart/M3/S2/restart/reveal cryptographic gate.
 
 ## Explicitly deferred
 

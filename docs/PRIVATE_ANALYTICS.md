@@ -1,6 +1,6 @@
 # M3 — Persistent Private Cohort Analytics
 
-Status: implemented, pending cryptographic integration validation.
+Status: **M3 verified** on the synthetic two-party Linux CHEETAH/FM128 fixture. [Recorded integration run](https://github.com/e-sall/KryptRoom/actions/runs/38841137327).
 
 M3 consumes precisely the existing S1 `match-mask` grid `[R,R]` and `lab-a-features` / `lab-b-features` grids `[R,R,1]`. The current join exposes one feature per lab; selectors use explicit zero-based columns and neutral metric IDs, with no inferred schema aliases. M1/M2 cryptographic circuits and the pinned SecretFlow 1.14.0b0 CHEETAH/FM128 configuration are unchanged.
 
@@ -54,6 +54,8 @@ sudo -E $(which python) tests/private_analytics/run_integration.py
 The final command requires Linux Docker. It uses isolated temporary synthetic sources, creates S1 through M2/M2.5, destroys both containers, removes the CSVs, creates S2 from encrypted shares only, destroys both containers again, reloads S2 and reveals only the authorized mean. It attempts a denied CROSS_MEAN request and checks S1 byte-for-byte, identical public state documents, distinct local keys, exactly one local envelope per logical artifact per node, no source mounts, and no identifier output.
 
 A separate synthetic correctness scenario explicitly authorizes all six scalars before creating S1; the expected values exist only in test assertions. This checks COUNT, both SUMs, both MEANs and cross-party CROSS_MEAN with actual SPU arithmetic. It does not broaden the acceptance fixture's policy.
+
+The recorded CI run passed both scenarios. The acceptance chain created S1, destroyed both runtimes, removed both CSVs, loaded S1, computed and persisted S2, destroyed both runtimes again, reloaded S2, returned the authorized mean within tolerance, and denied the unauthorized cross-party mean before reconstruction. The isolated correctness scenario checked count 2, sums 50 and 6, means 25 and 3, and cross-party mean 80, all within the shared 0.001 absolute tolerance. These values are test evidence only; none is embedded as a runtime answer or public state value.
 
 ## Limits
 

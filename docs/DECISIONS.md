@@ -8,7 +8,7 @@
 
 **Consequences:** Previously created states do not gain permission retroactively. Only new explicitly opted-in S1 fixtures can execute M3. The absolute fixed-point fixture tolerance is 0.001; hashes remain unsigned and fresh ciphertexts have different digests. The architecture still has no production KMS, key rotation, context migration or malicious-host protection. See [full design](PRIVATE_ANALYTICS.md).
 
-**Status:** Implemented, pending cryptographic integration validation.
+**Status:** Accepted and runtime-verified on the synthetic two-restart Linux fixture; [CI evidence](https://github.com/e-sall/KryptRoom/actions/runs/38841137327).
 
 ## ADR-001 — SecretFlow PSI for initial exact matching
 

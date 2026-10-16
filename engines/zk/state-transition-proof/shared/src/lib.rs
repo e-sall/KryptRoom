@@ -470,6 +470,22 @@ pub fn verify_relation(w: &Witness) -> Result<Vec<u8>> {
     )?;
     let ctx = expected_context();
     need(digest(&ctx)? == r.crypto_context_hash)?;
+    // Check model-parent metadata identity/lineage without reserializing its
+    // historical floating-point training payload or proving training execution.
+    let model_request = &m["transition"]["bindings"]["request"];
+    need(
+        model_request["version"] == "1"
+            && model_request["operator"] == "private_nn_training"
+            && model_request["parentStateId"] == "S1"
+            && model_request["parentStateCommitment"] == r.ordered_parents[1].state_commitment
+            && model_request["outputStateId"] == "S3_model"
+            && model_request["modelSpec"] == model_spec()
+            && model_request["modelSpecHash"] == digest(&model_spec())?
+            && model_request["cryptoContextHash"] == r.crypto_context_hash
+            && model_request["codeHash"] == r.code_hash
+            && model_request["workflowHash"] == r.workflow_hash
+            && model_request["outputPolicyHash"] == digest(&m["policy"])?,
+    )?;
     for (s, p) in [&m, &d].iter().zip(&r.ordered_parents) {
         need(digest(&s["policy"])? == p.policy_hash)?;
         need(array(&s["policy"], "allowedOperators")?.contains(&json!(OP)))?;
@@ -754,6 +770,43 @@ mod tests {
     fn duplicate_keys_rejected() {
         assert!(parse_metadata(br#"{"a":1,"a":2}"#).is_err());
         assert!(parse_metadata(br#"{"x":{"a":1,"a":2}}"#).is_err());
+    }
+    #[test]
+    fn model_parent_metadata_identity_rejected() {
+        for (path, value) in [
+            (
+                "/transition/bindings/request/modelSpec/layers/1/type",
+                json!("relu"),
+            ),
+            (
+                "/transition/bindings/request/parentStateCommitment",
+                json!("0".repeat(64)),
+            ),
+            (
+                "/transition/bindings/request/codeHash",
+                json!("1".repeat(64)),
+            ),
+            (
+                "/transition/bindings/request/workflowHash",
+                json!("2".repeat(64)),
+            ),
+        ] {
+            let mut w = fixture();
+            let mut model =
+                parse_metadata(&STANDARD.decode(&w.model_parent_content_base64).unwrap()).unwrap();
+            *model.pointer_mut(path).unwrap() = value;
+            let bytes = serde_json::to_vec(&model).unwrap();
+            w.model_parent_content_base64 = STANDARD.encode(&bytes);
+            let mut r: Value =
+                serde_json::from_slice(&STANDARD.decode(&w.receipt_canonical_base64).unwrap())
+                    .unwrap();
+            r["orderedParents"][0]["stateCommitment"] = json!(hash(&bytes));
+            w.receipt_canonical_base64 = STANDARD.encode(canonical(&r).unwrap());
+            assert!(
+                verify_relation(&w).is_err(),
+                "accepted inconsistent model metadata {path}"
+            );
+        }
     }
     #[test]
     fn invalid_relation_matrix() {

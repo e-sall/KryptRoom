@@ -25,6 +25,10 @@ circuit version **v6.1.0**. Host Rust is 1.96.0; the official pinned CLI install
 There is no mock/network prover fallback. Setup may download public dependencies
 and circuit material; the metadata witness never goes to a prover service.
 Resource feasibility remains subject to the actual Linux CI gate.
+For the observed hosted runner (15 GiB RAM, 3 GiB swap, four CPUs), CI limits
+large SP1 proof stages to one worker and small buffers. The pinned SDK defaults
+to eight recursive prover workers without sizing them to RAM. This changes
+scheduling and memory usage, not the statement, circuit or verification checks.
 
 The SDK's default final CPU wrapper uses the official local Gnark container for
 circuit v6.1.0. M5 additionally pins it to

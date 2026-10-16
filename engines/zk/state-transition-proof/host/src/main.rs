@@ -141,8 +141,8 @@ fn main() -> Result<()> {
         );
         return Ok(());
     }
-    let client = ProverClient::builder().cpu().build();
     let setup = Instant::now();
+    let client = ProverClient::builder().cpu().build();
     let pk = client
         .setup(ELF.into())
         .map_err(|e| anyhow::anyhow!("setup failed: {e}"))?;
@@ -176,6 +176,7 @@ fn main() -> Result<()> {
         .groth16()
         .run()
         .map_err(|e| anyhow::anyhow!("CPU Groth16 proving failed: {e}"))?;
+    let seconds = prove_start.elapsed().as_secs_f64();
     ensure!(
         matches!(proof.proof, SP1Proof::Groth16(_)) && !proof.bytes().is_empty(),
         "Groth16 required"
@@ -184,7 +185,6 @@ fn main() -> Result<()> {
     client
         .verify(&proof, vk, None)
         .context("local verification failed")?;
-    let seconds = prove_start.elapsed().as_secs_f64();
     let bytes = bincode::serialize(&proof)?;
     let ph = hash(&bytes);
     let rh = r.hash().map_err(anyhow::Error::msg)?;

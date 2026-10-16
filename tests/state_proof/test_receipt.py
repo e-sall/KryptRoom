@@ -87,6 +87,7 @@ class ReceiptTests(unittest.TestCase):
             self.assertNotIn(bad, source)
         self.assertIn(".cpu().build()",source)
         self.assertIn("fs::remove_file(path)",source)
+        self.assertRegex(source, r'read_document\(\s*p,\s*"json",\s*2_000_000,?\s*\)')
 
     def test_public_documents_exclude_private_metadata(self):
         r = strict_load(FIXTURES / "receipt.json")

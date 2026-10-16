@@ -57,6 +57,11 @@ jobs:
           nproc
       - name: Install exact official SP1 v6.9.0 stack
         run: bash tests/state_proof/setup_sp1.sh
+      - name: Install SDK protobuf build prerequisite
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y protobuf-compiler
+          protoc --version
       - name: Build guest and host
         run: |
           started=$SECONDS

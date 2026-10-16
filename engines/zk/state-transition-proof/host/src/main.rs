@@ -11,7 +11,22 @@ use std::{collections::BTreeMap, fs, io::Write, path::Path, time::Instant};
 // Trusted identity is embedded at build time, never taken from StateProof/URI.
 const ELF: &[u8] = include_bytes!(env!("KRYPTROOM_M5_ELF"));
 fn read_json<T: serde::de::DeserializeOwned>(p: &str) -> Result<T> {
-    Ok(serde_json::from_slice(&fs::read(p)?)?)
+    Ok(serde_json::from_slice(&read_document(
+        p, "json", 2_000_000,
+    )?)?)
+}
+fn read_document(p: &str, extension: &str, limit: u64) -> Result<Vec<u8>> {
+    let path = Path::new(p);
+    ensure!(
+        path.extension().and_then(|s| s.to_str()) == Some(extension),
+        "unsupported document path"
+    );
+    let metadata = fs::symlink_metadata(path)?;
+    ensure!(
+        metadata.is_file() && !metadata.file_type().is_symlink() && metadata.len() <= limit,
+        "invalid document file"
+    );
+    Ok(fs::read(path)?)
 }
 fn write_new(p: &Path, b: &[u8]) -> Result<()> {
     let mut f = fs::OpenOptions::new()
@@ -55,7 +70,10 @@ fn main() -> Result<()> {
         "SP1_PROVER must be cpu"
     );
     if let Some(p) = args.get("--candidate-elf") {
-        ensure!(fs::read(p)? == ELF, "unexpected guest ELF");
+        ensure!(
+            read_document(p, "elf", 20_000_000)? == ELF,
+            "unexpected guest ELF"
+        );
     }
     let started = Instant::now();
     let client = ProverClient::builder().cpu().build();
@@ -81,7 +99,7 @@ fn main() -> Result<()> {
             s.elf_sha256 == hash(ELF) && s.program_v_key == vkey,
             "program identity mismatch"
         );
-        let bytes = fs::read(flag(&args, "--proof")?)?;
+        let bytes = read_document(flag(&args, "--proof")?, "bin", 2_000_000)?;
         ensure!(
             bytes.len() as u64 == s.proof_artifact.size_bytes
                 && hash(&bytes) == s.proof_artifact.sha256,

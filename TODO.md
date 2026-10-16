@@ -48,12 +48,21 @@
 - [x] Add executable state/privacy/storage tests and real Linux CI chain.
 - [x] Execute and record the full M2/S1/restart/M3/S2/restart/reveal cryptographic gate.
 
+## Milestone 4: persistent private neural network
+
+- [x] Implement the fixed Dense 1→2→1 square-activation direct-JAX training kernel and deterministic initializer.
+- [x] Bind S1 training inputs into an immutable S3 model transition with four encrypted local parameter-share artifacts.
+- [x] Implement exact `[S3_model, S1]` evaluation into immutable secret MSE state S4.
+- [x] Reuse StatePolicy and RevealService for fail-closed MSE-only disclosure.
+- [x] Add M4 contract, privacy, persistence, restart, and regression test coverage.
+- [x] Execute and record the authoritative real CHEETAH/FM128 S1→S3→restart→S4→restart→reveal gate.
+
 ## Explicitly deferred
 
 - [ ] Choose project licensing terms before encouraging substantial third-party code contributions.
 - [ ] Confirm a private vulnerability-reporting channel in repository settings.
 
-- Analytics beyond COUNT/SUM/MEAN/CROSS_MEAN and neural-network training.
+- Analytics beyond COUNT/SUM/MEAN/CROSS_MEAN and ML beyond the fixed M4 network.
 - FHE analytics.
 - ZK proofs, post-quantum identity, and RunReceipts.
 - Blockchain anchoring.

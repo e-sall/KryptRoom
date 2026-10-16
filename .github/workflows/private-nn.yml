@@ -1,0 +1,51 @@
+name: Persistent Private Neural Network
+
+on:
+  pull_request:
+    branches: [dev, main]
+  push:
+    branches: [dev, main]
+
+concurrency:
+  group: private-nn-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  contract-and-privacy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      - run: pip install -r tests/private_nn/requirements.txt
+      - run: python -m unittest discover -s tests/private_nn -p 'test_*.py' -v
+
+  cryptographic-integration:
+    name: M4 real persistent CHEETAH FM128 NN
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - run: pip install -r tests/private_nn/requirements.txt
+      - name: Pull the verified immutable SecretFlow image
+        run: docker compose -f compose.persistent-state.yml pull
+      - name: Verify pinned image JAX and autodiff support
+        run: >-
+          docker run --rm --entrypoint python
+          secretflow/secretflow-ubuntu:1.14.0b0@sha256:bdd43242c28466bdc0afddb99d7b50237a94748b5ca7467f8aea73667a38383b
+          -c "import jax; assert float(jax.grad(lambda x: x*x)(2.0)) == 4.0; print('JAX', jax.__version__, 'autodiff-ready')"
+      - name: M2 to S1 to private NN S3 to restart to evaluation S4 to controlled reveal
+        run: sudo -E $(which python) tests/private_nn/run_integration.py

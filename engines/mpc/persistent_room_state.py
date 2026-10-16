@@ -105,19 +105,27 @@ def load_state_job(path: Path, private_join_job: dict[str, Any]) -> dict[str, An
         "futureIdentifierDisclosure": {"requiresExplicitOptIn": True},
         "authorizedReveals": expected_reveals,
     }
-    # Explicit M3 opt-in at S1 creation; the legacy M2.5 policy remains exact.
+    # Explicit M3/M4 opt-in at S1 creation; the legacy M2.5 policy remains exact.
     if "allowedOperators" in policy:
-        expected_policy["allowedOperators"] = ["private_analytics"]
+        operators = policy["allowedOperators"]
+        if operators == ["private_analytics"]:
+            expected_policy["allowedOperators"] = operators
+            reveal_pattern = r"analytics\.(count|sum|mean|cross_mean)\.[A-Za-z0-9][A-Za-z0-9._-]{0,127}"
+        elif operators == ["private_analytics", "private_nn_training", "private_model_evaluation"]:
+            expected_policy["allowedOperators"] = operators
+            reveal_pattern = r"(?:analytics\.(count|sum|mean|cross_mean)\.[A-Za-z0-9][A-Za-z0-9._-]{0,127}|model\.evaluation\.mse)"
+        else:
+            raise ValueError("Invalid explicit private-compute operator authorization")
         expected_policy["allowedInputArtifactIds"] = list(ARTIFACT_IDS)
-        analytics_reveals = policy.get("authorizedReveals", [])[len(expected_reveals):]
-        if len(analytics_reveals) > 16 or any(
+        private_reveals = policy.get("authorizedReveals", [])[len(expected_reveals):]
+        if len(private_reveals) > 16 or any(
             set(entry) != {"name", "recipients"}
-            or re.fullmatch(r"analytics\.(count|sum|mean|cross_mean)\.[A-Za-z0-9][A-Za-z0-9._-]{0,127}", entry.get("name", "")) is None
+            or re.fullmatch(reveal_pattern, entry.get("name", "")) is None
             or entry.get("recipients") != list(PARTIES)
-            for entry in analytics_reveals
+            for entry in private_reveals
         ):
-            raise ValueError("Invalid explicit analytics scalar authorization")
-        expected_policy["authorizedReveals"] = [*expected_reveals, *analytics_reveals]
+            raise ValueError("Invalid explicit private scalar authorization")
+        expected_policy["authorizedReveals"] = [*expected_reveals, *private_reveals]
     if policy != expected_policy:
         raise ValueError("Persistent-state disclosure policy is not approved")
 

@@ -25,7 +25,7 @@ M1, M2, and M2.5 are runtime-verified on synthetic fixtures. The Control Plane, 
 - Packaging and CI: Docker, Docker Compose, and GitHub Actions.
 - Current PSI: OpenMined PSI v2.0.6, exact ECDH cardinality-only mode. ADR-006 supersedes the original SecretFlow RR22 plan because that interface reveals identifiers to its receiver.
 - Current MPC: SecretFlow SPU with JAX; CHEETAH/FM128, two parties, honest-but-curious. CHEETAH avoids SEMI2K's trusted-first-party default.
-- Future private ML: a small JAX/Flax neural network on SPU, with features, labels, gradients, weights, and loss private by default. Not implemented.
+- Current M4: a fixed direct-JAX Dense 1→2→1 square-activation network on SPU, with features, labels, activations, gradients, weights, predictions, and loss private by default. Its authoritative real CHEETAH/FM128 persistence/restart chain is verified on the bounded synthetic fixture.
 - Future FHE: OpenFHE Python bindings where practical; BFV/BGV for exact arithmetic and CKKS for approximate vector arithmetic. Not implemented.
 - Future ZK: SP1 zkVM for realistic manifest, signature, commitment, policy, and output-authorization statements—not a false claim of proving full MPC training. Not implemented.
 - Post-quantum target: OpenSSL 3.5 or newer, ML-KEM, ML-DSA, and hybrid X25519 + ML-KEM-768 key establishment.
@@ -72,9 +72,11 @@ Do not casually reorder this sequence or expand product scope without approval.
 
 ## Current milestone
 
+M4 Persistent Private Neural Network is verified on the bounded synthetic Linux CHEETAH/FM128 fixture. It consumes S1 directly, persists exactly four final secret model tensors as S3, reloads S3 with S1 for exact multi-parent private evaluation, and persists one secret MSE scalar as S4. See docs/PRIVATE_NN.md. This does not make KryptRoom a general ML platform.
+
 M3 Persistent Private Cohort Analytics is verified on the synthetic Linux CHEETAH/FM128 fixture. It reuses S1's persisted share grids for exactly COUNT, SUM, MEAN and CROSS_MEAN, persists scalar artifacts in S2, and separates computation authorization from scalar reveal authorization. See docs/PRIVATE_ANALYTICS.md for exact bindings, numeric tolerance and acceptance evidence.
 
 Milestone 2.5 persists the validated M2 handoff as immutable RoomState S1. Each KryptNode encrypts its local SPU shares at rest with AES-256-GCM; authenticated-data bindings cover the room, state, artifact, party, and crypto-context identifiers. The Linux acceptance test terminated both node containers, loaded S1 in new containers through SecretFlow's native SPU share dump/load boundary, and ran a minimal private aggregate without remounting source CSVs. The verified result is specific to the synthetic fixture and current pinned runtime.
 
-The disclosure default remains deny. Cardinality may be released to Lab A, Lab B, and the UI. The synthetic M2.5 aggregate and explicitly opted-in M3 scalars are authorized only to Lab A and Lab B. Matched identifiers and plaintext joined rows remain forbidden, and any future identifier disclosure requires a separate explicit opt-in policy. ML, FHE, ZK, blockchain, frontend, branching/merge behavior, and dynamic membership remain out of scope.
+The disclosure default remains deny. Cardinality may be released to Lab A, Lab B, and the UI. The synthetic M2.5 aggregate, explicitly opted-in M3 scalars, and M4 evaluation MSE are authorized only to the exact named participants. Matched identifiers, plaintext joined rows, model parameters, predictions, gradients, and activations remain forbidden. ML beyond the fixed M4 network, FHE, ZK, blockchain, frontend, branching/merge behavior, and dynamic membership remain out of scope.
 

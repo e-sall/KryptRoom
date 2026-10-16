@@ -6,6 +6,9 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Added
 
+- M4 fixed direct-JAX Dense 1→2→1 square-activation training over persisted S1, encrypted final model persistence in S3, exact `[S3_model, S1]` private evaluation into secret MSE state S4, and MSE-only policy-controlled disclosure. Status: verified on the bounded synthetic fixture.
+- M4 canonical model/training/evaluation contracts, deterministic SHA-256 initializer, two transition commitment bindings, dedicated synthetic fixture, privacy/state/storage tests, and authoritative Linux CI chain.
+
 - M3 persistent cohort analytics contracts, four-operation SPU kernel, centralized scalar reveal service, exact input/transition/output commitment bindings, and S2 persistence using the existing M2.5 encrypted share store.
 - M3 state/policy/privacy/storage tests and a real Linux two-restart CI gate, including an isolated explicitly authorized correctness fixture. Status: M3 verified on the synthetic fixture.
 
@@ -48,6 +51,9 @@ All notable project changes are recorded here. The project follows milestone-ori
 - Enforced default-deny state disclosure, create-exclusive immutable state files, per-node encryption keys, and explicit authorization for every reconstruction.
 
 ### Verified
+
+- M4 Linux CI passed real M2/S1 creation, source deletion, JAX 0.4.26 autodiff training under CHEETAH/FM128, encrypted S3 persistence/restart, exact S3+S1 evaluation into encrypted S4, another restart, two pre-load disclosure denials, and authorized MSE below 0.02. S1/S3 stayed immutable and no plaintext join was materialized. Evidence: https://github.com/e-sall/KryptRoom/actions/runs/38846097654.
+- The authoritative M4 scenario completed in 35.091 seconds; all M1/M2/M2.5/M3 regressions on the same head passed.
 
 - M3 Linux CI passed the full M2 -> S1 -> runtime destruction -> CSV removal -> real CHEETAH/FM128 analytics -> S2 -> runtime destruction -> reload -> authorized mean -> denied cross-mean chain. A separate explicitly authorized fixture verified COUNT, SUM, MEAN and CROSS_MEAN. Evidence: https://github.com/e-sall/KryptRoom/actions/runs/38841137327.
 - All 28 existing Node regressions and 17 executable Python M3 contract/privacy/state/storage tests pass. The existing immutability source assertion now accepts both LF and CRLF while preserving its semantic requirement.

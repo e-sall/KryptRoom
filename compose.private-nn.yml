@@ -1,0 +1,34 @@
+name: kryptroom-private-nn
+
+x-private-nn: &private-nn
+  image: secretflow/secretflow-ubuntu:1.14.0b0@sha256:bdd43242c28466bdc0afddb99d7b50237a94748b5ca7467f8aea73667a38383b
+  entrypoint: []
+  init: true
+  shm_size: 2gb
+  networks: [private-compute]
+
+services:
+  lab-a:
+    <<: *private-nn
+    hostname: lab-a
+    volumes:
+      - ./engines/mpc:/app:ro
+      - ./.github/workflows/private-nn.yml:/config/workflow.yml:ro
+      - ${KRYPTROOM_NN_MANIFEST:?public M4 manifest required}:/config/manifest.json:ro
+      - ${KRYPTROOM_NN_REQUEST:?bound M4 request required}:/config/request.json:ro
+      - ${KRYPTROOM_LAB_A_STATE_DIR:?node A state required}:/state
+    command: [/bin/bash, -lc, "exec python /app/private_nn.py --phase ${KRYPTROOM_NN_PHASE:-train} --party lab-a --state-root /state --manifest /config/manifest.json --request /config/request.json --workflow /config/workflow.yml ${KRYPTROOM_REVEAL_ARGUMENT:-}"]
+  lab-b:
+    <<: *private-nn
+    hostname: lab-b
+    volumes:
+      - ./engines/mpc:/app:ro
+      - ./.github/workflows/private-nn.yml:/config/workflow.yml:ro
+      - ${KRYPTROOM_NN_MANIFEST:?public M4 manifest required}:/config/manifest.json:ro
+      - ${KRYPTROOM_NN_REQUEST:?bound M4 request required}:/config/request.json:ro
+      - ${KRYPTROOM_LAB_B_STATE_DIR:?node B state required}:/state
+    command: [/bin/bash, -lc, "exec python /app/private_nn.py --phase ${KRYPTROOM_NN_PHASE:-train} --party lab-b --state-root /state --manifest /config/manifest.json --request /config/request.json --workflow /config/workflow.yml ${KRYPTROOM_REVEAL_ARGUMENT:-}"]
+networks:
+  private-compute:
+    driver: bridge
+    internal: true

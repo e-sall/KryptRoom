@@ -64,6 +64,9 @@
 - [ ] Pass real CPU Groth16 generation and independent verification in Linux CI.
 
 Status: implemented / pending real SP1 Groth16 validation.
+Two hosted attempts ended with runner shutdown under measured memory/swap
+pressure. Provide isolated runner capacity and rerun the unchanged real gate;
+see [M5 validation](docs/M5_VALIDATION.md). Do not mark complete from guest tests alone.
 
 ## Explicitly deferred
 
@@ -72,7 +75,7 @@ Status: implemented / pending real SP1 Groth16 validation.
 
 - Analytics beyond COUNT/SUM/MEAN/CROSS_MEAN and ML beyond the fixed M4 network.
 - FHE analytics.
-- ZK proofs, post-quantum identity, and RunReceipts.
+- Proofs beyond M5's bounded metadata relation, post-quantum identity, and RunReceipts.
 - Blockchain anchoring.
 - Web frontend.
 - RoomState branch UI, merge implementation, and dynamic membership.

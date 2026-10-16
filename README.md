@@ -23,6 +23,9 @@ These results establish behavior for the tested fixtures and stated threat model
 ## Hero use case: cancer-research collaboration
 
 M5 committed state-transition proof is **implemented / pending real SP1 Groth16 validation**.
+Two hosted CPU attempts stopped with runner shutdown (exit 143) under measured
+memory/swap pressure; no final proof or standalone-verification success is claimed.
+See the [M5 validation report](docs/M5_VALIDATION.md) for evidence and runner requirements.
 It covers lineage, artifact, authorization and commitment consistency for one M4
 evaluation. The M5 proof does not prove correctness of the underlying
 SecretFlow/CHEETAH computation or the numerical evaluation result. It does not
@@ -37,7 +40,7 @@ Private Matching → Private Join → Persistent Encrypted State → Private Ana
 M1 verified        M2 verified    M2.5 verified                  M3 verified        M4 verified  Future  Future
 ```
 
-The M2.5 aggregate is a narrow continuity test, not the general M3 analytics API. M4 is runtime-verified only for one deterministic bounded synthetic training/evaluation fixture. No real patient data, biomedical performance claim, FHE computation, ZK proof, or blockchain integration is included.
+The M2.5 aggregate is a narrow continuity test, not the general M3 analytics API. M4 is runtime-verified only for one deterministic bounded synthetic training/evaluation fixture. No real patient data, biomedical performance claim, FHE computation, or blockchain integration is included. M5's bounded metadata-proof implementation remains subject to its real Groth16 validation gate.
 
 ## Architecture
 

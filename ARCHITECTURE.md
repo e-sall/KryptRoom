@@ -81,5 +81,5 @@ lineage, authorization and commitments. Status: implemented / pending real SP1
 Groth16 validation. Full policy/context/holder metadata stays in the private witness.
 S4 is unchanged. MPC arithmetic/execution is not proved. See docs/STATE_PROOF.md.
 
-The current milestone does not implement general-purpose private ML, private inference APIs, model export, optimizer checkpoints, ML beyond the fixed M4 network, FHE, ZK, blockchain, a frontend, branch/merge operations, dynamic membership, post-quantum identity, real medical data, production key management, or a production Control Plane.
+The current milestone does not implement general-purpose private ML, private inference APIs, model export, optimizer checkpoints, ML beyond the fixed M4 network, FHE, proofs beyond M5's bounded metadata relation, blockchain, a frontend, branch/merge operations, dynamic membership, post-quantum identity, real medical data, production key management, or a production Control Plane.
 

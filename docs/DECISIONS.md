@@ -8,9 +8,18 @@ content as exact Python bytes; recompute only float-free evaluation semantics.
 Keep full policy/context/holder metadata private; expose a domain-separated
 64-byte public claim. External StateProof avoids circular S4 commitments.
 Derive verifier identity from its embedded ELF. Metadata fixtures use synthetic
-ciphertext descriptors; M4's independent regression proves actual MPC execution.
+ciphertext descriptors; M4's independent regression tests actual MPC execution.
 Do not claim computation correctness or participant approval. Signatures remain
 deferred to M5.1. Status and limits: STATE_PROOF.md.
+
+**Validation status:** Implemented, not Groth16-validated. Two hosted attempts
+passed native contracts and real guest tests, then received runner shutdown
+signal 143 under measured memory/swap pressure. OOM is not confirmed. Keep the
+real CPU proof/standalone-verification gate unchanged; do not substitute mock,
+network proving, execution-only success or weaker claims. Official SP1 trace
+memory controls are allowed scheduling options, not weakened verification.
+Provide an isolated pre-provisioned Linux runner through `KRYPTROOM_M5_RUNNER`
+if needed; no capacity is provisioned automatically. See [measurements](M5_VALIDATION.md).
 
 ## ADR-011 — Persistent private NN model and exact multi-parent evaluation
 

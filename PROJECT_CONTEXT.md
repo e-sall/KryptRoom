@@ -73,6 +73,9 @@ Do not casually reorder this sequence or expand product scope without approval.
 ## Current milestone
 
 M5 committed state-transition proof is implemented / pending real SP1 Groth16 validation.
+Real guest tests pass, but two hosted proof-stage attempts stopped with runner
+shutdown under measured memory/swap pressure. No final proof or independent
+verification success is claimed; see `docs/M5_VALIDATION.md`.
 Its statement covers metadata consistency for one M4 evaluation, not MPC execution,
 numeric MSE or participant signatures. StateProof is external to S4. See docs/STATE_PROOF.md.
 
@@ -82,5 +85,5 @@ M3 Persistent Private Cohort Analytics is verified on the synthetic Linux CHEETA
 
 Milestone 2.5 persists the validated M2 handoff as immutable RoomState S1. Each KryptNode encrypts its local SPU shares at rest with AES-256-GCM; authenticated-data bindings cover the room, state, artifact, party, and crypto-context identifiers. The Linux acceptance test terminated both node containers, loaded S1 in new containers through SecretFlow's native SPU share dump/load boundary, and ran a minimal private aggregate without remounting source CSVs. The verified result is specific to the synthetic fixture and current pinned runtime.
 
-The disclosure default remains deny. Cardinality may be released to Lab A, Lab B, and the UI. The synthetic M2.5 aggregate, explicitly opted-in M3 scalars, and M4 evaluation MSE are authorized only to the exact named participants. Matched identifiers, plaintext joined rows, model parameters, predictions, gradients, and activations remain forbidden. ML beyond the fixed M4 network, FHE, ZK, blockchain, frontend, branching/merge behavior, and dynamic membership remain out of scope.
+The disclosure default remains deny. Cardinality may be released to Lab A, Lab B, and the UI. The synthetic M2.5 aggregate, explicitly opted-in M3 scalars, and M4 evaluation MSE are authorized only to the exact named participants. Matched identifiers, plaintext joined rows, model parameters, predictions, gradients, and activations remain forbidden. ML beyond the fixed M4 network, FHE, proofs beyond M5's bounded metadata relation, blockchain, frontend, branching/merge behavior, and dynamic membership remain out of scope.
 

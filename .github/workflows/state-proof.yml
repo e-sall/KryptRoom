@@ -85,6 +85,8 @@ jobs:
           cd ..
           export KRYPTROOM_M5_ELF="$PWD/elf/kryptroom-m5-evaluation"
           echo "KRYPTROOM_M5_ELF=$KRYPTROOM_M5_ELF" >> "$GITHUB_ENV"
+          sha256sum "$KRYPTROOM_M5_ELF"
+          cargo prove vkey --elf "$KRYPTROOM_M5_ELF"
           /usr/bin/time -v cargo build --locked --release -p kryptroom-proof
       - name: Execute relation tests in real SP1 guest
         run: python tests/state_proof/run_integration.py --binary engines/zk/state-transition-proof/target/release/kryptroom-proof --output-root "$RUNNER_TEMP/m5-public" --execute-only
@@ -94,6 +96,16 @@ jobs:
           docker image inspect ghcr.io/succinctlabs/sp1-gnark:v6.1.0@sha256:e1a1cd62838b561ca301f9b2c26475c4a92bfe0e2c916e9bba213062e1548c4d --format '{{json .RepoDigests}}'
       - name: Real CPU Groth16 and independent verification with negatives
         run: |
+          (
+            while true; do
+              date -u +%Y-%m-%dT%H:%M:%SZ
+              awk '/MemAvailable:|SwapFree:/ {print}' /proc/meminfo
+              df -k --output=avail . | tail -1
+              sleep 30
+            done
+          ) &
+          m5_monitor_pid=$!
+          trap 'kill "$m5_monitor_pid" 2>/dev/null || true; wait "$m5_monitor_pid" 2>/dev/null || true' EXIT
           /usr/bin/time -v python tests/state_proof/run_integration.py --binary engines/zk/state-transition-proof/target/release/kryptroom-proof --output-root "$RUNNER_TEMP/m5-public"
           free -h
           df -h

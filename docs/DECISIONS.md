@@ -8,7 +8,7 @@
 
 **Consequences:** S2 is not a parent. S1 data is not copied into S3. Legacy and M3-only S1 states receive no M4 permission. The model, optimizer, fixture, normalization, and MSE bound are fixed; this is not general private ML or a biomedical claim. Existing semi-honest/trusted-host/key-management limitations remain.
 
-**Status:** Accepted and implemented; pending the authoritative real CHEETAH/FM128 persistence/restart integration gate. See [M4 design](PRIVATE_NN.md).
+**Status:** Accepted and runtime-verified on the bounded synthetic Linux fixture; [CI evidence](https://github.com/e-sall/KryptRoom/actions/runs/38846097654). See [M4 design](PRIVATE_NN.md).
 
 ## ADR-010 — Persistent private cohort analytics consumes S1 and produces S2
 

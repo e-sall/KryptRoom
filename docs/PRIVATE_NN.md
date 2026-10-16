@@ -1,6 +1,6 @@
 # M4 — Persistent Private Neural Network
 
-Status: **implemented, pending real CHEETAH/FM128 validation**.
+Status: **M4 verified** on the bounded synthetic Linux fixture. The [authoritative CHEETAH/FM128 run](https://github.com/e-sall/KryptRoom/actions/runs/38846097654) completed the full persistence/restart chain in 35.091 seconds and confirmed JAX 0.4.26 autodiff in the immutable SecretFlow image.
 
 M4 is a bounded persistent-state proof, not a general private-ML platform. It trains from the existing S1 fixed join grid, persists only the final secret model as S3, destroys the runtime, reloads S3 together with S1, evaluates privately, persists one secret MSE scalar as S4, destroys the runtime again, and permits only the commitment-bound `model.evaluation.mse` disclosure through the existing RevealService.
 
@@ -32,7 +32,7 @@ Legacy and M3-only S1 policies gain no permissions. A newly created M4 S1 explic
 
 ## Acceptance fixture and boundary
 
-The dedicated fixture has eight rows per party and six matches. The authoritative Linux gate must execute real M2 and M2.5, delete the CSVs, run direct JAX autodiff training under the pinned SecretFlow 1.14.0b0 CHEETAH/FM128 image, persist/reload S3, evaluate from reloaded S3 plus S1, persist/reload S4, reject model/unknown metric disclosure before load or reconstruction, and verify the authorized MSE is below 0.02. The exact scalar is participant-authorized and must not be copied into public CI logs.
+The dedicated fixture has eight rows per party and six matches. The authoritative Linux gate executed real M2 and M2.5, deleted the CSVs, ran direct JAX autodiff training under the pinned SecretFlow 1.14.0b0 CHEETAH/FM128 image, persisted/reloaded S3, evaluated from reloaded S3 plus S1, persisted/reloaded S4, rejected model/unknown metric disclosure before load or reconstruction, and verified the authorized MSE was below 0.02. The exact scalar is participant-authorized and is intentionally not copied into public CI logs.
 
 ## Limitations
 

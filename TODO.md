@@ -55,7 +55,7 @@
 - [x] Implement exact `[S3_model, S1]` evaluation into immutable secret MSE state S4.
 - [x] Reuse StatePolicy and RevealService for fail-closed MSE-only disclosure.
 - [x] Add M4 contract, privacy, persistence, restart, and regression test coverage.
-- [ ] Execute and record the authoritative real CHEETAH/FM128 S1→S3→restart→S4→restart→reveal gate.
+- [x] Execute and record the authoritative real CHEETAH/FM128 S1→S3→restart→S4→restart→reveal gate.
 
 ## Explicitly deferred
 

@@ -68,7 +68,7 @@ M2 uses SecretFlow SPU CHEETAH with FM128. CHEETAH is selected over the initial 
 
 M3 is verified on the synthetic Linux CHEETAH/FM128 fixture. It inherits the same two-party semi-honest model. Analytics operation/input authorization is separate from reveal authorization; wrong contexts and zero-cardinality means fail before computation. Only public ciphertext descriptors cross the metadata boundary. See [M3 details and limits](docs/PRIVATE_ANALYTICS.md).
 
-M4 is implemented but pending real Linux validation. Its intended boundary keeps the S1 dataset, normalized values, activations, predictions, loss, gradients, and trained parameters secret; only final encrypted local model shares and an encrypted local MSE share persist. S3 and S4 inherit the same semi-honest, trusted-host limitations. The sole logical disclosure is `model.evaluation.mse`, authorized before artifact load or reconstruction through RevealService. See [M4 details and limits](docs/PRIVATE_NN.md).
+M4 is verified on the bounded synthetic Linux fixture. Its tested boundary keeps the S1 dataset, normalized values, activations, predictions, loss, gradients, and trained parameters secret; only final encrypted local model shares and an encrypted local MSE share persist. S3 and S4 inherit the same semi-honest, trusted-host limitations. The sole logical disclosure is `model.evaluation.mse`, authorized before artifact load or reconstruction through RevealService. See [M4 details and limits](docs/PRIVATE_NN.md).
 
 - Malicious parties that deviate from the protocol.
 - Collusion between participating parties, the Control Plane, or host operators.

@@ -18,7 +18,7 @@ These results establish behavior for the tested fixtures and stated threat model
 
 **M3 — verified Persistent Private Cohort Analytics.** M3 consumes S1's encrypted local SPU shares, executes COUNT, SUM, MEAN, or cross-party CROSS_MEAN, and persists secret scalar artifacts into a new S2. Computation and scalar disclosure have separate policy gates. The [successful Linux CI gate](https://github.com/e-sall/KryptRoom/actions/runs/38841137327) restarted twice, revealed only authorized `mean-a`, and rejected CROSS_MEAN before reconstruction; a separate explicitly authorized synthetic correctness case verified all six scalar outputs. See [the M3 design and validation guide](docs/PRIVATE_ANALYTICS.md).
 
-**M4 — implemented, pending real CHEETAH/FM128 validation.** M4 adds a fixed direct-JAX Dense 1→2→1 square-activation network over S1, persists its four secret parameter tensors as S3, and evaluates the reloaded model with S1 through an exact two-parent transition into secret MSE state S4. No training value or model parameter is revealed. See [the bounded M4 design and validation gate](docs/PRIVATE_NN.md).
+**M4 — verified Persistent Private Neural Network.** M4 adds a fixed direct-JAX Dense 1→2→1 square-activation network over S1, persists its four secret parameter tensors as S3, and evaluates the reloaded model with S1 through an exact two-parent transition into secret MSE state S4. The [authoritative Linux run](https://github.com/e-sall/KryptRoom/actions/runs/38846097654) passed with MSE below 0.02 and no training value or model parameter reveal. See [the bounded M4 design and evidence](docs/PRIVATE_NN.md).
 
 ## Hero use case: cancer-research collaboration
 
@@ -28,10 +28,10 @@ The repository uses only small synthetic fixtures. M1 privately counts the overl
 
 ```text
 Private Matching → Private Join → Persistent Encrypted State → Private Analytics → Private ML → Proof → Audit
-M1 verified        M2 verified    M2.5 verified                  M3 verified        M4 pending   Future  Future
+M1 verified        M2 verified    M2.5 verified                  M3 verified        M4 verified  Future  Future
 ```
 
-The M2.5 aggregate is a narrow continuity test, not the general M3 analytics API. M4 is limited to one deterministic synthetic training/evaluation fixture and is not yet runtime-validated. No real patient data, biomedical performance claim, FHE computation, ZK proof, or blockchain integration is included.
+The M2.5 aggregate is a narrow continuity test, not the general M3 analytics API. M4 is runtime-verified only for one deterministic bounded synthetic training/evaluation fixture. No real patient data, biomedical performance claim, FHE computation, ZK proof, or blockchain integration is included.
 
 ## Architecture
 
@@ -101,7 +101,7 @@ Peer authentication, malicious security, host compromise resistance, signed stat
 
 ## Roadmap and repository guide
 
-M3's persistent analytics gate is verified on the synthetic fixture. M4 persistent private NN training/evaluation is implemented but remains pending its authoritative Linux gate. Later work remains unimplemented. See the [ordered roadmap](docs/ROADMAP.md) and [milestone checklist](TODO.md).
+M3 analytics and M4 persistent private NN training/evaluation are verified on their bounded synthetic fixtures. Later work remains unimplemented. See the [ordered roadmap](docs/ROADMAP.md) and [milestone checklist](TODO.md).
 
 - `nodes/krypt-node/`: participant PSI processes and local input boundary.
 - `engines/mpc/`: verified SPU join and persistent encrypted RoomState implementation.

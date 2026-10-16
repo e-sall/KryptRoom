@@ -2,7 +2,7 @@
 
 ## Current implemented state
 
-KryptRoom has runtime-verified M1 PSI cardinality, M2 two-container SPU private join, M2.5 persistent encrypted RoomState paths, and M3 persistent private analytics. M4 persistent private NN training/evaluation is implemented but pending its real Linux CHEETAH/FM128 gate.
+KryptRoom has runtime-verified M1 PSI cardinality, M2 two-container SPU private join, M2.5 persistent encrypted RoomState paths, M3 persistent private analytics, and bounded M4 persistent private NN training/evaluation.
 
 ## Target system boundary
 
@@ -61,7 +61,7 @@ The acceptance topology has two separate phases. The create phase mounts each no
 
 M3 adds persistent scalar analytics over S1 and an immutable child S2 using the same RoomState/share storage. Its contract and kernel are separate from the policy-controlled reveal service. Status: verified on the synthetic Linux CHEETAH/FM128 fixture, including two restarts. See [M3 architecture and evidence](docs/PRIVATE_ANALYTICS.md).
 
-M4 is a sibling transition from S1, not a child of S2. Training produces immutable S3 with four encrypted local model-share artifacts. Evaluation consumes exact ordered parents `[S3_model, S1]`, persists only secret MSE in S4, and reuses the single RevealService reconstruction boundary. Status: implemented, pending real CHEETAH/FM128 validation. See [M4 design and gate](docs/PRIVATE_NN.md).
+M4 is a sibling transition from S1, not a child of S2. Training produces immutable S3 with four encrypted local model-share artifacts. Evaluation consumes exact ordered parents `[S3_model, S1]`, persists only secret MSE in S4, and reuses the single RevealService reconstruction boundary. Status: verified on the bounded synthetic Linux CHEETAH/FM128 fixture. See [M4 design and evidence](docs/PRIVATE_NN.md).
 
 - `apps/web`: future user interface; intentionally empty during PSI work.
 - `services/control-api`: future metadata and room API.

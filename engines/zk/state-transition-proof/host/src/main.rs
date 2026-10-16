@@ -76,14 +76,6 @@ fn main() -> Result<()> {
         );
     }
     let started = Instant::now();
-    let client = ProverClient::builder().cpu().build();
-    let setup = Instant::now();
-    let pk = client
-        .setup(ELF.into())
-        .map_err(|e| anyhow::anyhow!("setup failed: {e}"))?;
-    let setup_seconds = setup.elapsed().as_secs_f64();
-    let vk = pk.verifying_key();
-    let vkey = vk.bytes32();
     if cmd == "verify" {
         let r: Receipt = read_json(flag(&args, "--receipt")?)?;
         r.validate().map_err(anyhow::Error::msg)?;
@@ -95,16 +87,20 @@ fn main() -> Result<()> {
         if let Some(x) = args.get("--expect-transition") {
             ensure!(*x == r.transition_id, "unexpected transition");
         }
-        ensure!(
-            s.elf_sha256 == hash(ELF) && s.program_v_key == vkey,
-            "program identity mismatch"
-        );
         let bytes = read_document(flag(&args, "--proof")?, "bin", 2_000_000)?;
         ensure!(
             bytes.len() as u64 == s.proof_artifact.size_bytes
                 && hash(&bytes) == s.proof_artifact.sha256,
             "proof descriptor mismatch"
         );
+        ensure!(s.elf_sha256 == hash(ELF), "guest ELF hash mismatch");
+        let client = ProverClient::builder().cpu().build();
+        let pk = client
+            .setup(ELF.into())
+            .map_err(|e| anyhow::anyhow!("setup failed: {e}"))?;
+        let vk = pk.verifying_key();
+        let vkey = vk.bytes32();
+        ensure!(s.program_v_key == vkey, "program verification key mismatch");
         let proof = SP1ProofWithPublicValues::load(flag(&args, "--proof")?)?;
         ensure!(
             matches!(proof.proof, SP1Proof::Groth16(_))
@@ -138,6 +134,14 @@ fn main() -> Result<()> {
         );
         return Ok(());
     }
+    let client = ProverClient::builder().cpu().build();
+    let setup = Instant::now();
+    let pk = client
+        .setup(ELF.into())
+        .map_err(|e| anyhow::anyhow!("setup failed: {e}"))?;
+    let setup_seconds = setup.elapsed().as_secs_f64();
+    let vk = pk.verifying_key();
+    let vkey = vk.bytes32();
     let path = flag(&args, "--witness")?;
     let w: Witness = read_json(path)?;
     fs::remove_file(path)?;
@@ -197,7 +201,7 @@ fn main() -> Result<()> {
         program_v_key: vkey.clone(),
         elf_sha256: hash(ELF),
         public_values_sha256: hash(proof.public_values.as_slice()),
-        proof_artifact: ProofArtifact {
+        proof_artifact: ProofArtifactRef {
             media_type: "application/vnd.kryptroom.sp1-groth16-proof".into(),
             uri: uri.clone(),
             sha256: ph.clone(),

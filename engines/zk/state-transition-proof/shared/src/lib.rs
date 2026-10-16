@@ -570,7 +570,7 @@ pub fn verify_relation(w: &Witness) -> Result<Vec<u8>> {
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
-pub struct ProofArtifact {
+pub struct ProofArtifactRef {
     pub media_type: String,
     pub uri: String,
     pub sha256: String,
@@ -593,7 +593,7 @@ pub struct StateProof {
     pub program_v_key: String,
     pub elf_sha256: String,
     pub public_values_sha256: String,
-    pub proof_artifact: ProofArtifact,
+    pub proof_artifact: ProofArtifactRef,
     pub created_at: String,
 }
 pub fn proof_id(receipt_hash: &str, vkey: &str, proof_hash: &str) -> Result<String> {

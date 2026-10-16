@@ -75,6 +75,13 @@ jobs:
           free -h
           df -h
           du -sh engines/zk/state-transition-proof/target "$HOME/.sp1"
+      - name: Final resource diagnostics, including failed runs
+        if: always()
+        run: |
+          free -h
+          df -h
+          cat /sys/fs/cgroup/memory.peak 2>/dev/null || true
+          cat /sys/fs/cgroup/memory.events 2>/dev/null || true
       # Explicit allowlist: no witness, metadata parents, keys, source inputs,
       # internal prover caches, or private runtime files can be uploaded.
       - uses: actions/upload-artifact@v6

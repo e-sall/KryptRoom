@@ -7,4 +7,3 @@ pub fn main() {
     let claim = kryptroom_proof_relation::verify_relation(&witness).expect("invalid M5 relation");
     sp1_zkvm::io::commit_slice(&claim);
 }
-

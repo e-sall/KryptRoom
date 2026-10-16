@@ -27,7 +27,7 @@ M1, M2, and M2.5 are runtime-verified on synthetic fixtures. The Control Plane, 
 - Current MPC: SecretFlow SPU with JAX; CHEETAH/FM128, two parties, honest-but-curious. CHEETAH avoids SEMI2K's trusted-first-party default.
 - Current M4: a fixed direct-JAX Dense 1→2→1 square-activation network on SPU, with features, labels, activations, gradients, weights, predictions, and loss private by default. Its authoritative real CHEETAH/FM128 persistence/restart chain is verified on the bounded synthetic fixture.
 - Future FHE: OpenFHE Python bindings where practical; BFV/BGV for exact arithmetic and CKKS for approximate vector arithmetic. Not implemented.
-- Future ZK: SP1 zkVM for realistic manifest, signature, commitment, policy, and output-authorization statements—not a false claim of proving full MPC training. Not implemented.
+- Current M5 ZK implementation: bounded SP1 committed model-evaluation metadata proof; pending real Groth16 validation. It does not prove MPC arithmetic or participant signatures. Broader proof scope remains future work.
 - Post-quantum target: OpenSSL 3.5 or newer, ML-KEM, ML-DSA, and hybrid X25519 + ML-KEM-768 key establishment.
 - Artifact encryption: AES-256-GCM with random nonces and node-local 256-bit keys for M2.5. No plaintext key reaches another participant or the Control Plane. Production KMS/HSM integration remains future work.
 - Audit target: chain-agnostic `BlockchainAnchor`, initially Base Sepolia, storing commitments and provenance only.

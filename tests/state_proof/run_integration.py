@@ -6,6 +6,7 @@ import json
 import os
 import shutil
 import subprocess
+import struct
 import sys
 import tempfile
 import time
@@ -20,6 +21,10 @@ def run(command, success=True):
     p = subprocess.run([str(v) for v in command], capture_output=True, text=True)
     # Never print witness or captured guest/prover diagnostics containing witness.
     if (p.returncode == 0) != success:
+        forbidden = ("local://", "authorizedReveals", "ContentBase64", "ciphertexts", "artifactRef")
+        for line in p.stderr.splitlines()[-30:]:
+            if any(x in line.lower() for x in ("error:", "failed", "memory", "killed", "sigkill", "panic")) and not any(x in line for x in forbidden):
+                print(line[:500], file=sys.stderr)
         raise RuntimeError(f"Unexpected status {p.returncode} for {Path(str(command[0])).name} {command[1]}")
     return p.stdout
 
@@ -61,23 +66,45 @@ def main():
         metrics=json.loads(output.strip().splitlines()[-1]);directory=Path(metrics["proofDirectory"])
         rpath=directory/"receipt.json";spath=directory/"state-proof.json";ppath=directory/"proof.bin"
         stateproof=strict_load(spath);validate_schema(stateproof,"state-proof.schema.json")
-        def verify(r=rpath,s=spath,p=ppath,extra=(),success=True):
-            return run([binary,"verify","--receipt",r,"--state-proof",s,"--proof",p,"--expect-room",receipt["roomId"],"--expect-transition",receipt["transitionId"],*extra],success)
+        def verify(r=rpath,s=spath,p=ppath,extra=(),success=True,expect=True):
+            expectations=["--expect-room",receipt["roomId"],"--expect-transition",receipt["transitionId"]] if expect else []
+            return run([binary,"verify","--receipt",r,"--state-proof",s,"--proof",p,*expectations,*extra],success)
         # A separate process with only PUBLIC documents, no metadata/witness cwd.
         verify_started=time.monotonic();assert "VERIFIED" in verify();metrics["standaloneVerificationSeconds"]=time.monotonic()-verify_started
         # Class B: tampering public receipts without regenerating proof.
         edits={"roomId":"another-room","transitionId":"another-transition","operator":"private_nn_training","outputStateCommitment":"0"*64,"requestedReveals":["model.evaluation.rmse"],"codeHash":"1"*64,"workflowHash":"2"*64,"transitionCommitment":"3"*64,"outputStateId":"another-state","keyEpoch":"wrong","cryptoContextHash":"4"*64,"requestedRevealsHash":"5"*64,"outputPolicyHash":"6"*64}
         for key,value in edits.items():
             rr=copy.deepcopy(receipt);rr[key]=value;p=temp/"receipt-tampered.json";dump(p,rr);verify(r=p,success=False)
+        # Rebind all untrusted outer metadata too; exact proof public values must
+        # reject another room/transition/S4 without relying on caller expectations.
+        for key,value in (("roomId","another-room"),("transitionId","another-transition"),("outputStateCommitment","a"*64),("codeHash","b"*64),("workflowHash","c"*64)):
+            rr=copy.deepcopy(receipt);rr[key]=value;p=temp/"receipt-rebound.json";dump(p,rr)
+            ss=copy.deepcopy(stateproof)
+            for field in ("roomId","transitionId","outputStateId","outputStateCommitment","transitionCommitment"):ss[field]=rr[field]
+            ss["receiptHash"]=receipt_hash(rr);ss["proofId"]=proof_id(ss["receiptHash"],ss["programVKey"],ss["proofArtifact"]["sha256"])
+            ss["proofArtifact"]["uri"]=f'proofs/rooms/{ss["roomId"]}/transitions/{ss["transitionId"]}/{ss["proofId"]}/proof.bin'
+            s=temp/"state-proof-rebound.json";dump(s,ss);verify(r=p,s=s,success=False,expect=False)
         for field,key in (("orderedParents","stateCommitment"),("orderedParents","stateId"),("orderedParents","policyHash"),("orderedInputs","artifactCommitment"),("orderedInputs","artifactId"),("orderedOutputs","artifactCommitment"),("orderedOutputs","artifactId")):
             rr=copy.deepcopy(receipt);rr[field][0][key]="0"*64;p=temp/"receipt-tampered.json";dump(p,rr);verify(r=p,success=False)
         for field in ("orderedParents","orderedInputs"):
             rr=copy.deepcopy(receipt);rr[field].reverse();p=temp/"receipt-tampered.json";dump(p,rr);verify(r=p,success=False)
         # Class C: immutable proof metadata and program identity.
         for field,value in {"version":"2","proofSystemVersion":"6.8.1","programVersion":"other","programVKey":"0x"+"0"*64,"elfSha256":"0"*64,"receiptHash":"0"*64}.items():
-            ss=copy.deepcopy(stateproof);ss[field]=value;p=temp/"state-proof-tampered.json";dump(p,ss);verify(s=p,success=False)
+            ss=copy.deepcopy(stateproof);ss[field]=value
+            if field=="programVKey":
+                ss["proofId"]=proof_id(ss["receiptHash"],ss["programVKey"],ss["proofArtifact"]["sha256"])
+                ss["proofArtifact"]["uri"]=f'proofs/rooms/{ss["roomId"]}/transitions/{ss["transitionId"]}/{ss["proofId"]}/proof.bin'
+            p=temp/"state-proof-tampered.json";dump(p,ss);verify(s=p,success=False)
         proof=ppath.read_bytes()
-        for data in (proof[:-1],bytes([proof[0]^1])+proof[1:]):
+        # SDK 6.9.0 bincode layout: enum u32, five strings, encoded proof string.
+        # Mutate actual encoded Groth16 material while keeping deserialization valid.
+        offset=4
+        for _ in range(5):
+            length=struct.unpack_from("<Q",proof,offset)[0];offset+=8+length
+        length=struct.unpack_from("<Q",proof,offset)[0];offset+=8
+        assert length>=512 and all(c in b"0123456789abcdefABCDEF" for c in proof[offset:offset+length])
+        cryptographic_tamper=bytearray(proof);cryptographic_tamper[offset]=ord("0") if proof[offset]!=ord("0") else ord("1")
+        for data in (proof[:-1],bytes([proof[0]^1])+proof[1:],bytes(cryptographic_tamper)):
             p=temp/"altered.bin";p.write_bytes(data);verify(p=p,success=False)
             # Update public descriptor/id too, forcing real cryptographic/deserialization rejection.
             ss=copy.deepcopy(stateproof);ss["proofArtifact"]["sha256"]=hashlib.sha256(data).hexdigest();ss["proofArtifact"]["sizeBytes"]=len(data)

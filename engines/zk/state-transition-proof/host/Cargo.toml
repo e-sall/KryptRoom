@@ -6,6 +6,7 @@ edition = "2021"
 [dependencies]
 kryptroom-proof-relation = { path = "../shared" }
 sp1-sdk = { version = "=6.9.0", features = ["blocking"] }
+sp1-verifier = "=6.9.0"
 serde.workspace = true
 serde_json.workspace = true
 sha2.workspace = true

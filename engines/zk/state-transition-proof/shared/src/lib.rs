@@ -717,6 +717,9 @@ mod tests {
     }
     #[test]
     fn domains() {
+        assert_eq!(RECEIPT_DOMAIN, b"KRYPTROOM-TRANSITION-RECEIPT-V1\x00");
+        assert_eq!(CLAIM_DOMAIN, b"KRYPTROOM-STATE-PROOF-V1");
+        assert_eq!(ID_DOMAIN, b"KRYPTROOM-STATE-PROOF-ID-V1\x00");
         assert_eq!(RECEIPT_DOMAIN.last(), Some(&0));
         assert_ne!(CLAIM_DOMAIN.last(), Some(&0));
         assert_eq!(ID_DOMAIN.last(), Some(&0));

@@ -66,6 +66,8 @@ def main():
         metrics=json.loads(output.strip().splitlines()[-1]);directory=Path(metrics["proofDirectory"])
         rpath=directory/"receipt.json";spath=directory/"state-proof.json";ppath=directory/"proof.bin"
         stateproof=strict_load(spath);validate_schema(stateproof,"state-proof.schema.json")
+        assert stateproof["receiptHash"]==receipt_hash(receipt)
+        assert stateproof["publicValuesSha256"]==hashlib.sha256(public_claim(receipt)).hexdigest()
         def verify(r=rpath,s=spath,p=ppath,extra=(),success=True,expect=True):
             expectations=["--expect-room",receipt["roomId"],"--expect-transition",receipt["transitionId"]] if expect else []
             return run([binary,"verify","--receipt",r,"--state-proof",s,"--proof",p,*expectations,*extra],success)

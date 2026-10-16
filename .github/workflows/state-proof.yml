@@ -60,8 +60,9 @@ jobs:
       - name: Install SDK protobuf build prerequisite
         run: |
           sudo apt-get update
-          sudo apt-get install --no-install-recommends -y protobuf-compiler
+          sudo apt-get install --no-install-recommends -y protobuf-compiler libprotobuf-dev
           protoc --version
+          test -f /usr/include/google/protobuf/empty.proto
       - name: Build guest and host
         run: |
           started=$SECONDS

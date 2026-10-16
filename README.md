@@ -114,7 +114,8 @@ M3 analytics and M4 persistent private NN training/evaluation are verified on th
 - `packages/manifests/`: job, policy, and RoomState schemas.
 - `demos/cancer-collaboration/`: synthetic fixtures and manifests.
 - `tests/` and `.github/workflows/`: integration, privacy, and reproducibility checks.
-- `services/`, `apps/`, `chain/`, and FHE/ZK engine directories: future component placeholders.
+- `engines/zk/`: bounded M5 metadata-proof implementation, pending real Groth16 validation.
+- `services/`, `apps/`, `chain/`, and FHE engine directories: future component placeholders.
 
 [Project context](PROJECT_CONTEXT.md) preserves technical direction. [CONTRIBUTING.md](CONTRIBUTING.md) describes the review and evidence expectations.
 

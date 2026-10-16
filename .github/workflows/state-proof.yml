@@ -22,7 +22,7 @@ env:
   CARGO_PROFILE_DEV_DEBUG: 0
   CARGO_INCREMENTAL: 0
   # Official SP1CoreOpts env controls (v6.9.0 core/executor/src/opts.rs).
-  # The first real proving attempt exhausted available RAM before the hosted
+  # The first real proving attempt showed severe RAM pressure before the hosted
   # runner shut down. Smaller trace shards/rings reduce peak memory, not checks.
   ELEMENT_THRESHOLD: 67108864
   HEIGHT_THRESHOLD: 1048576

@@ -9,7 +9,8 @@ on:
 
 concurrency:
   group: state-proof-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: false
+  # One authoritative current-head PR run; preserve dev/main push runs.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
   contents: read

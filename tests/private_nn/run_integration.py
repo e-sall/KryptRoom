@@ -46,7 +46,13 @@ def compose(files, project):
 
 
 def phase(args, env, expected_exit=0):
-    result = run([*args, "up", "--no-build", "--abort-on-container-failure"], env, check=False)
+    up = [*args, "up", "--no-build"]
+    # A deliberate pre-runtime policy denial exits quickly and independently on
+    # both nodes. abort-on-container-failure would SIGTERM the peer after the
+    # first expected code 3 and obscure its own fail-closed result.
+    if expected_exit == 0:
+        up.append("--abort-on-container-failure")
+    result = run(up, env, check=False)
     payload = result.stdout + result.stderr
     for identifier in SYNTHETIC_IDENTIFIERS:
         assert not re.search(rf"(?<![A-Za-z0-9_-]){re.escape(identifier)}(?![A-Za-z0-9_-])", payload), (

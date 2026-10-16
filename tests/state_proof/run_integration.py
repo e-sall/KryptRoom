@@ -20,17 +20,49 @@ F = Path(__file__).parent / "fixtures"
 def run(command, success=True, env=None, cwd=None, expected_error=None):
     p = subprocess.run([str(v) for v in command], capture_output=True, text=True, env=env, cwd=cwd)
     # Never print witness or captured guest/prover diagnostics containing witness.
-    if (p.returncode == 0) != success:
+    unexpected_status = (p.returncode == 0) != success
+    unexpected_stage = expected_error is not None and expected_error not in p.stderr
+    if unexpected_status or unexpected_stage:
         forbidden = ("local://", "authorizedReveals", "ContentBase64", "ciphertexts", "artifactRef")
         for line in p.stderr.splitlines()[-30:]:
             if any(x in line.lower() for x in ("error:", "failed", "memory", "killed", "sigkill", "panic")) and not any(x in line for x in forbidden):
                 print(line[:500], file=sys.stderr)
-        raise RuntimeError(f"Unexpected status {p.returncode} for {Path(str(command[0])).name} {command[1]}")
-    if expected_error is not None and expected_error not in p.stderr:
-        raise RuntimeError("Negative test failed at an unexpected validation stage")
+        if unexpected_status:
+            raise RuntimeError(f"Unexpected status {p.returncode} for {Path(str(command[0])).name} {command[1]}")
+        raise RuntimeError(f"Negative test failed at an unexpected validation stage (status {p.returncode})")
     return p.stdout
 
 def dump(path,value): path.write_bytes(canonical_json(value))
+
+def invalid_relation_witness(model, data, child, receipt, change):
+    """Rebind every metadata digest so Class A fails the intended predicate,
+    rather than an unrelated stale parent/transition commitment.
+    Only synthetic committed metadata is changed; no secret values are used.
+    """
+    m=copy.deepcopy(model.content_dict());d=copy.deepcopy(data.content_dict())
+    c=copy.deepcopy(child.content_dict());r=copy.deepcopy(receipt)
+    change(d)
+    def ah(a,context):return digest({"artifact":a,"cryptoContext":context})
+    def inputs(state):return [{"artifactRef":a,"commitment":ah(a,state["cryptoContext"])} for a in state["artifacts"]]
+    def finish_transition(state):
+        binding=state["transition"]["bindings"]
+        binding["outputArtifactCommitments"]=[ah(a,state["cryptoContext"]) for a in state["artifacts"]]
+        binding["transitionCommitment"]=digest({k:v for k,v in binding.items() if k!="transitionCommitment"})
+    mr=m["transition"]["bindings"]["request"]
+    mr["parentStateCommitment"]=digest(d);mr["inputPolicyHash"]=digest(d["policy"])
+    mr["inputs"]=inputs(d);finish_transition(m)
+    cr=c["transition"]["bindings"]["request"]
+    cr["parents"]=[{"stateId":s["id"],"stateCommitment":digest(s),"policyHash":digest(s["policy"])} for s in (m,d)]
+    cr["modelInputs"]=inputs(m);cr["dataInputs"]=inputs(d)
+    cr["inputPolicyHashes"]=[digest(s["policy"]) for s in (m,d)]
+    finish_transition(c)
+    r["orderedParents"]=copy.deepcopy(cr["parents"])
+    r["orderedInputs"]=[{"parentIndex":i,"artifactId":a["id"],"artifactCommitment":ah(a,s["cryptoContext"])} for i,s in enumerate((m,d)) for a in s["artifacts"]]
+    r["transitionCommitment"]=c["transition"]["bindings"]["transitionCommitment"]
+    r["outputStateCommitment"]=digest(c)
+    return {"version":"1",**{key:base64.b64encode(canonical_json(value)).decode() for key,value in (
+        ("modelParentContentBase64",m),("dataParentContentBase64",d),
+        ("childContentBase64",c),("receiptCanonicalBase64",r))}}
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument("--binary",required=True);parser.add_argument("--output-root",required=True);parser.add_argument("--execute-only",action="store_true");args=parser.parse_args()
@@ -53,9 +85,7 @@ def main():
                    ("wrong-input",lambda d:d["artifacts"][0].update(includesIdentifiers=True)),
                    ("wrong-recipients",lambda d:d["policy"]["authorizedReveals"][-1].update(recipients=["ui"]))]
         for name,change in mutations:
-            w=copy.deepcopy(witness);d=json.loads(base64.b64decode(w["dataParentContentBase64"]));change(d)
-            rr=copy.deepcopy(receipt);rr["orderedParents"][1]["stateCommitment"]=digest(d);rr["orderedParents"][1]["policyHash"]=digest(d["policy"])
-            w["dataParentContentBase64"]=base64.b64encode(canonical_json(d)).decode();w["receiptCanonicalBase64"]=base64.b64encode(canonical_json(rr)).decode()
+            w=invalid_relation_witness(model,data,child,receipt,change)
             p=temp/f"witness-{name}.json";dump(p,w)
             run([binary,"execute","--witness",p],success=False,expected_error="guest rejected")
             p.unlink(missing_ok=True)

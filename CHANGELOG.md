@@ -6,6 +6,8 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Added
 
+- M5 SP1 v6.9.0 CPU Groth16 path for M4 evaluation metadata lineage, authorization and commitment consistency; external StateProof, strict schemas, golden vectors, independent verifier and privacy/negative CI. Status: implemented / pending real SP1 Groth16 validation. No MPC arithmetic or participant signature claim.
+
 - M4 fixed direct-JAX Dense 1→2→1 square-activation training over persisted S1, encrypted final model persistence in S3, exact `[S3_model, S1]` private evaluation into secret MSE state S4, and MSE-only policy-controlled disclosure. Status: verified on the bounded synthetic fixture.
 - M4 canonical model/training/evaluation contracts, deterministic SHA-256 initializer, two transition commitment bindings, dedicated synthetic fixture, privacy/state/storage tests, and authoritative Linux CI chain.
 

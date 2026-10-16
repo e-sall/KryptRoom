@@ -59,6 +59,9 @@
 
 ## Explicitly deferred
 
+M5 committed transition proof: implemented / pending real SP1 Groth16 validation.
+Real CPU proof generation and standalone verification remain the completion gate.
+
 - [ ] Choose project licensing terms before encouraging substantial third-party code contributions.
 - [ ] Confirm a private vulnerability-reporting channel in repository settings.
 

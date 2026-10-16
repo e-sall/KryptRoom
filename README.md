@@ -22,6 +22,12 @@ These results establish behavior for the tested fixtures and stated threat model
 
 ## Hero use case: cancer-research collaboration
 
+M5 committed state-transition proof is **implemented / pending real SP1 Groth16 validation**.
+It covers lineage, artifact, authorization and commitment consistency for one M4
+evaluation. The M5 proof does not prove correctness of the underlying
+SecretFlow/CHEETAH computation or the numerical evaluation result. It does not
+establish participant cryptographic approval/signatures. See [scope and validation](docs/STATE_PROOF.md).
+
 Lab A holds genomic features; Lab B holds clinical treatment-response information for an overlapping population. Each lab wants to study the overlap without handing patient identifiers or raw records to the other lab or a central operator.
 
 The repository uses only small synthetic fixtures. M1 privately counts the overlap. M2 independently compares identifiers inside MPC and creates a secret-shared join; M1 does not export hidden matches into M2. The persistence layer is intended to keep that join available for later authorized computations.

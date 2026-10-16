@@ -1,0 +1,90 @@
+name: Committed State Transition Proof
+
+on:
+  pull_request:
+    branches: [dev, main]
+  push:
+    branches: [dev, main]
+  workflow_dispatch:
+
+concurrency:
+  group: state-proof-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  SP1_PROVER: cpu
+  CARGO_BUILD_JOBS: 2
+  CARGO_PROFILE_RELEASE_DEBUG: 0
+  CARGO_PROFILE_DEV_DEBUG: 0
+  CARGO_INCREMENTAL: 0
+
+jobs:
+  contract-canonicalization-and-privacy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - run: pip install -r tests/state_proof/requirements.txt
+      - run: python -m unittest discover -s tests/state_proof -p 'test_*.py' -v
+      - name: Pin Rust and test native guest relation with cross-language vectors
+        run: |
+          rustup toolchain install 1.96.0 --profile minimal
+          cargo +1.96.0 test --locked --manifest-path engines/zk/state-transition-proof/Cargo.toml -p kryptroom-proof-relation
+      - name: Ensure deterministic metadata fixture regeneration
+        run: |
+          python tests/state_proof/generate_fixture.py
+          git diff --exit-code -- tests/state_proof/fixtures
+
+  real-sp1-groth16-proof:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - run: pip install -r tests/state_proof/requirements.txt
+      - name: Record actual runner resources
+        run: |
+          free -h
+          df -h
+          nproc
+      - name: Install exact official SP1 v6.9.0 stack
+        run: bash tests/state_proof/setup_sp1.sh
+      - name: Build guest and host
+        run: |
+          started=$SECONDS
+          cd engines/zk/state-transition-proof/program
+          cargo prove build --locked --output-directory ../elf --elf-name kryptroom-m5-evaluation
+          echo "GUEST_BUILD_SECONDS=$((SECONDS-started))"
+          cd ..
+          export KRYPTROOM_M5_ELF="$PWD/elf/kryptroom-m5-evaluation"
+          echo "KRYPTROOM_M5_ELF=$KRYPTROOM_M5_ELF" >> "$GITHUB_ENV"
+          /usr/bin/time -v cargo build --locked --release -p kryptroom-proof
+      - name: Execute relation tests in real SP1 guest
+        run: python tests/state_proof/run_integration.py --binary engines/zk/state-transition-proof/target/release/kryptroom-proof --output-root "$RUNNER_TEMP/m5-public" --execute-only
+      - name: Real CPU Groth16 and independent verification with negatives
+        run: |
+          /usr/bin/time -v python tests/state_proof/run_integration.py --binary engines/zk/state-transition-proof/target/release/kryptroom-proof --output-root "$RUNNER_TEMP/m5-public"
+          free -h
+          df -h
+          du -sh engines/zk/state-transition-proof/target "$HOME/.sp1"
+      # Explicit allowlist: no witness, metadata parents, keys, source inputs,
+      # internal prover caches, or private runtime files can be uploaded.
+      - uses: actions/upload-artifact@v6
+        with:
+          name: m5-public-proof
+          path: |
+            ${{ runner.temp }}/m5-public/proofs/**/receipt.json
+            ${{ runner.temp }}/m5-public/proofs/**/proof.bin
+            ${{ runner.temp }}/m5-public/proofs/**/state-proof.json
+            engines/zk/state-transition-proof/elf/kryptroom-m5-evaluation
+            engines/zk/state-transition-proof/target/release/kryptroom-proof
+          if-no-files-found: error
+          retention-days: 7

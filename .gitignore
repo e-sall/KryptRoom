@@ -55,3 +55,9 @@ dist/
 build/
 coverage/
 
+# M5 local proving/build material; metadata-only golden fixtures remain tracked.
+**/target/
+**/elf/
+**/witness*.json
+proofs/
+

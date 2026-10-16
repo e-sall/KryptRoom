@@ -76,5 +76,10 @@ M4 is a sibling transition from S1, not a child of S2. Training produces immutab
 
 ## Current non-goals
 
+M5 adds external TransitionReceipt/StateProof for exact `[S3_model, S1]` evaluation
+lineage, authorization and commitments. Status: implemented / pending real SP1
+Groth16 validation. Full policy/context/holder metadata stays in the private witness.
+S4 is unchanged. MPC arithmetic/execution is not proved. See docs/STATE_PROOF.md.
+
 The current milestone does not implement general-purpose private ML, private inference APIs, model export, optimizer checkpoints, ML beyond the fixed M4 network, FHE, ZK, blockchain, a frontend, branch/merge operations, dynamic membership, post-quantum identity, real medical data, production key management, or a production Control Plane.
 

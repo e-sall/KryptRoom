@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "state-proof",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "proofId",
+    "proofSystem",
+    "proofSystemVersion",
+    "programVersion",
+    "roomId",
+    "transitionId",
+    "transitionCommitment",
+    "outputStateId",
+    "outputStateCommitment",
+    "receiptHash",
+    "programVKey",
+    "elfSha256",
+    "publicValuesSha256",
+    "proofArtifact",
+    "createdAt"
+  ],
+  "properties": {
+    "version": {
+      "const": "1"
+    },
+    "proofId": {
+      "type": "string",
+      "pattern": "^stateproof-[a-f0-9]{32}$"
+    },
+    "proofSystem": {
+      "const": "sp1-groth16"
+    },
+    "proofSystemVersion": {
+      "const": "6.9.0"
+    },
+    "programVersion": {
+      "const": "kryptroom-m5-evaluation-v1"
+    },
+    "roomId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "transitionId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "transitionCommitment": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "outputStateId": {
+      "const": "S4_eval"
+    },
+    "outputStateCommitment": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "receiptHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "programVKey": {
+      "type": "string",
+      "pattern": "^0x[a-f0-9]{64}$"
+    },
+    "elfSha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "publicValuesSha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "proofArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mediaType",
+        "uri",
+        "sha256",
+        "sizeBytes"
+      ],
+      "properties": {
+        "mediaType": {
+          "const": "application/vnd.kryptroom.sp1-groth16-proof"
+        },
+        "uri": {
+          "type": "string",
+          "pattern": "^proofs/rooms/[A-Za-z0-9._-]+/transitions/[A-Za-z0-9._-]+/stateproof-[a-f0-9]{32}/proof\\.bin$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "sizeBytes": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    }
+  }
+}

@@ -1,5 +1,11 @@
 # Threat model
 
+M5 is implemented / pending real SP1 Groth16 validation. It proves metadata
+consistency only, not SecretFlow execution, CHEETAH transcripts, private arithmetic,
+numeric MSE, input truthfulness or participant signatures. Low-entropy metadata
+may be guessed from public hashes. All existing trusted-host, semi-honest,
+key-management, rollback and atomicity limitations remain. See docs/STATE_PROOF.md.
+
 ## Scope
 
 This document describes the runtime-verified M1 PSI-cardinality, M2 private-join, and M2.5 persistent encrypted RoomState paths. Verification covers the synthetic fixtures and pinned runtimes, not a general security audit.

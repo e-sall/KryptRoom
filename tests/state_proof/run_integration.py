@@ -1,0 +1,96 @@
+"""Authoritative real CPU Groth16 acceptance. Never reads collaborative payloads."""
+import argparse
+import copy
+import datetime
+import json
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
+import time
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "engines/zk"))
+from proof_receipt import *
+
+F = Path(__file__).parent / "fixtures"
+def run(command, success=True):
+    p = subprocess.run([str(v) for v in command], capture_output=True, text=True)
+    # Never print witness or captured guest/prover diagnostics containing witness.
+    if (p.returncode == 0) != success:
+        raise RuntimeError(f"Unexpected status {p.returncode} for {Path(str(command[0])).name} {command[1]}")
+    return p.stdout
+
+def dump(path,value): path.write_bytes(canonical_json(value))
+
+def main():
+    parser=argparse.ArgumentParser();parser.add_argument("--binary",required=True);parser.add_argument("--output-root",required=True);parser.add_argument("--execute-only",action="store_true");args=parser.parse_args()
+    binary=Path(args.binary).resolve()
+    assert not list(F.rglob("*.share.enc")) and not list(F.rglob("*.key")) and not list(F.rglob("*.csv"))
+    model,data,child=(load_state(F/f"{s}.json") for s in ("S3_model","S1","S4_eval"))
+    job=strict_load(ROOT/"demos/cancer-collaboration/m4/private-nn-job.json")
+    receipt=make_receipt(model,data,child,job);witness=make_witness(model,data,child,receipt)
+    with tempfile.TemporaryDirectory(prefix="kryptroom-m5-private-") as tmp:
+        temp=Path(tmp)
+        # Cross-language golden vectors execute in the independent Rust implementation.
+        for i,v in enumerate(strict_load(F/"hashes.json")):
+            p=temp/f"golden-{i}.json";dump(p,v["value"])
+            assert run([binary,"hash","--json",p]).strip()==v["sha256"]
+        # Class A: mutate committed relation, then recompute parent/child content
+        # hashes where needed. Authorization must be checked, not merely hashes.
+        mutations=[("unauthorized-reveal",lambda d:d["policy"]["authorizedReveals"].pop()),
+                   ("unauthorized-operator",lambda d:d["policy"]["allowedOperators"].remove("private_model_evaluation")),
+                   ("wrong-context",lambda d:d["cryptoContext"].update(field="FM64")),
+                   ("wrong-input",lambda d:d["artifacts"][0].update(includesIdentifiers=True)),
+                   ("wrong-recipients",lambda d:d["policy"]["authorizedReveals"][-1].update(recipients=["ui"]))]
+        for name,change in mutations:
+            w=copy.deepcopy(witness);d=json.loads(base64.b64decode(w["dataParentContentBase64"]));change(d)
+            rr=copy.deepcopy(receipt);rr["orderedParents"][1]["stateCommitment"]=digest(d);rr["orderedParents"][1]["policyHash"]=digest(d["policy"])
+            w["dataParentContentBase64"]=base64.b64encode(canonical_json(d)).decode();w["receiptCanonicalBase64"]=base64.b64encode(canonical_json(rr)).decode()
+            p=temp/f"witness-{name}.json";dump(p,w)
+            run([binary,"execute","--witness",p],success=False)
+            p.unlink(missing_ok=True)
+        p=temp/"witness-valid.json";dump(p,witness)
+        if args.execute_only:
+            run([binary,"execute","--witness",p]);assert not p.exists();print("M5_GUEST_RELATION_TESTS_PASSED");return
+        started=time.monotonic()
+        output=run([binary,"prove","--witness",p,"--output-root",args.output_root,"--created-at",datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")])
+        assert not p.exists()
+        metrics=json.loads(output.strip().splitlines()[-1]);directory=Path(metrics["proofDirectory"])
+        rpath=directory/"receipt.json";spath=directory/"state-proof.json";ppath=directory/"proof.bin"
+        stateproof=strict_load(spath);validate_schema(stateproof,"state-proof.schema.json")
+        def verify(r=rpath,s=spath,p=ppath,extra=(),success=True):
+            return run([binary,"verify","--receipt",r,"--state-proof",s,"--proof",p,"--expect-room",receipt["roomId"],"--expect-transition",receipt["transitionId"],*extra],success)
+        # A separate process with only PUBLIC documents, no metadata/witness cwd.
+        verify_started=time.monotonic();assert "VERIFIED" in verify();metrics["standaloneVerificationSeconds"]=time.monotonic()-verify_started
+        # Class B: tampering public receipts without regenerating proof.
+        edits={"roomId":"another-room","transitionId":"another-transition","operator":"private_nn_training","outputStateCommitment":"0"*64,"requestedReveals":["model.evaluation.rmse"],"codeHash":"1"*64,"workflowHash":"2"*64,"transitionCommitment":"3"*64,"outputStateId":"another-state","keyEpoch":"wrong","cryptoContextHash":"4"*64,"requestedRevealsHash":"5"*64,"outputPolicyHash":"6"*64}
+        for key,value in edits.items():
+            rr=copy.deepcopy(receipt);rr[key]=value;p=temp/"receipt-tampered.json";dump(p,rr);verify(r=p,success=False)
+        for field,key in (("orderedParents","stateCommitment"),("orderedParents","stateId"),("orderedParents","policyHash"),("orderedInputs","artifactCommitment"),("orderedInputs","artifactId"),("orderedOutputs","artifactCommitment"),("orderedOutputs","artifactId")):
+            rr=copy.deepcopy(receipt);rr[field][0][key]="0"*64;p=temp/"receipt-tampered.json";dump(p,rr);verify(r=p,success=False)
+        for field in ("orderedParents","orderedInputs"):
+            rr=copy.deepcopy(receipt);rr[field].reverse();p=temp/"receipt-tampered.json";dump(p,rr);verify(r=p,success=False)
+        # Class C: immutable proof metadata and program identity.
+        for field,value in {"version":"2","proofSystemVersion":"6.8.1","programVersion":"other","programVKey":"0x"+"0"*64,"elfSha256":"0"*64,"receiptHash":"0"*64}.items():
+            ss=copy.deepcopy(stateproof);ss[field]=value;p=temp/"state-proof-tampered.json";dump(p,ss);verify(s=p,success=False)
+        proof=ppath.read_bytes()
+        for data in (proof[:-1],bytes([proof[0]^1])+proof[1:]):
+            p=temp/"altered.bin";p.write_bytes(data);verify(p=p,success=False)
+            # Update public descriptor/id too, forcing real cryptographic/deserialization rejection.
+            ss=copy.deepcopy(stateproof);ss["proofArtifact"]["sha256"]=hashlib.sha256(data).hexdigest();ss["proofArtifact"]["sizeBytes"]=len(data)
+            ss["proofId"]=proof_id(ss["receiptHash"],ss["programVKey"],ss["proofArtifact"]["sha256"])
+            ss["proofArtifact"]["uri"]=f'proofs/rooms/{ss["roomId"]}/transitions/{ss["transitionId"]}/{ss["proofId"]}/proof.bin'
+            s=temp/"state-proof-altered.json";dump(s,ss);verify(s=s,p=p,success=False)
+        wrong=temp/"wrong.elf";wrong.write_bytes(b"not the M5 program");verify(extra=["--candidate-elf",wrong],success=False)
+        public=rpath.read_bytes()+spath.read_bytes()+public_claim(receipt)
+        for forbidden in (b"local://",b"ciphertexts",b"authorizedReveals",b"backendVersion",b"room-state-v1.key",b"patient_id",b"p1\"",b"p2\"",b"252,",b"438,"):
+            assert forbidden not in public
+        assert set(p.name for p in directory.iterdir())=={"receipt.json","proof.bin","state-proof.json"}
+        metrics.update(realGroth16=True,independentVerification=True,negativeTestsPassed=True,witnessDeleted=True,noSecretPayloadReads=True,totalSeconds=time.monotonic()-started)
+        # Only public metrics and cryptographic identities leave this process.
+        print(json.dumps(metrics,sort_keys=True))
+
+if __name__=="__main__": main()

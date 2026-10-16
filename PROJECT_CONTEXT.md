@@ -72,6 +72,10 @@ Do not casually reorder this sequence or expand product scope without approval.
 
 ## Current milestone
 
+M5 committed state-transition proof is implemented / pending real SP1 Groth16 validation.
+Its statement covers metadata consistency for one M4 evaluation, not MPC execution,
+numeric MSE or participant signatures. StateProof is external to S4. See docs/STATE_PROOF.md.
+
 M4 Persistent Private Neural Network is verified on the bounded synthetic Linux CHEETAH/FM128 fixture. It consumes S1 directly, persists exactly four final secret model tensors as S3, reloads S3 with S1 for exact multi-parent private evaluation, and persists one secret MSE scalar as S4. See docs/PRIVATE_NN.md. This does not make KryptRoom a general ML platform.
 
 M3 Persistent Private Cohort Analytics is verified on the synthetic Linux CHEETAH/FM128 fixture. It reuses S1's persisted share grids for exactly COUNT, SUM, MEAN and CROSS_MEAN, persists scalar artifacts in S2, and separates computation authorization from scalar reveal authorization. See docs/PRIVATE_ANALYTICS.md for exact bindings, numeric tolerance and acceptance evidence.

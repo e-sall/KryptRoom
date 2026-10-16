@@ -102,7 +102,7 @@ fn main() -> Result<()> {
             "proof descriptor mismatch"
         );
         ensure!(s.elf_sha256 == hash(ELF), "guest ELF hash mismatch");
-        let client = ProverClient::builder().cpu().build();
+        let client = ProverClient::builder().light().build();
         let pk = client
             .setup(ELF.into())
             .map_err(|e| anyhow::anyhow!("setup failed: {e}"))?;
@@ -147,14 +147,6 @@ fn main() -> Result<()> {
         );
         return Ok(());
     }
-    let setup = Instant::now();
-    let client = ProverClient::builder().cpu().build();
-    let pk = client
-        .setup(ELF.into())
-        .map_err(|e| anyhow::anyhow!("setup failed: {e}"))?;
-    let setup_seconds = setup.elapsed().as_secs_f64();
-    let vk = pk.verifying_key();
-    let vkey = vk.bytes32();
     let path = flag(&args, "--witness")?;
     let w: Witness = read_json(path)?;
     fs::remove_file(path)?;
@@ -164,6 +156,9 @@ fn main() -> Result<()> {
     stdin.write(&w);
     // execute sends invalid relations into the actual guest for Class A tests.
     if cmd == "execute" {
+        // The official execution-only backend runs the real guest and cannot
+        // generate a proof. It is not a mock or a final proof mode.
+        let client = ProverClient::builder().light().build();
         let (pv, _) = client
             .execute(ELF.into(), stdin)
             .run()
@@ -176,6 +171,14 @@ fn main() -> Result<()> {
         return Ok(());
     }
     let claim = verify_relation(&w).map_err(anyhow::Error::msg)?;
+    let setup = Instant::now();
+    let client = ProverClient::builder().cpu().build();
+    let pk = client
+        .setup(ELF.into())
+        .map_err(|e| anyhow::anyhow!("setup failed: {e}"))?;
+    let setup_seconds = setup.elapsed().as_secs_f64();
+    let vk = pk.verifying_key();
+    let vkey = vk.bytes32();
     let prove_start = Instant::now();
     let proof = client
         .prove(&pk, stdin)

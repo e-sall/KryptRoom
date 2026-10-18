@@ -1,0 +1,1 @@
+"""OpenFHE-backed persistent state transition adapter."""

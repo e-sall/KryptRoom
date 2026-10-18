@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kryptroom.dev/schemas/fhe-state-transition.schema.json",
+  "title": "KryptRoom M6 FHE vector-add transition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "operator",
+    "roomId",
+    "inputStateIds",
+    "outputStateId",
+    "transitionId",
+    "effectiveAt",
+    "cryptoContextId",
+    "keyEpoch",
+    "inputArtifactIds",
+    "outputArtifactId",
+    "requestedReveals"
+  ],
+  "properties": {
+    "version": { "const": "1" },
+    "operator": { "const": "fhe_vector_add" },
+    "roomId": { "$ref": "#/$defs/id" },
+    "inputStateIds": {
+      "type": "array",
+      "prefixItems": [{ "const": "S5_fhe_inputs" }],
+      "minItems": 1,
+      "maxItems": 1
+    },
+    "outputStateId": { "const": "S6_fhe_sum" },
+    "transitionId": { "const": "m6-fhe-vector-add" },
+    "effectiveAt": { "type": "string", "format": "date-time" },
+    "cryptoContextId": { "const": "openfhe-bgv-rns-1.5.1-v1" },
+    "keyEpoch": { "const": "fhe-key-epoch-1" },
+    "inputArtifactIds": {
+      "type": "array",
+      "prefixItems": [
+        { "const": "fhe-vector-lab-a" },
+        { "const": "fhe-vector-lab-b" }
+      ],
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "outputArtifactId": { "const": "fhe-vector-sum" },
+    "requestedReveals": {
+      "type": "array",
+      "maxItems": 0
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    }
+  }
+}

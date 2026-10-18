@@ -66,11 +66,15 @@
       ],
       "properties": {
         "id": { "$ref": "#/$defs/id" },
-        "kind": { "const": "spu-secret-share" },
+        "kind": { "enum": ["spu-secret-share", "openfhe-ciphertext"] },
         "mediaType": {
-          "const": "application/vnd.kryptroom.spu-share+encrypted"
+          "enum": [
+            "application/vnd.kryptroom.spu-share+encrypted",
+            "application/vnd.kryptroom.openfhe-ciphertext"
+          ]
         },
-        "visibility": { "const": "secret-shared" },
+        "visibility": { "enum": ["secret-shared", "encrypted"] },
+        "protection": { "const": "fhe_ciphertext" },
         "cryptoContextId": { "$ref": "#/$defs/id" },
         "shape": {
           "type": "array",
@@ -81,11 +85,32 @@
         "includesIdentifiers": { "const": false },
         "ciphertexts": {
           "type": "array",
-          "minItems": 2,
+          "minItems": 1,
           "maxItems": 2,
           "items": { "$ref": "#/$defs/ciphertextRef" }
         }
-      }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "kind": { "const": "spu-secret-share" },
+            "mediaType": { "const": "application/vnd.kryptroom.spu-share+encrypted" },
+            "visibility": { "const": "secret-shared" },
+            "ciphertexts": { "minItems": 2, "maxItems": 2 }
+          },
+          "not": { "required": ["protection"] }
+        },
+        {
+          "required": ["protection"],
+          "properties": {
+            "kind": { "const": "openfhe-ciphertext" },
+            "mediaType": { "const": "application/vnd.kryptroom.openfhe-ciphertext" },
+            "visibility": { "const": "encrypted" },
+            "protection": { "const": "fhe_ciphertext" },
+            "ciphertexts": { "minItems": 1, "maxItems": 1 }
+          }
+        }
+      ]
     },
     "stateTransition": {
       "type": "object",
@@ -119,7 +144,7 @@
           "additionalProperties": false,
           "properties": {
             "cohortCardinality": {"type": "integer", "minimum": 0},
-            "operator": {"enum": ["private_analytics", "private_nn_training", "private_model_evaluation"]},
+            "operator": {"enum": ["private_analytics", "private_nn_training", "private_model_evaluation", "fhe_vector_encrypt", "fhe_vector_add"]},
             "request": {"type": "object"},
             "outputStateId": {"$ref": "#/$defs/id"},
             "outputArtifactCommitments": {"type": "array", "items": {"type": "string", "pattern": "^[a-f0-9]{64}$"}},
@@ -158,7 +183,7 @@
       ],
       "properties": {
         "defaultReveal": { "const": "deny" },
-        "allowedOperators": {"type": "array", "uniqueItems": true, "items": {"enum": ["private_analytics", "private_nn_training", "private_model_evaluation"]}},
+        "allowedOperators": {"type": "array", "uniqueItems": true, "items": {"enum": ["private_analytics", "private_nn_training", "private_model_evaluation", "fhe_vector_add"]}},
         "allowedInputArtifactIds": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
         "plaintextMaterialization": { "const": "forbidden" },
         "matchedIdentifierReveal": { "const": "forbidden" },
@@ -196,15 +221,52 @@
         "backendVersion": { "type": "string" },
         "protocol": { "type": "string" },
         "field": { "type": "string" },
-        "securityModel": { "const": "semi-honest" },
+        "securityModel": { "enum": ["semi-honest", "HEStd_128_classic"] },
         "participants": {
           "type": "array",
           "minItems": 2,
           "items": { "$ref": "#/$defs/id" },
           "uniqueItems": true
         },
-        "artifactCipher": { "const": "AES-256-GCM" },
-        "keyScope": { "const": "per-kryptnode-local" }
+        "artifactCipher": { "enum": ["AES-256-GCM", "OpenFHE-BGV-ciphertext"] },
+        "keyScope": { "enum": ["per-kryptnode-local", "single-owner-node-local"] },
+        "keyEpoch": { "$ref": "#/$defs/id" },
+        "keyOwner": { "$ref": "#/$defs/id" },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["plaintextModulus", "multiplicativeDepth", "batchSize", "securityLevel", "ringDimension", "serialization", "operationSet"],
+          "properties": {
+            "plaintextModulus": { "type": "integer", "minimum": 2 },
+            "multiplicativeDepth": { "type": "integer", "minimum": 0 },
+            "batchSize": { "type": "integer", "minimum": 1 },
+            "securityLevel": { "type": "string" },
+            "ringDimension": { "type": "integer", "minimum": 1 },
+            "serialization": { "const": "BINARY" },
+            "operationSet": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+          }
+        },
+        "publicMaterialRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/publicMaterialRef" }
+        },
+        "evaluationMaterialRefs": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/publicMaterialRef" }
+        }
+      }
+    },
+    "publicMaterialRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "uri", "sha256", "sizeBytes"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "kind": { "enum": ["crypto-context", "public-key", "evaluation-key"] },
+        "uri": { "type": "string", "pattern": "^local://" },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "sizeBytes": { "type": "integer", "minimum": 1 }
       }
     },
     "stateCommitment": {

@@ -1,0 +1,48 @@
+name: Persistent FHE State Transition
+
+on:
+  pull_request:
+    branches: [dev, main]
+  push:
+    branches: [dev, main]
+
+concurrency:
+  group: fhe-state-transition-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  contract-and-privacy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      - run: pip install -r tests/fhe_state_transition/requirements.txt
+      - run: python -m unittest discover -s tests/fhe_state_transition -p 'test_*.py' -v
+
+  real-openfhe-bgv:
+    name: M6 real persistent OpenFHE BGV
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: pip install -r tests/fhe_state_transition/requirements.txt
+      - name: Install the exact official OpenFHE Ubuntu 24.04 wheel
+        run: pip install --require-hashes -r tests/fhe_state_transition/requirements-openfhe.txt
+      - name: Record exact runtime identity
+        run: python -c "import importlib.metadata, openfhe; assert importlib.metadata.version('openfhe') == '1.5.1.0.24.4'; print('OpenFHE', importlib.metadata.version('openfhe'))"
+      - name: Persistent ciphertext state to EvalAdd to authorized reveal
+        run: python tests/fhe_state_transition/run_integration.py

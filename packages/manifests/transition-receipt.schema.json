@@ -1,0 +1,322 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "transition-receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "proofDomain",
+    "roomId",
+    "transitionId",
+    "operator",
+    "orderedParents",
+    "orderedInputs",
+    "keyEpoch",
+    "cryptoContextHash",
+    "codeHash",
+    "workflowHash",
+    "requestedReveals",
+    "requestedRevealsHash",
+    "outputPolicyHash",
+    "outputStateId",
+    "orderedOutputs",
+    "transitionCommitment",
+    "outputStateCommitment"
+  ],
+  "properties": {
+    "version": {
+      "const": "1"
+    },
+    "proofDomain": {
+      "const": "kryptroom.state-transition-proof.v1"
+    },
+    "roomId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "transitionId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "operator": {
+      "const": "private_model_evaluation"
+    },
+    "orderedParents": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "stateId",
+            "stateCommitment",
+            "policyHash"
+          ],
+          "properties": {
+            "stateId": {
+              "const": "S3_model"
+            },
+            "stateCommitment": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "policyHash": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "stateId",
+            "stateCommitment",
+            "policyHash"
+          ],
+          "properties": {
+            "stateId": {
+              "const": "S1"
+            },
+            "stateCommitment": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "policyHash": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        }
+      ],
+      "minItems": 2,
+      "maxItems": 2,
+      "items": false
+    },
+    "orderedInputs": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "parentIndex",
+            "artifactId",
+            "artifactCommitment"
+          ],
+          "properties": {
+            "parentIndex": {
+              "const": 0
+            },
+            "artifactId": {
+              "const": "model-nn-layer1-weight"
+            },
+            "artifactCommitment": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "parentIndex",
+            "artifactId",
+            "artifactCommitment"
+          ],
+          "properties": {
+            "parentIndex": {
+              "const": 0
+            },
+            "artifactId": {
+              "const": "model-nn-layer1-bias"
+            },
+            "artifactCommitment": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "parentIndex",
+            "artifactId",
+            "artifactCommitment"
+          ],
+          "properties": {
+            "parentIndex": {
+              "const": 0
+            },
+            "artifactId": {
+              "const": "model-nn-output-weight"
+            },
+            "artifactCommitment": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "parentIndex",
+            "artifactId",
+            "artifactCommitment"
+          ],
+          "properties": {
+            "parentIndex": {
+              "const": 0
+            },
+            "artifactId": {
+              "const": "model-nn-output-bias"
+            },
+            "artifactCommitment": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "parentIndex",
+            "artifactId",
+            "artifactCommitment"
+          ],
+          "properties": {
+            "parentIndex": {
+              "const": 1
+            },
+            "artifactId": {
+              "const": "match-mask"
+            },
+            "artifactCommitment": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "parentIndex",
+            "artifactId",
+            "artifactCommitment"
+          ],
+          "properties": {
+            "parentIndex": {
+              "const": 1
+            },
+            "artifactId": {
+              "const": "lab-a-features"
+            },
+            "artifactCommitment": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "parentIndex",
+            "artifactId",
+            "artifactCommitment"
+          ],
+          "properties": {
+            "parentIndex": {
+              "const": 1
+            },
+            "artifactId": {
+              "const": "lab-b-features"
+            },
+            "artifactCommitment": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        }
+      ],
+      "minItems": 7,
+      "maxItems": 7,
+      "items": false
+    },
+    "keyEpoch": {
+      "const": "room-state-v1"
+    },
+    "cryptoContextHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "codeHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "workflowHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "requestedReveals": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "const": "model.evaluation.mse"
+        }
+      ],
+      "minItems": 1,
+      "maxItems": 1,
+      "items": false
+    },
+    "requestedRevealsHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "outputPolicyHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "outputStateId": {
+      "const": "S4_eval"
+    },
+    "orderedOutputs": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "artifactId",
+            "artifactCommitment"
+          ],
+          "properties": {
+            "artifactId": {
+              "const": "model-evaluation-mse"
+            },
+            "artifactCommitment": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        }
+      ],
+      "minItems": 1,
+      "maxItems": 1,
+      "items": false
+    },
+    "transitionCommitment": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "outputStateCommitment": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "proof-artifact",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "mediaType",
+    "uri",
+    "sha256",
+    "sizeBytes"
+  ],
+  "properties": {
+    "mediaType": {
+      "const": "application/vnd.kryptroom.sp1-groth16-proof"
+    },
+    "uri": {
+      "type": "string",
+      "pattern": "^proofs/rooms/[A-Za-z0-9._-]+/transitions/[A-Za-z0-9._-]+/stateproof-[a-f0-9]{32}/proof\\.bin$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "sizeBytes": {
+      "type": "integer",
+      "minimum": 1
+    }
+  }
+}

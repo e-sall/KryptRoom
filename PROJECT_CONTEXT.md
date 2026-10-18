@@ -2,7 +2,7 @@
 
 ## Product
 
-KryptRoom is a persistent encrypted state machine for collaboration between mutually distrustful organizations. Private computations evolve immutable `RoomState` objects whose artifacts remain secret-shared and locally encrypted at participant-owned KryptNodes. KryptRoom is not a central encrypted-storage service, a blockchain application, a biotech company, or a machine-learning wrapper.
+KryptRoom is a persistent encrypted state machine for collaboration between mutually distrustful organizations. Private computations evolve immutable `RoomState` objects whose artifacts remain secret-shared and locally encrypted at participant-owned KryptNodes or remain committed FHE ciphertexts across authorized homomorphic transitions. KryptRoom is not a central encrypted-storage service, a blockchain application, a biotech company, or a machine-learning wrapper.
 
 The hero use case is collaboration between two cancer-research labs. Lab A holds genomic or gene-expression features. Lab B holds clinical and treatment-response information for an overlapping patient population. Neither party authorizes raw-data disclosure to the other party, KryptRoom, or a central operator.
 
@@ -26,7 +26,7 @@ M1, M2, and M2.5 are runtime-verified on synthetic fixtures. The Control Plane, 
 - Current PSI: OpenMined PSI v2.0.6, exact ECDH cardinality-only mode. ADR-006 supersedes the original SecretFlow RR22 plan because that interface reveals identifiers to its receiver.
 - Current MPC: SecretFlow SPU with JAX; CHEETAH/FM128, two parties, honest-but-curious. CHEETAH avoids SEMI2K's trusted-first-party default.
 - Current M4: a fixed direct-JAX Dense 1→2→1 square-activation network on SPU, with features, labels, activations, gradients, weights, predictions, and loss private by default. Its authoritative real CHEETAH/FM128 persistence/restart chain is verified on the bounded synthetic fixture.
-- Future FHE: OpenFHE Python bindings where practical; BFV/BGV for exact arithmetic and CKKS for approximate vector arithmetic. Not implemented.
+- Current M6 FHE: official OpenFHE Python 1.5.1.0.24.4 with exact BGV-RNS addition of two fixed four-integer ciphertext vectors. Lab A is the single private-key owner; the evaluator has only public material. Implementation is complete, but real CI validation is pending.
 - Future ZK: SP1 zkVM for realistic manifest, signature, commitment, policy, and output-authorization statements—not a false claim of proving full MPC training. Not implemented.
 - Post-quantum target: OpenSSL 3.5 or newer, ML-KEM, ML-DSA, and hybrid X25519 + ML-KEM-768 key establishment.
 - Artifact encryption: AES-256-GCM with random nonces and node-local 256-bit keys for M2.5. No plaintext key reaches another participant or the Control Plane. Production KMS/HSM integration remains future work.
@@ -72,11 +72,19 @@ Do not casually reorder this sequence or expand product scope without approval.
 
 ## Current milestone
 
+M6 Persistent FHE State Transition is implemented against dev commit
+`ad460f4d5a81d7c42aa32e46fbba492f1636bfdf`, independently of concurrent M5.
+It persists two OpenFHE BGV ciphertexts as `S5_fhe_inputs`, reloads them in a
+private-key-free evaluator, applies one authorized `EvalAdd`, persists
+`S6_fhe_sum`, and permits only a separately authorized Lab A/Lab B decryption.
+The official wheel, scheme parameters, key epoch/owner, public material, artifact
+digests, policy, code/workflow, lineage, and transition are committed. Real CI
+validation is pending; see docs/FHE_STATE_TRANSITION.md.
+
 M4 Persistent Private Neural Network is verified on the bounded synthetic Linux CHEETAH/FM128 fixture. It consumes S1 directly, persists exactly four final secret model tensors as S3, reloads S3 with S1 for exact multi-parent private evaluation, and persists one secret MSE scalar as S4. See docs/PRIVATE_NN.md. This does not make KryptRoom a general ML platform.
 
 M3 Persistent Private Cohort Analytics is verified on the synthetic Linux CHEETAH/FM128 fixture. It reuses S1's persisted share grids for exactly COUNT, SUM, MEAN and CROSS_MEAN, persists scalar artifacts in S2, and separates computation authorization from scalar reveal authorization. See docs/PRIVATE_ANALYTICS.md for exact bindings, numeric tolerance and acceptance evidence.
 
 Milestone 2.5 persists the validated M2 handoff as immutable RoomState S1. Each KryptNode encrypts its local SPU shares at rest with AES-256-GCM; authenticated-data bindings cover the room, state, artifact, party, and crypto-context identifiers. The Linux acceptance test terminated both node containers, loaded S1 in new containers through SecretFlow's native SPU share dump/load boundary, and ran a minimal private aggregate without remounting source CSVs. The verified result is specific to the synthetic fixture and current pinned runtime.
 
-The disclosure default remains deny. Cardinality may be released to Lab A, Lab B, and the UI. The synthetic M2.5 aggregate, explicitly opted-in M3 scalars, and M4 evaluation MSE are authorized only to the exact named participants. Matched identifiers, plaintext joined rows, model parameters, predictions, gradients, and activations remain forbidden. ML beyond the fixed M4 network, FHE, ZK, blockchain, frontend, branching/merge behavior, and dynamic membership remain out of scope.
-
+The disclosure default remains deny. Cardinality may be released to Lab A, Lab B, and the UI. The synthetic M2.5 aggregate, explicitly opted-in M3 scalars, M4 evaluation MSE, and M6 vector sum are authorized only to their exact named participants. Matched identifiers, plaintext joined rows, model parameters, predictions, gradients, and activations remain forbidden. ML beyond the fixed M4 network, FHE beyond the bounded M6 addition, threshold/multiparty FHE, ZK proof of FHE arithmetic, blockchain, frontend, branching/merge behavior, and dynamic membership remain out of scope.

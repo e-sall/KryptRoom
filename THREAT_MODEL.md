@@ -2,7 +2,7 @@
 
 ## Scope
 
-This document describes the runtime-verified M1 PSI-cardinality, M2 private-join, and M2.5 persistent encrypted RoomState paths. Verification covers the synthetic fixtures and pinned runtimes, not a general security audit.
+This document describes the runtime-verified M1 PSI-cardinality, M2 private-join, M2.5 persistent encrypted RoomState, M3 analytics, and M4 private-NN paths, plus the implemented M6 OpenFHE state transition whose real CI validation is pending. Verification covers bounded synthetic fixtures and pinned runtimes, not a general security audit.
 
 ## Assets
 
@@ -12,6 +12,7 @@ This document describes the runtime-verified M1 PSI-cardinality, M2 private-join
 - Job manifests, code/container identities, commitments, proofs, and RunReceipts.
 - Authorization policy describing which party may learn which output.
 - RoomState documents, local encryption keys, encrypted SPU shares, artifact bindings, and state commitments.
+- M6 OpenFHE public context/key material, participant ciphertexts, the Lab A private decryption key, key epoch, and ciphertext-state lineage.
 
 ## Trust boundaries
 
@@ -19,6 +20,7 @@ This document describes the runtime-verified M1 PSI-cardinality, M2 private-join
 - The network between KryptNodes is untrusted for confidentiality and integrity unless the protocol or a future authenticated transport provides those properties.
 - The planned Control Plane is assumed honest for coordination but untrusted with participant plaintext; it is absent from current demos.
 - Container images, host kernels, Docker daemons, operating systems, and third-party dependencies are supply-chain and execution trust dependencies.
+- In M6 V1, Lab A is trusted to keep the single OpenFHE private key inside its KryptNode and to use the reviewed reveal boundary. The ciphertext evaluator is not trusted with that key.
 
 ## Initial adversary model
 
@@ -64,6 +66,30 @@ M2 uses SecretFlow SPU CHEETAH with FM128. CHEETAH is selected over the initial 
 - Supply malformed, duplicate, or strategically chosen inputs.
 - Read accidentally committed artifacts or over-verbose logs.
 
+## Protected properties targeted by Milestone 6
+
+- Each participant's fixed four-integer fixture is encrypted locally with the
+  pinned OpenFHE BGV-RNS public key before it enters shared artifact storage.
+- `S5_fhe_inputs` contains only committed ciphertext descriptors, public crypto
+  context, policy, and transition metadata; it contains no plaintext vector or
+  private-key path.
+- The evaluator reloads the public context and two ciphertexts in a new process,
+  accepts no private-key argument, and executes exactly `EvalAdd` without
+  decryption or a plaintext-compute fallback.
+- The result remains an OpenFHE ciphertext in immutable child state
+  `S6_fhe_sum`. Parent lineage, input/output artifact commitments, policy,
+  context, key epoch, code, and workflow are transition-bound.
+- Artifact size and SHA-256 checks detect substitution before OpenFHE
+  deserialization. Wrong context/key epoch and unsafe or unavailable local URIs
+  fail closed.
+- Computation permission does not imply plaintext disclosure. Only the exact
+  `fhe.vector-sum` reveal to Lab A and Lab B permits the key owner boundary to
+  load the private key and decrypt.
+
+These properties remain pending real runtime validation. They do not prevent a
+malicious or compromised Lab A host from using its own private key outside the
+reviewed interface.
+
 ## Not yet protected
 
 M3 is verified on the synthetic Linux CHEETAH/FM128 fixture. It inherits the same two-party semi-honest model. Analytics operation/input authorization is separate from reveal authorization; wrong contexts and zero-cardinality means fail before computation. Only public ciphertext descriptors cross the metadata boundary. See [M3 details and limits](docs/PRIVATE_ANALYTICS.md).
@@ -83,6 +109,14 @@ M4 is verified on the bounded synthetic Linux fixture. Its tested boundary keeps
 - KMS/HSM-backed keys, key rotation, anti-rollback protection, and atomic commit or recovery across both node stores.
 - Authenticity of the unsigned SHA-256 RoomState commitment against a malicious node owner; signatures and receipts remain future work.
 - Regulatory compliance or suitability for real patient data.
+- Cryptographic enforcement of reveal policy against the M6 single key owner.
+- Threshold or multiparty FHE, distributed key generation, key shares, or
+  protection if Lab A and the evaluator collude.
+- Input authenticity, ciphertext provenance signatures, chosen-ciphertext
+  hardening beyond OpenFHE's supported interface, or ZK proof that `EvalAdd`
+  produced the committed child.
+- Arbitrary homomorphic programs, multiplication, bootstrapping, CKKS
+  approximation, encrypted neural networks, or production parameter tuning.
 
 ## Information leakage inherent to PSI cardinality
 
@@ -104,4 +138,14 @@ The honest-but-curious model assumes both peers run the reviewed binaries and ho
 - Terminate both create-phase containers, start new containers without source CSV mounts, verify S1 and its commitment, and reload all artifacts through `SPU.load`.
 - Execute the post-restart CHEETAH/FM128 aggregate and verify the synthetic expected result `68` at both participants.
 - Verify both nodes hold byte-identical public RoomState documents, distinct local keys, and no plaintext joined dataset or synthetic patient identifier in state metadata or logs.
-
+- Install the exact official OpenFHE 1.5.1.0.24.4 Ubuntu 24.04 wheel by its
+  recorded SHA-256 and record the actual generated ring dimension.
+- Execute real BGV encryption for both participant vectors, remove the plaintext
+  inputs, restart into a secret-key-free evaluator, reload committed artifacts,
+  execute `EvalAdd`, and persist a new child ciphertext/state.
+- Reject unauthorized operation and disclosure, input/output ciphertext
+  tampering, context/epoch mismatch, holder/path mismatch, and private-key
+  placement under any shared artifact root.
+- Reload the child state in a later process and verify the explicitly authorized
+  result `[16, 22, 26, 34]`; scan shared state/artifact storage for the private
+  key and canonical plaintext input encodings.

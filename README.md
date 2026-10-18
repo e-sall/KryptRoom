@@ -20,6 +20,8 @@ These results establish behavior for the tested fixtures and stated threat model
 
 **M4 — verified Persistent Private Neural Network.** M4 adds a fixed direct-JAX Dense 1→2→1 square-activation network over S1, persists its four secret parameter tensors as S3, and evaluates the reloaded model with S1 through an exact two-parent transition into secret MSE state S4. The [authoritative Linux run](https://github.com/e-sall/KryptRoom/actions/runs/38846097654) passed with MSE below 0.02 and no training value or model parameter reveal. See [the bounded M4 design and evidence](docs/PRIVATE_NN.md).
 
+**M6 — persistent FHE state transition, implemented / CI validation pending.** M6 persists two exact OpenFHE BGV-RNS ciphertext vectors as `S5_fhe_inputs`, reloads them in a secret-key-free evaluator, applies exactly one `EvalAdd`, and persists the child ciphertext as `S6_fhe_sum`. Lab A alone owns the private key; computation and the later Lab A/Lab B reveal are separate authorizations. See [the M6 design, gate, and limitations](docs/FHE_STATE_TRANSITION.md). This is not yet a verified claim until the real Linux OpenFHE job passes.
+
 ## Hero use case: cancer-research collaboration
 
 Lab A holds genomic features; Lab B holds clinical treatment-response information for an overlapping population. Each lab wants to study the overlap without handing patient identifiers or raw records to the other lab or a central operator.
@@ -27,11 +29,11 @@ Lab A holds genomic features; Lab B holds clinical treatment-response informatio
 The repository uses only small synthetic fixtures. M1 privately counts the overlap. M2 independently compares identifiers inside MPC and creates a secret-shared join; M1 does not export hidden matches into M2. The persistence layer is intended to keep that join available for later authorized computations.
 
 ```text
-Private Matching → Private Join → Persistent Encrypted State → Private Analytics → Private ML → Proof → Audit
-M1 verified        M2 verified    M2.5 verified                  M3 verified        M4 verified  Future  Future
+Private Matching → Private Join → Persistent State → Private Analytics / ML → FHE Transition → Proof / Audit
+M1 verified        M2 verified    M2.5 verified       M3/M4 verified          M6 pending       future
 ```
 
-The M2.5 aggregate is a narrow continuity test, not the general M3 analytics API. M4 is runtime-verified only for one deterministic bounded synthetic training/evaluation fixture. No real patient data, biomedical performance claim, FHE computation, ZK proof, or blockchain integration is included.
+The M2.5 aggregate is a narrow continuity test, not the general M3 analytics API. M4 is runtime-verified only for one deterministic bounded synthetic training/evaluation fixture. M6 is limited to exact four-element BGV ciphertext addition and remains pending real CI validation. No real patient data, biomedical performance claim, arbitrary FHE analytics, ZK proof on this branch, or blockchain integration is included.
 
 ## Architecture
 
@@ -93,6 +95,19 @@ docker compose -f compose.persistent-state.yml down
 
 The expected post-restart aggregate is `68`. The second phase has no source CSV mounts. State lives under ignored `.runtime/persistent-state/`; existing S1 files cannot be overwritten through the storage API. Keep these files and their keys private. Losing a node's key/share makes this demo state unrecoverable; there is no automated recovery procedure.
 
+M6 uses the official Ubuntu 24.04 OpenFHE Python wheel and therefore runs on
+Linux with Python 3.12. Its authoritative command is:
+
+```bash
+python -m pip install -r tests/fhe_state_transition/requirements.txt
+python -m pip install --require-hashes -r tests/fhe_state_transition/requirements-openfhe.txt
+python tests/fhe_state_transition/run_integration.py
+```
+
+The test creates all keys and ciphertexts in a temporary ignored directory and
+uploads none of them. It must not be run with production participant data or
+production keys.
+
 ## Security model
 
 The protocols assume participants follow the reviewed code. Matched identifiers are disclosed to neither participant by the authorized interfaces; future identifier disclosure requires explicit opt-in. Cardinality and other explicitly authorized aggregates can still reveal information through small or repeated queries. Public capacities, tensor shapes, and protocol traffic also disclose metadata.
@@ -101,18 +116,18 @@ Peer authentication, malicious security, host compromise resistance, signed stat
 
 ## Roadmap and repository guide
 
-M3 analytics and M4 persistent private NN training/evaluation are verified on their bounded synthetic fixtures. Later work remains unimplemented. See the [ordered roadmap](docs/ROADMAP.md) and [milestone checklist](TODO.md).
+M3 analytics and M4 persistent private NN training/evaluation are verified on their bounded synthetic fixtures. M6's narrow FHE transition is implemented and awaiting its real CI gate. See the [ordered roadmap](docs/ROADMAP.md) and [milestone checklist](TODO.md).
 
 - `nodes/krypt-node/`: participant PSI processes and local input boundary.
 - `engines/mpc/`: verified SPU join and persistent encrypted RoomState implementation.
 - `packages/manifests/`: job, policy, and RoomState schemas.
 - `demos/cancer-collaboration/`: synthetic fixtures and manifests.
 - `tests/` and `.github/workflows/`: integration, privacy, and reproducibility checks.
-- `services/`, `apps/`, `chain/`, and FHE/ZK engine directories: future component placeholders.
+- `engines/fhe/`: bounded M6 OpenFHE state-transition adapter and reveal boundary.
+- `services/`, `apps/`, `chain/`, and the ZK engine directory on this base: future component placeholders.
 
 [Project context](PROJECT_CONTEXT.md) preserves technical direction. [CONTRIBUTING.md](CONTRIBUTING.md) describes the review and evidence expectations.
 
 ## License status
 
 No project license has been selected. Public visibility does not by itself grant a general reuse license; dependency licenses remain their own. A license decision will be made explicitly before encouraging downstream adoption.
-

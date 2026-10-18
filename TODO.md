@@ -57,15 +57,25 @@
 - [x] Add M4 contract, privacy, persistence, restart, and regression test coverage.
 - [x] Execute and record the authoritative real CHEETAH/FM128 S1→S3→restart→S4→restart→reveal gate.
 
+## Milestone 6: persistent FHE state transition
+
+- [x] Select exact fixed-vector BGV addition as the bounded first FHE operation.
+- [x] Pin the official OpenFHE 1.5.1.0.24.4 Ubuntu 24.04 wheel by SHA-256.
+- [x] Extend RoomState contracts compatibly for `fhe_ciphertext` artifacts and FHE CryptoContext material.
+- [x] Keep the private decryption key in Lab A's participant-owned root and out of shared metadata/storage.
+- [x] Implement persisted `S5_fhe_inputs` → secret-key-free `EvalAdd` → persisted `S6_fhe_sum`.
+- [x] Separate FHE computation authorization from `fhe.vector-sum` decryption authorization.
+- [x] Add context/epoch, commitment, tampering, policy, lineage, leakage, and restart tests.
+- [ ] Pass and record the real Linux OpenFHE persistence/EvalAdd/decryption CI gate.
+
 ## Explicitly deferred
 
 - [ ] Choose project licensing terms before encouraging substantial third-party code contributions.
 - [ ] Confirm a private vulnerability-reporting channel in repository settings.
 
 - Analytics beyond COUNT/SUM/MEAN/CROSS_MEAN and ML beyond the fixed M4 network.
-- FHE analytics.
+- FHE analytics beyond the bounded M6 fixed-vector addition.
 - ZK proofs, post-quantum identity, and RunReceipts.
 - Blockchain anchoring.
 - Web frontend.
 - RoomState branch UI, merge implementation, and dynamic membership.
-

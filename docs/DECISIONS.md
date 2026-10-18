@@ -1,5 +1,37 @@
 # Architectural decisions
 
+## ADR-012 — Single-owner BGV ciphertext addition as the first FHE transition
+
+**Decision:** Implement M6 as exact element-wise addition of two fixed
+four-integer ciphertext vectors with the official OpenFHE Python 1.5.1.0.24.4
+Ubuntu 24.04 wheel. Use BGV-RNS, plaintext modulus 65537, multiplicative depth
+zero, batch size four, OpenFHE-selected `HEStd_128_classic` parameters, and
+binary serialization. Persist input state `S5_fhe_inputs` and child state
+`S6_fhe_sum`. Lab A is the sole private-key owner; the evaluator receives only
+digest-bound public context material and ciphertexts. Computation and final
+decryption use separate StatePolicy authorizations.
+
+**Reason:** Ciphertext addition validates persistence, restart/reload,
+CryptoContext binding, immutable lineage, policy separation, and a genuinely
+secret-key-free FHE computation without adding multiplication keys, approximate
+CKKS semantics, a generic analytics surface, or fake threshold cryptography.
+
+**Alternatives:** CKKS was rejected because the chosen operation is exact
+integer arithmetic. Decrypt-compute-reencrypt and ordinary at-rest encryption
+were rejected because neither is FHE. Threshold OpenFHE was deferred because it
+would materially expand the key protocol and is not required to validate the
+state-machine boundary. A general operator framework was rejected as premature.
+
+**Consequences:** Lab A can decrypt any ciphertext under its key outside the
+reviewed interface, so this does not enforce policy against a malicious key
+owner. The fixed vector length, key epoch, scheme, exact parameters, public
+material hashes, artifact hashes, code/workflow hashes, and output transition
+are committed. There is no multiplication, arbitrary program, threshold key,
+production KMS, input signature, side-channel defense, or ZK proof of EvalAdd.
+
+**Status:** Accepted and implemented. Runtime verification remains pending until
+the real Linux OpenFHE CI gate passes; see [M6 evidence](FHE_STATE_TRANSITION.md).
+
 ## ADR-011 — Persistent private NN model and exact multi-parent evaluation
 
 **Decision:** Train one fixed direct-JAX Dense 1→2, square, Dense 2→1 network directly from S1 under CHEETAH/FM128. Use public deterministic SHA-256 initialization, four full-batch gradient-descent steps, and secret masked MSE. Persist only four final secret parameter tensors in S3. After runtime destruction, evaluate by loading exact parents `[S3_model, S1]`, persist only secret MSE in S4, and reuse RevealService for the sole `model.evaluation.mse` disclosure.
@@ -117,4 +149,3 @@
 **Consequences:** The current demo key is a permission-restricted local file inside each node's state root. Production KMS/HSM integration, key rotation, backup policy, rollback protection, and crash-atomic multi-party commit are deferred. AES-GCM protects encrypted artifact confidentiality and authenticity against storage readers without the key; it does not protect a compromised running host.
 
 **Status:** Accepted and runtime-verified on the synthetic Linux restart/reload fixture.
-

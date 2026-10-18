@@ -149,3 +149,4 @@ The honest-but-curious model assumes both peers run the reviewed binaries and ho
 - Reload the child state in a later process and verify the explicitly authorized
   result `[16, 22, 26, 34]`; scan shared state/artifact storage for the private
   key and canonical plaintext input encodings.
+

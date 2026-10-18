@@ -71,3 +71,4 @@ All notable project changes are recorded here. The project follows milestone-ori
 - Twenty-eight local unit, privacy, integration, and reproducibility tests pass for M1, M2, and the M2.5 contracts.
 - The Linux M2.5 cryptographic integration created encrypted RoomState S1, terminated both nodes, restarted without source-input mounts, reloaded the persisted SPU shares, returned the authorized synthetic aggregate `68` through CHEETAH/FM128, and passed privacy/storage checks.
 - Public-repository pass (2026-10-13): all 28 tests and the real PSI demo passed with local networking permitted; documentation links and ignore rules checked. No runtime, workflow, or test implementation changed. Docker was unavailable locally, so SPU was not re-executed in this pass.
+

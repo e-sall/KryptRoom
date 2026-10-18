@@ -99,3 +99,4 @@ single-owner-key prototype, not threshold or multiparty FHE. See
 ## Current non-goals
 
 The current milestone does not implement general-purpose private ML, private inference APIs, model export, optimizer checkpoints, ML beyond the fixed M4 network, FHE beyond one four-element BGV `EvalAdd`, threshold/multiparty FHE, ZK proof of the FHE arithmetic, blockchain, a frontend, branch/merge operations, dynamic membership, post-quantum identity, real medical data, production key management, or a production Control Plane.
+

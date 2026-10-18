@@ -149,3 +149,4 @@ the real Linux OpenFHE CI gate passes; see [M6 evidence](FHE_STATE_TRANSITION.md
 **Consequences:** The current demo key is a permission-restricted local file inside each node's state root. Production KMS/HSM integration, key rotation, backup policy, rollback protection, and crash-atomic multi-party commit are deferred. AES-GCM protects encrypted artifact confidentiality and authenticity against storage readers without the key; it does not protect a compromised running host.
 
 **Status:** Accepted and runtime-verified on the synthetic Linux restart/reload fixture.
+

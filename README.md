@@ -131,3 +131,4 @@ M3 analytics and M4 persistent private NN training/evaluation are verified on th
 ## License status
 
 No project license has been selected. Public visibility does not by itself grant a general reuse license; dependency licenses remain their own. A license decision will be made explicitly before encouraging downstream adoption.
+

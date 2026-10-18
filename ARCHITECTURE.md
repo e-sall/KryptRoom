@@ -2,7 +2,7 @@
 
 ## Current implemented state
 
-KryptRoom has runtime-verified M1 PSI cardinality, M2 two-container SPU private join, M2.5 persistent encrypted RoomState paths, M3 persistent private analytics, and bounded M4 persistent private NN training/evaluation. M6 adds a bounded persistent OpenFHE BGV ciphertext-addition path; real CI validation is pending.
+KryptRoom has runtime-verified M1 PSI cardinality, M2 two-container SPU private join, M2.5 persistent encrypted RoomState paths, M3 persistent private analytics, bounded M4 persistent private NN training/evaluation, and bounded M6 persistent OpenFHE BGV ciphertext addition.
 
 ## Target system boundary
 
@@ -84,6 +84,12 @@ artifacts and requests no reveals. A separate `FHERevealService` authorizes only
 `fhe.vector-sum` to Lab A and Lab B before reading the private key. This is a
 single-owner-key prototype, not threshold or multiparty FHE. See
 [the complete M6 design](docs/FHE_STATE_TRANSITION.md).
+
+Status: verified on the bounded synthetic Linux fixture in the
+[authoritative OpenFHE run](https://github.com/e-sall/KryptRoom/actions/runs/39155437292),
+including process restart/reload, real `EvalAdd`, immutable child persistence,
+pre-decryption policy denial, authorized exact decryption, and ciphertext
+tamper detection.
 
 - `apps/web`: future user interface; intentionally empty during PSI work.
 - `services/control-api`: future metadata and room API.

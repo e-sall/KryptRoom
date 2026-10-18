@@ -20,7 +20,7 @@ These results establish behavior for the tested fixtures and stated threat model
 
 **M4 — verified Persistent Private Neural Network.** M4 adds a fixed direct-JAX Dense 1→2→1 square-activation network over S1, persists its four secret parameter tensors as S3, and evaluates the reloaded model with S1 through an exact two-parent transition into secret MSE state S4. The [authoritative Linux run](https://github.com/e-sall/KryptRoom/actions/runs/38846097654) passed with MSE below 0.02 and no training value or model parameter reveal. See [the bounded M4 design and evidence](docs/PRIVATE_NN.md).
 
-**M6 — persistent FHE state transition, implemented / CI validation pending.** M6 persists two exact OpenFHE BGV-RNS ciphertext vectors as `S5_fhe_inputs`, reloads them in a secret-key-free evaluator, applies exactly one `EvalAdd`, and persists the child ciphertext as `S6_fhe_sum`. Lab A alone owns the private key; computation and the later Lab A/Lab B reveal are separate authorizations. See [the M6 design, gate, and limitations](docs/FHE_STATE_TRANSITION.md). This is not yet a verified claim until the real Linux OpenFHE job passes.
+**M6 — verified persistent FHE state transition.** M6 persists two exact OpenFHE BGV-RNS ciphertext vectors as `S5_fhe_inputs`, reloads them in a secret-key-free evaluator, applies exactly one `EvalAdd`, and persists the child ciphertext as `S6_fhe_sum`. Lab A alone owns the private key; computation and the later Lab A/Lab B reveal are separate authorizations. The [authoritative Linux run](https://github.com/e-sall/KryptRoom/actions/runs/39155437292) reloaded real ciphertexts, produced `[16, 22, 26, 34]`, rejected unauthorized operations/reveals and tampering, and passed without persisting plaintext intermediates or placing the private key in the Control Plane. See [the M6 design, evidence, and limitations](docs/FHE_STATE_TRANSITION.md).
 
 ## Hero use case: cancer-research collaboration
 
@@ -30,10 +30,10 @@ The repository uses only small synthetic fixtures. M1 privately counts the overl
 
 ```text
 Private Matching → Private Join → Persistent State → Private Analytics / ML → FHE Transition → Proof / Audit
-M1 verified        M2 verified    M2.5 verified       M3/M4 verified          M6 pending       future
+M1 verified        M2 verified    M2.5 verified       M3/M4 verified          M6 verified      future
 ```
 
-The M2.5 aggregate is a narrow continuity test, not the general M3 analytics API. M4 is runtime-verified only for one deterministic bounded synthetic training/evaluation fixture. M6 is limited to exact four-element BGV ciphertext addition and remains pending real CI validation. No real patient data, biomedical performance claim, arbitrary FHE analytics, ZK proof on this branch, or blockchain integration is included.
+The M2.5 aggregate is a narrow continuity test, not the general M3 analytics API. M4 is runtime-verified only for one deterministic bounded synthetic training/evaluation fixture. M6 is runtime-verified only for exact four-element BGV ciphertext addition. No real patient data, biomedical performance claim, arbitrary FHE analytics, ZK proof on this branch, or blockchain integration is included.
 
 ## Architecture
 
@@ -116,7 +116,7 @@ Peer authentication, malicious security, host compromise resistance, signed stat
 
 ## Roadmap and repository guide
 
-M3 analytics and M4 persistent private NN training/evaluation are verified on their bounded synthetic fixtures. M6's narrow FHE transition is implemented and awaiting its real CI gate. See the [ordered roadmap](docs/ROADMAP.md) and [milestone checklist](TODO.md).
+M3 analytics, M4 persistent private NN training/evaluation, and M6's narrow FHE transition are verified on their bounded synthetic fixtures. See the [ordered roadmap](docs/ROADMAP.md) and [milestone checklist](TODO.md).
 
 - `nodes/krypt-node/`: participant PSI processes and local input boundary.
 - `engines/mpc/`: verified SPU join and persistent encrypted RoomState implementation.

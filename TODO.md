@@ -66,7 +66,7 @@
 - [x] Implement persisted `S5_fhe_inputs` → secret-key-free `EvalAdd` → persisted `S6_fhe_sum`.
 - [x] Separate FHE computation authorization from `fhe.vector-sum` decryption authorization.
 - [x] Add context/epoch, commitment, tampering, policy, lineage, leakage, and restart tests.
-- [ ] Pass and record the real Linux OpenFHE persistence/EvalAdd/decryption CI gate.
+- [x] Pass and record the real Linux OpenFHE persistence/EvalAdd/decryption CI gate.
 
 ## Explicitly deferred
 

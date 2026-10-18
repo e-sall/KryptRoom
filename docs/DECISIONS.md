@@ -29,8 +29,8 @@ material hashes, artifact hashes, code/workflow hashes, and output transition
 are committed. There is no multiplication, arbitrary program, threshold key,
 production KMS, input signature, side-channel defense, or ZK proof of EvalAdd.
 
-**Status:** Accepted and implemented. Runtime verification remains pending until
-the real Linux OpenFHE CI gate passes; see [M6 evidence](FHE_STATE_TRANSITION.md).
+**Status:** Accepted, implemented, and runtime-verified on the bounded synthetic
+Linux OpenFHE fixture; see [M6 evidence](FHE_STATE_TRANSITION.md).
 
 ## ADR-011 — Persistent private NN model and exact multi-parent evaluation
 

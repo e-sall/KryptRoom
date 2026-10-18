@@ -6,7 +6,7 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Added
 
-- M6 exact OpenFHE BGV-RNS ciphertext addition from persistent `S5_fhe_inputs` to immutable `S6_fhe_sum`, with a secret-key-free evaluator and separate policy-controlled reveal. Status: implemented; real Linux/OpenFHE CI validation pending.
+- M6 exact OpenFHE BGV-RNS ciphertext addition from persistent `S5_fhe_inputs` to immutable `S6_fhe_sum`, with a secret-key-free evaluator and separate policy-controlled reveal. Status: verified on the bounded synthetic Linux fixture.
 - FHE-compatible optional RoomState fields, `fhe_ciphertext` ArtifactRefs, digest-bound public material, key epoch/owner metadata, strict artifact resolution, tamper checks, privacy tests, and an authoritative real OpenFHE gate.
 
 - M4 fixed direct-JAX Dense 1→2→1 square-activation training over persisted S1, encrypted final model persistence in S3, exact `[S3_model, S1]` private evaluation into secret MSE state S4, and MSE-only policy-controlled disclosure. Status: verified on the bounded synthetic fixture.
@@ -57,6 +57,9 @@ All notable project changes are recorded here. The project follows milestone-ori
 - Enforced default-deny state disclosure, create-exclusive immutable state files, per-node encryption keys, and explicit authorization for every reconstruction.
 
 ### Verified
+
+- M6 Linux CI installed the hash-pinned official OpenFHE 1.5.1.0.24.4 wheel, reloaded two persisted BGV-RNS ciphertexts in a secret-key-free evaluator, executed real `EvalAdd`, persisted and reloaded `S6_fhe_sum`, rejected unauthorized operations/reveals and tampering, and authorized only `[16, 22, 26, 34]` to Lab A and Lab B. Shared storage contained neither the private key nor the plaintext input encodings. Evidence: https://github.com/e-sall/KryptRoom/actions/runs/39155437292.
+- All M1, M2, M2.5, M3, and M4 regression workflows passed on the same M6 head.
 
 - M4 Linux CI passed real M2/S1 creation, source deletion, JAX 0.4.26 autodiff training under CHEETAH/FM128, encrypted S3 persistence/restart, exact S3+S1 evaluation into encrypted S4, another restart, two pre-load disclosure denials, and authorized MSE below 0.02. S1/S3 stayed immutable and no plaintext join was materialized. Evidence: https://github.com/e-sall/KryptRoom/actions/runs/38846097654.
 - The authoritative M4 scenario completed in 35.091 seconds; all M1/M2/M2.5/M3 regressions on the same head passed.

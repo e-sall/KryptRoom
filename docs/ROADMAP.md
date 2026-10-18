@@ -16,7 +16,7 @@ Roadmap items are ordered dependencies, not parallel feature invitations.
 7. MPC private analytics that consume and evolve RoomStates using SecretFlow SPU.
 8. Small fixed direct-JAX neural network trained and evaluated with MPC (M4 verified on bounded synthetic fixture).
 9. Treatment-response prediction and gradient-based feature importance.
-10. First real OpenFHE encrypted state transition: exact fixed-vector BGV addition (M6 implemented; real CI validation pending).
+10. First real OpenFHE encrypted state transition: exact fixed-vector BGV addition (M6 verified on the bounded synthetic fixture).
 
 ## Verifiability and provenance
 
@@ -39,10 +39,10 @@ M4 Persistent Private Neural Network passed its authoritative Linux gate: real S
 M6 Persistent FHE State Transition is implemented as exact OpenFHE BGV addition
 from `S5_fhe_inputs` to `S6_fhe_sum`, with participant-owned private key,
 secret-key-free evaluation, persisted ciphertexts, committed context/artifacts,
-and separate computation/reveal authorization. It is not verified until the
-real Linux gate passes. See [the gate and limitations](FHE_STATE_TRANSITION.md).
+and separate computation/reveal authorization. The real Linux gate passed on
+the bounded synthetic fixture. See [the evidence and limitations](FHE_STATE_TRANSITION.md).
 
 No milestone advances merely because source code exists. A gate requires executed tests, documented runtime evidence, updated threat-model limitations, and security claims that match the evidence.
 
-Milestones 1, 2, 2.5, 3 and 4 are runtime-verified on their bounded synthetic fixtures. M4 additionally evolves S1 into secret model S3, reloads it with S1 for multi-parent evaluation into secret S4, and validates fail-closed disclosure plus authorized MSE under CHEETAH/FM128. M6 remains implemented / pending real OpenFHE CI validation.
+Milestones 1, 2, 2.5, 3, 4 and 6 are runtime-verified on their bounded synthetic fixtures. M4 additionally evolves S1 into secret model S3, reloads it with S1 for multi-parent evaluation into secret S4, and validates fail-closed disclosure plus authorized MSE under CHEETAH/FM128. M6 reloads persisted BGV-RNS ciphertexts, executes real secret-key-free `EvalAdd`, persists and reloads the child ciphertext, and separates computation from authorized decryption.
 

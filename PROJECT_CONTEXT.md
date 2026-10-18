@@ -26,7 +26,7 @@ M1, M2, and M2.5 are runtime-verified on synthetic fixtures. The Control Plane, 
 - Current PSI: OpenMined PSI v2.0.6, exact ECDH cardinality-only mode. ADR-006 supersedes the original SecretFlow RR22 plan because that interface reveals identifiers to its receiver.
 - Current MPC: SecretFlow SPU with JAX; CHEETAH/FM128, two parties, honest-but-curious. CHEETAH avoids SEMI2K's trusted-first-party default.
 - Current M4: a fixed direct-JAX Dense 1→2→1 square-activation network on SPU, with features, labels, activations, gradients, weights, predictions, and loss private by default. Its authoritative real CHEETAH/FM128 persistence/restart chain is verified on the bounded synthetic fixture.
-- Current M6 FHE: official OpenFHE Python 1.5.1.0.24.4 with exact BGV-RNS addition of two fixed four-integer ciphertext vectors. Lab A is the single private-key owner; the evaluator has only public material. Implementation is complete, but real CI validation is pending.
+- Current M6 FHE: verified official OpenFHE Python 1.5.1.0.24.4 with exact BGV-RNS addition of two fixed four-integer ciphertext vectors. Lab A is the single private-key owner; the evaluator has only public material. The bounded restart/reload, `EvalAdd`, persistence, policy, authorized-reveal, tamper, and leakage acceptance chain passed in Linux CI.
 - Future ZK: SP1 zkVM for realistic manifest, signature, commitment, policy, and output-authorization statements—not a false claim of proving full MPC training. Not implemented.
 - Post-quantum target: OpenSSL 3.5 or newer, ML-KEM, ML-DSA, and hybrid X25519 + ML-KEM-768 key establishment.
 - Artifact encryption: AES-256-GCM with random nonces and node-local 256-bit keys for M2.5. No plaintext key reaches another participant or the Control Plane. Production KMS/HSM integration remains future work.
@@ -78,8 +78,8 @@ It persists two OpenFHE BGV ciphertexts as `S5_fhe_inputs`, reloads them in a
 private-key-free evaluator, applies one authorized `EvalAdd`, persists
 `S6_fhe_sum`, and permits only a separately authorized Lab A/Lab B decryption.
 The official wheel, scheme parameters, key epoch/owner, public material, artifact
-digests, policy, code/workflow, lineage, and transition are committed. Real CI
-validation is pending; see docs/FHE_STATE_TRANSITION.md.
+digests, policy, code/workflow, lineage, and transition are committed. The real
+Linux OpenFHE gate passed; see docs/FHE_STATE_TRANSITION.md.
 
 M4 Persistent Private Neural Network is verified on the bounded synthetic Linux CHEETAH/FM128 fixture. It consumes S1 directly, persists exactly four final secret model tensors as S3, reloads S3 with S1 for exact multi-parent private evaluation, and persists one secret MSE scalar as S4. See docs/PRIVATE_NN.md. This does not make KryptRoom a general ML platform.
 

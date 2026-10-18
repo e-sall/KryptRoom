@@ -2,10 +2,10 @@
 
 ## Status
 
-**Implemented; real Linux/OpenFHE CI validation pending.** Source-only and contract
-tests are not sufficient to call M6 verified. The authoritative gate is
-`.github/workflows/fhe-state-transition.yml` and must complete its real
-`M6 real persistent OpenFHE BGV` job before this status changes.
+**Verified on the bounded synthetic Linux fixture.** The authoritative
+[`M6 real persistent OpenFHE BGV` run](https://github.com/e-sall/KryptRoom/actions/runs/39155437292)
+installed the hash-pinned official wheel and passed the complete persistence,
+restart, real `EvalAdd`, policy, reveal, tamper, and leakage acceptance chain.
 
 M6 is based on `dev` commit
 `ad460f4d5a81d7c42aa32e46fbba492f1636bfdf`. It does not depend on the
@@ -97,7 +97,7 @@ before reconstruction.
 
 ## Acceptance chain
 
-The real CI test must show all of the following in separate processes:
+The real CI test showed all of the following in separate processes:
 
 1. generate a real BGV context and Lab A key pair;
 2. encrypt one participant-local vector for each lab;
@@ -115,7 +115,7 @@ The real CI test must show all of the following in separate processes:
 
 ## Guarantees and non-guarantees
 
-When the real gate passes, M6 demonstrates a persisted OpenFHE ciphertext state,
+The passing real gate demonstrates a persisted OpenFHE ciphertext state,
 secret-key-free homomorphic addition, a new committed ciphertext state, restart
 continuity, tamper-detecting descriptor checks, context/key-epoch binding, and a
 separate authorized decryption boundary for the bounded fixture.

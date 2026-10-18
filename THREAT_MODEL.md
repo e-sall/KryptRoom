@@ -2,7 +2,7 @@
 
 ## Scope
 
-This document describes the runtime-verified M1 PSI-cardinality, M2 private-join, M2.5 persistent encrypted RoomState, M3 analytics, and M4 private-NN paths, plus the implemented M6 OpenFHE state transition whose real CI validation is pending. Verification covers bounded synthetic fixtures and pinned runtimes, not a general security audit.
+This document describes the runtime-verified M1 PSI-cardinality, M2 private-join, M2.5 persistent encrypted RoomState, M3 analytics, M4 private-NN, and M6 OpenFHE state-transition paths. Verification covers bounded synthetic fixtures and pinned runtimes, not a general security audit.
 
 ## Assets
 
@@ -86,7 +86,7 @@ M2 uses SecretFlow SPU CHEETAH with FM128. CHEETAH is selected over the initial 
   `fhe.vector-sum` reveal to Lab A and Lab B permits the key owner boundary to
   load the private key and decrypt.
 
-These properties remain pending real runtime validation. They do not prevent a
+These properties passed the bounded real OpenFHE runtime gate. They do not prevent a
 malicious or compromised Lab A host from using its own private key outside the
 reviewed interface.
 

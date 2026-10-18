@@ -20,16 +20,19 @@ These results establish behavior for the tested fixtures and stated threat model
 
 **M4 — verified Persistent Private Neural Network.** M4 adds a fixed direct-JAX Dense 1→2→1 square-activation network over S1, persists its four secret parameter tensors as S3, and evaluates the reloaded model with S1 through an exact two-parent transition into secret MSE state S4. The [authoritative Linux run](https://github.com/e-sall/KryptRoom/actions/runs/38846097654) passed with MSE below 0.02 and no training value or model parameter reveal. See [the bounded M4 design and evidence](docs/PRIVATE_NN.md).
 
+**M5 — VERIFIED committed state-transition proof.** [Authoritative GitHub Actions](https://github.com/e-sall/KryptRoom/actions/runs/38922127315) generated and independently verified a real SP1 6.9.0 CPU Groth16 proof, exercised the invalid-relation and public-tampering negatives, deleted the witness, and passed the no-secret-payload/leakage checks. See [the M5 validation report](docs/M5_VALIDATION.md).
+
 ## Hero use case: cancer-research collaboration
 
-M5 committed state-transition proof is **implemented / pending real SP1 Groth16 validation**.
-Two hosted CPU attempts stopped with runner shutdown (exit 143) under measured
-memory/swap pressure; no final proof or standalone-verification success is claimed.
-See the [M5 validation report](docs/M5_VALIDATION.md) for evidence and runner requirements.
-It covers lineage, artifact, authorization and commitment consistency for one M4
-evaluation. The M5 proof does not prove correctness of the underlying
-SecretFlow/CHEETAH computation or the numerical evaluation result. It does not
-establish participant cryptographic approval/signatures. See [scope and validation](docs/STATE_PROOF.md).
+KryptRoom can generate an independently verifiable zero-knowledge proof that a
+committed model-evaluation state transition is consistent with its committed
+lineage, artifact bindings, authorization policy, cryptographic context, and
+child-state commitment without exposing the underlying collaborative data.
+
+The M5 proof does not prove correctness of the underlying SecretFlow/CHEETAH
+computation or the numerical evaluation result. It does not establish participant
+cryptographic approval/signatures or malicious security. See
+[scope and validation](docs/STATE_PROOF.md).
 
 Lab A holds genomic features; Lab B holds clinical treatment-response information for an overlapping population. Each lab wants to study the overlap without handing patient identifiers or raw records to the other lab or a central operator.
 
@@ -37,10 +40,10 @@ The repository uses only small synthetic fixtures. M1 privately counts the overl
 
 ```text
 Private Matching → Private Join → Persistent Encrypted State → Private Analytics → Private ML → Proof → Audit
-M1 verified        M2 verified    M2.5 verified                  M3 verified        M4 verified  Future  Future
+M1 verified        M2 verified    M2.5 verified                  M3 verified        M4 verified  M5 verified  Future
 ```
 
-The M2.5 aggregate is a narrow continuity test, not the general M3 analytics API. M4 is runtime-verified only for one deterministic bounded synthetic training/evaluation fixture. No real patient data, biomedical performance claim, FHE computation, or blockchain integration is included. M5's bounded metadata-proof implementation remains subject to its real Groth16 validation gate.
+The M2.5 aggregate is a narrow continuity test, not the general M3 analytics API. M4 is runtime-verified only for one deterministic bounded synthetic training/evaluation fixture. No real patient data, biomedical performance claim, FHE computation, or blockchain integration is included. M5 is verified only for its bounded committed metadata relation and stated threat model.
 
 ## Architecture
 
@@ -110,14 +113,14 @@ Peer authentication, malicious security, host compromise resistance, signed stat
 
 ## Roadmap and repository guide
 
-M3 analytics and M4 persistent private NN training/evaluation are verified on their bounded synthetic fixtures. Later work remains unimplemented. See the [ordered roadmap](docs/ROADMAP.md) and [milestone checklist](TODO.md).
+M3 analytics, M4 persistent private NN training/evaluation, and the bounded M5 committed state-transition proof are verified on their synthetic fixtures. Later work remains unimplemented. See the [ordered roadmap](docs/ROADMAP.md) and [milestone checklist](TODO.md).
 
 - `nodes/krypt-node/`: participant PSI processes and local input boundary.
 - `engines/mpc/`: verified SPU join and persistent encrypted RoomState implementation.
 - `packages/manifests/`: job, policy, and RoomState schemas.
 - `demos/cancer-collaboration/`: synthetic fixtures and manifests.
 - `tests/` and `.github/workflows/`: integration, privacy, and reproducibility checks.
-- `engines/zk/`: bounded M5 metadata-proof implementation, pending real Groth16 validation.
+- `engines/zk/`: verified bounded M5 SP1 6.9.0 CPU Groth16 metadata-proof implementation.
 - `services/`, `apps/`, `chain/`, and FHE engine directories: future component placeholders.
 
 [Project context](PROJECT_CONTEXT.md) preserves technical direction. [CONTRIBUTING.md](CONTRIBUTING.md) describes the review and evidence expectations.

@@ -61,12 +61,12 @@
 
 - [x] Implement the bounded SP1 relation, receipt/StateProof schemas and standalone verifier.
 - [x] Add metadata-only fixtures, cross-language vectors and negative/privacy checks.
-- [ ] Pass real CPU Groth16 generation and independent verification in Linux CI.
+- [x] Pass real SP1 6.9.0 CPU Groth16 generation and independent verification in Linux CI.
 
-Status: implemented / pending real SP1 Groth16 validation.
-Two hosted attempts ended with runner shutdown under measured memory/swap
-pressure. Provide isolated runner capacity and rerun the unchanged real gate;
-see [M5 validation](docs/M5_VALIDATION.md). Do not mark complete from guest tests alone.
+Status: **M5 VERIFIED**. The unchanged real gate passed on a temporary
+repository-scoped one-job WSL2 runner after two preserved historical hosted-runner
+shutdowns. See [M5 validation](docs/M5_VALIDATION.md). The result covers only the
+bounded committed metadata relation; M6 has not started.
 
 ## Explicitly deferred
 

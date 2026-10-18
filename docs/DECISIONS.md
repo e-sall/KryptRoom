@@ -12,14 +12,15 @@ ciphertext descriptors; M4's independent regression tests actual MPC execution.
 Do not claim computation correctness or participant approval. Signatures remain
 deferred to M5.1. Status and limits: STATE_PROOF.md.
 
-**Validation status:** Implemented, not Groth16-validated. Two hosted attempts
-passed native contracts and real guest tests, then received runner shutdown
-signal 143 under measured memory/swap pressure. OOM is not confirmed. Keep the
-real CPU proof/standalone-verification gate unchanged; do not substitute mock,
-network proving, execution-only success or weaker claims. Official SP1 trace
-memory controls are allowed scheduling options, not weakened verification.
-Provide an isolated pre-provisioned Linux runner through `KRYPTROOM_M5_RUNNER`
-if needed; no capacity is provisioned automatically. See [measurements](M5_VALIDATION.md).
+**Validation status:** M5 VERIFIED. After two preserved hosted-runner shutdowns,
+the unchanged gate passed on a temporary repository-scoped, unique-label,
+ephemeral WSL2 runner: real SP1 6.9.0 CPU Groth16 generation, persisted public
+proof bundle, standalone verification, negatives and leakage checks. The runner
+was one-job only and deregistered automatically. Keep the real CPU
+proof/standalone-verification gate unchanged; do not substitute mock, network
+proving, execution-only success or weaker claims. `KRYPTROOM_M5_RUNNER` names
+optional pre-provisioned infrastructure; it changes no proof semantics. See
+[measurements](M5_VALIDATION.md).
 
 ## ADR-011 — Persistent private NN model and exact multi-parent evaluation
 

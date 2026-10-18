@@ -2,7 +2,7 @@
 
 ## Current implemented state
 
-KryptRoom has runtime-verified M1 PSI cardinality, M2 two-container SPU private join, M2.5 persistent encrypted RoomState paths, M3 persistent private analytics, and bounded M4 persistent private NN training/evaluation.
+KryptRoom has runtime-verified M1 PSI cardinality, M2 two-container SPU private join, M2.5 persistent encrypted RoomState paths, M3 persistent private analytics, bounded M4 persistent private NN training/evaluation, and the bounded M5 SP1 committed state-transition proof.
 
 ## Target system boundary
 
@@ -77,9 +77,11 @@ M4 is a sibling transition from S1, not a child of S2. Training produces immutab
 ## Current non-goals
 
 M5 adds external TransitionReceipt/StateProof for exact `[S3_model, S1]` evaluation
-lineage, authorization and commitments. Status: implemented / pending real SP1
-Groth16 validation. Full policy/context/holder metadata stays in the private witness.
-S4 is unchanged. MPC arithmetic/execution is not proved. See docs/STATE_PROOF.md.
+lineage, authorization and commitments. Status: **M5 VERIFIED** by real SP1 6.9.0
+CPU Groth16 generation and independent verification in GitHub Actions. Full
+policy/context/holder metadata stays in the private witness. S4 is unchanged.
+SecretFlow/CHEETAH execution, MPC arithmetic and numeric MSE are not proved. See
+docs/STATE_PROOF.md.
 
 The current milestone does not implement general-purpose private ML, private inference APIs, model export, optimizer checkpoints, ML beyond the fixed M4 network, FHE, proofs beyond M5's bounded metadata relation, blockchain, a frontend, branch/merge operations, dynamic membership, post-quantum identity, real medical data, production key management, or a production Control Plane.
 

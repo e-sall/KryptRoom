@@ -10,7 +10,7 @@ The long-term workflow is private schema mapping, matching, deduplication, quali
 
 ## Approved architecture (target and implementation boundaries)
 
-M1, M2, and M2.5 are runtime-verified on synthetic fixtures. The Control Plane, node identity, signatures, proofs, and production job orchestration below are architectural targets, not deployed capabilities. See ARCHITECTURE.md for the current runtime boundary.
+M1 through M5 are runtime-verified on bounded synthetic fixtures. The Control Plane, node identity, signatures, production proof lifecycle, and production job orchestration below are architectural targets, not deployed capabilities. See ARCHITECTURE.md for the current runtime boundary.
 
 - A KryptRoom Control Plane coordinates metadata and authorized artifacts but is not trusted with participant raw data.
 - Every organization runs its own KryptNode.
@@ -27,7 +27,7 @@ M1, M2, and M2.5 are runtime-verified on synthetic fixtures. The Control Plane, 
 - Current MPC: SecretFlow SPU with JAX; CHEETAH/FM128, two parties, honest-but-curious. CHEETAH avoids SEMI2K's trusted-first-party default.
 - Current M4: a fixed direct-JAX Dense 1→2→1 square-activation network on SPU, with features, labels, activations, gradients, weights, predictions, and loss private by default. Its authoritative real CHEETAH/FM128 persistence/restart chain is verified on the bounded synthetic fixture.
 - Future FHE: OpenFHE Python bindings where practical; BFV/BGV for exact arithmetic and CKKS for approximate vector arithmetic. Not implemented.
-- Current M5 ZK implementation: bounded SP1 committed model-evaluation metadata proof; pending real Groth16 validation. It does not prove MPC arithmetic or participant signatures. Broader proof scope remains future work.
+- Current M5 ZK implementation: verified bounded SP1 6.9.0 CPU Groth16 committed model-evaluation metadata proof. It does not prove MPC arithmetic, SecretFlow/CHEETAH correctness, numeric MSE, participant signatures, or malicious security. Broader proof scope remains future work.
 - Post-quantum target: OpenSSL 3.5 or newer, ML-KEM, ML-DSA, and hybrid X25519 + ML-KEM-768 key establishment.
 - Artifact encryption: AES-256-GCM with random nonces and node-local 256-bit keys for M2.5. No plaintext key reaches another participant or the Control Plane. Production KMS/HSM integration remains future work.
 - Audit target: chain-agnostic `BlockchainAnchor`, initially Base Sepolia, storing commitments and provenance only.
@@ -72,12 +72,13 @@ Do not casually reorder this sequence or expand product scope without approval.
 
 ## Current milestone
 
-M5 committed state-transition proof is implemented / pending real SP1 Groth16 validation.
-Real guest tests pass, but two hosted proof-stage attempts stopped with runner
-shutdown under measured memory/swap pressure. No final proof or independent
-verification success is claimed; see `docs/M5_VALIDATION.md`.
+M5 committed state-transition proof is **VERIFIED** for its bounded synthetic
+relation. Authoritative GitHub Actions generated a real SP1 6.9.0 CPU Groth16
+proof, independently verified it from public artifacts, passed negative and
+leakage checks, and deleted the witness; see `docs/M5_VALIDATION.md`.
 Its statement covers metadata consistency for one M4 evaluation, not MPC execution,
-numeric MSE or participant signatures. StateProof is external to S4. See docs/STATE_PROOF.md.
+SecretFlow/CHEETAH correctness, numeric MSE, participant signatures, or malicious
+security. StateProof is external to S4. See docs/STATE_PROOF.md. M6 has not started.
 
 M4 Persistent Private Neural Network is verified on the bounded synthetic Linux CHEETAH/FM128 fixture. It consumes S1 directly, persists exactly four final secret model tensors as S3, reloads S3 with S1 for exact multi-parent private evaluation, and persists one secret MSE scalar as S4. See docs/PRIVATE_NN.md. This does not make KryptRoom a general ML platform.
 

@@ -1,10 +1,11 @@
 # Threat model
 
-M5 is implemented / pending real SP1 Groth16 validation. It proves metadata
-consistency only, not SecretFlow execution, CHEETAH transcripts, private arithmetic,
-numeric MSE, input truthfulness or participant signatures. Low-entropy metadata
-may be guessed from public hashes. All existing trusted-host, semi-honest,
-key-management, rollback and atomicity limitations remain. See docs/STATE_PROOF.md.
+M5 is verified for its bounded committed metadata relation by real SP1 6.9.0 CPU
+Groth16 generation and independent verification. It does not prove SecretFlow
+execution, CHEETAH transcripts, private arithmetic, numeric MSE, input truthfulness,
+participant signatures, or malicious security. Low-entropy metadata may be guessed
+from public hashes. All existing trusted-host, semi-honest, key-management, rollback
+and atomicity limitations remain. See docs/STATE_PROOF.md.
 
 ## Scope
 

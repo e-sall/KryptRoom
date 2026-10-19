@@ -7,9 +7,10 @@
 installed the hash-pinned official wheel and passed the complete persistence,
 restart, real `EvalAdd`, policy, reveal, tamper, and leakage acceptance chain.
 
-M6 is based on `dev` commit
-`ad460f4d5a81d7c42aa32e46fbba492f1636bfdf`. It does not depend on the
-concurrent M5 branch or alter the M5 proof relation.
+M6 was implemented from `dev` commit
+`ad460f4d5a81d7c42aa32e46fbba492f1636bfdf` and later reconciled with verified
+M5 merge commit `6f01e3c412252d20b57c2a233df8f4ac8020e769`. It does not alter or broaden
+the M5 proof relation.
 
 ## Bounded operation
 
@@ -124,5 +125,5 @@ It does not provide malicious security, threshold/multiparty FHE, arbitrary FHE
 programs, encrypted neural networks, input authenticity, participant signatures,
 ZK proof of FHE arithmetic, compromised-host protection, side-channel resistance,
 production KMS/HSM, key rotation/recovery, anti-rollback, quantum-security proof,
-or a production Control Plane. M5, when integrated separately, proves committed
-transition metadata rather than this FHE arithmetic.
+or a production Control Plane. Integrated M5 proves committed transition
+metadata rather than this FHE arithmetic.

@@ -1,5 +1,12 @@
 # Threat model
 
+M5 is verified for its bounded committed metadata relation by real SP1 6.9.0 CPU
+Groth16 generation and independent verification. It does not prove SecretFlow
+execution, CHEETAH transcripts, private arithmetic, numeric MSE, input truthfulness,
+participant signatures, or malicious security. Low-entropy metadata may be guessed
+from public hashes. All existing trusted-host, semi-honest, key-management, rollback
+and atomicity limitations remain. See docs/STATE_PROOF.md.
+
 ## Scope
 
 This document describes the runtime-verified M1 PSI-cardinality, M2 private-join, M2.5 persistent encrypted RoomState, M3 analytics, M4 private-NN, and M6 OpenFHE state-transition paths. Verification covers bounded synthetic fixtures and pinned runtimes, not a general security audit.

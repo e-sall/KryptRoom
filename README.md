@@ -20,20 +20,32 @@ These results establish behavior for the tested fixtures and stated threat model
 
 **M4 — verified Persistent Private Neural Network.** M4 adds a fixed direct-JAX Dense 1→2→1 square-activation network over S1, persists its four secret parameter tensors as S3, and evaluates the reloaded model with S1 through an exact two-parent transition into secret MSE state S4. The [authoritative Linux run](https://github.com/e-sall/KryptRoom/actions/runs/38846097654) passed with MSE below 0.02 and no training value or model parameter reveal. See [the bounded M4 design and evidence](docs/PRIVATE_NN.md).
 
+**M5 — VERIFIED committed state-transition proof.** [Authoritative GitHub Actions](https://github.com/e-sall/KryptRoom/actions/runs/38922127315) generated and independently verified a real SP1 6.9.0 CPU Groth16 proof, exercised the invalid-relation and public-tampering negatives, deleted the witness, and passed the no-secret-payload/leakage checks. See [the M5 validation report](docs/M5_VALIDATION.md).
+
 **M6 — verified persistent FHE state transition.** M6 persists two exact OpenFHE BGV-RNS ciphertext vectors as `S5_fhe_inputs`, reloads them in a secret-key-free evaluator, applies exactly one `EvalAdd`, and persists the child ciphertext as `S6_fhe_sum`. Lab A alone owns the private key; computation and the later Lab A/Lab B reveal are separate authorizations. The [authoritative Linux run](https://github.com/e-sall/KryptRoom/actions/runs/39155437292) reloaded real ciphertexts, produced `[16, 22, 26, 34]`, rejected unauthorized operations/reveals and tampering, and passed without persisting plaintext intermediates or placing the private key in the Control Plane. See [the M6 design, evidence, and limitations](docs/FHE_STATE_TRANSITION.md).
 
 ## Hero use case: cancer-research collaboration
+
+KryptRoom can generate an independently verifiable zero-knowledge proof that a
+committed model-evaluation state transition is consistent with its committed
+lineage, artifact bindings, authorization policy, cryptographic context, and
+child-state commitment without exposing the underlying collaborative data.
+
+The M5 proof does not prove correctness of the underlying SecretFlow/CHEETAH
+computation or the numerical evaluation result. It does not establish participant
+cryptographic approval/signatures or malicious security. See
+[scope and validation](docs/STATE_PROOF.md).
 
 Lab A holds genomic features; Lab B holds clinical treatment-response information for an overlapping population. Each lab wants to study the overlap without handing patient identifiers or raw records to the other lab or a central operator.
 
 The repository uses only small synthetic fixtures. M1 privately counts the overlap. M2 independently compares identifiers inside MPC and creates a secret-shared join; M1 does not export hidden matches into M2. The persistence layer is intended to keep that join available for later authorized computations.
 
 ```text
-Private Matching → Private Join → Persistent State → Private Analytics / ML → FHE Transition → Proof / Audit
-M1 verified        M2 verified    M2.5 verified       M3/M4 verified          M6 verified      future
+Private Matching → Private Join → Persistent State → Analytics / ML → Proof → FHE Transition → Audit
+M1 verified        M2 verified    M2.5 verified       M3/M4 verified    M5 verified   M6 verified       future
 ```
 
-The M2.5 aggregate is a narrow continuity test, not the general M3 analytics API. M4 is runtime-verified only for one deterministic bounded synthetic training/evaluation fixture. M6 is runtime-verified only for exact four-element BGV ciphertext addition. No real patient data, biomedical performance claim, arbitrary FHE analytics, ZK proof on this branch, or blockchain integration is included.
+The M2.5 aggregate is a narrow continuity test, not the general M3 analytics API. M4 is runtime-verified only for one deterministic bounded synthetic training/evaluation fixture. M5 is verified only for its bounded committed metadata relation and does not prove the SecretFlow/CHEETAH or numerical computation. M6 is runtime-verified only for exact four-element BGV ciphertext addition. No real patient data, biomedical performance claim, arbitrary FHE analytics, ZK proof of FHE arithmetic, or blockchain integration is included.
 
 ## Architecture
 
@@ -116,7 +128,7 @@ Peer authentication, malicious security, host compromise resistance, signed stat
 
 ## Roadmap and repository guide
 
-M3 analytics, M4 persistent private NN training/evaluation, and M6's narrow FHE transition are verified on their bounded synthetic fixtures. See the [ordered roadmap](docs/ROADMAP.md) and [milestone checklist](TODO.md).
+M3 analytics, M4 persistent private NN training/evaluation, the bounded M5 committed state-transition proof, and M6's narrow FHE transition are verified on their synthetic fixtures. Later work remains unimplemented. See the [ordered roadmap](docs/ROADMAP.md) and [milestone checklist](TODO.md).
 
 - `nodes/krypt-node/`: participant PSI processes and local input boundary.
 - `engines/mpc/`: verified SPU join and persistent encrypted RoomState implementation.
@@ -124,7 +136,8 @@ M3 analytics, M4 persistent private NN training/evaluation, and M6's narrow FHE 
 - `demos/cancer-collaboration/`: synthetic fixtures and manifests.
 - `tests/` and `.github/workflows/`: integration, privacy, and reproducibility checks.
 - `engines/fhe/`: bounded M6 OpenFHE state-transition adapter and reveal boundary.
-- `services/`, `apps/`, `chain/`, and the ZK engine directory on this base: future component placeholders.
+- `engines/zk/`: verified bounded M5 SP1 6.9.0 CPU Groth16 metadata-proof implementation.
+- `services/`, `apps/`, and `chain/`: future component placeholders.
 
 [Project context](PROJECT_CONTEXT.md) preserves technical direction. [CONTRIBUTING.md](CONTRIBUTING.md) describes the review and evidence expectations.
 

@@ -1,6 +1,6 @@
 # Architectural decisions
 
-## ADR-012 — Single-owner BGV ciphertext addition as the first FHE transition
+## ADR-013 — Single-owner BGV ciphertext addition as the first FHE transition
 
 **Decision:** Implement M6 as exact element-wise addition of two fixed
 four-integer ciphertext vectors with the official OpenFHE Python 1.5.1.0.24.4
@@ -31,6 +31,28 @@ production KMS, input signature, side-channel defense, or ZK proof of EvalAdd.
 
 **Status:** Accepted, implemented, and runtime-verified on the bounded synthetic
 Linux OpenFHE fixture; see [M6 evidence](FHE_STATE_TRANSITION.md).
+
+## ADR-012 — Bounded M5 committed evaluation proof
+
+Use SP1 6.9.0 CPU Groth16 for exactly one M4 evaluation metadata relation.
+Preserve M1–M4 state formats and json-sort-keys-v1 hashes. Hash historical S3
+content as exact Python bytes; recompute only float-free evaluation semantics.
+Keep full policy/context/holder metadata private; expose a domain-separated
+64-byte public claim. External StateProof avoids circular S4 commitments.
+Derive verifier identity from its embedded ELF. Metadata fixtures use synthetic
+ciphertext descriptors; M4's independent regression tests actual MPC execution.
+Do not claim computation correctness or participant approval. Signatures remain
+deferred to M5.1. Status and limits: STATE_PROOF.md.
+
+**Validation status:** M5 VERIFIED. After two preserved hosted-runner shutdowns,
+the unchanged gate passed on a temporary repository-scoped, unique-label,
+ephemeral WSL2 runner: real SP1 6.9.0 CPU Groth16 generation, persisted public
+proof bundle, standalone verification, negatives and leakage checks. The runner
+was one-job only and deregistered automatically. Keep the real CPU
+proof/standalone-verification gate unchanged; do not substitute mock, network
+proving, execution-only success or weaker claims. `KRYPTROOM_M5_RUNNER` names
+optional pre-provisioned infrastructure; it changes no proof semantics. See
+[measurements](M5_VALIDATION.md).
 
 ## ADR-011 — Persistent private NN model and exact multi-parent evaluation
 

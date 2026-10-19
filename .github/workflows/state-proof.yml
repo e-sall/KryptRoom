@@ -1,0 +1,159 @@
+name: Committed State Transition Proof
+
+on:
+  pull_request:
+    branches: [dev, main]
+  push:
+    branches: [dev, main]
+  workflow_dispatch:
+
+concurrency:
+  group: state-proof-${{ github.event.pull_request.number || github.ref }}
+  # One authoritative current-head PR run; preserve dev/main push runs.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+env:
+  SP1_PROVER: cpu
+  CARGO_BUILD_JOBS: 2
+  CARGO_PROFILE_RELEASE_DEBUG: 0
+  CARGO_PROFILE_DEV_DEBUG: 0
+  CARGO_INCREMENTAL: 0
+  # Official SP1CoreOpts env controls (v6.9.0 core/executor/src/opts.rs).
+  # The first real proving attempt showed severe RAM pressure before the hosted
+  # runner shut down. Smaller trace shards/rings reduce peak memory, not checks.
+  ELEMENT_THRESHOLD: 67108864
+  HEIGHT_THRESHOLD: 1048576
+  SHARD_SIZE: 1048576
+  MINIMAL_TRACE_CHUNK_THRESHOLD: 1048576
+  TRACE_CHUNK_SLOTS: 2
+  # v6.9.0 defaults to eight recursion prover workers regardless of RAM.
+  # Serialize large proof stages for the observed 15 GiB hosted runner.
+  SP1_WORKER_NUM_CORE_WORKERS: 1
+  SP1_WORKER_CORE_BUFFER_SIZE: 1
+  SP1_WORKER_NUM_SETUP_WORKERS: 1
+  SP1_WORKER_SETUP_BUFFER_SIZE: 1
+  SP1_WORKER_NORMALIZE_PROGRAM_CACHE_SIZE: 1
+  SP1_WORKER_GLOBAL_MEMORY_BUFFER_SIZE: 1
+  SP1_WORKER_NUM_SPLICING_WORKERS: 1
+  SP1_WORKER_SPLICING_BUFFER_SIZE: 1
+  SP1_WORKER_NUM_PREPARE_REDUCE_WORKERS: 1
+  SP1_WORKER_PREPARE_REDUCE_BUFFER_SIZE: 1
+  SP1_WORKER_NUM_RECURSION_EXECUTOR_WORKERS: 1
+  SP1_WORKER_RECURSION_EXECUTOR_BUFFER_SIZE: 1
+  SP1_WORKER_NUM_RECURSION_PROVER_WORKERS: 1
+  SP1_WORKER_RECURSION_PROVER_BUFFER_SIZE: 1
+
+jobs:
+  contract-canonicalization-and-privacy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - run: pip install -r tests/state_proof/requirements.txt
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: m5-contract-rust196-sp169-${{ hashFiles('engines/zk/state-transition-proof/Cargo.lock') }}
+      - run: python -m unittest discover -s tests/state_proof -p 'test_*.py' -v
+      - name: Pin Rust and test native guest relation with cross-language vectors
+        run: |
+          rustup toolchain install 1.96.0 --profile minimal
+          cargo +1.96.0 test --locked --manifest-path engines/zk/state-transition-proof/Cargo.toml -p kryptroom-proof-relation
+      - name: Ensure deterministic metadata fixture regeneration
+        run: |
+          python tests/state_proof/generate_fixture.py
+          git diff --exit-code -- tests/state_proof/fixtures
+
+  real-sp1-groth16-proof:
+    # Optional repository variable: a pre-provisioned isolated Linux x64 runner
+    # label. No paid capacity is provisioned and no proof gate is skipped here.
+    runs-on: ${{ vars.KRYPTROOM_M5_RUNNER || 'ubuntu-24.04' }}
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - run: pip install -r tests/state_proof/requirements.txt
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          # Dependency sources only. Never cache private SP1/runtime temp files.
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: m5-proof-rust196-sp169-${{ hashFiles('engines/zk/state-transition-proof/Cargo.lock') }}
+      - name: Record actual runner resources
+        run: |
+          free -h
+          df -h
+          nproc
+      - name: Install exact official SP1 v6.9.0 stack
+        run: bash tests/state_proof/setup_sp1.sh
+      - name: Install SDK protobuf build prerequisite
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y protobuf-compiler libprotobuf-dev
+          protoc --version
+          test -f /usr/include/google/protobuf/empty.proto
+      - name: Build guest and host
+        run: |
+          started=$SECONDS
+          cd engines/zk/state-transition-proof/program
+          cargo prove build --locked --output-directory ../elf --elf-name kryptroom-m5-evaluation
+          echo "GUEST_BUILD_SECONDS=$((SECONDS-started))"
+          cd ..
+          export KRYPTROOM_M5_ELF="$PWD/elf/kryptroom-m5-evaluation"
+          echo "KRYPTROOM_M5_ELF=$KRYPTROOM_M5_ELF" >> "$GITHUB_ENV"
+          sha256sum "$KRYPTROOM_M5_ELF"
+          cargo prove vkey --elf "$KRYPTROOM_M5_ELF"
+          /usr/bin/time -v cargo build --locked --release -p kryptroom-proof
+      - name: Execute relation tests in real SP1 guest
+        run: python tests/state_proof/run_integration.py --binary engines/zk/state-transition-proof/target/release/kryptroom-proof --output-root "$RUNNER_TEMP/m5-public" --execute-only
+      - name: Pull the SDK's official local CPU Groth16 wrapping image by digest
+        run: |
+          docker pull ghcr.io/succinctlabs/sp1-gnark:v6.1.0@sha256:e1a1cd62838b561ca301f9b2c26475c4a92bfe0e2c916e9bba213062e1548c4d
+          docker image inspect ghcr.io/succinctlabs/sp1-gnark:v6.1.0@sha256:e1a1cd62838b561ca301f9b2c26475c4a92bfe0e2c916e9bba213062e1548c4d --format '{{json .RepoDigests}}'
+      - name: Real CPU Groth16 and independent verification with negatives
+        run: |
+          (
+            while true; do
+              date -u +%Y-%m-%dT%H:%M:%SZ
+              awk '/MemAvailable:|SwapFree:/ {print}' /proc/meminfo
+              df -k --output=avail . | tail -1
+              sleep 30
+            done
+          ) &
+          m5_monitor_pid=$!
+          trap 'kill "$m5_monitor_pid" 2>/dev/null || true; wait "$m5_monitor_pid" 2>/dev/null || true' EXIT
+          /usr/bin/time -v python tests/state_proof/run_integration.py --binary engines/zk/state-transition-proof/target/release/kryptroom-proof --output-root "$RUNNER_TEMP/m5-public"
+          free -h
+          df -h
+          du -sh engines/zk/state-transition-proof/target "$HOME/.sp1"
+      - name: Final resource diagnostics, including failed runs
+        if: always()
+        run: |
+          free -h
+          df -h
+          cat /sys/fs/cgroup/memory.peak 2>/dev/null || true
+          cat /sys/fs/cgroup/memory.events 2>/dev/null || true
+      # Explicit allowlist: no witness, metadata parents, keys, source inputs,
+      # internal prover caches, or private runtime files can be uploaded.
+      - uses: actions/upload-artifact@v6
+        with:
+          name: m5-public-proof
+          path: |
+            ${{ runner.temp }}/m5-public/proofs/**/receipt.json
+            ${{ runner.temp }}/m5-public/proofs/**/proof.bin
+            ${{ runner.temp }}/m5-public/proofs/**/state-proof.json
+            engines/zk/state-transition-proof/elf/kryptroom-m5-evaluation
+            engines/zk/state-transition-proof/target/release/kryptroom-proof
+          if-no-files-found: error
+          retention-days: 7

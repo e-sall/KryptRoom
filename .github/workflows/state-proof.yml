@@ -95,6 +95,21 @@ jobs:
           free -h
           df -h
           nproc
+      - name: Add ephemeral local swap headroom for the CPU prover
+        run: |
+          swap_path="$RUNNER_TEMP/kryptroom-m5.swap"
+          available_kib=$(df --output=avail -k "$RUNNER_TEMP" | tail -1)
+          required_kib=$((24 * 1024 * 1024))
+          if [ "$available_kib" -lt $((required_kib + 8 * 1024 * 1024)) ]; then
+            echo "Insufficient local disk for the bounded M5 proof swap" >&2
+            exit 1
+          fi
+          sudo fallocate -l 24G "$swap_path"
+          sudo chmod 600 "$swap_path"
+          sudo mkswap "$swap_path"
+          sudo swapon "$swap_path"
+          swapon --show
+          free -h
       - name: Install exact official SP1 v6.9.0 stack
         run: bash tests/state_proof/setup_sp1.sh
       - name: Install SDK protobuf build prerequisite

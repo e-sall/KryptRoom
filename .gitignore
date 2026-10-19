@@ -9,6 +9,7 @@ __pycache__/
 .ruff_cache/
 .mypy_cache/
 .venv/
+.venv-m6/
 
 # JavaScript
 node_modules/
@@ -41,6 +42,7 @@ credentials.json
 *.jks
 *.keystore
 *.share.enc
+*.openfhe.bin
 *.log
 *.log.*
 *.dump

@@ -2,7 +2,7 @@
 
 ## Current implemented state
 
-KryptRoom has runtime-verified M1 PSI cardinality, M2 two-container SPU private join, M2.5 persistent encrypted RoomState paths, M3 persistent private analytics, bounded M4 persistent private NN training/evaluation, and the bounded M5 SP1 committed state-transition proof.
+KryptRoom has runtime-verified M1 PSI cardinality, M2 two-container SPU private join, M2.5 persistent encrypted RoomState paths, M3 persistent private analytics, bounded M4 persistent private NN training/evaluation, the bounded M5 SP1 committed state-transition proof, and bounded M6 persistent OpenFHE BGV ciphertext addition.
 
 ## Target system boundary
 
@@ -63,6 +63,34 @@ M3 adds persistent scalar analytics over S1 and an immutable child S2 using the 
 
 M4 is a sibling transition from S1, not a child of S2. Training produces immutable S3 with four encrypted local model-share artifacts. Evaluation consumes exact ordered parents `[S3_model, S1]`, persists only secret MSE in S4, and reuses the single RevealService reconstruction boundary. Status: verified on the bounded synthetic Linux CHEETAH/FM128 fixture. See [M4 design and evidence](docs/PRIVATE_NN.md).
 
+## Milestone 6 FHE state transition
+
+M6 is independent of the MPC lineage and the M5 proof relation. It
+creates parentless `S5_fhe_inputs` from two participant-local four-integer
+vectors encrypted under one OpenFHE BGV-RNS public key. Lab A owns the only
+private key; Lab B and the evaluator receive public material only. The evaluator
+reloads committed ciphertexts in a separate process, performs one `EvalAdd`
+without a decryption API or private-key path, and persists `S6_fhe_sum`.
+
+The existing RoomState model remains canonical. Optional FHE fields extend
+`CryptoContext` with the exact OpenFHE version, scheme parameters, actual ring
+dimension, key epoch/owner, and digest-bound public-material references. FHE
+`ArtifactRef` entries explicitly use `protection: fhe_ciphertext`; their binary
+size and SHA-256 digest bind the persisted OpenFHE representation. Legacy M1–M4
+serialization is unchanged when these optional fields are absent.
+
+The computation policy authorizes only `fhe_vector_add` over the two named input
+artifacts and requests no reveals. A separate `FHERevealService` authorizes only
+`fhe.vector-sum` to Lab A and Lab B before reading the private key. This is a
+single-owner-key prototype, not threshold or multiparty FHE. See
+[the complete M6 design](docs/FHE_STATE_TRANSITION.md).
+
+Status: verified on the bounded synthetic Linux fixture in the
+[authoritative OpenFHE run](https://github.com/e-sall/KryptRoom/actions/runs/39155437292),
+including process restart/reload, real `EvalAdd`, immutable child persistence,
+pre-decryption policy denial, authorized exact decryption, and ciphertext
+tamper detection.
+
 - `apps/web`: future user interface; intentionally empty during PSI work.
 - `services/control-api`: future metadata and room API.
 - `services/orchestrator`: future Temporal workflows.
@@ -83,5 +111,5 @@ policy/context/holder metadata stays in the private witness. S4 is unchanged.
 SecretFlow/CHEETAH execution, MPC arithmetic and numeric MSE are not proved. See
 docs/STATE_PROOF.md.
 
-The current milestone does not implement general-purpose private ML, private inference APIs, model export, optimizer checkpoints, ML beyond the fixed M4 network, FHE, proofs beyond M5's bounded metadata relation, blockchain, a frontend, branch/merge operations, dynamic membership, post-quantum identity, real medical data, production key management, or a production Control Plane.
+The current milestone does not implement general-purpose private ML, private inference APIs, model export, optimizer checkpoints, ML beyond the fixed M4 network, FHE beyond one four-element BGV `EvalAdd`, threshold/multiparty FHE, proofs beyond M5's bounded metadata relation, ZK proof of the FHE arithmetic, blockchain, a frontend, branch/merge operations, dynamic membership, post-quantum identity, real medical data, production key management, or a production Control Plane.
 

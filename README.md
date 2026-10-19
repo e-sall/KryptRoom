@@ -22,6 +22,8 @@ These results establish behavior for the tested fixtures and stated threat model
 
 **M5 — VERIFIED committed state-transition proof.** [Authoritative GitHub Actions](https://github.com/e-sall/KryptRoom/actions/runs/38922127315) generated and independently verified a real SP1 6.9.0 CPU Groth16 proof, exercised the invalid-relation and public-tampering negatives, deleted the witness, and passed the no-secret-payload/leakage checks. See [the M5 validation report](docs/M5_VALIDATION.md).
 
+**M6 — verified persistent FHE state transition.** M6 persists two exact OpenFHE BGV-RNS ciphertext vectors as `S5_fhe_inputs`, reloads them in a secret-key-free evaluator, applies exactly one `EvalAdd`, and persists the child ciphertext as `S6_fhe_sum`. Lab A alone owns the private key; computation and the later Lab A/Lab B reveal are separate authorizations. The [authoritative Linux run](https://github.com/e-sall/KryptRoom/actions/runs/39155437292) reloaded real ciphertexts, produced `[16, 22, 26, 34]`, rejected unauthorized operations/reveals and tampering, and passed without persisting plaintext intermediates or placing the private key in the Control Plane. See [the M6 design, evidence, and limitations](docs/FHE_STATE_TRANSITION.md).
+
 ## Hero use case: cancer-research collaboration
 
 KryptRoom can generate an independently verifiable zero-knowledge proof that a
@@ -39,11 +41,11 @@ Lab A holds genomic features; Lab B holds clinical treatment-response informatio
 The repository uses only small synthetic fixtures. M1 privately counts the overlap. M2 independently compares identifiers inside MPC and creates a secret-shared join; M1 does not export hidden matches into M2. The persistence layer is intended to keep that join available for later authorized computations.
 
 ```text
-Private Matching → Private Join → Persistent Encrypted State → Private Analytics → Private ML → Proof → Audit
-M1 verified        M2 verified    M2.5 verified                  M3 verified        M4 verified  M5 verified  Future
+Private Matching → Private Join → Persistent State → Analytics / ML → Proof → FHE Transition → Audit
+M1 verified        M2 verified    M2.5 verified       M3/M4 verified    M5 verified   M6 verified       future
 ```
 
-The M2.5 aggregate is a narrow continuity test, not the general M3 analytics API. M4 is runtime-verified only for one deterministic bounded synthetic training/evaluation fixture. No real patient data, biomedical performance claim, FHE computation, or blockchain integration is included. M5 is verified only for its bounded committed metadata relation and stated threat model.
+The M2.5 aggregate is a narrow continuity test, not the general M3 analytics API. M4 is runtime-verified only for one deterministic bounded synthetic training/evaluation fixture. M5 is verified only for its bounded committed metadata relation and does not prove the SecretFlow/CHEETAH or numerical computation. M6 is runtime-verified only for exact four-element BGV ciphertext addition. No real patient data, biomedical performance claim, arbitrary FHE analytics, ZK proof of FHE arithmetic, or blockchain integration is included.
 
 ## Architecture
 
@@ -105,6 +107,19 @@ docker compose -f compose.persistent-state.yml down
 
 The expected post-restart aggregate is `68`. The second phase has no source CSV mounts. State lives under ignored `.runtime/persistent-state/`; existing S1 files cannot be overwritten through the storage API. Keep these files and their keys private. Losing a node's key/share makes this demo state unrecoverable; there is no automated recovery procedure.
 
+M6 uses the official Ubuntu 24.04 OpenFHE Python wheel and therefore runs on
+Linux with Python 3.12. Its authoritative command is:
+
+```bash
+python -m pip install -r tests/fhe_state_transition/requirements.txt
+python -m pip install --require-hashes -r tests/fhe_state_transition/requirements-openfhe.txt
+python tests/fhe_state_transition/run_integration.py
+```
+
+The test creates all keys and ciphertexts in a temporary ignored directory and
+uploads none of them. It must not be run with production participant data or
+production keys.
+
 ## Security model
 
 The protocols assume participants follow the reviewed code. Matched identifiers are disclosed to neither participant by the authorized interfaces; future identifier disclosure requires explicit opt-in. Cardinality and other explicitly authorized aggregates can still reveal information through small or repeated queries. Public capacities, tensor shapes, and protocol traffic also disclose metadata.
@@ -113,15 +128,16 @@ Peer authentication, malicious security, host compromise resistance, signed stat
 
 ## Roadmap and repository guide
 
-M3 analytics, M4 persistent private NN training/evaluation, and the bounded M5 committed state-transition proof are verified on their synthetic fixtures. Later work remains unimplemented. See the [ordered roadmap](docs/ROADMAP.md) and [milestone checklist](TODO.md).
+M3 analytics, M4 persistent private NN training/evaluation, the bounded M5 committed state-transition proof, and M6's narrow FHE transition are verified on their synthetic fixtures. Later work remains unimplemented. See the [ordered roadmap](docs/ROADMAP.md) and [milestone checklist](TODO.md).
 
 - `nodes/krypt-node/`: participant PSI processes and local input boundary.
 - `engines/mpc/`: verified SPU join and persistent encrypted RoomState implementation.
 - `packages/manifests/`: job, policy, and RoomState schemas.
 - `demos/cancer-collaboration/`: synthetic fixtures and manifests.
 - `tests/` and `.github/workflows/`: integration, privacy, and reproducibility checks.
+- `engines/fhe/`: bounded M6 OpenFHE state-transition adapter and reveal boundary.
 - `engines/zk/`: verified bounded M5 SP1 6.9.0 CPU Groth16 metadata-proof implementation.
-- `services/`, `apps/`, `chain/`, and FHE engine directories: future component placeholders.
+- `services/`, `apps/`, and `chain/`: future component placeholders.
 
 [Project context](PROJECT_CONTEXT.md) preserves technical direction. [CONTRIBUTING.md](CONTRIBUTING.md) describes the review and evidence expectations.
 

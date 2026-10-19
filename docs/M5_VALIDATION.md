@@ -136,4 +136,4 @@ docs/ROADMAP.md
 56. Participant signatures: not added. “The M5 proof does not establish that participant organizations cryptographically approved or signed the transition.”
 57. Blockchain: not added.
 58. Full MPC correctness: not claimed. The proof covers only the bounded committed metadata relation.
-59. Safe to merge into dev: **YES, after the documentation-only final head and all required checks are green**. The real CPU Groth16 generation, independent verification, proof-tampering/identity negatives and leakage gates have completed successfully. Main must remain unchanged. No M6, signatures, blockchain, FHE, additional ML or license was added.
+59. Merge result: **M5 was merged into dev at `6f01e3c412252d20b57c2a233df8f4ac8020e769` after the documentation-only final head and all required checks were green**. The real CPU Groth16 generation, independent verification, proof-tampering/identity negatives and leakage gates completed successfully. M5 itself added no M6, signatures, blockchain, FHE, additional ML or license.

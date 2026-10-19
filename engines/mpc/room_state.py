@@ -181,6 +181,24 @@ class EncryptedShareReader:
 
 
 @dataclass(frozen=True)
+class PublicMaterialRef:
+    id: str
+    kind: str
+    uri: str
+    sha256: str
+    size_bytes: int
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "id": self.id,
+            "kind": self.kind,
+            "uri": self.uri,
+            "sha256": self.sha256,
+            "sizeBytes": self.size_bytes,
+        }
+
+
+@dataclass(frozen=True)
 class CryptoContext:
     id: str
     backend: str
@@ -191,9 +209,14 @@ class CryptoContext:
     participants: tuple[str, ...]
     artifact_cipher: str
     key_scope: str
+    key_epoch: str | None = None
+    key_owner: str | None = None
+    parameters_json: str | None = None
+    public_material_refs: tuple[PublicMaterialRef, ...] = ()
+    evaluation_material_refs: tuple[PublicMaterialRef, ...] = ()
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        value = {
             "id": self.id,
             "backend": self.backend,
             "backendVersion": self.backend_version,
@@ -204,6 +227,21 @@ class CryptoContext:
             "artifactCipher": self.artifact_cipher,
             "keyScope": self.key_scope,
         }
+        if self.key_epoch is not None:
+            value["keyEpoch"] = self.key_epoch
+        if self.key_owner is not None:
+            value["keyOwner"] = self.key_owner
+        if self.parameters_json is not None:
+            value["parameters"] = json.loads(self.parameters_json)
+        if self.public_material_refs:
+            value["publicMaterialRefs"] = [
+                reference.to_dict() for reference in self.public_material_refs
+            ]
+        if self.evaluation_material_refs:
+            value["evaluationMaterialRefs"] = [
+                reference.to_dict() for reference in self.evaluation_material_refs
+            ]
+        return value
 
 
 @dataclass(frozen=True)
@@ -276,9 +314,10 @@ class ArtifactRef:
     dtype: str
     includes_identifiers: bool
     ciphertexts: tuple[CiphertextRef, ...]
+    protection: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        value = {
             "id": self.id,
             "kind": self.kind,
             "mediaType": self.media_type,
@@ -289,6 +328,9 @@ class ArtifactRef:
             "includesIdentifiers": self.includes_identifiers,
             "ciphertexts": [ciphertext.to_dict() for ciphertext in self.ciphertexts],
         }
+        if self.protection is not None:
+            value["protection"] = self.protection
+        return value
 
 
 @dataclass(frozen=True)
@@ -458,6 +500,33 @@ def room_state_from_dict(value: dict[str, Any]) -> RoomState:
         participants=tuple(context_value["participants"]),
         artifact_cipher=context_value["artifactCipher"],
         key_scope=context_value["keyScope"],
+        key_epoch=context_value.get("keyEpoch"),
+        key_owner=context_value.get("keyOwner"),
+        parameters_json=(
+            canonical_json(context_value["parameters"]).decode("utf-8")
+            if "parameters" in context_value
+            else None
+        ),
+        public_material_refs=tuple(
+            PublicMaterialRef(
+                id=reference["id"],
+                kind=reference["kind"],
+                uri=reference["uri"],
+                sha256=reference["sha256"],
+                size_bytes=reference["sizeBytes"],
+            )
+            for reference in context_value.get("publicMaterialRefs", [])
+        ),
+        evaluation_material_refs=tuple(
+            PublicMaterialRef(
+                id=reference["id"],
+                kind=reference["kind"],
+                uri=reference["uri"],
+                sha256=reference["sha256"],
+                size_bytes=reference["sizeBytes"],
+            )
+            for reference in context_value.get("evaluationMaterialRefs", [])
+        ),
     )
     policy = StatePolicy(
         default_reveal=policy_value["defaultReveal"],
@@ -492,6 +561,7 @@ def room_state_from_dict(value: dict[str, Any]) -> RoomState:
                 )
                 for ciphertext in artifact["ciphertexts"]
             ),
+            protection=artifact.get("protection"),
         )
         for artifact in value["artifacts"]
     )

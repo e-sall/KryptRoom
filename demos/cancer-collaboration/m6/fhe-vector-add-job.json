@@ -1,0 +1,14 @@
+{
+  "version": "1",
+  "operator": "fhe_vector_add",
+  "roomId": "cancer-collaboration-room",
+  "inputStateIds": ["S5_fhe_inputs"],
+  "outputStateId": "S6_fhe_sum",
+  "transitionId": "m6-fhe-vector-add",
+  "effectiveAt": "2026-10-18T00:00:00Z",
+  "cryptoContextId": "openfhe-bgv-rns-1.5.1-v1",
+  "keyEpoch": "fhe-key-epoch-1",
+  "inputArtifactIds": ["fhe-vector-lab-a", "fhe-vector-lab-b"],
+  "outputArtifactId": "fhe-vector-sum",
+  "requestedReveals": []
+}

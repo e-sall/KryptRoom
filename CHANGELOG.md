@@ -6,6 +6,8 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Added
 
+- M6 exact OpenFHE BGV-RNS ciphertext addition from persistent `S5_fhe_inputs` to immutable `S6_fhe_sum`, with a secret-key-free evaluator and separate policy-controlled reveal. Status: verified on the bounded synthetic Linux fixture.
+- FHE-compatible optional RoomState fields, `fhe_ciphertext` ArtifactRefs, digest-bound public material, key epoch/owner metadata, strict artifact resolution, tamper checks, privacy tests, and an authoritative real OpenFHE gate.
 - M5 SP1 v6.9.0 CPU Groth16 path for M4 evaluation metadata lineage, authorization and commitment consistency; external StateProof, strict schemas, golden vectors, independent verifier and privacy/negative CI. Status: M5 VERIFIED for the bounded relation. No SecretFlow/CHEETAH arithmetic, numeric MSE, participant signature, or malicious-security claim.
 - Temporary repository-scoped, unique-label, one-job WSL2 runner support through `KRYPTROOM_M5_RUNNER`; the runner remains optional infrastructure and does not bypass or weaken the real proof gate.
 
@@ -48,6 +50,9 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Security
 
+- Kept the M6 BGV private key exclusively in Lab A's participant-owned private root. The evaluator accepts no private-key path and the state/control-plane fixture stores only public material references, ciphertext descriptors, commitments, and policy metadata.
+- Separated `fhe_vector_add` authorization from `fhe.vector-sum` decryption authorization and rejected unauthorized operations/reveals before backend or private-key access.
+
 - Established the rule that no privacy or security claim may exceed tested implementation evidence.
 - Enforced `revealIntersection=false` at both PSI peers and selected the exact `Raw` encrypted container.
 - Enforced fixed-shape MPC output, excluded identifiers from the handoff, and limited reconstruction to cardinality.
@@ -55,6 +60,8 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Verified
 
+- M6 Linux CI installed the hash-pinned official OpenFHE 1.5.1.0.24.4 wheel, reloaded two persisted BGV-RNS ciphertexts in a secret-key-free evaluator, executed real `EvalAdd`, persisted and reloaded `S6_fhe_sum`, rejected unauthorized operations/reveals and tampering, and authorized only `[16, 22, 26, 34]` to Lab A and Lab B. Shared storage contained neither the private key nor the plaintext input encodings. Evidence: https://github.com/e-sall/KryptRoom/actions/runs/39155437292.
+- All M1, M2, M2.5, M3, and M4 regression workflows passed on the same M6 head.
 - M5 authoritative GitHub Actions run `38922127315`, attempt 2, passed real SP1 6.9.0 CPU Groth16 generation, persisted a 1,757-byte proof, independently verified it without Docker or network proxies, rejected invalid relations and public/proof/program-identity tampering, deleted the witness, and passed leakage/no-secret-payload checks. Evidence: https://github.com/e-sall/KryptRoom/actions/runs/38922127315.
 - M5 CI proof SHA-256 was `08a68f2f840e69a572e85b9ee3f0c6e9f682fae6033272e61d7cf56012b24c6a`; generation took 1,334.07 seconds and standalone verification 3.74 seconds. GNU time reported 20,413,424 KiB max RSS; sampled MemAvailable fell to 150,380 KiB and sampled swap use peaked near 8.54 GiB. Two earlier hosted attempts remain documented as runner shutdowns, not cryptographic failures or confirmed OOMs.
 

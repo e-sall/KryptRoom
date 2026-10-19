@@ -6,6 +6,9 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Added
 
+- M7 stateless permissionless event-only Solidity anchor, exact RoomState/StateProof commitments, immutable off-chain ChainAnchor plus separate dynamic status, Base Sepolia safe/finalized and reorg verification, and standalone three-layer verification. Status: implemented; live validation pending.
+- M7 deterministic commitment vectors, M6 state-only/no-artifact-read coverage, closed schemas, negative/privacy tests, pinned Foundry 1.8.5 and Solidity 0.8.37 CI, and deployment/recording/finality helpers.
+
 - M6 exact OpenFHE BGV-RNS ciphertext addition from persistent `S5_fhe_inputs` to immutable `S6_fhe_sum`, with a secret-key-free evaluator and separate policy-controlled reveal. Status: verified on the bounded synthetic Linux fixture.
 - FHE-compatible optional RoomState fields, `fhe_ciphertext` ArtifactRefs, digest-bound public material, key epoch/owner metadata, strict artifact resolution, tamper checks, privacy tests, and an authoritative real OpenFHE gate.
 - M5 SP1 v6.9.0 CPU Groth16 path for M4 evaluation metadata lineage, authorization and commitment consistency; external StateProof, strict schemas, golden vectors, independent verifier and privacy/negative CI. Status: M5 VERIFIED for the bounded relation. No SecretFlow/CHEETAH arithmetic, numeric MSE, participant signature, or malicious-security claim.
@@ -35,6 +38,8 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Changed
 
+- Split M5 fast regression from the real SP1 Groth16 acceptance workflow. The expensive proof runs only for M5 relation/serialization/public-semantics/toolchain changes or explicit dispatch; unrelated M7 changes retain fast M5 coverage without regenerating a proof.
+
 - Reworked the public README around verified capabilities, synthetic cancer-research collaboration, explicit experimental limitations, and the persistent-state roadmap. Corrected historical architecture/backend wording, added contribution and security-reporting guidance, and expanded local-artifact ignore rules without changing runtime code or selecting a license.
 
 - Made PR events authoritative for feature-branch M2.5 integration, retained main/dev push validation, and serialized M2.5 runs without cancelling an active run. The initial cancelled jobs never acquired hosted runners; no cryptographic execution failure was observed.
@@ -49,6 +54,9 @@ All notable project changes are recorded here. The project follows milestone-ori
 - Reframed the project core as a persistent encrypted state machine and inserted M2.5 before private analytics.
 
 ### Security
+
+- Restricted the M7 on-chain KryptRoom payload to one nonzero bytes32 commitment. Room/state/transition IDs, participant metadata, policies, artifacts, shares, FHE material, proof bytes, features, labels, model values, gradients, MSE, and matched identifiers remain off-chain.
+- Kept Base finality/reorg status outside immutable ChainAnchor and kept StateProof document matching explicitly separate from M5 SP1 proof validation.
 
 - Kept the M6 BGV private key exclusively in Lab A's participant-owned private root. The evaluator accepts no private-key path and the state/control-plane fixture stores only public material references, ciphertext descriptors, commitments, and policy metadata.
 - Separated `fhe_vector_add` authorization from `fhe.vector-sum` decryption authorization and rejected unauthorized operations/reveals before backend or private-key access.

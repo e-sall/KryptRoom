@@ -28,7 +28,7 @@ Roadmap items are ordered dependencies, not parallel feature invitations.
 11. Canonical RunReceipt and provenance commitments.
 12. Classical and post-quantum node signatures.
 13. Realistic SP1 proof scope for workflow, manifest, signature, policy, and commitment statements.
-14. Chain-agnostic audit anchor with an initial Base Sepolia implementation.
+14. Chain-agnostic audit anchor with an initial Base Sepolia implementation (M7 implemented; live validation pending).
 
 ## Product surface and hardening
 
@@ -49,7 +49,15 @@ secret-key-free evaluation, persisted ciphertexts, committed context/artifacts,
 and separate computation/reveal authorization. The real Linux gate passed on
 the bounded synthetic fixture. See [the evidence and limitations](FHE_STATE_TRANSITION.md).
 
+M7 Public Blockchain Anchor implements the exact commitment protocol, stateless
+event-only contract, immutable inclusion/status records, Base finality/reorg
+checks, M6 state-only support, and three-layer verifier. Contract/unit/privacy
+validation is distinct from live acceptance. Status is **IMPLEMENTED / LIVE
+VALIDATION PENDING** until the protected Base Sepolia environment produces one
+authoritative deployment and finalized verified anchor. See
+[the protocol and limits](PUBLIC_CHAIN_ANCHOR.md).
+
 No milestone advances merely because source code exists. A gate requires executed tests, documented runtime evidence, updated threat-model limitations, and security claims that match the evidence.
 
-Milestones 1, 2, 2.5, 3, 4, 5 and 6 are runtime-verified on their bounded synthetic fixtures. M4 evolves S1 into secret model S3, reloads it with S1 for multi-parent evaluation into secret S4, and validates fail-closed disclosure plus authorized MSE under CHEETAH/FM128. M5 proves only the committed metadata relation around that evaluation transition. M6 reloads persisted BGV-RNS ciphertexts, executes real secret-key-free `EvalAdd`, persists and reloads the child ciphertext, and separates computation from authorized decryption.
+Milestones 1, 2, 2.5, 3, 4, 5 and 6 are runtime-verified on their bounded synthetic fixtures. M4 evolves S1 into secret model S3, reloads it with S1 for multi-parent evaluation into secret S4, and validates fail-closed disclosure plus authorized MSE under CHEETAH/FM128. M5 proves only the committed metadata relation around that evaluation transition. M6 reloads persisted BGV-RNS ciphertexts, executes real secret-key-free `EvalAdd`, persists and reloads the child ciphertext, and separates computation from authorized decryption. M7 has implementation evidence only; no live-chain verification claim is made.
 

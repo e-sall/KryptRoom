@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kryptroom.dev/schemas/chain-anchor-status.schema.json",
+  "title": "KryptRoom dynamic public-chain anchor status snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["anchorId", "status", "observedAt", "detail"],
+  "properties": {
+    "anchorId": { "type": "string", "pattern": "^anchor-[a-f0-9]{64}$" },
+    "status": { "enum": ["PENDING", "CONFIRMED", "FINALIZED", "ORPHANED", "FAILED"] },
+    "observedAt": { "type": "string", "format": "date-time" },
+    "detail": { "type": "string", "minLength": 1 }
+  }
+}

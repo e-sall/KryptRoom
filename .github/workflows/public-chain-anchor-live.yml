@@ -1,0 +1,115 @@
+name: Public Chain Anchor Live Acceptance
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: Type DEPLOY BASE SEPOLIA M7 V1 exactly
+        required: true
+        type: string
+
+concurrency:
+  group: public-chain-anchor-base-sepolia-v1
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  authoritative-base-sepolia:
+    environment: base-sepolia-m7
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      BASE_SEPOLIA_RPC_URL: ${{ secrets.BASE_SEPOLIA_RPC_URL }}
+      M7_TEST_ANCHOR_PRIVATE_KEY: ${{ secrets.M7_TEST_ANCHOR_PRIVATE_KEY }}
+      M7_DEPLOY_CONFIRMATION: ${{ inputs.confirmation }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Enforce explicit single-deployment gate
+        run: |
+          test "$M7_DEPLOY_CONFIRMATION" = 'DEPLOY BASE SEPOLIA M7 V1'
+          test ! -e chain/deployments/base-sepolia-v1.json
+          test -n "$BASE_SEPOLIA_RPC_URL"
+          test -n "$M7_TEST_ANCHOR_PRIVATE_KEY"
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: pip install -r tests/chain_anchor/requirements.txt
+      - uses: foundry-rs/foundry-toolchain@908c540300062bd5a7e473851cdb4282204cee09
+        with:
+          version: v1.8.5
+      - name: Build exact contract
+        working-directory: chain/contracts
+        run: |
+          forge --version
+          forge build
+      - name: Deploy the authoritative V1 contract once
+        id: deploy
+        working-directory: chain/contracts
+        run: |
+          umask 077
+          response=$(forge create --broadcast --json \
+            --rpc-url "$BASE_SEPOLIA_RPC_URL" \
+            --private-key "$M7_TEST_ANCHOR_PRIVATE_KEY" \
+            src/KryptRoomAnchorV1.sol:KryptRoomAnchorV1)
+          contract=$(jq -er '.deployedTo | ascii_downcase' <<<"$response")
+          transaction=$(jq -er '.transactionHash | ascii_downcase' <<<"$response")
+          echo "contract=$contract" >> "$GITHUB_OUTPUT"
+          echo "transaction=$transaction" >> "$GITHUB_OUTPUT"
+      - name: Build and validate deployment manifest
+        run: |
+          mkdir -p "$RUNNER_TEMP/m7-public"
+          python chain/scripts/build_deployment_manifest.py \
+            --contract-address '${{ steps.deploy.outputs.contract }}' \
+            --deployment-transaction '${{ steps.deploy.outputs.transaction }}' \
+            --foundry-artifact chain/contracts/out/KryptRoomAnchorV1.sol/KryptRoomAnchorV1.json \
+            --output "$RUNNER_TEMP/m7-public/base-sepolia-v1.json"
+      - name: Publish the deterministic state-only acceptance anchor
+        id: anchor
+        working-directory: chain/contracts
+        run: |
+          commitment=$(python ../../chain/scripts/compute_anchor_commitment.py \
+            --room-state ../../tests/state_proof/fixtures/S4_eval.json)
+          response=$(cast send --json \
+            --rpc-url "$BASE_SEPOLIA_RPC_URL" \
+            --private-key "$M7_TEST_ANCHOR_PRIVATE_KEY" \
+            '${{ steps.deploy.outputs.contract }}' \
+            'anchor(bytes32)' "$commitment")
+          transaction=$(jq -er '.transactionHash | ascii_downcase' <<<"$response")
+          log_index=$(jq -er '.logs[0].logIndex' <<<"$response")
+          echo "transaction=$transaction" >> "$GITHUB_OUTPUT"
+          echo "log_index=$((log_index))" >> "$GITHUB_OUTPUT"
+      - name: Record the immutable inclusion and wait for Base finality
+        run: |
+          python chain/scripts/record_anchor.py \
+            --contract-address '${{ steps.deploy.outputs.contract }}' \
+            --transaction-hash '${{ steps.anchor.outputs.transaction }}' \
+            --log-index '${{ steps.anchor.outputs.log_index }}' \
+            --room-state tests/state_proof/fixtures/S4_eval.json \
+            --output "$RUNNER_TEMP/m7-public/chain-anchor.json"
+          python chain/scripts/wait_for_finality.py \
+            --deployment-manifest "$RUNNER_TEMP/m7-public/base-sepolia-v1.json" \
+            --chain-anchor "$RUNNER_TEMP/m7-public/chain-anchor.json" \
+            --output "$RUNNER_TEMP/m7-public/chain-anchor-status.json" \
+            --poll-seconds 15 \
+            --timeout-seconds 3600
+      - name: Independently verify finalized chain and exact package
+        run: |
+          python -m engines.chain_anchor.verify_anchor \
+            --rpc-url "$BASE_SEPOLIA_RPC_URL" \
+            --deployment-manifest "$RUNNER_TEMP/m7-public/base-sepolia-v1.json" \
+            --chain-anchor "$RUNNER_TEMP/m7-public/chain-anchor.json" \
+            --room-state tests/state_proof/fixtures/S4_eval.json \
+            | tee "$RUNNER_TEMP/m7-public/verifier-result.json"
+          grep -q '"chainStatus":"FINALIZED"' "$RUNNER_TEMP/m7-public/verifier-result.json"
+      - uses: actions/upload-artifact@v6
+        with:
+          name: m7-authoritative-base-sepolia-v1
+          path: |
+            ${{ runner.temp }}/m7-public/base-sepolia-v1.json
+            ${{ runner.temp }}/m7-public/chain-anchor.json
+            ${{ runner.temp }}/m7-public/chain-anchor-status.json
+            ${{ runner.temp }}/m7-public/verifier-result.json
+          if-no-files-found: error
+          retention-days: 30

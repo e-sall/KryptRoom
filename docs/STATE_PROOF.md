@@ -122,6 +122,18 @@ standalone verifier, and checks public tampering/leakage. It records real setup,
 build/proving/verification times, sizes, memory and disk. Execute-only success
 does not validate M5. The real proof gate and M1–M4 regressions passed.
 
+## CI acceptance policy
+
+Fast regression and real proving are separate. The fast workflow checks
+canonicalization, deterministic fixtures, Python behavior, Rust guest/relation
+tests, tampering, privacy, and standalone-verifier behavior. The real CPU
+Groth16 workflow is change-scoped to the guest/relation, witness or public-value
+semantics, receipt/StateProof commitments, SP1/toolchain material, and other
+changes that genuinely alter what is proved; it is also available as an
+explicit acceptance/release dispatch. Unrelated M7-only changes do not trigger
+a 20–40 minute proof. This scheduling split does not weaken or replace the
+already verified M5 cryptographic acceptance gate.
+
 ## Remaining limits
 
 Two parties, semi-honest MPC, trusted hosts, local keys, no production KMS/HSM or

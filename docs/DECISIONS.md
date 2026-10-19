@@ -1,5 +1,37 @@
 # Architectural decisions
 
+## ADR-014 — Stateless event-only Base anchor with separate verification layers
+
+**Decision:** Implement M7 as a chain-agnostic commitment protocol with one
+Base Sepolia V1 deployment. Publish only a domain-separated `bytes32`
+AnchorCommitment through a stateless, permissionless event-only contract. Keep
+the immutable inclusion record outside RoomState and maintain finality/reorg
+status separately. Verification has three explicit layers: public-chain
+inclusion, exact state/evidence package matching, and optional existing M5 SP1
+proof verification.
+
+**Reason:** A minimal event provides durable public inclusion evidence without
+turning public consensus into KryptRoom's state machine or publishing private
+collaboration metadata. Separating package hashing from proof verification
+prevents a StateProof document commitment from being misrepresented as SP1
+validity. Base `safe`/`finalized` heads provide canonical OP Stack finality
+semantics without inventing a fixed confirmation rule.
+
+**Alternatives:** On-chain RoomState fields, a registry mapping, ownership,
+upgradeability, tokens/payments, and computation were rejected as unnecessary
+disclosure and authority. A fixed confirmation count was rejected. Embedding
+ChainAnchor/status in RoomState was rejected because chain inclusion and reorg
+observations must not mutate immutable private-computation state.
+
+**Consequences:** Anyone may submit or duplicate a commitment; the sender does
+not represent a participant or approval. A reorg creates an orphaned status,
+not a mutated record. M6 state-only packages use NONE/ZERO32 without reading
+FHE material. M5 proof validity remains a separate command. Status is
+**IMPLEMENTED / LIVE VALIDATION PENDING** until one protected Base Sepolia
+deployment and anchor reach `finalized` and pass the standalone verifier.
+
+See [M7 protocol, vectors, evidence, and limits](PUBLIC_CHAIN_ANCHOR.md).
+
 ## ADR-013 — Single-owner BGV ciphertext addition as the first FHE transition
 
 **Decision:** Implement M6 as exact element-wise addition of two fixed

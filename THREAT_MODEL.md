@@ -9,7 +9,7 @@ and atomicity limitations remain. See docs/STATE_PROOF.md.
 
 ## Scope
 
-This document describes the runtime-verified M1 PSI-cardinality, M2 private-join, M2.5 persistent encrypted RoomState, M3 analytics, M4 private-NN, and M6 OpenFHE state-transition paths. Verification covers bounded synthetic fixtures and pinned runtimes, not a general security audit.
+This document describes the runtime-verified M1 PSI-cardinality, M2 private-join, M2.5 persistent encrypted RoomState, M3 analytics, M4 private-NN, and M6 OpenFHE state-transition paths, plus the implemented but not live-validated M7 public anchor. Verification covers bounded synthetic fixtures and pinned runtimes, not a general security audit.
 
 ## Assets
 
@@ -20,6 +20,7 @@ This document describes the runtime-verified M1 PSI-cardinality, M2 private-join
 - Authorization policy describing which party may learn which output.
 - RoomState documents, local encryption keys, encrypted SPU shares, artifact bindings, and state commitments.
 - M6 OpenFHE public context/key material, participant ciphertexts, the Lab A private decryption key, key epoch, and ciphertext-state lineage.
+- M7 RoomState/StateProof packages, AnchorCommitment, immutable inclusion record, testnet submitter key, and finality observations.
 
 ## Trust boundaries
 
@@ -28,6 +29,7 @@ This document describes the runtime-verified M1 PSI-cardinality, M2 private-join
 - The planned Control Plane is assumed honest for coordination but untrusted with participant plaintext; it is absent from current demos.
 - Container images, host kernels, Docker daemons, operating systems, and third-party dependencies are supply-chain and execution trust dependencies.
 - In M6 V1, Lab A is trusted to keep the single OpenFHE private key inside its KryptNode and to use the reviewed reveal boundary. The ciphertext evaluator is not trusted with that key.
+- For M7 live validation, the public Base Sepolia RPC is untrusted data that the verifier cross-checks for internal consistency. The protected testnet wallet is not a KryptRoom identity, participant key, or approval key.
 
 ## Initial adversary model
 
@@ -97,6 +99,26 @@ These properties passed the bounded real OpenFHE runtime gate. They do not preve
 malicious or compromised Lab A host from using its own private key outside the
 reviewed interface.
 
+## Protected properties targeted by Milestone 7
+
+- The contract accepts and emits only a nonzero bytes32 AnchorCommitment as
+  KryptRoom-specific public data; it stores no RoomState fields.
+- Exact domain-separated commitments bind one RoomState and optionally one
+  exact StateProof document while proof bytes and private artifacts remain
+  off-chain.
+- Package verification uses existing RoomState commitment/canonical JSON
+  semantics and does not resolve local artifact URIs.
+- Chain verification binds chain, contract/runtime, successful receipt, exact
+  event/log, canonical block/hash, and Base safe/finalized ancestry.
+- Reorg status remains separate from the immutable inclusion record. A
+  resubmission creates a different anchor ID even for the same commitment.
+- StateProof document matching does not silently claim SP1 proof validity; M5
+  verification is an explicit separate layer.
+
+These are implementation-level properties until the protected Base Sepolia
+deployment and one real finalized anchor pass. Public commitments do not hide
+low-entropy metadata from guessing and do not attest who approved a state.
+
 ## Not yet protected
 
 M3 is verified on the synthetic Linux CHEETAH/FM128 fixture. It inherits the same two-party semi-honest model. Analytics operation/input authorization is separate from reveal authorization; wrong contexts and zero-cardinality means fail before computation. Only public ciphertext descriptors cross the metadata boundary. See [M3 details and limits](docs/PRIVATE_ANALYTICS.md).
@@ -124,6 +146,12 @@ M4 is verified on the bounded synthetic Linux fixture. Its tested boundary keeps
   produced the committed child.
 - Arbitrary homomorphic programs, multiplication, bootstrapping, CKKS
   approximation, encrypted neural networks, or production parameter tuning.
+- Correctness of PSI, MPC, OpenFHE arithmetic, neural computation, or other
+  private execution merely because its resulting state is publicly anchored.
+- Participant identity or approval inferred from the Ethereum submitter,
+  malicious security, exact wall-clock time, or production wallet custody.
+- Public-chain availability, censorship resistance for a particular submitter,
+  or permanence before the inclusion reaches Base `finalized`.
 
 ## Information leakage inherent to PSI cardinality
 
@@ -156,4 +184,12 @@ The honest-but-curious model assumes both peers run the reviewed binaries and ho
 - Reload the child state in a later process and verify the explicitly authorized
   result `[16, 22, 26, 34]`; scan shared state/artifact storage for the private
   key and canonical plaintext input encodings.
+- Compile and test the exact M7 contract, including zero rejection and legal
+  duplicates; regenerate the commitment vectors and run package/reorg/privacy
+  negatives.
+- Before calling M7 verified, deploy exactly one authoritative V1 contract to
+  Base Sepolia, record its runtime hash, publish one anchor, wait for the
+  canonical inclusion to reach `finalized`, and pass the standalone chain and
+  package verifier. If a StateProof is referenced, run M5 verification as a
+  distinct third layer.
 

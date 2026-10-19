@@ -1,0 +1,50 @@
+name: Public Chain Anchor
+
+on:
+  pull_request:
+    branches: [dev, main]
+  push:
+    branches: [dev, main]
+
+concurrency:
+  group: public-chain-anchor-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  foundry-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: foundry-rs/foundry-toolchain@908c540300062bd5a7e473851cdb4282204cee09
+        with:
+          version: v1.8.5
+      - name: Record exact toolchain
+        run: |
+          forge --version
+          cast --version
+      - name: Format, compile, and test the event-only contract
+        working-directory: chain/contracts
+        run: |
+          forge fmt --check
+          forge build --sizes
+          forge test -vvv
+
+  python-contract-and-privacy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: pip install -r tests/chain_anchor/requirements.txt
+      - run: python -m unittest discover -s tests/chain_anchor -p 'test_*.py' -v
+      - name: Ensure deterministic M7 vector regeneration
+        run: |
+          python tests/chain_anchor/generate_vectors.py
+          git diff --exit-code -- tests/chain_anchor/fixtures
+      - run: python -m compileall -q engines/chain_anchor chain/scripts

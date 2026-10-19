@@ -24,6 +24,14 @@ These results establish behavior for the tested fixtures and stated threat model
 
 **M6 — verified persistent FHE state transition.** M6 persists two exact OpenFHE BGV-RNS ciphertext vectors as `S5_fhe_inputs`, reloads them in a secret-key-free evaluator, applies exactly one `EvalAdd`, and persists the child ciphertext as `S6_fhe_sum`. Lab A alone owns the private key; computation and the later Lab A/Lab B reveal are separate authorizations. The [authoritative Linux run](https://github.com/e-sall/KryptRoom/actions/runs/39155437292) reloaded real ciphertexts, produced `[16, 22, 26, 34]`, rejected unauthorized operations/reveals and tampering, and passed without persisting plaintext intermediates or placing the private key in the Control Plane. See [the M6 design, evidence, and limitations](docs/FHE_STATE_TRANSITION.md).
 
+**M7 — public-chain anchor implemented; live validation pending.** M7 adds a
+stateless event-only Solidity contract, exact domain-separated commitments,
+immutable off-chain inclusion records, Base `safe`/`finalized` and reorg checks,
+and a standalone three-layer verifier. The only KryptRoom value published
+on-chain is `bytes32 AnchorCommitment`; state/proof material remains off-chain.
+No Base Sepolia deployment or transaction is claimed until the protected
+testnet environment is available. See [the M7 protocol and limits](docs/PUBLIC_CHAIN_ANCHOR.md).
+
 ## Hero use case: cancer-research collaboration
 
 KryptRoom can generate an independently verifiable zero-knowledge proof that a
@@ -41,11 +49,11 @@ Lab A holds genomic features; Lab B holds clinical treatment-response informatio
 The repository uses only small synthetic fixtures. M1 privately counts the overlap. M2 independently compares identifiers inside MPC and creates a secret-shared join; M1 does not export hidden matches into M2. The persistence layer is intended to keep that join available for later authorized computations.
 
 ```text
-Private Matching → Private Join → Persistent State → Analytics / ML → Proof → FHE Transition → Audit
-M1 verified        M2 verified    M2.5 verified       M3/M4 verified    M5 verified   M6 verified       future
+Private Matching → Private Join → Persistent State → Analytics / ML → Proof → FHE Transition → Public Anchor
+M1 verified        M2 verified    M2.5 verified       M3/M4 verified    M5 verified   M6 verified       M7 live pending
 ```
 
-The M2.5 aggregate is a narrow continuity test, not the general M3 analytics API. M4 is runtime-verified only for one deterministic bounded synthetic training/evaluation fixture. M5 is verified only for its bounded committed metadata relation and does not prove the SecretFlow/CHEETAH or numerical computation. M6 is runtime-verified only for exact four-element BGV ciphertext addition. No real patient data, biomedical performance claim, arbitrary FHE analytics, ZK proof of FHE arithmetic, or blockchain integration is included.
+The M2.5 aggregate is a narrow continuity test, not the general M3 analytics API. M4 is runtime-verified only for one deterministic bounded synthetic training/evaluation fixture. M5 is verified only for its bounded committed metadata relation and does not prove the SecretFlow/CHEETAH or numerical computation. M6 is runtime-verified only for exact four-element BGV ciphertext addition. M7 is not live-chain verified and does not prove any underlying computation. No real patient data, biomedical performance claim, arbitrary FHE analytics, or ZK proof of FHE arithmetic is included.
 
 ## Architecture
 
@@ -120,6 +128,25 @@ The test creates all keys and ciphertexts in a temporary ignored directory and
 uploads none of them. It must not be run with production participant data or
 production keys.
 
+M7 contract and off-chain checks are local and do not need a wallet:
+
+```bash
+cd chain/contracts
+forge fmt --check
+forge build --sizes
+forge test -vvv
+cd ../..
+python -m pip install -r tests/chain_anchor/requirements.txt
+python -m unittest discover -s tests/chain_anchor -p 'test_*.py' -v
+python tests/chain_anchor/generate_vectors.py
+git diff --exit-code -- tests/chain_anchor/fixtures
+```
+
+The manual live-acceptance workflow is intentionally gated by the protected
+`base-sepolia-m7` environment. Do not dispatch it until the limited testnet RPC
+and wallet secrets are configured and the authoritative deployment records can
+be reviewed and committed. Local success is not live-chain verification.
+
 ## Security model
 
 The protocols assume participants follow the reviewed code. Matched identifiers are disclosed to neither participant by the authorized interfaces; future identifier disclosure requires explicit opt-in. Cardinality and other explicitly authorized aggregates can still reveal information through small or repeated queries. Public capacities, tensor shapes, and protocol traffic also disclose metadata.
@@ -128,7 +155,7 @@ Peer authentication, malicious security, host compromise resistance, signed stat
 
 ## Roadmap and repository guide
 
-M3 analytics, M4 persistent private NN training/evaluation, the bounded M5 committed state-transition proof, and M6's narrow FHE transition are verified on their synthetic fixtures. Later work remains unimplemented. See the [ordered roadmap](docs/ROADMAP.md) and [milestone checklist](TODO.md).
+M3 analytics, M4 persistent private NN training/evaluation, the bounded M5 committed state-transition proof, and M6's narrow FHE transition are verified on their synthetic fixtures. M7 is implemented with live Base Sepolia validation pending. Later work remains unimplemented. See the [ordered roadmap](docs/ROADMAP.md) and [milestone checklist](TODO.md).
 
 - `nodes/krypt-node/`: participant PSI processes and local input boundary.
 - `engines/mpc/`: verified SPU join and persistent encrypted RoomState implementation.
@@ -137,7 +164,8 @@ M3 analytics, M4 persistent private NN training/evaluation, the bounded M5 commi
 - `tests/` and `.github/workflows/`: integration, privacy, and reproducibility checks.
 - `engines/fhe/`: bounded M6 OpenFHE state-transition adapter and reveal boundary.
 - `engines/zk/`: verified bounded M5 SP1 6.9.0 CPU Groth16 metadata-proof implementation.
-- `services/`, `apps/`, and `chain/`: future component placeholders.
+- `chain/`: M7 Foundry contract and deployment/recording helpers; no live deployment manifest yet.
+- `services/` and `apps/`: future component placeholders.
 
 [Project context](PROJECT_CONTEXT.md) preserves technical direction. [CONTRIBUTING.md](CONTRIBUTING.md) describes the review and evidence expectations.
 

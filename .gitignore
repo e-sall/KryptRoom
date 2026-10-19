@@ -10,6 +10,9 @@ __pycache__/
 .mypy_cache/
 .venv/
 .venv-m6/
+.venv-m7/
+.tmp-m7/
+.tools-m7/
 
 # JavaScript
 node_modules/
@@ -43,6 +46,9 @@ credentials.json
 *.keystore
 *.share.enc
 *.openfhe.bin
+chain/contracts/cache/
+chain/contracts/out/
+chain/contracts/broadcast/
 *.log
 *.log.*
 *.dump

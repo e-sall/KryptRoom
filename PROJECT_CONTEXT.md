@@ -2,7 +2,7 @@
 
 ## Product
 
-KryptRoom is a persistent encrypted state machine for collaboration between mutually distrustful organizations. Private computations evolve immutable `RoomState` objects whose artifacts remain secret-shared and locally encrypted at participant-owned KryptNodes or remain committed FHE ciphertexts across authorized homomorphic transitions. KryptRoom is not a central encrypted-storage service, a blockchain application, a biotech company, or a machine-learning wrapper.
+KryptRoom is a persistent encrypted state machine for collaboration between mutually distrustful organizations. Private computations evolve immutable `RoomState` objects whose artifacts remain secret-shared and locally encrypted at participant-owned KryptNodes or remain committed FHE ciphertexts across authorized homomorphic transitions. M7 may publish one opaque commitment for public audit, but the blockchain is not the state machine or source of truth. KryptRoom is not a central encrypted-storage service, a blockchain application, a biotech company, or a machine-learning wrapper.
 
 The hero use case is collaboration between two cancer-research labs. Lab A holds genomic or gene-expression features. Lab B holds clinical and treatment-response information for an overlapping patient population. Neither party authorizes raw-data disclosure to the other party, KryptRoom, or a central operator.
 
@@ -10,7 +10,7 @@ The long-term workflow is private schema mapping, matching, deduplication, quali
 
 ## Approved architecture (target and implementation boundaries)
 
-M1 through M6 are runtime-verified on bounded synthetic fixtures. The Control Plane, node identity, signatures, production proof lifecycle, and production job orchestration below are architectural targets, not deployed capabilities. See ARCHITECTURE.md for the current runtime boundary.
+M1 through M6 are runtime-verified on bounded synthetic fixtures. M7 is implemented and awaiting live Base Sepolia validation. The Control Plane, node identity, signatures, production proof lifecycle, and production job orchestration below are architectural targets, not deployed capabilities. See ARCHITECTURE.md for the current runtime boundary.
 
 - A KryptRoom Control Plane coordinates metadata and authorized artifacts but is not trusted with participant raw data.
 - Every organization runs its own KryptNode.
@@ -30,7 +30,7 @@ M1 through M6 are runtime-verified on bounded synthetic fixtures. The Control Pl
 - Current M5 ZK implementation: verified bounded SP1 6.9.0 CPU Groth16 committed model-evaluation metadata proof. It does not prove MPC arithmetic, SecretFlow/CHEETAH correctness, numeric MSE, participant signatures, or malicious security. Broader proof scope remains future work.
 - Post-quantum target: OpenSSL 3.5 or newer, ML-KEM, ML-DSA, and hybrid X25519 + ML-KEM-768 key establishment.
 - Artifact encryption: AES-256-GCM with random nonces and node-local 256-bit keys for M2.5. No plaintext key reaches another participant or the Control Plane. Production KMS/HSM integration remains future work.
-- Audit target: chain-agnostic `BlockchainAnchor`, initially Base Sepolia, storing commitments and provenance only.
+- Current M7 audit implementation: chain-agnostic AnchorCommitment and immutable `ChainAnchor`, initially Base Sepolia, with only one bytes32 KryptRoom value on-chain. Live deployment/finality evidence remains pending.
 - Frontend, later: Next.js, TypeScript, Tailwind, shadcn/ui, and React Flow.
 
 ## Target backend-to-operation mapping (not a capability inventory)
@@ -64,13 +64,23 @@ M1 through M6 are runtime-verified on bounded synthetic fixtures. The Control Pl
 10. Canonical RunReceipt and provenance commitments.
 11. Post-quantum signatures.
 12. SP1 proof.
-13. Base Sepolia registry.
+13. Base Sepolia stateless event anchor (M7 implemented; live validation pending).
 14. UI.
 15. Integration tests, benchmarks, and demo hardening.
 
 Do not casually reorder this sequence or expand product scope without approval.
 
 ## Current milestone
+
+M7 Public Blockchain Anchor is implemented on branch `feat/public-chain-anchor`
+from dev merge `27889b7aecc2e0664bcad87d5f3c0370292735a0`. It adds exact
+domain-separated commitments, a stateless permissionless event-only Solidity
+contract, immutable inclusion records, separate finality/reorg status, and a
+three-layer standalone verifier. Base Sepolia chain ID 84532 is the V1 live
+target. No deployment or anchor is claimed until the protected
+`base-sepolia-m7` environment provides the testnet-only RPC URL/key and one
+inclusion reaches `finalized`. Status: **IMPLEMENTED / LIVE VALIDATION PENDING**.
+See docs/PUBLIC_CHAIN_ANCHOR.md.
 
 M6 Persistent FHE State Transition was originally implemented against dev commit
 `ad460f4d5a81d7c42aa32e46fbba492f1636bfdf` and reconciled without rewriting M5
@@ -96,5 +106,5 @@ M3 Persistent Private Cohort Analytics is verified on the synthetic Linux CHEETA
 
 Milestone 2.5 persists the validated M2 handoff as immutable RoomState S1. Each KryptNode encrypts its local SPU shares at rest with AES-256-GCM; authenticated-data bindings cover the room, state, artifact, party, and crypto-context identifiers. The Linux acceptance test terminated both node containers, loaded S1 in new containers through SecretFlow's native SPU share dump/load boundary, and ran a minimal private aggregate without remounting source CSVs. The verified result is specific to the synthetic fixture and current pinned runtime.
 
-The disclosure default remains deny. Cardinality may be released to Lab A, Lab B, and the UI. The synthetic M2.5 aggregate, explicitly opted-in M3 scalars, M4 evaluation MSE, and M6 vector sum are authorized only to their exact named participants. Matched identifiers, plaintext joined rows, model parameters, predictions, gradients, and activations remain forbidden. ML beyond the fixed M4 network, FHE beyond the bounded M6 addition, threshold/multiparty FHE, proofs beyond M5's bounded metadata relation, ZK proof of FHE arithmetic, blockchain, frontend, branching/merge behavior, and dynamic membership remain out of scope.
+The disclosure default remains deny. Cardinality may be released to Lab A, Lab B, and the UI. The synthetic M2.5 aggregate, explicitly opted-in M3 scalars, M4 evaluation MSE, and M6 vector sum are authorized only to their exact named participants. Matched identifiers, plaintext joined rows, model parameters, predictions, gradients, and activations remain forbidden. M7 publishes only one opaque commitment and an ordinary Ethereum sender; that address is not participant identity or approval. ML beyond the fixed M4 network, FHE beyond the bounded M6 addition, threshold/multiparty FHE, proofs beyond M5's bounded metadata relation, ZK proof of FHE arithmetic, blockchain state/compute, frontend, branching/merge behavior, and dynamic membership remain out of scope.
 

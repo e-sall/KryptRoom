@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kryptroom.dev/schemas/public-chain-deployment.schema.json",
+  "title": "KryptRoom M7 authoritative deployment manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "chainId",
+    "contractAddress",
+    "deploymentTransactionHash",
+    "deploymentBlockNumber",
+    "runtimeBytecodeHash",
+    "solidityVersion",
+    "foundryVersion",
+    "deployedAt"
+  ],
+  "properties": {
+    "version": { "const": "1" },
+    "chainId": { "const": 84532 },
+    "contractAddress": { "type": "string", "pattern": "^0x[a-f0-9]{40}$" },
+    "deploymentTransactionHash": { "type": "string", "pattern": "^0x[a-f0-9]{64}$" },
+    "deploymentBlockNumber": { "type": "integer", "minimum": 1 },
+    "runtimeBytecodeHash": { "type": "string", "pattern": "^0x[a-f0-9]{64}$" },
+    "solidityVersion": { "const": "0.8.37" },
+    "foundryVersion": { "const": "1.8.5" },
+    "deployedAt": { "type": "string", "format": "date-time" }
+  }
+}

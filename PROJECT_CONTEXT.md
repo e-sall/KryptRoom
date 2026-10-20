@@ -10,7 +10,7 @@ The long-term workflow is private schema mapping, matching, deduplication, quali
 
 ## Approved architecture (target and implementation boundaries)
 
-M1 through M6 are runtime-verified on bounded synthetic fixtures. M7 is implemented; its authoritative Base Sepolia V1 contract and single canonical acceptance event exist, while finality/package recovery remains pending. The Control Plane, node identity, signatures, production proof lifecycle, and production job orchestration below are architectural targets, not deployed capabilities. See ARCHITECTURE.md for the current runtime boundary.
+M1 through M6 are runtime-verified on bounded synthetic fixtures. M7 is verified for one finalized Base Sepolia state-only anchor and its authoritative public evidence package. The Control Plane, node identity, signatures, production proof lifecycle, and production job orchestration below are architectural targets, not deployed capabilities. See ARCHITECTURE.md for the current runtime boundary.
 
 - A KryptRoom Control Plane coordinates metadata and authorized artifacts but is not trusted with participant raw data.
 - Every organization runs its own KryptNode.
@@ -30,7 +30,7 @@ M1 through M6 are runtime-verified on bounded synthetic fixtures. M7 is implemen
 - Current M5 ZK implementation: verified bounded SP1 6.9.0 CPU Groth16 committed model-evaluation metadata proof. It does not prove MPC arithmetic, SecretFlow/CHEETAH correctness, numeric MSE, participant signatures, or malicious security. Broader proof scope remains future work.
 - Post-quantum target: OpenSSL 3.5 or newer, ML-KEM, ML-DSA, and hybrid X25519 + ML-KEM-768 key establishment.
 - Artifact encryption: AES-256-GCM with random nonces and node-local 256-bit keys for M2.5. No plaintext key reaches another participant or the Control Plane. Production KMS/HSM integration remains future work.
-- Current M7 audit implementation: chain-agnostic AnchorCommitment and immutable `ChainAnchor`, initially Base Sepolia, with only one bytes32 KryptRoom value on-chain. The authoritative V1 deployment and one canonical state-only acceptance event are validated; finalized package evidence remains pending.
+- Current M7 audit implementation: chain-agnostic AnchorCommitment and immutable `ChainAnchor`, initially Base Sepolia, with only one bytes32 KryptRoom value on-chain. The authoritative V1 deployment and sole canonical state-only acceptance event are finalized and independently verified; the public evidence package is attached to run 39381943437.
 - Frontend, later: Next.js, TypeScript, Tailwind, shadcn/ui, and React Flow.
 
 ## Target backend-to-operation mapping (not a capability inventory)
@@ -64,7 +64,7 @@ M1 through M6 are runtime-verified on bounded synthetic fixtures. M7 is implemen
 10. Canonical RunReceipt and provenance commitments.
 11. Post-quantum signatures.
 12. SP1 proof.
-13. Base Sepolia stateless event anchor (M7 contract and canonical event exist; finality/package recovery pending).
+13. Base Sepolia stateless event anchor (M7 verified for one finalized state-only inclusion and public evidence package).
 14. UI.
 15. Integration tests, benchmarks, and demo hardening.
 
@@ -83,9 +83,10 @@ state-only commitment in transaction
 `0x983e17727bd1aac518bc38b1889a9b27c16e840fa0d393f6e573a8a6959dce50`
 before an immediate receipt/canonical-block propagation mismatch stopped local
 record construction. Read-only forensics validate exactly one canonical event
-at log index 282 and the exact runtime. Status: **IMPLEMENTED / FINALITY-PACKAGE
-RECOVERY PENDING** until that inclusion reaches `finalized`, the independent
-verifier passes, and the public package is uploaded.
+at log index 282 and the exact runtime. Evidence-only run 39381943437 reused
+that transaction without broadcasting, reached `finalized`, passed the
+independent verifier, and uploaded the authoritative public package. Status:
+**VERIFIED** for this bounded state-only acceptance.
 See docs/PUBLIC_CHAIN_ANCHOR.md.
 
 M6 Persistent FHE State Transition was originally implemented against dev commit

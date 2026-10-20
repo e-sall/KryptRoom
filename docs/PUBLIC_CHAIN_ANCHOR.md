@@ -2,7 +2,7 @@
 
 ## Status
 
-**IMPLEMENTED / FINALITY-PACKAGE RECOVERY PENDING.** The stateless Solidity contract,
+**VERIFIED for the bounded state-only Base Sepolia acceptance.** The stateless Solidity contract,
 Foundry tests, exact commitment implementation, immutable off-chain records,
 Base finality/reorg verifier, schemas, deterministic vectors, M6 state-only
 coverage, privacy tests, and CI are implemented. Live run 39377159223 created
@@ -13,10 +13,13 @@ The first run then failed on an HTTP 403 before manifest construction. Recovery
 run 39379898215 published the single state-only acceptance anchor in transaction
 `0x983e17727bd1aac518bc38b1889a9b27c16e840fa0d393f6e573a8a6959dce50`,
 log index 282, then encountered a transient receipt-versus-block RPC propagation
-mismatch before it could persist the artifact package. Read-only forensics now
-show that exact successful event as the only canonical matching event, with the
-expected runtime hash. M7 becomes **VERIFIED** only after evidence-only recovery
-waits for `finalized`, the standalone verifier passes, and the package is uploaded.
+mismatch before it could persist the artifact package. Read-only forensics show
+that exact successful event as the only canonical matching event, with the
+expected runtime hash. Evidence-only recovery run
+[39381943437](https://github.com/e-sall/KryptRoom/actions/runs/39381943437)
+reused the transaction without broadcasting, reached Base `finalized`, passed
+standalone Layers A/B, and uploaded `m7-authoritative-base-sepolia-v1` with the
+deployment manifest, immutable ChainAnchor, final status, and verifier result.
 
 Short claim: **Publicly anchor private collaboration state without publishing it.**
 
@@ -149,7 +152,7 @@ Local and CI tests are implementation evidence, not live-chain validation.
 
 ## Guarantees and limitations
 
-After live acceptance, a finalized public-chain block can contain an
+The completed live acceptance demonstrates that a finalized public-chain block contains an
 AnchorCommitment that an independent verifier can recompute from the exact
 supplied KryptRoom state/evidence package. The chain publishes neither
 collaborative data nor encrypted artifacts, secret shares, FHE ciphertexts,

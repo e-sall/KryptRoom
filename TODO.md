@@ -92,11 +92,11 @@ bounded committed metadata relation.
 - [x] Configure protected GitHub environment `base-sepolia-m7` with testnet-only `BASE_SEPOLIA_RPC_URL` and `M7_TEST_ANCHOR_PRIVATE_KEY`.
 - [x] Perform exactly one authoritative Base Sepolia V1 deployment and validate its transaction, receipt, canonical block, and exact runtime without sending another transaction.
 - [x] Publish one real state-only acceptance anchor and verify exactly one canonical matching event without sending a duplicate.
-- [ ] Recover the authoritative manifest/artifact package, wait for `finalized`, and pass standalone Layers A/B through the guarded evidence-only resume workflow.
+- [x] Recover the authoritative manifest/artifact package, wait for `finalized`, and pass standalone Layers A/B through the guarded evidence-only resume workflow without broadcasting.
 
-Status: **IMPLEMENTED / FINALITY-PACKAGE RECOVERY PENDING**. The V1 contract and
-single canonical acceptance event exist; finality and independent package
-verification evidence are still required before M7 is verified.
+Status: **VERIFIED** for the bounded state-only Base Sepolia acceptance. The V1
+contract and sole canonical event are finalized, standalone Layers A/B pass,
+and run 39381943437 contains the authoritative public evidence package.
 
 ## Explicitly deferred
 

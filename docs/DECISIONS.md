@@ -34,8 +34,10 @@ validation with runtime hash
 `0xd0ceef826a9258089d4d2dcdc0171aefe288ef987d92a5954bb6579de1370755`.
 Run 39379898215 sent the exact state-only acceptance anchor in transaction
 `0x983e17727bd1aac518bc38b1889a9b27c16e840fa0d393f6e573a8a6959dce50`.
-Read-only forensics found exactly one canonical matching event at log index 282;
-finality/package recovery remains pending.
+Read-only forensics found exactly one canonical matching event at log index 282.
+Evidence-only run 39381943437 reused it without broadcasting, reached Base
+`finalized`, passed standalone Layers A/B, and uploaded the authoritative public
+package.
 
 ## ADR-014 — Stateless event-only Base anchor with separate verification layers
 
@@ -64,9 +66,10 @@ observations must not mutate immutable private-computation state.
 not represent a participant or approval. A reorg creates an orphaned status,
 not a mutated record. M6 state-only packages use NONE/ZERO32 without reading
 FHE material. M5 proof validity remains a separate command. Status is
-**IMPLEMENTED / FINALITY-PACKAGE RECOVERY PENDING**: the V1 deployment and one
-canonical acceptance event exist, while that inclusion must still reach
-`finalized`, pass the standalone verifier, and yield the public artifact package.
+**VERIFIED** for the bounded state-only acceptance: the V1 deployment and sole
+canonical event are finalized, the standalone verifier passed, and the public
+artifact package was produced. M7 still does not prove the underlying private
+computation.
 
 See [M7 protocol, vectors, evidence, and limits](PUBLIC_CHAIN_ANCHOR.md).
 

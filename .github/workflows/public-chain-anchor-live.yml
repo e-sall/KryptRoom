@@ -4,11 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: Resolve a new deployment or resume an existing immutable deployment
+        description: Deploy, resume an immutable deployment, or resume one exact existing anchor
         required: true
-        default: resume_existing_deployment
+        default: resume_existing_anchor
         type: choice
         options:
+          - resume_existing_anchor
           - resume_existing_deployment
           - deploy
       confirmation:
@@ -16,11 +17,19 @@ on:
         required: true
         type: string
       existing_contract_address:
-        description: Required only for resume_existing_deployment (lowercase 0x address)
+        description: Required for either resume mode (lowercase 0x address)
         required: false
         type: string
       existing_deployment_transaction:
-        description: Required only for resume_existing_deployment (lowercase 0x transaction hash)
+        description: Required for either resume mode (lowercase 0x transaction hash)
+        required: false
+        type: string
+      existing_anchor_transaction:
+        description: Required only for resume_existing_anchor (lowercase 0x transaction hash)
+        required: false
+        type: string
+      existing_anchor_log_index:
+        description: Required only for resume_existing_anchor (decimal log index)
         required: false
         type: string
       expected_deployer_nonce:
@@ -47,25 +56,40 @@ jobs:
       M7_CONFIRMATION: ${{ inputs.confirmation }}
       M7_EXISTING_CONTRACT: ${{ inputs.existing_contract_address }}
       M7_EXISTING_DEPLOYMENT_TX: ${{ inputs.existing_deployment_transaction }}
+      M7_EXISTING_ANCHOR_TX: ${{ inputs.existing_anchor_transaction }}
+      M7_EXISTING_ANCHOR_LOG_INDEX: ${{ inputs.existing_anchor_log_index }}
       M7_EXPECTED_DEPLOYER_NONCE: ${{ inputs.expected_deployer_nonce }}
     steps:
       - uses: actions/checkout@v7
       - name: Enforce explicit mutually exclusive mode gate
         run: |
           test -n "$BASE_SEPOLIA_RPC_URL"
-          test -n "$M7_TEST_ANCHOR_PRIVATE_KEY"
           case "$M7_MODE" in
             deploy)
+              test -n "$M7_TEST_ANCHOR_PRIVATE_KEY"
               test "$M7_CONFIRMATION" = 'DEPLOY BASE SEPOLIA M7 V1'
               test -z "$M7_EXISTING_CONTRACT"
               test -z "$M7_EXISTING_DEPLOYMENT_TX"
+              test -z "$M7_EXISTING_ANCHOR_TX"
+              test -z "$M7_EXISTING_ANCHOR_LOG_INDEX"
               [[ "$M7_EXPECTED_DEPLOYER_NONCE" =~ ^(0|[1-9][0-9]*)$ ]]
               test ! -e chain/deployments/base-sepolia-v1.json
               ;;
             resume_existing_deployment)
+              test -n "$M7_TEST_ANCHOR_PRIVATE_KEY"
               test "$M7_CONFIRMATION" = 'RESUME BASE SEPOLIA M7 V1'
               [[ "$M7_EXISTING_CONTRACT" =~ ^0x[0-9a-f]{40}$ ]]
               [[ "$M7_EXISTING_DEPLOYMENT_TX" =~ ^0x[0-9a-f]{64}$ ]]
+              test -z "$M7_EXISTING_ANCHOR_TX"
+              test -z "$M7_EXISTING_ANCHOR_LOG_INDEX"
+              test -z "$M7_EXPECTED_DEPLOYER_NONCE"
+              ;;
+            resume_existing_anchor)
+              test "$M7_CONFIRMATION" = 'RESUME EXISTING BASE SEPOLIA M7 ANCHOR V1'
+              [[ "$M7_EXISTING_CONTRACT" =~ ^0x[0-9a-f]{40}$ ]]
+              [[ "$M7_EXISTING_DEPLOYMENT_TX" =~ ^0x[0-9a-f]{64}$ ]]
+              [[ "$M7_EXISTING_ANCHOR_TX" =~ ^0x[0-9a-f]{64}$ ]]
+              [[ "$M7_EXISTING_ANCHOR_LOG_INDEX" =~ ^(0|[1-9][0-9]*)$ ]]
               test -z "$M7_EXPECTED_DEPLOYER_NONCE"
               ;;
             *)
@@ -117,8 +141,16 @@ jobs:
             --output "$RUNNER_TEMP/m7-public/base-sepolia-v1.json"
           test "$(jq -r '.runtimeBytecodeHash' "$RUNNER_TEMP/m7-public/base-sepolia-v1.json")" = \
             '0xd0ceef826a9258089d4d2dcdc0171aefe288ef987d92a5954bb6579de1370755'
-      - name: Refuse duplicate authoritative anchor
+      - name: Recompute the exact deterministic acceptance commitment
         id: commitment
+        run: |
+          commitment=$(python chain/scripts/compute_anchor_commitment.py \
+            --room-state tests/state_proof/fixtures/S4_eval.json)
+          test "$commitment" = \
+            '0xbeb356e0fb84d976fea8d349f10d6aec168811e1ffc92fbea8b2ee4a04eb62d9'
+          echo "value=$commitment" >> "$GITHUB_OUTPUT"
+      - name: Refuse duplicate authoritative anchor before a new publication
+        if: env.M7_MODE != 'resume_existing_anchor'
         run: |
           deployment_block=$(jq -er '.deploymentBlockNumber' \
             "$RUNNER_TEMP/m7-public/base-sepolia-v1.json")
@@ -126,9 +158,10 @@ jobs:
             --contract-address '${{ steps.deployment.outputs.contract }}' \
             --deployment-block "$deployment_block" \
             --room-state tests/state_proof/fixtures/S4_eval.json)
-          echo "value=$commitment" >> "$GITHUB_OUTPUT"
+          test "$commitment" = '${{ steps.commitment.outputs.value }}'
       - name: Publish the deterministic state-only acceptance anchor
-        id: anchor
+        if: env.M7_MODE != 'resume_existing_anchor'
+        id: published_anchor
         working-directory: chain/contracts
         run: |
           response=$(cast send --json \
@@ -140,13 +173,22 @@ jobs:
           log_index=$(jq -er '.logs[0].logIndex' <<<"$response")
           echo "transaction=$transaction" >> "$GITHUB_OUTPUT"
           echo "log_index=$((log_index))" >> "$GITHUB_OUTPUT"
+      - name: Bind the exact existing acceptance anchor without broadcasting
+        if: env.M7_MODE == 'resume_existing_anchor'
+        id: existing_anchor
+        run: |
+          echo "transaction=$M7_EXISTING_ANCHOR_TX" >> "$GITHUB_OUTPUT"
+          echo "log_index=$M7_EXISTING_ANCHOR_LOG_INDEX" >> "$GITHUB_OUTPUT"
       - name: Record the immutable inclusion and wait for Base finality
         run: |
           python chain/scripts/record_anchor.py \
             --contract-address '${{ steps.deployment.outputs.contract }}' \
-            --transaction-hash '${{ steps.anchor.outputs.transaction }}' \
-            --log-index '${{ steps.anchor.outputs.log_index }}' \
+            --transaction-hash '${{ steps.existing_anchor.outputs.transaction || steps.published_anchor.outputs.transaction }}' \
+            --log-index '${{ steps.existing_anchor.outputs.log_index || steps.published_anchor.outputs.log_index }}' \
             --room-state tests/state_proof/fixtures/S4_eval.json \
+            --deployment-manifest "$RUNNER_TEMP/m7-public/base-sepolia-v1.json" \
+            --canonical-poll-seconds 5 \
+            --canonical-timeout-seconds 300 \
             --output "$RUNNER_TEMP/m7-public/chain-anchor.json"
           python chain/scripts/wait_for_finality.py \
             --deployment-manifest "$RUNNER_TEMP/m7-public/base-sepolia-v1.json" \

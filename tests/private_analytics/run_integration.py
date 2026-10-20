@@ -39,7 +39,12 @@ def compose(files, project):
 
 
 def phase(args, env, expected_exit=0):
-    result = run([*args, "up", "--no-build", "--abort-on-container-failure"], env, check=False)
+    command = [*args, "up", "--no-build"]
+    # An expected non-zero exit is part of the assertion, not a Compose failure:
+    # let both peers finish so one cannot SIGTERM the other during teardown.
+    if expected_exit == 0:
+        command.append("--abort-on-container-failure")
+    result = run(command, env, check=False)
     payload = result.stdout + result.stderr
     assert not re.search(r"P00[1-7]", payload), "Identifier appeared in logs"
     records = []

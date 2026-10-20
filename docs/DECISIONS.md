@@ -1,12 +1,12 @@
 # Architectural decisions
 
-## ADR-015 — Fail-closed M7 deployment recovery
+## ADR-015 — Fail-closed M7 deployment and anchor recovery
 
 **Decision:** Treat Base Sepolia contract
 `0xd090b5f1834d41c1db39cfbb642edb3acbbce96b`, created by transaction
 `0x86fa94f71d74ee43bb87ca2c0b31b0f0f69938936dc3d9c71bf56bda4f706f9a`,
 as the authoritative M7 V1 deployment. The live workflow has explicit
-`deploy` and `resume_existing_deployment` modes. Resume requires normalized
+`deploy`, `resume_existing_deployment`, and `resume_existing_anchor` modes. Deployment resume requires normalized
 immutable identifiers and never invokes `forge create`. Deploy requires the
 expected sender nonce and passes that nonce to `forge create`, so retrying the
 same failed deployment attempt cannot silently create another contract.
@@ -22,13 +22,20 @@ absence of the deterministic acceptance anchor before any anchor transaction.
 semantics remain unchanged. The official workflow serializes attempts and
 checks the exact commitment in bounded log ranges, but it cannot stop an
 unrelated external account from publishing the same permissionless event. If a
-run fails after publishing an anchor, a retry fails closed instead of emitting
-a duplicate and requires a separate evidence-only recovery decision.
+run fails after publishing an anchor, an ordinary retry fails closed instead of
+emitting a duplicate. Evidence-only recovery requires the exact existing anchor
+transaction and log index, never broadcasts, and requires exactly one canonical
+matching event. Receipt recording polls boundedly until the receipt block hash
+matches the canonical block view; disappearance, incompatible receipt movement,
+or timeout fails with an explicit pending/orphaned classification.
 
 **Status:** Accepted. The existing deployment passed read-only Base Sepolia
 validation with runtime hash
 `0xd0ceef826a9258089d4d2dcdc0171aefe288ef987d92a5954bb6579de1370755`.
-No acceptance anchor has been sent; live recovery remains pending.
+Run 39379898215 sent the exact state-only acceptance anchor in transaction
+`0x983e17727bd1aac518bc38b1889a9b27c16e840fa0d393f6e573a8a6959dce50`.
+Read-only forensics found exactly one canonical matching event at log index 282;
+finality/package recovery remains pending.
 
 ## ADR-014 — Stateless event-only Base anchor with separate verification layers
 
@@ -57,8 +64,9 @@ observations must not mutate immutable private-computation state.
 not represent a participant or approval. A reorg creates an orphaned status,
 not a mutated record. M6 state-only packages use NONE/ZERO32 without reading
 FHE material. M5 proof validity remains a separate command. Status is
-**IMPLEMENTED / LIVE RECOVERY PENDING**: the V1 deployment exists, while the
-acceptance anchor must still reach `finalized` and pass the standalone verifier.
+**IMPLEMENTED / FINALITY-PACKAGE RECOVERY PENDING**: the V1 deployment and one
+canonical acceptance event exist, while that inclusion must still reach
+`finalized`, pass the standalone verifier, and yield the public artifact package.
 
 See [M7 protocol, vectors, evidence, and limits](PUBLIC_CHAIN_ANCHOR.md).
 

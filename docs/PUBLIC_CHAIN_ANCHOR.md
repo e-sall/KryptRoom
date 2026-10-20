@@ -2,18 +2,21 @@
 
 ## Status
 
-**IMPLEMENTED / LIVE RECOVERY PENDING.** The stateless Solidity contract,
+**IMPLEMENTED / FINALITY-PACKAGE RECOVERY PENDING.** The stateless Solidity contract,
 Foundry tests, exact commitment implementation, immutable off-chain records,
 Base finality/reorg verifier, schemas, deterministic vectors, M6 state-only
 coverage, privacy tests, and CI are implemented. Live run 39377159223 created
 the authoritative Base Sepolia V1 contract at
 `0xd090b5f1834d41c1db39cfbb642edb3acbbce96b` in transaction
 `0x86fa94f71d74ee43bb87ca2c0b31b0f0f69938936dc3d9c71bf56bda4f706f9a`.
-The run then failed on an HTTP 403 before manifest construction, and its anchor
-step was skipped. The deployment has since passed read-only chain, receipt,
-canonicality, and exact-runtime validation. M7 becomes **VERIFIED** only after
-recovery publishes the single acceptance anchor, reaches `finalized`, and the
-standalone verifier passes against that exact inclusion.
+The first run then failed on an HTTP 403 before manifest construction. Recovery
+run 39379898215 published the single state-only acceptance anchor in transaction
+`0x983e17727bd1aac518bc38b1889a9b27c16e840fa0d393f6e573a8a6959dce50`,
+log index 282, then encountered a transient receipt-versus-block RPC propagation
+mismatch before it could persist the artifact package. Read-only forensics now
+show that exact successful event as the only canonical matching event, with the
+expected runtime hash. M7 becomes **VERIFIED** only after evidence-only recovery
+waits for `finalized`, the standalone verifier passes, and the package is uploaded.
 
 Short claim: **Publicly anchor private collaboration state without publishing it.**
 
@@ -119,13 +122,18 @@ mode and mode-specific confirmation phrase and serializes all V1 attempts.
 `resume_existing_deployment` requires both normalized deployment identifiers,
 never invokes `forge create`, validates the creation transaction, successful
 receipt, canonical block, and exact pinned runtime, and refuses an already
-recorded acceptance commitment before sending anything. `deploy` additionally
+recorded acceptance commitment before sending anything. `resume_existing_anchor`
+requires the exact contract, deployment transaction, anchor transaction, and log
+index. It invokes neither `forge create` nor `cast send`; instead it recomputes
+the expected commitment, waits boundedly for a stable canonical receipt view,
+requires exactly one canonical matching event tied to that transaction/log, and
+continues finality, standalone verification, and artifact upload. `deploy` additionally
 requires and pins the expected deployer nonce so a retry of the same attempt
 cannot silently redeploy. The workflow then publishes one deterministic
 state-only acceptance anchor, waits for `finalized`, runs the standalone
 verifier, and uploads only the public manifest/record/status/result. If a run
-fails after anchor publication, the duplicate preflight fails closed and a
-separate evidence-only recovery decision is required.
+fails after anchor publication, ordinary publication modes fail closed on the
+duplicate while the explicit evidence-only mode can resume that exact inclusion.
 
 ## CI policy
 

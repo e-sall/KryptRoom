@@ -24,15 +24,17 @@ These results establish behavior for the tested fixtures and stated threat model
 
 **M6 — verified persistent FHE state transition.** M6 persists two exact OpenFHE BGV-RNS ciphertext vectors as `S5_fhe_inputs`, reloads them in a secret-key-free evaluator, applies exactly one `EvalAdd`, and persists the child ciphertext as `S6_fhe_sum`. Lab A alone owns the private key; computation and the later Lab A/Lab B reveal are separate authorizations. The [authoritative Linux run](https://github.com/e-sall/KryptRoom/actions/runs/39155437292) reloaded real ciphertexts, produced `[16, 22, 26, 34]`, rejected unauthorized operations/reveals and tampering, and passed without persisting plaintext intermediates or placing the private key in the Control Plane. See [the M6 design, evidence, and limitations](docs/FHE_STATE_TRANSITION.md).
 
-**M7 — public-chain anchor implemented; live recovery pending.** M7 adds a
+**M7 — public-chain anchor implemented; finality/package recovery pending.** M7 adds a
 stateless event-only Solidity contract, exact domain-separated commitments,
 immutable off-chain inclusion records, Base `safe`/`finalized` and reorg checks,
 and a standalone three-layer verifier. The only KryptRoom value published
 on-chain is `bytes32 AnchorCommitment`; state/proof material remains off-chain.
 The authoritative Base Sepolia V1 contract is deployed and its transaction,
-canonical block, and exact runtime are read-only validated. The failed first
-run published no anchor; guarded recovery, finality, and independent
-verification remain pending. See [the M7 protocol and limits](docs/PUBLIC_CHAIN_ANCHOR.md).
+canonical block, and exact runtime are read-only validated. A second run sent
+the exact state-only acceptance anchor; read-only forensics show one canonical
+matching event. Guarded evidence-only recovery must still reach finality, pass
+independent verification, and upload the public package before M7 is marked
+verified. See [the M7 protocol and limits](docs/PUBLIC_CHAIN_ANCHOR.md).
 
 ## Hero use case: cancer-research collaboration
 
@@ -52,7 +54,7 @@ The repository uses only small synthetic fixtures. M1 privately counts the overl
 
 ```text
 Private Matching → Private Join → Persistent State → Analytics / ML → Proof → FHE Transition → Public Anchor
-M1 verified        M2 verified    M2.5 verified       M3/M4 verified    M5 verified   M6 verified       M7 recovery pending
+M1 verified        M2 verified    M2.5 verified       M3/M4 verified    M5 verified   M6 verified       M7 finality pending
 ```
 
 The M2.5 aggregate is a narrow continuity test, not the general M3 analytics API. M4 is runtime-verified only for one deterministic bounded synthetic training/evaluation fixture. M5 is verified only for its bounded committed metadata relation and does not prove the SecretFlow/CHEETAH or numerical computation. M6 is runtime-verified only for exact four-element BGV ciphertext addition. M7 is not live-chain verified and does not prove any underlying computation. No real patient data, biomedical performance claim, arbitrary FHE analytics, or ZK proof of FHE arithmetic is included.
@@ -147,8 +149,11 @@ git diff --exit-code -- tests/chain_anchor/fixtures
 The manual live-acceptance workflow is intentionally gated by the protected
 `base-sepolia-m7` environment. Recovery must use
 `resume_existing_deployment` with the documented authoritative address and
-transaction; that path validates them and cannot invoke `forge create`. Local
-success and deployment existence alone are not completed anchor verification.
+transaction; that path validates them and cannot invoke `forge create`.
+`resume_existing_anchor` additionally binds one exact existing anchor
+transaction/log, cannot broadcast, and resumes only canonical validation,
+finality, verification, and public artifact construction. Local success and
+deployment existence alone are not completed anchor verification.
 
 ## Security model
 
@@ -158,7 +163,7 @@ Peer authentication, malicious security, host compromise resistance, signed stat
 
 ## Roadmap and repository guide
 
-M3 analytics, M4 persistent private NN training/evaluation, the bounded M5 committed state-transition proof, and M6's narrow FHE transition are verified on their synthetic fixtures. M7's authoritative contract is deployed and validated, with anchor recovery/finality still pending. Later work remains unimplemented. See the [ordered roadmap](docs/ROADMAP.md) and [milestone checklist](TODO.md).
+M3 analytics, M4 persistent private NN training/evaluation, the bounded M5 committed state-transition proof, and M6's narrow FHE transition are verified on their synthetic fixtures. M7's authoritative contract and single canonical acceptance event exist, with finality/package recovery still pending. Later work remains unimplemented. See the [ordered roadmap](docs/ROADMAP.md) and [milestone checklist](TODO.md).
 
 - `nodes/krypt-node/`: participant PSI processes and local input boundary.
 - `engines/mpc/`: verified SPU join and persistent encrypted RoomState implementation.
@@ -167,7 +172,7 @@ M3 analytics, M4 persistent private NN training/evaluation, the bounded M5 commi
 - `tests/` and `.github/workflows/`: integration, privacy, and reproducibility checks.
 - `engines/fhe/`: bounded M6 OpenFHE state-transition adapter and reveal boundary.
 - `engines/zk/`: verified bounded M5 SP1 6.9.0 CPU Groth16 metadata-proof implementation.
-- `chain/`: M7 Foundry contract and deployment/recovery/recording helpers; the authoritative artifact package remains pending.
+- `chain/`: M7 Foundry contract and deployment/evidence-recovery/recording helpers; the authoritative finalized artifact package remains pending.
 - `services/` and `apps/`: future component placeholders.
 
 [Project context](PROJECT_CONTEXT.md) preserves technical direction. [CONTRIBUTING.md](CONTRIBUTING.md) describes the review and evidence expectations.

@@ -6,9 +6,11 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Added
 
-- M7 live-acceptance recovery after run 39377159223: explicit deploy/resume modes, stable JSON-RPC User-Agent, immutable existing-deployment validation, deployer-nonce retry guard, and duplicate-anchor preflight. The authoritative V1 contract deployment is read-only validated; anchor publication/finality remain pending.
+- M7 evidence-only anchor recovery after run 39379898215: bounded canonical-receipt polling, explicit orphan handling, exact-one-event validation, and a mutually exclusive `resume_existing_anchor` mode that cannot deploy or broadcast. The existing canonical transaction is reused; finality/package recovery remains pending.
 
-- M7 stateless permissionless event-only Solidity anchor, exact RoomState/StateProof commitments, immutable off-chain ChainAnchor plus separate dynamic status, Base Sepolia safe/finalized and reorg verification, and standalone three-layer verification. Status: implemented; live recovery pending.
+- M7 live-acceptance recovery after run 39377159223: explicit deploy/resume modes, stable JSON-RPC User-Agent, immutable existing-deployment validation, deployer-nonce retry guard, and duplicate-anchor preflight. This first recovery stage established the authoritative V1 deployment used by the later anchor transaction.
+
+- M7 stateless permissionless event-only Solidity anchor, exact RoomState/StateProof commitments, immutable off-chain ChainAnchor plus separate dynamic status, Base Sepolia safe/finalized and reorg verification, and standalone three-layer verification. Status: implemented; finality/package recovery pending.
 - M7 deterministic commitment vectors, M6 state-only/no-artifact-read coverage, closed schemas, negative/privacy tests, pinned Foundry 1.8.5 and Solidity 0.8.37 CI, and deployment/recording/finality helpers.
 
 - M6 exact OpenFHE BGV-RNS ciphertext addition from persistent `S5_fhe_inputs` to immutable `S6_fhe_sum`, with a secret-key-free evaluator and separate policy-controlled reveal. Status: verified on the bounded synthetic Linux fixture.

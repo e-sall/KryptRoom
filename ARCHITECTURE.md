@@ -2,7 +2,7 @@
 
 ## Current implemented state
 
-KryptRoom has runtime-verified M1 PSI cardinality, M2 two-container SPU private join, M2.5 persistent encrypted RoomState paths, M3 persistent private analytics, bounded M4 persistent private NN training/evaluation, the bounded M5 SP1 committed state-transition proof, and bounded M6 persistent OpenFHE BGV ciphertext addition. M7 public-chain anchoring is implemented but awaits live Base Sepolia validation.
+KryptRoom has runtime-verified M1 PSI cardinality, M2 two-container SPU private join, M2.5 persistent encrypted RoomState paths, M3 persistent private analytics, bounded M4 persistent private NN training/evaluation, the bounded M5 SP1 committed state-transition proof, and bounded M6 persistent OpenFHE BGV ciphertext addition. M7 public-chain anchoring is implemented; its contract and single canonical acceptance event exist, while finality/package validation is pending.
 
 ## Target system boundary
 
@@ -111,7 +111,8 @@ anchored with NONE/ZERO32 using only its RoomState document after all FHE
 material is unavailable.
 
 The code is chain-agnostic at the commitment boundary; Base Sepolia is the V1
-validation target. Status remains **IMPLEMENTED / LIVE VALIDATION PENDING**.
+validation target. Status remains **IMPLEMENTED / FINALITY-PACKAGE VALIDATION
+PENDING** for the existing canonical acceptance event.
 See [the complete M7 design](docs/PUBLIC_CHAIN_ANCHOR.md).
 
 - `apps/web`: future user interface; intentionally empty during PSI work.
@@ -134,5 +135,5 @@ policy/context/holder metadata stays in the private witness. S4 is unchanged.
 SecretFlow/CHEETAH execution, MPC arithmetic and numeric MSE are not proved. See
 docs/STATE_PROOF.md.
 
-The current milestone does not implement general-purpose private ML, private inference APIs, model export, optimizer checkpoints, ML beyond the fixed M4 network, FHE beyond one four-element BGV `EvalAdd`, threshold/multiparty FHE, proofs beyond M5's bounded metadata relation, ZK proof of the FHE arithmetic, a blockchain state machine or on-chain computation/storage, a frontend, branch/merge operations, dynamic membership, post-quantum identity, real medical data, production key management, or a production Control Plane. M7 has no live Base Sepolia evidence yet.
+The current milestone does not implement general-purpose private ML, private inference APIs, model export, optimizer checkpoints, ML beyond the fixed M4 network, FHE beyond one four-element BGV `EvalAdd`, threshold/multiparty FHE, proofs beyond M5's bounded metadata relation, ZK proof of the FHE arithmetic, a blockchain state machine or on-chain computation/storage, a frontend, branch/merge operations, dynamic membership, post-quantum identity, real medical data, production key management, or a production Control Plane. M7 has canonical live-chain inclusion evidence, but finalized verifier/package evidence is still pending.
 

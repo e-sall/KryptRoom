@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
+import time
 from datetime import datetime, timezone
-from typing import Any
+from typing import Any, Callable
 
-from engines.chain_anchor.model import ChainAnchor, derive_anchor_id
+from engines.chain_anchor.model import AnchorStatus, ChainAnchor, derive_anchor_id
 from engines.chain_anchor.rpc import RpcClient
 from engines.chain_anchor.verifier import (
     ANCHOR_RECORDED_TOPIC,
@@ -32,21 +33,21 @@ def _iso_timestamp(value: str) -> str:
     )
 
 
-def assert_anchor_absent(
+def _matching_anchor_logs(
     *,
     rpc: RpcClient,
     contract_address: str,
     anchor_commitment: str,
     from_block: int,
-) -> None:
-    """Fail closed if this contract already emitted the exact commitment."""
-
+) -> list[dict[str, Any]]:
     chain_id = _quantity(rpc.call("eth_chainId", []), "chainId")
     if chain_id != BASE_SEPOLIA_CHAIN_ID:
         raise ChainVerificationError("Authoritative M7 deployment must use Base Sepolia")
     latest_block = _quantity(rpc.call("eth_blockNumber", []), "latest block number")
-    if latest_block < from_block:
+    if from_block < 0 or latest_block < from_block:
         raise ChainVerificationError("Deployment block is ahead of the current chain head")
+
+    matching: list[dict[str, Any]] = []
     for first in range(from_block, latest_block + 1, 100):
         last = min(first + 99, latest_block)
         logs = rpc.call(
@@ -60,12 +61,123 @@ def assert_anchor_absent(
                 }
             ],
         )
-        if not isinstance(logs, list):
+        if not isinstance(logs, list) or any(not isinstance(entry, dict) for entry in logs):
             raise ChainVerificationError("RPC returned malformed AnchorRecorded logs")
-        if logs:
+        matching.extend(logs)
+    return matching
+
+
+def assert_anchor_absent(
+    *,
+    rpc: RpcClient,
+    contract_address: str,
+    anchor_commitment: str,
+    from_block: int,
+) -> None:
+    """Fail closed if this contract already emitted the exact commitment."""
+
+    if _matching_anchor_logs(
+        rpc=rpc,
+        contract_address=contract_address,
+        anchor_commitment=anchor_commitment,
+        from_block=from_block,
+    ):
+        raise ChainVerificationError(
+            "This AnchorCommitment is already recorded; refusing a duplicate transaction"
+        )
+
+
+def assert_unique_anchor_inclusion(
+    *,
+    rpc: RpcClient,
+    contract_address: str,
+    anchor_commitment: str,
+    transaction_hash: str,
+    log_index: int,
+    from_block: int,
+) -> None:
+    """Require exactly one canonical event and bind it to the supplied inclusion."""
+
+    logs = _matching_anchor_logs(
+        rpc=rpc,
+        contract_address=contract_address,
+        anchor_commitment=anchor_commitment,
+        from_block=from_block,
+    )
+    if len(logs) != 1:
+        raise ChainVerificationError(
+            f"Expected exactly one canonical AnchorRecorded event; found {len(logs)}"
+        )
+    entry = logs[0]
+    if entry.get("removed") is True:
+        raise ChainVerificationError(
+            "Anchor event was removed by a reorg", AnchorStatus.ORPHANED
+        )
+    if (
+        entry.get("address", "").lower() != contract_address.lower()
+        or entry.get("transactionHash", "").lower() != transaction_hash.lower()
+        or _quantity(entry.get("logIndex"), "logIndex") != log_index
+    ):
+        raise ChainVerificationError("Canonical anchor event does not match the supplied inclusion")
+    block_number = _quantity(entry.get("blockNumber"), "event block number")
+    block_hash = entry.get("blockHash", "").lower()
+    canonical = rpc.call("eth_getBlockByNumber", [hex(block_number), False])
+    if canonical is None or canonical.get("hash", "").lower() != block_hash:
+        raise ChainVerificationError(
+            "Anchor event is not in the canonical block", AnchorStatus.ORPHANED
+        )
+
+
+def wait_for_canonical_receipt(
+    *,
+    rpc: RpcClient,
+    transaction_hash: str,
+    timeout_seconds: float = 300,
+    poll_seconds: float = 5,
+    monotonic: Callable[[], float] = time.monotonic,
+    sleep: Callable[[float], None] = time.sleep,
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    """Wait for one stable receipt whose block hash is the canonical hash at its height."""
+
+    if timeout_seconds < 0 or poll_seconds <= 0:
+        raise ValueError("Canonical receipt timeout must be nonnegative and polling positive")
+    deadline = monotonic() + timeout_seconds
+    observed_inclusion: tuple[int, str] | None = None
+    while True:
+        receipt = rpc.call("eth_getTransactionReceipt", [transaction_hash])
+        if receipt is None:
+            if observed_inclusion is not None:
+                raise ChainVerificationError(
+                    "Transaction receipt disappeared after inclusion was observed",
+                    AnchorStatus.ORPHANED,
+                )
+        elif not isinstance(receipt, dict):
+            raise ChainVerificationError("RPC returned a malformed transaction receipt")
+        else:
+            if receipt.get("transactionHash", "").lower() != transaction_hash.lower():
+                raise ChainVerificationError("Transaction hash mismatch")
+            block_number = _quantity(receipt.get("blockNumber"), "receipt block number")
+            block_hash = receipt.get("blockHash", "").lower()
+            if not block_hash.startswith("0x") or len(block_hash) != 66:
+                raise ChainVerificationError("Malformed receipt block hash")
+            inclusion = (block_number, block_hash)
+            if observed_inclusion is None:
+                observed_inclusion = inclusion
+            elif inclusion != observed_inclusion:
+                raise ChainVerificationError(
+                    "Transaction receipt changed to an incompatible inclusion",
+                    AnchorStatus.ORPHANED,
+                )
+            canonical = rpc.call("eth_getBlockByNumber", [hex(block_number), False])
+            if canonical is not None and canonical.get("hash", "").lower() == block_hash:
+                return receipt, canonical
+
+        if monotonic() >= deadline:
+            status = AnchorStatus.ORPHANED if observed_inclusion else AnchorStatus.PENDING
             raise ChainVerificationError(
-                "This AnchorCommitment is already recorded; refusing a duplicate transaction"
+                "Timed out waiting for a stable canonical transaction receipt", status
             )
+        sleep(poll_seconds)
 
 
 def create_chain_anchor_record(
@@ -82,15 +194,24 @@ def create_chain_anchor_record(
     transaction_hash: str,
     log_index: int,
     created_at: str,
+    canonical_timeout_seconds: float = 300,
+    canonical_poll_seconds: float = 5,
 ) -> ChainAnchor:
     """Record one exact inclusion; dynamic finality remains a separate snapshot."""
 
     chain_id = _quantity(rpc.call("eth_chainId", []), "chainId")
     if chain_id != BASE_SEPOLIA_CHAIN_ID:
         raise ChainVerificationError("Authoritative M7 deployment must use Base Sepolia")
-    receipt = rpc.call("eth_getTransactionReceipt", [transaction_hash])
-    if receipt is None or _quantity(receipt.get("status", "0x0"), "receipt status") != 1:
+    receipt, block = wait_for_canonical_receipt(
+        rpc=rpc,
+        transaction_hash=transaction_hash,
+        timeout_seconds=canonical_timeout_seconds,
+        poll_seconds=canonical_poll_seconds,
+    )
+    if _quantity(receipt.get("status", "0x0"), "receipt status") != 1:
         raise ChainVerificationError("Cannot record a missing or failed transaction")
+    if receipt.get("to", "").lower() != contract_address.lower():
+        raise ChainVerificationError("Anchor transaction targeted the wrong contract")
     candidates = [
         entry
         for entry in receipt.get("logs", [])
@@ -114,9 +235,6 @@ def create_chain_anchor_record(
     submitter = "0x" + submitter_word[24:]
     block_number = _quantity(receipt["blockNumber"], "block number")
     block_hash = receipt["blockHash"].lower()
-    block = rpc.call("eth_getBlockByNumber", [hex(block_number), False])
-    if block is None or block.get("hash", "").lower() != block_hash:
-        raise ChainVerificationError("Receipt is not in the canonical block")
     runtime = rpc.call("eth_getCode", [contract_address, hex(block_number)])
     runtime_bytes = bytes.fromhex(runtime.removeprefix("0x"))
     if not runtime_bytes:

@@ -22,7 +22,10 @@ from engines.chain_anchor.commitment import (
     state_proof_document_commitment,
     strict_json_load,
 )
-from engines.chain_anchor.record import create_chain_anchor_record
+from engines.chain_anchor.record import (
+    assert_unique_anchor_inclusion,
+    create_chain_anchor_record,
+)
 from engines.chain_anchor.rpc import JsonRpcClient
 from engines.mpc.room_state import canonical_json
 
@@ -34,6 +37,9 @@ def main() -> None:
     parser.add_argument("--log-index", required=True, type=int)
     parser.add_argument("--room-state", required=True)
     parser.add_argument("--state-proof")
+    parser.add_argument("--deployment-manifest", required=True)
+    parser.add_argument("--canonical-timeout-seconds", type=float, default=300)
+    parser.add_argument("--canonical-poll-seconds", type=float, default=5)
     parser.add_argument("--output", required=True)
     args = parser.parse_args()
     rpc_url = os.environ.get("BASE_SEPOLIA_RPC_URL")
@@ -55,9 +61,16 @@ def main() -> None:
         evidence_type=evidence_number,
         evidence_commitment=evidence_commitment,
     )
+    deployment = strict_json_load(args.deployment_manifest)
+    if deployment.get("contractAddress", "").lower() != args.contract_address.lower():
+        raise SystemExit("Deployment manifest contract does not match the requested anchor")
+    deployment_block = deployment.get("deploymentBlockNumber")
+    if not isinstance(deployment_block, int) or deployment_block < 0:
+        raise SystemExit("Deployment manifest has an invalid deployment block")
+    rpc = JsonRpcClient(rpc_url)
     now = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
     anchor = create_chain_anchor_record(
-        rpc=JsonRpcClient(rpc_url),
+        rpc=rpc,
         anchor_commitment=commitment,
         subject_commitment=state.commitment.value,
         evidence_type=evidence_type,
@@ -69,6 +82,16 @@ def main() -> None:
         transaction_hash=args.transaction_hash,
         log_index=args.log_index,
         created_at=now,
+        canonical_timeout_seconds=args.canonical_timeout_seconds,
+        canonical_poll_seconds=args.canonical_poll_seconds,
+    )
+    assert_unique_anchor_inclusion(
+        rpc=rpc,
+        contract_address=args.contract_address,
+        anchor_commitment=commitment,
+        transaction_hash=args.transaction_hash,
+        log_index=args.log_index,
+        from_block=deployment_block,
     )
     schema = strict_json_load(ROOT / "packages/manifests/chain-anchor.schema.json")
     Draft202012Validator(schema, format_checker=FormatChecker()).validate(anchor.to_dict())

@@ -91,11 +91,12 @@ bounded committed metadata relation.
 - [x] Split fast M5 regression from change-scoped/manual real Groth16 acceptance.
 - [x] Configure protected GitHub environment `base-sepolia-m7` with testnet-only `BASE_SEPOLIA_RPC_URL` and `M7_TEST_ANCHOR_PRIVATE_KEY`.
 - [x] Perform exactly one authoritative Base Sepolia V1 deployment and validate its transaction, receipt, canonical block, and exact runtime without sending another transaction.
-- [ ] Recover the authoritative deployment manifest and artifact package through the guarded resume workflow.
-- [ ] Publish one real anchor, wait for `finalized`, and pass standalone Layers A/B plus explicit Layer C where applicable.
+- [x] Publish one real state-only acceptance anchor and verify exactly one canonical matching event without sending a duplicate.
+- [ ] Recover the authoritative manifest/artifact package, wait for `finalized`, and pass standalone Layers A/B through the guarded evidence-only resume workflow.
 
-Status: **IMPLEMENTED / LIVE RECOVERY PENDING**. The V1 contract is deployed;
-no acceptance anchor has been published, so M7 is not yet verified.
+Status: **IMPLEMENTED / FINALITY-PACKAGE RECOVERY PENDING**. The V1 contract and
+single canonical acceptance event exist; finality and independent package
+verification evidence are still required before M7 is verified.
 
 ## Explicitly deferred
 

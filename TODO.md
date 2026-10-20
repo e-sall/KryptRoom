@@ -79,6 +79,25 @@ bounded committed metadata relation.
 - [x] Add context/epoch, commitment, tampering, policy, lineage, leakage, and restart tests.
 - [x] Pass and record the real Linux OpenFHE persistence/EvalAdd/decryption CI gate.
 
+## Milestone 7: public blockchain anchor
+
+- [x] Define exact domain-separated RoomState and optional StateProof commitments.
+- [x] Implement the stateless permissionless event-only Solidity contract.
+- [x] Add immutable ChainAnchor and separate dynamic status schemas/models.
+- [x] Implement Base receipt, event, runtime-code, canonicality, finality, and reorg checks.
+- [x] Keep package matching distinct from the existing M5 standalone proof verifier.
+- [x] Support M6 state-only anchoring without reading FHE artifacts or keys.
+- [x] Add deterministic vectors, negative/privacy tests, and pinned Foundry CI.
+- [x] Split fast M5 regression from change-scoped/manual real Groth16 acceptance.
+- [x] Configure protected GitHub environment `base-sepolia-m7` with testnet-only `BASE_SEPOLIA_RPC_URL` and `M7_TEST_ANCHOR_PRIVATE_KEY`.
+- [x] Perform exactly one authoritative Base Sepolia V1 deployment and validate its transaction, receipt, canonical block, and exact runtime without sending another transaction.
+- [x] Publish one real state-only acceptance anchor and verify exactly one canonical matching event without sending a duplicate.
+- [x] Recover the authoritative manifest/artifact package, wait for `finalized`, and pass standalone Layers A/B through the guarded evidence-only resume workflow without broadcasting.
+
+Status: **VERIFIED** for the bounded state-only Base Sepolia acceptance. The V1
+contract and sole canonical event are finalized, standalone Layers A/B pass,
+and run 39381943437 contains the authoritative public evidence package.
+
 ## Explicitly deferred
 
 - [ ] Choose project licensing terms before encouraging substantial third-party code contributions.
@@ -87,7 +106,7 @@ bounded committed metadata relation.
 - Analytics beyond COUNT/SUM/MEAN/CROSS_MEAN and ML beyond the fixed M4 network.
 - FHE analytics beyond the bounded M6 fixed-vector addition.
 - Proofs beyond M5's bounded metadata relation, post-quantum identity, and RunReceipts.
-- Blockchain anchoring.
+- Mainnet deployment, on-chain state/storage/computation, tokens, payments, or blockchain governance.
 - Web frontend.
 - RoomState branch UI, merge implementation, and dynamic membership.
 

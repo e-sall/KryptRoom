@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kryptroom.dev/schemas/chain-anchor.schema.json",
+  "title": "KryptRoom immutable public-chain inclusion record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "anchorId",
+    "anchorCommitment",
+    "subjectType",
+    "subjectCommitment",
+    "evidenceType",
+    "evidenceCommitment",
+    "roomId",
+    "transitionId",
+    "outputStateId",
+    "backend",
+    "chainId",
+    "contractAddress",
+    "contractRuntimeCodeHash",
+    "transactionHash",
+    "logIndex",
+    "submitter",
+    "blockNumber",
+    "blockHash",
+    "blockTimestamp",
+    "createdAt"
+  ],
+  "properties": {
+    "version": { "const": "1" },
+    "anchorId": { "type": "string", "pattern": "^anchor-[a-f0-9]{64}$" },
+    "anchorCommitment": { "$ref": "#/$defs/hex32" },
+    "subjectType": { "const": "ROOM_STATE_V1" },
+    "subjectCommitment": { "$ref": "#/$defs/digest" },
+    "evidenceType": { "enum": ["NONE", "STATE_PROOF_V1"] },
+    "evidenceCommitment": { "$ref": "#/$defs/digest" },
+    "roomId": { "$ref": "#/$defs/id" },
+    "transitionId": { "$ref": "#/$defs/id" },
+    "outputStateId": { "$ref": "#/$defs/id" },
+    "backend": { "const": "base-op-stack" },
+    "chainId": { "type": "integer", "minimum": 1 },
+    "contractAddress": { "$ref": "#/$defs/address" },
+    "contractRuntimeCodeHash": { "$ref": "#/$defs/hex32" },
+    "transactionHash": { "$ref": "#/$defs/hex32" },
+    "logIndex": { "type": "integer", "minimum": 0 },
+    "submitter": { "$ref": "#/$defs/address" },
+    "blockNumber": { "type": "integer", "minimum": 0 },
+    "blockHash": { "$ref": "#/$defs/hex32" },
+    "blockTimestamp": { "type": "string", "format": "date-time" },
+    "createdAt": { "type": "string", "format": "date-time" }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "hex32": { "type": "string", "pattern": "^0x[a-f0-9]{64}$" },
+    "address": { "type": "string", "pattern": "^0x[a-f0-9]{40}$" }
+  }
+}

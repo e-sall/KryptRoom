@@ -1,5 +1,78 @@
 # Architectural decisions
 
+## ADR-015 — Fail-closed M7 deployment and anchor recovery
+
+**Decision:** Treat Base Sepolia contract
+`0xd090b5f1834d41c1db39cfbb642edb3acbbce96b`, created by transaction
+`0x86fa94f71d74ee43bb87ca2c0b31b0f0f69938936dc3d9c71bf56bda4f706f9a`,
+as the authoritative M7 V1 deployment. The live workflow has explicit
+`deploy`, `resume_existing_deployment`, and `resume_existing_anchor` modes. Deployment resume requires normalized
+immutable identifiers and never invokes `forge create`. Deploy requires the
+expected sender nonce and passes that nonce to `forge create`, so retrying the
+same failed deployment attempt cannot silently create another contract.
+
+**Reason:** Live run 39377159223 deployed successfully, then its Python RPC
+client received HTTP 403 before it could build the manifest or publish an
+anchor. Ephemeral runner files could not prevent a duplicate deployment. The
+RPC client now sends the stable `KryptRoom-M7/1` User-Agent, and recovery
+validates the transaction, receipt, canonical block, exact pinned runtime, and
+absence of the deterministic acceptance anchor before any anchor transaction.
+
+**Consequences:** The stateless permissionless contract and commitment
+semantics remain unchanged. The official workflow serializes attempts and
+checks the exact commitment in bounded log ranges, but it cannot stop an
+unrelated external account from publishing the same permissionless event. If a
+run fails after publishing an anchor, an ordinary retry fails closed instead of
+emitting a duplicate. Evidence-only recovery requires the exact existing anchor
+transaction and log index, never broadcasts, and requires exactly one canonical
+matching event. Receipt recording polls boundedly until the receipt block hash
+matches the canonical block view; disappearance, incompatible receipt movement,
+or timeout fails with an explicit pending/orphaned classification.
+
+**Status:** Accepted. The existing deployment passed read-only Base Sepolia
+validation with runtime hash
+`0xd0ceef826a9258089d4d2dcdc0171aefe288ef987d92a5954bb6579de1370755`.
+Run 39379898215 sent the exact state-only acceptance anchor in transaction
+`0x983e17727bd1aac518bc38b1889a9b27c16e840fa0d393f6e573a8a6959dce50`.
+Read-only forensics found exactly one canonical matching event at log index 282.
+Evidence-only run 39381943437 reused it without broadcasting, reached Base
+`finalized`, passed standalone Layers A/B, and uploaded the authoritative public
+package.
+
+## ADR-014 — Stateless event-only Base anchor with separate verification layers
+
+**Decision:** Implement M7 as a chain-agnostic commitment protocol with one
+Base Sepolia V1 deployment. Publish only a domain-separated `bytes32`
+AnchorCommitment through a stateless, permissionless event-only contract. Keep
+the immutable inclusion record outside RoomState and maintain finality/reorg
+status separately. Verification has three explicit layers: public-chain
+inclusion, exact state/evidence package matching, and optional existing M5 SP1
+proof verification.
+
+**Reason:** A minimal event provides durable public inclusion evidence without
+turning public consensus into KryptRoom's state machine or publishing private
+collaboration metadata. Separating package hashing from proof verification
+prevents a StateProof document commitment from being misrepresented as SP1
+validity. Base `safe`/`finalized` heads provide canonical OP Stack finality
+semantics without inventing a fixed confirmation rule.
+
+**Alternatives:** On-chain RoomState fields, a registry mapping, ownership,
+upgradeability, tokens/payments, and computation were rejected as unnecessary
+disclosure and authority. A fixed confirmation count was rejected. Embedding
+ChainAnchor/status in RoomState was rejected because chain inclusion and reorg
+observations must not mutate immutable private-computation state.
+
+**Consequences:** Anyone may submit or duplicate a commitment; the sender does
+not represent a participant or approval. A reorg creates an orphaned status,
+not a mutated record. M6 state-only packages use NONE/ZERO32 without reading
+FHE material. M5 proof validity remains a separate command. Status is
+**VERIFIED** for the bounded state-only acceptance: the V1 deployment and sole
+canonical event are finalized, the standalone verifier passed, and the public
+artifact package was produced. M7 still does not prove the underlying private
+computation.
+
+See [M7 protocol, vectors, evidence, and limits](PUBLIC_CHAIN_ANCHOR.md).
+
 ## ADR-013 — Single-owner BGV ciphertext addition as the first FHE transition
 
 **Decision:** Implement M6 as exact element-wise addition of two fixed

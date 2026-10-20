@@ -2,7 +2,7 @@
 
 ## Current implemented state
 
-KryptRoom has runtime-verified M1 PSI cardinality, M2 two-container SPU private join, M2.5 persistent encrypted RoomState paths, M3 persistent private analytics, bounded M4 persistent private NN training/evaluation, the bounded M5 SP1 committed state-transition proof, and bounded M6 persistent OpenFHE BGV ciphertext addition.
+KryptRoom has runtime-verified M1 PSI cardinality, M2 two-container SPU private join, M2.5 persistent encrypted RoomState paths, M3 persistent private analytics, bounded M4 persistent private NN training/evaluation, the bounded M5 SP1 committed state-transition proof, and bounded M6 persistent OpenFHE BGV ciphertext addition. M7 public-chain anchoring is verified for one finalized Base Sepolia state-only inclusion and its authoritative public evidence package.
 
 ## Target system boundary
 
@@ -91,6 +91,31 @@ including process restart/reload, real `EvalAdd`, immutable child persistence,
 pre-decryption policy denial, authorized exact decryption, and ciphertext
 tamper detection.
 
+## Milestone 7 public-chain anchor
+
+M7 observes an already immutable RoomState; it does not evolve, store, or
+replace that state. The off-chain layer verifies existing RoomState metadata,
+optionally commits the exact external M5 StateProof document, and computes one
+domain-separated `AnchorCommitment`. The public contract is stateless and emits
+only that bytes32 plus the ordinary Ethereum sender. No RoomState identifier,
+policy, artifact descriptor, participant metadata, encrypted payload, key, or
+proof bytes are transaction arguments or event data.
+
+One immutable `ChainAnchor` records an exact inclusion and deployed runtime
+code hash outside RoomState. A separate status observation tracks pending,
+safe/confirmed, finalized, failed, or orphaned state. The verifier checks Base
+Sepolia chain ID 84532, receipt/event/log identity, canonical block/hash,
+runtime code, and ancestry from the RPC `safe`/`finalized` heads. Package
+matching and optional M5 proof validation are separate layers. M6 S6 can be
+anchored with NONE/ZERO32 using only its RoomState document after all FHE
+material is unavailable.
+
+The code is chain-agnostic at the commitment boundary; Base Sepolia is the V1
+validation target. Status is **VERIFIED** for the sole canonical state-only
+acceptance event, finalized in evidence-only run 39381943437 without a new
+transaction.
+See [the complete M7 design](docs/PUBLIC_CHAIN_ANCHOR.md).
+
 - `apps/web`: future user interface; intentionally empty during PSI work.
 - `services/control-api`: future metadata and room API.
 - `services/orchestrator`: future Temporal workflows.
@@ -99,7 +124,7 @@ tamper detection.
 - `engines/{psi,mpc,fhe,zk}`: backend-specific adapters and runtime material.
 - `packages/manifests`: protocol and job manifests.
 - `workflows`: composed private workflows.
-- `chain`: future audit anchoring only.
+- `chain`: M7 stateless Foundry contract and Base Sepolia deployment/recording helpers.
 - `demos/cancer-collaboration`: synthetic, non-medical demo data and run instructions.
 
 ## Current non-goals
@@ -111,5 +136,5 @@ policy/context/holder metadata stays in the private witness. S4 is unchanged.
 SecretFlow/CHEETAH execution, MPC arithmetic and numeric MSE are not proved. See
 docs/STATE_PROOF.md.
 
-The current milestone does not implement general-purpose private ML, private inference APIs, model export, optimizer checkpoints, ML beyond the fixed M4 network, FHE beyond one four-element BGV `EvalAdd`, threshold/multiparty FHE, proofs beyond M5's bounded metadata relation, ZK proof of the FHE arithmetic, blockchain, a frontend, branch/merge operations, dynamic membership, post-quantum identity, real medical data, production key management, or a production Control Plane.
+The current milestone does not implement general-purpose private ML, private inference APIs, model export, optimizer checkpoints, ML beyond the fixed M4 network, FHE beyond one four-element BGV `EvalAdd`, threshold/multiparty FHE, proofs beyond M5's bounded metadata relation, ZK proof of the FHE arithmetic, a blockchain state machine or on-chain computation/storage, a frontend, branch/merge operations, dynamic membership, post-quantum identity, real medical data, production key management, or a production Control Plane. M7 proves one finalized public inclusion and exact package match; it does not prove the underlying private computation.
 

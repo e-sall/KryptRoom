@@ -72,8 +72,9 @@ Do not casually reorder this sequence or expand product scope without approval.
 
 ## Current milestone
 
-M7 Public Blockchain Anchor is implemented on branch `feat/public-chain-anchor`
-from dev merge `27889b7aecc2e0664bcad87d5f3c0370292735a0`. It adds exact
+M7 Public Blockchain Anchor is merged into `dev` at
+`29f33e634c0c4ee439b3bcbce856a183ca89fbec`, based on the M6 dev merge
+`27889b7aecc2e0664bcad87d5f3c0370292735a0`. It adds exact
 domain-separated commitments, a stateless permissionless event-only Solidity
 contract, immutable inclusion records, separate finality/reorg status, and a
 three-layer standalone verifier. Base Sepolia chain ID 84532 is the V1 live

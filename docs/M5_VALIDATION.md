@@ -137,3 +137,27 @@ docs/ROADMAP.md
 57. Blockchain: not added.
 58. Full MPC correctness: not claimed. The proof covers only the bounded committed metadata relation.
 59. Merge result: **M5 was merged into dev at `6f01e3c412252d20b57c2a233df8f4ac8020e769` after the documentation-only final head and all required checks were green**. The real CPU Groth16 generation, independent verification, proof-tampering/identity negatives and leakage gates completed successfully. M5 itself added no M6, signatures, blockchain, FHE, additional ML or license.
+
+
+## Core freeze acceptance refresh (2026-10-20)
+
+M6 reconciliation changed the committed RoomState fixtures and therefore M5
+public values after the original authoritative proof run. The M1-M7 core freeze
+accordingly required fresh proof evidence even though the SP1 guest and relation
+source were unchanged.
+
+[Workflow run 39386568672](https://github.com/e-sall/KryptRoom/actions/runs/39386568672)
+on proof-tested PR head
+`e1bea94aa02aa6371f587143817f125c7f7964d0` generated a real SP1 6.9.0 CPU
+Groth16 proof and independently verified it with all negative, witness-deletion,
+and secret-payload-read checks passing. The run reported proof ID
+`stateproof-a084ce88d4d5fc8bf3d5b86fec6c6412`, proof SHA-256
+`d505b2116d1acbcaba688f3ce5d8bb38d09fcb21c32d2a2636c6ca021743552a`,
+3,076.00 seconds for proof generation, and 3,266.03 seconds for the complete
+acceptance integration. The retained `m5-public-proof` artifact digest is
+`sha256:f0c206a6b7bd409ad7e030488f58af19ef794e111a372237b3b9da6c43354ba2`.
+
+The expensive acceptance workflow must be rerun when the guest, relation,
+witness construction, canonicalization, public values, verifier cryptographic
+material, or release-acceptance requirements change. Routine unrelated
+documentation and downstream M7 changes do not require a new proof.

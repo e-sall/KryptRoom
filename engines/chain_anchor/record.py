@@ -32,6 +32,42 @@ def _iso_timestamp(value: str) -> str:
     )
 
 
+def assert_anchor_absent(
+    *,
+    rpc: RpcClient,
+    contract_address: str,
+    anchor_commitment: str,
+    from_block: int,
+) -> None:
+    """Fail closed if this contract already emitted the exact commitment."""
+
+    chain_id = _quantity(rpc.call("eth_chainId", []), "chainId")
+    if chain_id != BASE_SEPOLIA_CHAIN_ID:
+        raise ChainVerificationError("Authoritative M7 deployment must use Base Sepolia")
+    latest_block = _quantity(rpc.call("eth_blockNumber", []), "latest block number")
+    if latest_block < from_block:
+        raise ChainVerificationError("Deployment block is ahead of the current chain head")
+    for first in range(from_block, latest_block + 1, 100):
+        last = min(first + 99, latest_block)
+        logs = rpc.call(
+            "eth_getLogs",
+            [
+                {
+                    "address": contract_address.lower(),
+                    "fromBlock": hex(first),
+                    "toBlock": hex(last),
+                    "topics": [ANCHOR_RECORDED_TOPIC, anchor_commitment.lower()],
+                }
+            ],
+        )
+        if not isinstance(logs, list):
+            raise ChainVerificationError("RPC returned malformed AnchorRecorded logs")
+        if logs:
+            raise ChainVerificationError(
+                "This AnchorCommitment is already recorded; refusing a duplicate transaction"
+            )
+
+
 def create_chain_anchor_record(
     *,
     rpc: RpcClient,

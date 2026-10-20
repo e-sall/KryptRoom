@@ -2,14 +2,18 @@
 
 ## Status
 
-**IMPLEMENTED / LIVE VALIDATION PENDING.** The stateless Solidity contract,
+**IMPLEMENTED / LIVE RECOVERY PENDING.** The stateless Solidity contract,
 Foundry tests, exact commitment implementation, immutable off-chain records,
 Base finality/reorg verifier, schemas, deterministic vectors, M6 state-only
-coverage, privacy tests, and CI are implemented. No Base Sepolia deployment or
-anchor is represented as completed in this repository. M7 becomes **VERIFIED**
-only after the protected `base-sepolia-m7` environment supplies its testnet RPC
-URL and limited test wallet, one authoritative deployment and anchor reach
-`finalized`, and the standalone verifier passes against that exact inclusion.
+coverage, privacy tests, and CI are implemented. Live run 39377159223 created
+the authoritative Base Sepolia V1 contract at
+`0xd090b5f1834d41c1db39cfbb642edb3acbbce96b` in transaction
+`0x86fa94f71d74ee43bb87ca2c0b31b0f0f69938936dc3d9c71bf56bda4f706f9a`.
+The run then failed on an HTTP 403 before manifest construction, and its anchor
+step was skipped. The deployment has since passed read-only chain, receipt,
+canonicality, and exact-runtime validation. M7 becomes **VERIFIED** only after
+recovery publishes the single acceptance anchor, reaches `finalized`, and the
+standalone verifier passes against that exact inclusion.
 
 Short claim: **Publicly anchor private collaboration state without publishing it.**
 
@@ -110,14 +114,18 @@ participant identity and must not be logged, persisted, or uploaded.
 No manifest, address, or transaction is fabricated when these controls are
 unavailable. Mainnet is outside scope.
 
-The manual `Public Chain Anchor Live Acceptance` workflow requires the exact
-confirmation phrase, serializes all V1 attempts, refuses to run when the
-authoritative manifest is already present, compiles the pinned source, checks
-deployed runtime bytes against the Foundry artifact, publishes one deterministic
+The manual `Public Chain Anchor Live Acceptance` workflow requires an explicit
+mode and mode-specific confirmation phrase and serializes all V1 attempts.
+`resume_existing_deployment` requires both normalized deployment identifiers,
+never invokes `forge create`, validates the creation transaction, successful
+receipt, canonical block, and exact pinned runtime, and refuses an already
+recorded acceptance commitment before sending anything. `deploy` additionally
+requires and pins the expected deployer nonce so a retry of the same attempt
+cannot silently redeploy. The workflow then publishes one deterministic
 state-only acceptance anchor, waits for `finalized`, runs the standalone
-verifier, and uploads only the public manifest/record/status/result. After the
-first successful run, those public records must be reviewed and the deployment
-manifest committed before any later workflow dispatch.
+verifier, and uploads only the public manifest/record/status/result. If a run
+fails after anchor publication, the duplicate preflight fails closed and a
+separate evidence-only recovery decision is required.
 
 ## CI policy
 

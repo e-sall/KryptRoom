@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -20,8 +21,17 @@ from engines.chain_anchor.verifier import BASE_SEPOLIA_CHAIN_ID, keccak256
 from engines.mpc.room_state import canonical_json
 
 
+EXPECTED_RUNTIME_HASH = "0xd0ceef826a9258089d4d2dcdc0171aefe288ef987d92a5954bb6579de1370755"
+
+
 def quantity(value: str) -> int:
     return int(value, 16)
+
+
+def normalized_hex(value: str, byte_length: int, name: str) -> str:
+    if not re.fullmatch(rf"0x[0-9a-f]{{{byte_length * 2}}}", value):
+        raise SystemExit(f"{name} must be a normalized lowercase Ethereum value")
+    return value
 
 
 def main() -> None:
@@ -32,20 +42,39 @@ def main() -> None:
     parser.add_argument("--output", required=True)
     args = parser.parse_args()
 
+    contract_address = normalized_hex(args.contract_address, 20, "Contract address")
+    deployment_transaction = normalized_hex(
+        args.deployment_transaction, 32, "Deployment transaction"
+    )
+
     rpc_url = os.environ.get("BASE_SEPOLIA_RPC_URL")
     if not rpc_url:
         raise SystemExit("BASE_SEPOLIA_RPC_URL is required")
     rpc = JsonRpcClient(rpc_url)
     if quantity(rpc.call("eth_chainId", [])) != BASE_SEPOLIA_CHAIN_ID:
         raise SystemExit("RPC is not Base Sepolia")
-    receipt = rpc.call("eth_getTransactionReceipt", [args.deployment_transaction])
+    transaction = rpc.call("eth_getTransactionByHash", [deployment_transaction])
+    if transaction is None:
+        raise SystemExit("Deployment transaction is missing")
+    if transaction.get("hash", "").lower() != deployment_transaction:
+        raise SystemExit("Deployment transaction hash mismatch")
+    if transaction.get("to") is not None:
+        raise SystemExit("Deployment transaction is not a contract creation")
+
+    receipt = rpc.call("eth_getTransactionReceipt", [deployment_transaction])
     if receipt is None or quantity(receipt.get("status", "0x0")) != 1:
         raise SystemExit("Deployment receipt is missing or failed")
+    if receipt.get("transactionHash", "").lower() != deployment_transaction:
+        raise SystemExit("Deployment receipt transaction hash mismatch")
     block_number = quantity(receipt["blockNumber"])
-    if receipt.get("contractAddress", "").lower() != args.contract_address.lower():
+    if quantity(transaction.get("blockNumber", "0x0")) != block_number:
+        raise SystemExit("Deployment transaction block number mismatch")
+    if transaction.get("blockHash", "").lower() != receipt["blockHash"].lower():
+        raise SystemExit("Deployment transaction and receipt block mismatch")
+    if receipt.get("contractAddress", "").lower() != contract_address:
         raise SystemExit("Deployment receipt contract address mismatch")
     runtime = bytes.fromhex(
-        rpc.call("eth_getCode", [args.contract_address, hex(block_number)]).removeprefix("0x")
+        rpc.call("eth_getCode", [contract_address, hex(block_number)]).removeprefix("0x")
     )
     if not runtime:
         raise SystemExit("Deployment has no runtime bytecode")
@@ -53,6 +82,9 @@ def main() -> None:
     expected_runtime = bytes.fromhex(
         artifact["deployedBytecode"]["object"].removeprefix("0x")
     )
+    expected_runtime_hash = "0x" + keccak256(expected_runtime).hex()
+    if expected_runtime_hash != EXPECTED_RUNTIME_HASH:
+        raise SystemExit("Pinned Foundry build has an unexpected runtime bytecode hash")
     if runtime != expected_runtime:
         raise SystemExit("Deployed runtime differs from the pinned Foundry build")
     block = rpc.call("eth_getBlockByNumber", [hex(block_number), False])
@@ -67,8 +99,8 @@ def main() -> None:
     manifest = {
         "version": "1",
         "chainId": BASE_SEPOLIA_CHAIN_ID,
-        "contractAddress": args.contract_address.lower(),
-        "deploymentTransactionHash": args.deployment_transaction.lower(),
+        "contractAddress": contract_address,
+        "deploymentTransactionHash": deployment_transaction,
         "deploymentBlockNumber": block_number,
         "runtimeBytecodeHash": "0x" + keccak256(runtime).hex(),
         "solidityVersion": "0.8.37",

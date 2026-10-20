@@ -89,12 +89,13 @@ bounded committed metadata relation.
 - [x] Support M6 state-only anchoring without reading FHE artifacts or keys.
 - [x] Add deterministic vectors, negative/privacy tests, and pinned Foundry CI.
 - [x] Split fast M5 regression from change-scoped/manual real Groth16 acceptance.
-- [ ] Configure protected GitHub environment `base-sepolia-m7` with testnet-only `BASE_SEPOLIA_RPC_URL` and `M7_TEST_ANCHOR_PRIVATE_KEY`.
-- [ ] Perform exactly one authoritative Base Sepolia V1 deployment and commit its verified manifest.
+- [x] Configure protected GitHub environment `base-sepolia-m7` with testnet-only `BASE_SEPOLIA_RPC_URL` and `M7_TEST_ANCHOR_PRIVATE_KEY`.
+- [x] Perform exactly one authoritative Base Sepolia V1 deployment and validate its transaction, receipt, canonical block, and exact runtime without sending another transaction.
+- [ ] Recover the authoritative deployment manifest and artifact package through the guarded resume workflow.
 - [ ] Publish one real anchor, wait for `finalized`, and pass standalone Layers A/B plus explicit Layer C where applicable.
 
-Status: **IMPLEMENTED / LIVE VALIDATION PENDING**. Local/CI contract and package
-tests alone do not make M7 verified.
+Status: **IMPLEMENTED / LIVE RECOVERY PENDING**. The V1 contract is deployed;
+no acceptance anchor has been published, so M7 is not yet verified.
 
 ## Explicitly deferred
 

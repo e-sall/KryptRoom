@@ -1,5 +1,35 @@
 # Architectural decisions
 
+## ADR-015 — Fail-closed M7 deployment recovery
+
+**Decision:** Treat Base Sepolia contract
+`0xd090b5f1834d41c1db39cfbb642edb3acbbce96b`, created by transaction
+`0x86fa94f71d74ee43bb87ca2c0b31b0f0f69938936dc3d9c71bf56bda4f706f9a`,
+as the authoritative M7 V1 deployment. The live workflow has explicit
+`deploy` and `resume_existing_deployment` modes. Resume requires normalized
+immutable identifiers and never invokes `forge create`. Deploy requires the
+expected sender nonce and passes that nonce to `forge create`, so retrying the
+same failed deployment attempt cannot silently create another contract.
+
+**Reason:** Live run 39377159223 deployed successfully, then its Python RPC
+client received HTTP 403 before it could build the manifest or publish an
+anchor. Ephemeral runner files could not prevent a duplicate deployment. The
+RPC client now sends the stable `KryptRoom-M7/1` User-Agent, and recovery
+validates the transaction, receipt, canonical block, exact pinned runtime, and
+absence of the deterministic acceptance anchor before any anchor transaction.
+
+**Consequences:** The stateless permissionless contract and commitment
+semantics remain unchanged. The official workflow serializes attempts and
+checks the exact commitment in bounded log ranges, but it cannot stop an
+unrelated external account from publishing the same permissionless event. If a
+run fails after publishing an anchor, a retry fails closed instead of emitting
+a duplicate and requires a separate evidence-only recovery decision.
+
+**Status:** Accepted. The existing deployment passed read-only Base Sepolia
+validation with runtime hash
+`0xd0ceef826a9258089d4d2dcdc0171aefe288ef987d92a5954bb6579de1370755`.
+No acceptance anchor has been sent; live recovery remains pending.
+
 ## ADR-014 — Stateless event-only Base anchor with separate verification layers
 
 **Decision:** Implement M7 as a chain-agnostic commitment protocol with one
@@ -27,8 +57,8 @@ observations must not mutate immutable private-computation state.
 not represent a participant or approval. A reorg creates an orphaned status,
 not a mutated record. M6 state-only packages use NONE/ZERO32 without reading
 FHE material. M5 proof validity remains a separate command. Status is
-**IMPLEMENTED / LIVE VALIDATION PENDING** until one protected Base Sepolia
-deployment and anchor reach `finalized` and pass the standalone verifier.
+**IMPLEMENTED / LIVE RECOVERY PENDING**: the V1 deployment exists, while the
+acceptance anchor must still reach `finalized` and pass the standalone verifier.
 
 See [M7 protocol, vectors, evidence, and limits](PUBLIC_CHAIN_ANCHOR.md).
 

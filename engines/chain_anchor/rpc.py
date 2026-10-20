@@ -7,6 +7,9 @@ import urllib.request
 from typing import Any, Protocol
 
 
+USER_AGENT = "KryptRoom-M7/1"
+
+
 class RpcError(RuntimeError):
     pass
 
@@ -33,7 +36,10 @@ class JsonRpcClient:
         request = urllib.request.Request(
             self._url,
             data=body,
-            headers={"Content-Type": "application/json"},
+            headers={
+                "Content-Type": "application/json",
+                "User-Agent": USER_AGENT,
+            },
             method="POST",
         )
         try:

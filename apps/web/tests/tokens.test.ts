@@ -28,14 +28,17 @@ it("preserves the approved palette and responsive/motion contracts", () => {
 });
 
 it("keeps PR1 free of application I/O and stored participant data", () => {
+  const forbiddenIO = /\bfetch\s*\(|\b(XMLHttpRequest|WebSocket|localStorage|sessionStorage|indexedDB|document\.cookie|dangerouslySetInnerHTML)\b/;
+  // Check the guard itself, including punctuation immediately after fetch(.
+  for (const example of ['fetch("/api")', 'fetch( "/api")', 'localStorage.getItem("key")']) {
+    expect(example).toMatch(forbiddenIO);
+  }
   const files = readdirSync("src", {
     recursive: true,
     withFileTypes: true,
   }).filter((entry) => entry.isFile() && /\.(tsx?|css)$/.test(entry.name));
   for (const entry of files) {
     const source = readFileSync(resolve(entry.parentPath, entry.name), "utf8");
-    expect(source, entry.name).not.toMatch(
-      /\b(fetch\s*\(|XMLHttpRequest|WebSocket|localStorage|sessionStorage|indexedDB|document\.cookie|dangerouslySetInnerHTML)\b/,
-    );
+    expect(source, entry.name).not.toMatch(forbiddenIO);
   }
 });

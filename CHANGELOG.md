@@ -6,6 +6,8 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Added
 
+- M8 PR3 interactive synthetic Graph Workspace: ordered multi-parent DAG, Classic/Detailed/Focus, pointer/touch pan, zoom/fit, keyboard navigation, accessible state list and responsive inspector. Based on verified PR #15 merge `a88df46`; production Graph stays unavailable. No M1–M7, dependency or CI routing change. See `docs/m8/pr3/README.md`.
+
 - PR #15 separately authorized M7 downstream synthetic-vector refresh: only state-proof.json and vectors.json, unchanged original generator, ten derived JSON leaves, exact old/new hash classification tied to the approved M5 migration. Historical proof/chain acceptance remains untouched; Layer B consistency is not new Layer C proof validity. See `docs/m8/pr2/M7-FIXTURE-MIGRATION.md`.
 
 - PR #15 owner-authorized M5 synthetic metadata maintenance: regenerate exactly six golden fixture files with the unchanged generator after the approved CI workflowHash update; pin exact before/after bytes in CI scope recognition with negative tests. S1, codeHash, policies, CryptoContexts, proof semantics and historical proof provenance remain unchanged. No new Groth16 validation; see `docs/m8/pr2/M5-FIXTURE-MIGRATION.md`.

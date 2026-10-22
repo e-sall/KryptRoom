@@ -19,7 +19,7 @@ export function RoomsPreview({
   screen = "home",
   roomId,
 }: {
-  screen?: "home" | "detail" | "setup" | "workspace";
+  screen?: "home" | "detail" | "setup";
   roomId?: string;
 }) {
   const state = useRoomsPreview();
@@ -71,9 +71,7 @@ export function RoomsPreview({
               ? "Rooms"
               : screen === "setup"
                 ? "Create a Room"
-                : screen === "workspace"
-                  ? "Workspace unavailable"
-                  : selected?.name}
+                : selected?.name}
           </h1>
           <p className="page-description">
             {screen === "home"
@@ -316,20 +314,6 @@ export function RoomsPreview({
               Explore Easy Setup
             </ButtonLink>
           </div>
-        </Card>
-      )}
-      {screen === "workspace" && (
-        <Card>
-          <StatusView
-            state="unavailable"
-            title="Graph Workspace is reserved for PR3"
-            description="Navigation works, but no state graph, computation, result or proof service is implemented here."
-            action={
-              <ButtonLink href={`/preview/rooms/${roomId}`}>
-                Back to Room details
-              </ButtonLink>
-            }
-          />
         </Card>
       )}
       {screen === "setup" && <EasySetup />}

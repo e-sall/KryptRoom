@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { exampleRooms } from "@/features/rooms/preview-model";
-import { RoomsPreview } from "@/features/rooms/rooms-preview";
+import { GraphWorkspace } from "@/features/graph/graph-workspace";
 export const dynamicParams = false;
 export function generateStaticParams() {
   return exampleRooms.map((room) => ({ roomId: room.id }));
@@ -11,6 +11,7 @@ export default async function Page({
   params: Promise<{ roomId: string }>;
 }) {
   const { roomId } = await params;
-  if (!exampleRooms.some((room) => room.id === roomId)) notFound();
-  return <RoomsPreview screen="workspace" roomId={roomId} />;
+  const room = exampleRooms.find((room) => room.id === roomId);
+  if (!room) notFound();
+  return <GraphWorkspace key={room.id} room={room} />;
 }

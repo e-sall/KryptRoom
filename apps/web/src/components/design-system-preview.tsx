@@ -53,7 +53,7 @@ export function DesignSystemPreview() {
           <Brand />
         </div>
         <p className="caption mt-4">
-          P01 / P04 · Light stem, two gray branches.
+          P11 canonical K · Thin light stem, two gray branches.
         </p>
       </Card>
       <Card className="specimen">

@@ -78,8 +78,17 @@ both P03 variants, but **P04 and P11 failed in Chromium** with
 No interactive parity PASS is claimed for those conversions. Their original
 SVG/source remains authoritative for layout. Their embedded synthetic S1–S4
 lineage is not the actual M1–M7 state contract and was not copied into the app.
-The K uses the exact P04 three-path geometry/colors, shared with marketing;
-P11 contains another gray-branch geometry, so no pixel-identical P11 logo claim.
+Final PR #14 review confirmed that the initial P04 K was superseded: corrected
+P05 and original P06 specify the thin light stem and gray arms; original P11
+repeats that identity in desktop/tablet/mobile. `KLogo` now centralizes P11's
+exact three paths, with a 22×30 viewport (no right-arm clipping), light stem
+`#F1F0EB` and gray arms `#A6A7A1` / `#73756F`. P05/P06 differ slightly in
+coordinates/shades; the later P11 source is canonical. The P05 correction is a
+documented converted-source adaptation, not an invented recovered original.
+See the [extracted P11 mark](reference-k-p11.svg); the original P01/P03 reference
+screenshots intentionally retain their older identity. Production screenshots
+are refreshed after this correction. Marketing, sidebar, rail, mobile header
+and specimens all use the same component. No other layout was redesigned.
 Product/design review of these explicit adaptations remains required.
 
 ## Executed local checks
@@ -90,12 +99,15 @@ Executed on Windows, Node 24.12.0, pinned Chromium 156.0.8078.4 (Playwright 1.64
   Turbopack subprocess failure was resolved by running the same build outside
   the sandbox; no bundler downgrade or application workaround.
 - `npm run lint`: PASS, zero warnings. `npm run typecheck`: PASS.
-- `npm test`: PASS, 24 tests across two files. Button variants, disabled/loading,
+- `npm test`: PASS, 28 tests across two files. Button variants, disabled/loading,
   field semantics, cards/brand/links, all state variants, closed module routing,
-  all nine unavailable modules, locked palette/motion/breakpoints and source I/O guard.
-- `npm run test:e2e`: PASS, 16 executed tests; 2 intentional skips because the
+  all nine unavailable modules, locked palette/motion/breakpoints, source I/O guard,
+  exact canonical K paths at 16/24/32px and development-only lint chain.
+- `npm run test:e2e`: PASS, 19 executed tests; 2 intentional skips because the
   inspector-sheet test is mobile-only. Desktop 1440×1000, tablet 834×1112,
   mobile 390×844, plus 320px narrow checks. Real production server, no mocks.
+  New checks cover rendered logo colors/non-clipping on public/workspace/specimen
+  surfaces and absence of the excepted lint chain from production file traces.
 - Browser checks: every module route, active breadcrumb, disabled creation,
   sidebar/rail/inspector positions, no horizontal overflow, visible keyboard
   focus, Tab/Shift+Tab containment, Escape/focus restoration, error/loading
@@ -119,6 +131,10 @@ Executed on Windows, Node 24.12.0, pinned Chromium 156.0.8078.4 (Playwright 1.64
   published peer range; ESLint 9 is out of support. ESLint 10 is deferred until
   the official Next lint dependency stack declares compatibility. Maintainer
   acceptance or remediation of this tooling debt is an explicit merge gate.
+  Final reachability review and the requested bounded exception are recorded in
+  [M8-SEC-001](SECURITY-EXCEPTION.md), expiring before PR7 starts or 2026-11-21,
+  whichever is earlier. No externally supplied application input reaches braces;
+  untrusted repository changes remain a possible CI/developer-tool DoS vector.
 
 Two defects were caught during iteration: native dialog Tab could advance to
 browser chrome (fixed with explicit wrapping), and the test's generic alert

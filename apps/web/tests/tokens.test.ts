@@ -16,6 +16,8 @@ it("preserves the approved palette and responsive/motion contracts", () => {
     action: "EDECE6",
     success: "84B89A",
     warning: "DBB477",
+    "logo-upper": "A6A7A1",
+    "logo-lower": "73756F",
   };
   for (const [name, value] of Object.entries(expected))
     expect(tokens).toMatch(new RegExp(`--kr-${name}:\\s*#${value}`, "i"));
@@ -27,10 +29,35 @@ it("preserves the approved palette and responsive/motion contracts", () => {
   expect(css).toContain("max-width: 767px");
 });
 
+it("keeps the temporarily excepted lint dependency chain development-only", () => {
+  const lock = JSON.parse(readFileSync("package-lock.json", "utf8"));
+  const chain = [
+    "braces",
+    "micromatch",
+    "fast-glob",
+    "@next/eslint-plugin-next",
+    "eslint-config-next",
+    "eslint",
+  ];
+  for (const dependency of chain) {
+    const entries = Object.entries(lock.packages).filter(([name]) =>
+      name.endsWith(`node_modules/${dependency}`),
+    );
+    expect(entries.length, dependency).toBeGreaterThan(0);
+    for (const [, entry] of entries)
+      expect((entry as { dev?: boolean }).dev, dependency).toBe(true);
+  }
+});
+
 it("keeps PR1 free of application I/O and stored participant data", () => {
-  const forbiddenIO = /\bfetch\s*\(|\b(XMLHttpRequest|WebSocket|localStorage|sessionStorage|indexedDB|document\.cookie|dangerouslySetInnerHTML)\b/;
+  const forbiddenIO =
+    /\bfetch\s*\(|\b(XMLHttpRequest|WebSocket|localStorage|sessionStorage|indexedDB|document\.cookie|dangerouslySetInnerHTML)\b/;
   // Check the guard itself, including punctuation immediately after fetch(.
-  for (const example of ['fetch("/api")', 'fetch( "/api")', 'localStorage.getItem("key")']) {
+  for (const example of [
+    'fetch("/api")',
+    'fetch( "/api")',
+    'localStorage.getItem("key")',
+  ]) {
     expect(example).toMatch(forbiddenIO);
   }
   const files = readdirSync("src", {

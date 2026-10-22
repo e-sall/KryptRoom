@@ -1,6 +1,65 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { modules } from "../../src/lib/navigation";
+import { readFileSync, readdirSync } from "node:fs";
+import { resolve } from "node:path";
+
+test("canonical thin logo across public, workspace and specimen surfaces", async ({
+  page,
+}, testInfo) => {
+  for (const route of ["/", "/app/rooms", "/design-system"]) {
+    await page.goto(route);
+    const logos = page.locator(".k-logo:visible");
+    expect(await logos.count()).toBeGreaterThan(0);
+    for (const logo of await logos.all()) {
+      await expect(logo).toHaveAttribute("viewBox", "0 0 22 30");
+      expect(
+        await logo
+          .locator("path")
+          .evaluateAll((paths) =>
+            paths.map((path) => getComputedStyle(path).fill),
+          ),
+      ).toEqual([
+        "rgb(241, 240, 235)",
+        "rgb(166, 167, 161)",
+        "rgb(115, 117, 111)",
+      ]);
+      expect(
+        await logo.evaluate((node) => {
+          const box = (node as SVGSVGElement).getBBox();
+          return (
+            box.x >= 0 &&
+            box.y >= 0 &&
+            box.x + box.width <= 22 &&
+            box.y + box.height <= 30
+          );
+        }),
+      ).toBe(true);
+    }
+    await logos
+      .first()
+      .screenshot({
+        path: testInfo.outputPath(
+          `logo-${route === "/" ? "marketing" : route === "/app/rooms" ? "workspace" : "specimen"}.png`,
+        ),
+      });
+  }
+  // Production file traces must not ship the temporarily excepted lint chain.
+  const traces = readdirSync(".next", {
+    recursive: true,
+    withFileTypes: true,
+  }).filter((entry) => entry.isFile() && entry.name.endsWith(".nft.json"));
+  expect(traces.length).toBeGreaterThan(0);
+  for (const trace of traces) {
+    const { files } = JSON.parse(
+      readFileSync(resolve(trace.parentPath, trace.name), "utf8"),
+    );
+    for (const file of files as string[])
+      expect(file.replaceAll("\\", "/")).not.toMatch(
+        /node_modules\/(braces|micromatch|fast-glob|eslint|eslint-config-next|@next\/eslint-plugin-next)\//,
+      );
+  }
+});
 
 test("responsive shell, honest state and runtime boundary", async ({
   page,

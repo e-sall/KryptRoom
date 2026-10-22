@@ -107,6 +107,9 @@ and run 39381943437 contains the authoritative public evidence package.
 - [x] Document source comparisons, conversion failures and integration boundaries.
 - [ ] Receive CI and human design/technical/security approval, then merge PR1 separately.
 - [ ] Resolve or explicitly accept the documented lint-tooling debt (unpatched braces advisory and ESLint 9 support lifecycle).
+- [x] Align the single KLogo with the later P05/P06/P11 thin gray-branch identity and add regression checks.
+- [x] Record temporary exception M8-SEC-001 with production/reachability evidence.
+- [ ] Maintainer reevaluation of M8-SEC-001 **before PR7 starts or 2026-11-21, whichever is earlier**; no silent renewal.
 - [ ] Implement PR2–7 in separate approved increments; no backend capability inferred.
 
 ## Explicitly deferred work

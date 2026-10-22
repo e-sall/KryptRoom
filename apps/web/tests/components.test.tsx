@@ -9,7 +9,7 @@ import {
   StatusView,
   TextField,
 } from "../src/components/ui";
-import { Brand } from "../src/components/brand";
+import { Brand, KLogo } from "../src/components/brand";
 import {
   modules,
   findModule,
@@ -19,6 +19,26 @@ import {
 import { ModulePlaceholder } from "../src/components/module-placeholder";
 
 describe("foundation components", () => {
+  it.each([16, 24, 32])(
+    "preserves the canonical thin P11 mark at %s px",
+    (size) => {
+      const { container } = render(<KLogo size={size} />);
+      const svg = container.querySelector("svg");
+      expect(svg).toHaveAttribute("viewBox", "0 0 22 30");
+      expect(svg).toHaveAttribute("width", String(size));
+      expect(svg).toHaveAttribute("height", String(size));
+      expect(svg).toHaveAttribute("aria-hidden", "true");
+      expect(
+        Array.from(container.querySelectorAll("path"), (path) =>
+          path.getAttribute("d"),
+        ),
+      ).toEqual([
+        "M1 7 L7 4 V27 L1 24 Z",
+        "M9 12 L20 4 L16 12 L9 19 Z",
+        "M9 19 L16 12 L21 26 L14 23 Z",
+      ]);
+    },
+  );
   it.each(["primary", "secondary", "ghost"] as const)(
     "renders the %s action variant",
     async (variant) => {

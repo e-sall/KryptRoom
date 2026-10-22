@@ -6,7 +6,9 @@
 TypeScript and Tailwind with its own lockfile. Render static public presentation
 and explicitly unavailable business modules. Keep local component specimens on
 a separate route. Use semantic HTML and a native dialog with explicit keyboard
-wrapping; preserve the recovered palette, P04 K geometry and P11 layout principles.
+wrapping; preserve the recovered palette and P11 layout principles. Final PR #14
+review supersedes the initial P04 K with the later thin P11 mark, consistent with
+corrected P05/P06. `KLogo` and semantic logo colors are the single production source.
 
 **Reason:** The audited web directory contained only `.gitkeep`; there is no
 production workspace API or Control Plane. A closed route catalog and component
@@ -26,6 +28,12 @@ limitations are recorded in `docs/m8/pr1/README.md`. PR1 is reviewable independe
 production auth, CSP, service contracts and full cross-browser/WCAG audit remain later gates.
 
 **Status:** Implemented and locally tested; maintainer/design review and PR CI required.
+
+**PR #14 final follow-up:** No compatible published fix was found for the
+development-only braces advisory / ESLint 9 EOL combination. The requested
+temporary exception M8-SEC-001 (`docs/m8/pr1/SECURITY-EXCEPTION.md`) records
+reachability, compensating controls and owner. It expires before PR7 starts or
+2026-11-21, whichever comes first; maintainer merge approval must include it.
 
 ## ADR-015 — Fail-closed M7 deployment and anchor recovery
 

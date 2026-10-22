@@ -1,19 +1,22 @@
 import Link from "next/link";
 
-/** P01/P04 SVG geometry, adapted to one scalable mark. Both branches are gray. */
+/** Canonical thin K: latest P11 original, consistent with corrected P05/P06.
+ * Shared by marketing, sidebar, rail, mobile header and component specimens.
+ */
 export function KLogo({ size = 26 }: { size?: number }) {
   return (
     <svg
+      className="k-logo"
       width={size}
       height={size}
-      viewBox="0 0 20 30"
+      viewBox="0 0 22 30"
       fill="none"
       aria-hidden="true"
       focusable="false"
     >
-      <path d="M0 7 L9 1 L9 27 L0 22 Z" fill="var(--kr-text-primary)" />
-      <path d="M11 4 L19 0 L19 17 L11 21 Z" fill="var(--kr-logo-upper)" />
-      <path d="M11 23 L19 19 L19 29 L11 26 Z" fill="var(--kr-logo-lower)" />
+      <path d="M1 7 L7 4 V27 L1 24 Z" fill="var(--kr-text-primary)" />
+      <path d="M9 12 L20 4 L16 12 L9 19 Z" fill="var(--kr-logo-upper)" />
+      <path d="M9 19 L16 12 L21 26 L14 23 Z" fill="var(--kr-logo-lower)" />
     </svg>
   );
 }

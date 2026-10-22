@@ -6,6 +6,8 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Added
 
+- PR #14 final follow-up: canonical thin P11 K identity consistent with corrected P05/P06, gray branch tokens, logo/runtime-dependency regression checks and bounded lint-tooling exception M8-SEC-001 (reevaluate before PR7 or 2026-11-21, whichever is earlier). No core or dependency-version change.
+
 - M8 PR1 design-system and responsive app-shell foundation in `apps/web`, with the supplied M8 palette/identity, honest unavailable routes, component gallery, keyboard-safe dialogs and isolated frontend CI. No core cryptographic implementation, backend, proof or chain behavior changed. Local component/browser evidence and visual-reference limitations are recorded in `docs/m8/pr1/README.md`.
 
 - M7 evidence-only anchor recovery after run 39379898215: bounded canonical-receipt polling, explicit orphan handling, exact-one-event validation, and a mutually exclusive `resume_existing_anchor` mode that cannot deploy or broadcast. Run 39381943437 reused the existing canonical transaction, reached Base `finalized`, passed standalone Layers A/B, and uploaded the authoritative public package. Status: verified for the bounded state-only acceptance.

@@ -7,7 +7,8 @@ gallery is an interface example, not a simulated service.
 
 ## Run locally
 
-Use Node >=22.14 (CI: 22.22.0), then from this directory:
+Use Node >=22.14 (CI: 22.22.0), npm 10.9.4 (also recorded in `packageManager`),
+then from this directory. If your npm differs, use `npx npm@10.9.4 ci`:
 
 ```sh
 npm ci

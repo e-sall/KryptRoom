@@ -125,6 +125,14 @@ browser chrome (fixed with explicit wrapping), and the test's generic alert
 locator also matched Next's route announcer (scoped the assertion to `main`).
 All results above refer to reruns after those corrections.
 
+The first Linux CI run stopped at `npm ci`: the Windows/npm 11-generated lock
+omitted optional `@emnapi/core`/`runtime` entries and had conflicting wasi-threads
+versions. The lock was normalized with CI's npm 10.9.4 in an empty directory
+(no installed node_modules), preserving the direct pins and adding the optional
+dependency closure. `packageManager` and a CI version assertion now pin npm;
+checkout does not persist Git credentials. No dependency omission flag, forced
+install, runtime package addition or replacement of `npm ci` is used in CI.
+
 ## CI, security and remaining gates
 
 `M8 Web Foundation` runs on relevant PRs to dev/main and relevant dev/main pushes.

@@ -1,5 +1,31 @@
 # Architectural decisions
 
+## ADR-017 — Isolate PR2 synthetic Rooms and ephemeral Easy Setup
+
+**Decision:** Keep `/app/rooms` explicitly disconnected. Put P03/P06 interactive
+examples under `/preview/rooms` with conspicuous synthetic labels, noindex metadata
+and a layout-owned React provider. Use presentation-only types, not speculative
+backend DTOs. Persist only across preview route transitions in React memory;
+reload clears the draft. No application storage, network, server action or core
+runtime import. Creation, invitations, connections, policy writes and execution
+remain disabled even for valid example fields.
+
+**Reason:** At verified dev `acf5f262b03d6c0db3ff36b413f330b61f1181d2`, the
+Control API/orchestrator/proof service directories contain placeholders only.
+Implementing a fake API or browser-backed Room store would misrepresent authority.
+
+**Consequences:** P03 discovery/navigation and P06 progressive forms are testable,
+but no real collaboration can be created. The original P03 synthetic topology is
+labelled illustrative and is not an M1–M7 runtime contract. Readiness has no allow
+path. A future separately reviewed service must supply scoped metadata and exact
+authorization decisions; do not adapt these fixtures into production responses.
+Reuse PR1 primitives and shell slots, keeping the canonical K and tokens unchanged.
+The optional header slot preserves P03's full-width heading/filter composition.
+
+**Validation:** See `docs/m8/pr2/README.md`; targeted unit/browser tests and
+source-boundary guards. Human design/security review and final CI remain merge
+gates. M8-SEC-001 expiry is unchanged. No merge is authorized by this ADR.
+
 ## ADR-016 — Isolate the M8 presentation foundation from the frozen core
 
 **Decision:** Implement PR1 in `apps/web` using pinned Next.js App Router, React,

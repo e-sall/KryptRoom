@@ -105,12 +105,23 @@ and run 39381943437 contains the authoritative public evidence package.
 - [x] Add desktop sidebar/inspector, tablet rail/bottom inspector and mobile sheets/navigation.
 - [x] Run targeted component, production-build, keyboard, responsive and browser checks.
 - [x] Document source comparisons, conversion failures and integration boundaries.
-- [ ] Receive CI and human design/technical/security approval, then merge PR1 separately.
+- [x] PR1 merged through #14 at `acf5f262b03d6c0db3ff36b413f330b61f1181d2` (verified before PR2).
 - [ ] Resolve or explicitly accept the documented lint-tooling debt (unpatched braces advisory and ESLint 9 support lifecycle).
 - [x] Align the single KLogo with the later P05/P06/P11 thin gray-branch identity and add regression checks.
 - [x] Record temporary exception M8-SEC-001 with production/reachability evidence.
 - [ ] Maintainer reevaluation of M8-SEC-001 **before PR7 starts or 2026-11-21, whichever is earlier**; no silent renewal.
 - [ ] Implement PR2–7 in separate approved increments; no backend capability inferred.
+
+## M8 PR2 — Rooms & Easy Setup
+
+- [x] Reinspect merged dev, original P03/P06/P11 and missing workspace services.
+- [x] Build isolated synthetic List/Cards, search/filter, expansion, details and navigation.
+- [x] Build four-step setup with validation, ephemeral draft and denied business actions.
+- [x] Exercise frontend unit/build/type/lint and production Chromium journeys on three formats.
+- [x] Record visual comparisons, backend gaps, traceability and ADR-017.
+- [ ] Obtain human review and CI disposition; leave PR2 open, no automatic merge.
+- [ ] Integrate authenticated Room/invitation/connector/policy services only in a separately approved scope.
+- [ ] Reevaluate M8-SEC-001 before PR7 or 2026-11-21, whichever is earlier (no renewal in PR2).
 
 ## Explicitly deferred work
 
@@ -121,6 +132,6 @@ and run 39381943437 contains the authoritative public evidence package.
 - FHE analytics beyond the bounded M6 fixed-vector addition.
 - Proofs beyond M5's bounded metadata relation, post-quantum identity, and RunReceipts.
 - Mainnet deployment, on-chain state/storage/computation, tokens, payments, or blockchain governance.
-- Web product functionality beyond the disconnected M8 PR1 foundation.
+- Web product functionality beyond the disconnected M8 PR1/PR2 presentation scope.
 - RoomState branch UI, merge implementation, and dynamic membership.
 

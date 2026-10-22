@@ -6,6 +6,8 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Added
 
+- M8 PR2 isolated Rooms Home and Easy Setup preview: P03 List/Cards, search/status filters, expansion, selected-room details/mini-history and scoped navigation; P06 four-step ephemeral form, explicit unavailable service actions and always-denied readiness. Reuses PR1 identity/tokens/shell. No backend, persistence, crypto or chain implementation added. Evidence and limitations: `docs/m8/pr2/README.md`.
+
 - PR #14 final follow-up: canonical thin P11 K identity consistent with corrected P05/P06, gray branch tokens, logo/runtime-dependency regression checks and bounded lint-tooling exception M8-SEC-001 (reevaluate before PR7 or 2026-11-21, whichever is earlier). No core or dependency-version change.
 
 - M8 PR1 design-system and responsive app-shell foundation in `apps/web`, with the supplied M8 palette/identity, honest unavailable routes, component gallery, keyboard-safe dialogs and isolated frontend CI. No core cryptographic implementation, backend, proof or chain behavior changed. Local component/browser evidence and visual-reference limitations are recorded in `docs/m8/pr1/README.md`.

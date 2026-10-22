@@ -55,7 +55,19 @@ function Inspector({ moduleId }: { moduleId: string }) {
   );
 }
 
-export function AppShell({ children }: { children: ReactNode }) {
+export function AppShell({
+  children,
+  inspector,
+  contextLabel = "No room selected",
+  preview = false,
+  pageHeader,
+}: {
+  children: ReactNode;
+  inspector?: ReactNode;
+  contextLabel?: string;
+  preview?: boolean;
+  pageHeader?: ReactNode;
+}) {
   const pathname = usePathname();
   const moduleId = pathname.split("/")[2] ?? "rooms";
   const current = findModule(moduleId);
@@ -63,15 +75,17 @@ export function AppShell({ children }: { children: ReactNode }) {
   const mainRef = useRef<HTMLElement>(null);
   const previousPath = useRef(pathname);
   useEffect(() => {
-    if (previousPath.current !== pathname) {
-      mainRef.current?.focus();
+    if (preview || previousPath.current !== pathname) {
+      mainRef.current?.focus({ preventScroll: true });
       previousPath.current = pathname;
     }
-  }, [pathname]);
+  }, [pathname, preview]);
   const navLink = (item: (typeof modules)[number], compact = false) => (
     <Link
       key={item.id}
-      href={moduleHref(item.id)}
+      href={
+        preview && item.id === "rooms" ? "/preview/rooms" : moduleHref(item.id)
+      }
       className="nav-link"
       aria-current={moduleId === item.id ? "page" : undefined}
       aria-label={compact ? item.label : undefined}
@@ -83,7 +97,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     </Link>
   );
   return (
-    <div className="app-frame">
+    <div className={`app-frame${preview ? " rooms-preview-frame" : ""}`}>
       <a className="skip-link" href="#main-content">
         Skip to content
       </a>
@@ -124,14 +138,23 @@ export function AppShell({ children }: { children: ReactNode }) {
           <nav aria-label="Breadcrumb">
             <ol className="breadcrumbs">
               <li>
-                <Link href="/app/rooms">Workspace</Link>
+                <Link href={preview ? "/preview/rooms" : "/app/rooms"}>
+                  {preview ? "Design preview" : "Workspace"}
+                </Link>
               </li>
               <li aria-hidden="true">/</li>
               <li aria-current="page">{current?.label ?? "Workspace"}</li>
             </ol>
           </nav>
-          <Badge status="preview" />
+          {preview ? (
+            <span className="badge badge-preview">SYNTHETIC PREVIEW</span>
+          ) : (
+            <Badge status="preview" />
+          )}
         </header>
+        {pageHeader && (
+          <div className="workspace-page-header">{pageHeader}</div>
+        )}
         <div className="workspace-grid">
           <main
             id="main-content"
@@ -142,7 +165,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             {children}
             <div className="mobile-details-preview">
               <p className="eyebrow">CONTEXT</p>
-              <p>No room selected</p>
+              <p>{contextLabel}</p>
               <Button
                 onClick={() => setPanel("details")}
                 aria-haspopup="dialog"
@@ -152,7 +175,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             </div>
           </main>
           <aside className="context-inspector" aria-label="Context inspector">
-            <Inspector moduleId={moduleId} />
+            {inspector ?? <Inspector moduleId={moduleId} />}
           </aside>
         </div>
       </div>
@@ -175,7 +198,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         title="Workspace details"
         className="bottom-sheet"
       >
-        <Inspector moduleId={moduleId} />
+        {inspector ?? <Inspector moduleId={moduleId} />}
       </Dialog>
       <Dialog
         open={panel === "navigation"}

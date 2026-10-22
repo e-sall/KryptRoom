@@ -71,6 +71,12 @@ These controls limit exposure but do not remove the advisory or restore support.
 This exception covers only this advisory and this ESLint lifecycle gap, not
 future advisories, production dependencies, cryptographic code or other tooling.
 
+PR2 follow-up (2026-10-22): the same app and unchanged dependency lock now contain
+isolated synthetic Rooms/setup forms. They introduce no network, lint invocation,
+upload, execution or storage sink. Existing dependency classification, production
+trace checks and application I/O guards remain active. This does not extend the
+exception's scope or expiry; before PR7 / 2026-11-21 remains the deadline.
+
 ## Exit criteria
 
 At the deadline (or earlier on an upstream release), recheck registry versions,

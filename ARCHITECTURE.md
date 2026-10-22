@@ -6,6 +6,13 @@ KryptRoom has runtime-verified M1 PSI cardinality, M2 two-container SPU private 
 
 ## Target system boundary
 
+M8 PR1 adds a disconnected presentation layer in `apps/web`: Next.js App Router,
+shared design tokens/components, responsive navigation and inspector infrastructure.
+It neither reads node storage nor calls any core runtime. All business routes are
+explicitly unavailable; example component states are isolated in `/design-system`.
+No production Control Plane, authentication or API is implied. See
+[`docs/m8/pr1/README.md`](docs/m8/pr1/README.md) for the frontend boundary and evidence.
+
 The Control Plane and signed metadata in this target diagram are planned. Neither participates in the current demos; only participant runtimes and their local storage are implemented.
 
 ```text

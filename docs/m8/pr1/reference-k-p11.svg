@@ -1,0 +1,8 @@
+<!-- Exact three-path mark extracted from original P11, not a new logo design.
+     Source SHA256: 833f9597342464eaf789f368b3f066609719d6db7715630eb3aa3dbafb486d4e.
+     Only the surrounding viewport has been isolated for comparison. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 30" width="110" height="150">
+  <path d="M1 7 L7 4 V27 L1 24 Z" fill="#F1F0EB"/>
+  <path d="M9 12 L20 4 L16 12 L9 19 Z" fill="#A6A7A1"/>
+  <path d="M9 19 L16 12 L21 26 L14 23 Z" fill="#73756F"/>
+</svg>

@@ -1,5 +1,40 @@
 # Architectural decisions
 
+## ADR-016 — Isolate the M8 presentation foundation from the frozen core
+
+**Decision:** Implement PR1 in `apps/web` using pinned Next.js App Router, React,
+TypeScript and Tailwind with its own lockfile. Render static public presentation
+and explicitly unavailable business modules. Keep local component specimens on
+a separate route. Use semantic HTML and a native dialog with explicit keyboard
+wrapping; preserve the recovered palette and P11 layout principles. Final PR #14
+review supersedes the initial P04 K with the later thin P11 mark, consistent with
+corrected P05/P06. `KLogo` and semantic logo colors are the single production source.
+
+**Reason:** The audited web directory contained only `.gitkeep`; there is no
+production workspace API or Control Plane. A closed route catalog and component
+boundaries support the later six PRs without inventing auth, data or crypto services.
+
+**Alternatives:** Root npm workspace migration, a generated component template,
+React Flow before graph implementation, or a fake API were rejected as unnecessary
+scope or misleading capability. Shared fonts use the prototype's Arial/Georgia/
+monospace families with local fallbacks, not external font requests.
+
+**Consequences:** No API/schema integration, real rooms, uploads, computations,
+proofs, verification badges or chain actions. More mobile navigation substitutes
+for the prototype Results shortcut until room-scoped routing exists. Pixel-exact
+parity is not asserted for a disconnected HTML shell versus synthetic SVG data.
+P04/P11 portable conversions fail in-browser; original source and explicit visual
+limitations are recorded in `docs/m8/pr1/README.md`. PR1 is reviewable independently;
+production auth, CSP, service contracts and full cross-browser/WCAG audit remain later gates.
+
+**Status:** Implemented and locally tested; maintainer/design review and PR CI required.
+
+**PR #14 final follow-up:** No compatible published fix was found for the
+development-only braces advisory / ESLint 9 EOL combination. The requested
+temporary exception M8-SEC-001 (`docs/m8/pr1/SECURITY-EXCEPTION.md`) records
+reachability, compensating controls and owner. It expires before PR7 starts or
+2026-11-21, whichever comes first; maintainer merge approval must include it.
+
 ## ADR-015 — Fail-closed M7 deployment and anchor recovery
 
 **Decision:** Treat Base Sepolia contract

@@ -10,7 +10,9 @@ Final-head GitHub evidence is recorded in the PR. No automatic merge; main uncha
 
 Only M8 PR2 presentation and the explicitly authorized CI scope conditions are
 implemented. No M1–M7 code, dependency pins, schema, runtime, protocol or security
-claim changes. No PR3–7 implementation. No license.
+claim changes. A separately authorized exception refreshes exactly six synthetic
+M5 metadata fixtures using the unchanged generator; it is not new proof validation.
+See [migration evidence](M5-FIXTURE-MIGRATION.md). No PR3–7 implementation. No license.
 
 ## P03 — Rooms Home
 

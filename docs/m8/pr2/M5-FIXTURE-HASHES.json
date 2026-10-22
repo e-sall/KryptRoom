@@ -1,0 +1,252 @@
+{
+  "migration": "M8-PR15-M5-metadata-only-2026-10-22",
+  "baselineCommit": "2915b421180739897b8ffd754f8c228cee4b62d9",
+  "generatedExclusivelyBy": "tests/state_proof/generate_fixture.py",
+  "newGroth16Proof": false,
+  "beforeWorkflowHash": "d66c581c73dbe1953f73fc573d9377da3e792b350bc0f516475e57fef5ff5449",
+  "afterWorkflowHash": "490a46ad8295011b53f9399fc09de26b3f039d4a0c19958e7ef52951eee39c66",
+  "unchangedCodeHash": "a8d0e674afa5b9bbdb5fa1d1c7cee1a7b31f997b0112b09683c997748d58a2ff",
+  "unchangedSourceAndHistoricalReportsLfSha256": {
+    "tests/state_proof/generate_fixture.py": "356f316ce683955a757cb9add48fd1d435284111a7845e7439ef38d2f011a836",
+    "engines/mpc/nn_contract.py": "ccc9ea325ce62c4ef6087f295a8777d98ce73b03388e4dd63caad2a7f743471c",
+    "engines/zk/proof_receipt.py": "0105fb90cad03514a91360f4cd8305e6d920ae3b73aa7536513e41f03e6a48b9",
+    "engines/zk/state-transition-proof/shared/src/lib.rs": "2ff32f474d73866e6f57f91fe827cf7ad2449ea4747ef16566c08744d3ad86f3",
+    "docs/M5_VALIDATION.md": "b5a171272fe4b05eeff2b360934a2596b4dcba81d9ab30298b86224b6aa4d914",
+    "docs/STATE_PROOF.md": "96fcf3964727e4c86a46b9c7122e174260a2c68d338aad081280a8a70e3a3989"
+  },
+  "fixtures": {
+    "hashes.json": {
+      "beforeSha256": "a0509064df3d753e685d1a6139f8e5187fddfa5032fdb0b504282b6eb1d9abea",
+      "afterSha256": "e31fcbec1ee15d0208620812aa41b17de27e4a5cd5dafaf40b7547846bb71c2f",
+      "changedLeaves": [
+        {
+          "pointer": "/0/canonicalHex",
+          "representation": "UTF-8 canonical JSON hex of sibling value; exact bytes recoverable from that value",
+          "beforeByteLength": 2419,
+          "afterByteLength": 2419,
+          "beforeSha256": "1d5635f4b02ffd35c4978829eddf583106e712427cfdfcc90db3bfc0188dcbb1",
+          "afterSha256": "97498500cef2deac9d4ce59e44cefaf14254ad9b5d4f6c667c9cdfcf3049c27b"
+        },
+        {
+          "pointer": "/0/sha256",
+          "before": "1d5635f4b02ffd35c4978829eddf583106e712427cfdfcc90db3bfc0188dcbb1",
+          "after": "97498500cef2deac9d4ce59e44cefaf14254ad9b5d4f6c667c9cdfcf3049c27b"
+        },
+        {
+          "pointer": "/0/value/orderedParents/0/stateCommitment",
+          "before": "0995e7ecd45325e45f2e4de880d4cc8bf16e7a7d7aa2484595f0051ab6ff3e9d",
+          "after": "2bc12db60f5946e4e63596218fa577367ab476f48a5b1b8d2dd457e9ac0513d4"
+        },
+        {
+          "pointer": "/0/value/outputStateCommitment",
+          "before": "4783c68ffbae1b11475a009ccd421b15045287929143d0f975cb1842933d7a62",
+          "after": "bf73e16f59a924dcf4fff4c8bef8d32d656a2a80cdfbb153c2b61b3776338af1"
+        },
+        {
+          "pointer": "/0/value/transitionCommitment",
+          "before": "1283c79f6f9cd06e7f538bb7d9ed33594d0bd319988848bd93723a24b702f68f",
+          "after": "647a0cdaeaf208cc81cbc78f626c336681e2095b96d27ece9a488d39e0597543"
+        },
+        {
+          "pointer": "/0/value/workflowHash",
+          "before": "d66c581c73dbe1953f73fc573d9377da3e792b350bc0f516475e57fef5ff5449",
+          "after": "490a46ad8295011b53f9399fc09de26b3f039d4a0c19958e7ef52951eee39c66"
+        },
+        {
+          "pointer": "/4/canonicalHex",
+          "representation": "UTF-8 canonical JSON hex of sibling value; exact bytes recoverable from that value",
+          "beforeByteLength": 7804,
+          "afterByteLength": 7804,
+          "beforeSha256": "76f88ebceac61f65ca0fab9d07da369a038f884e941f83a5729bc3a9c8674b94",
+          "afterSha256": "32f9c30798023fe94481c98e0accdb5700b5f3744f3f601de21a9035dc282c90"
+        },
+        {
+          "pointer": "/4/sha256",
+          "before": "76f88ebceac61f65ca0fab9d07da369a038f884e941f83a5729bc3a9c8674b94",
+          "after": "32f9c30798023fe94481c98e0accdb5700b5f3744f3f601de21a9035dc282c90"
+        },
+        {
+          "pointer": "/4/value/parents/0/stateCommitment",
+          "before": "0995e7ecd45325e45f2e4de880d4cc8bf16e7a7d7aa2484595f0051ab6ff3e9d",
+          "after": "2bc12db60f5946e4e63596218fa577367ab476f48a5b1b8d2dd457e9ac0513d4"
+        },
+        {
+          "pointer": "/4/value/workflowHash",
+          "before": "d66c581c73dbe1953f73fc573d9377da3e792b350bc0f516475e57fef5ff5449",
+          "after": "490a46ad8295011b53f9399fc09de26b3f039d4a0c19958e7ef52951eee39c66"
+        },
+        {
+          "pointer": "/6/canonicalHex",
+          "representation": "UTF-8 canonical JSON hex of sibling value; exact bytes recoverable from that value",
+          "beforeByteLength": 7977,
+          "afterByteLength": 7977,
+          "beforeSha256": "1283c79f6f9cd06e7f538bb7d9ed33594d0bd319988848bd93723a24b702f68f",
+          "afterSha256": "647a0cdaeaf208cc81cbc78f626c336681e2095b96d27ece9a488d39e0597543"
+        },
+        {
+          "pointer": "/6/sha256",
+          "before": "1283c79f6f9cd06e7f538bb7d9ed33594d0bd319988848bd93723a24b702f68f",
+          "after": "647a0cdaeaf208cc81cbc78f626c336681e2095b96d27ece9a488d39e0597543"
+        },
+        {
+          "pointer": "/6/value/request/parents/0/stateCommitment",
+          "before": "0995e7ecd45325e45f2e4de880d4cc8bf16e7a7d7aa2484595f0051ab6ff3e9d",
+          "after": "2bc12db60f5946e4e63596218fa577367ab476f48a5b1b8d2dd457e9ac0513d4"
+        },
+        {
+          "pointer": "/6/value/request/workflowHash",
+          "before": "d66c581c73dbe1953f73fc573d9377da3e792b350bc0f516475e57fef5ff5449",
+          "after": "490a46ad8295011b53f9399fc09de26b3f039d4a0c19958e7ef52951eee39c66"
+        },
+        {
+          "pointer": "/7/canonicalHex",
+          "representation": "UTF-8 canonical JSON hex of sibling value; exact bytes recoverable from that value",
+          "beforeByteLength": 9761,
+          "afterByteLength": 9761,
+          "beforeSha256": "4783c68ffbae1b11475a009ccd421b15045287929143d0f975cb1842933d7a62",
+          "afterSha256": "bf73e16f59a924dcf4fff4c8bef8d32d656a2a80cdfbb153c2b61b3776338af1"
+        },
+        {
+          "pointer": "/7/sha256",
+          "before": "4783c68ffbae1b11475a009ccd421b15045287929143d0f975cb1842933d7a62",
+          "after": "bf73e16f59a924dcf4fff4c8bef8d32d656a2a80cdfbb153c2b61b3776338af1"
+        },
+        {
+          "pointer": "/7/value/transition/bindings/request/parents/0/stateCommitment",
+          "before": "0995e7ecd45325e45f2e4de880d4cc8bf16e7a7d7aa2484595f0051ab6ff3e9d",
+          "after": "2bc12db60f5946e4e63596218fa577367ab476f48a5b1b8d2dd457e9ac0513d4"
+        },
+        {
+          "pointer": "/7/value/transition/bindings/request/workflowHash",
+          "before": "d66c581c73dbe1953f73fc573d9377da3e792b350bc0f516475e57fef5ff5449",
+          "after": "490a46ad8295011b53f9399fc09de26b3f039d4a0c19958e7ef52951eee39c66"
+        },
+        {
+          "pointer": "/7/value/transition/bindings/transitionCommitment",
+          "before": "1283c79f6f9cd06e7f538bb7d9ed33594d0bd319988848bd93723a24b702f68f",
+          "after": "647a0cdaeaf208cc81cbc78f626c336681e2095b96d27ece9a488d39e0597543"
+        }
+      ]
+    },
+    "receipt.json": {
+      "beforeSha256": "1d5635f4b02ffd35c4978829eddf583106e712427cfdfcc90db3bfc0188dcbb1",
+      "afterSha256": "97498500cef2deac9d4ce59e44cefaf14254ad9b5d4f6c667c9cdfcf3049c27b",
+      "changedLeaves": [
+        {
+          "pointer": "/orderedParents/0/stateCommitment",
+          "before": "0995e7ecd45325e45f2e4de880d4cc8bf16e7a7d7aa2484595f0051ab6ff3e9d",
+          "after": "2bc12db60f5946e4e63596218fa577367ab476f48a5b1b8d2dd457e9ac0513d4"
+        },
+        {
+          "pointer": "/outputStateCommitment",
+          "before": "4783c68ffbae1b11475a009ccd421b15045287929143d0f975cb1842933d7a62",
+          "after": "bf73e16f59a924dcf4fff4c8bef8d32d656a2a80cdfbb153c2b61b3776338af1"
+        },
+        {
+          "pointer": "/transitionCommitment",
+          "before": "1283c79f6f9cd06e7f538bb7d9ed33594d0bd319988848bd93723a24b702f68f",
+          "after": "647a0cdaeaf208cc81cbc78f626c336681e2095b96d27ece9a488d39e0597543"
+        },
+        {
+          "pointer": "/workflowHash",
+          "before": "d66c581c73dbe1953f73fc573d9377da3e792b350bc0f516475e57fef5ff5449",
+          "after": "490a46ad8295011b53f9399fc09de26b3f039d4a0c19958e7ef52951eee39c66"
+        }
+      ]
+    },
+    "S1.content.json": {
+      "beforeSha256": "cb23d577ab92e930d861c5bc3146be7539afe29f9ecc05001620d141daf87c7c",
+      "afterSha256": "cb23d577ab92e930d861c5bc3146be7539afe29f9ecc05001620d141daf87c7c",
+      "changedLeaves": []
+    },
+    "S1.json": {
+      "beforeSha256": "2ee643313bd23afb177aecc688c31052be6265e57763f4f8a95ddd28e2d1713b",
+      "afterSha256": "2ee643313bd23afb177aecc688c31052be6265e57763f4f8a95ddd28e2d1713b",
+      "changedLeaves": []
+    },
+    "S3_model.content.json": {
+      "beforeSha256": "0995e7ecd45325e45f2e4de880d4cc8bf16e7a7d7aa2484595f0051ab6ff3e9d",
+      "afterSha256": "2bc12db60f5946e4e63596218fa577367ab476f48a5b1b8d2dd457e9ac0513d4",
+      "changedLeaves": [
+        {
+          "pointer": "/transition/bindings/request/workflowHash",
+          "before": "d66c581c73dbe1953f73fc573d9377da3e792b350bc0f516475e57fef5ff5449",
+          "after": "490a46ad8295011b53f9399fc09de26b3f039d4a0c19958e7ef52951eee39c66"
+        },
+        {
+          "pointer": "/transition/bindings/transitionCommitment",
+          "before": "be53b27e7df5d5c16594dc9a1df779e5291ab7fc4196f3aa03ec037314f3010f",
+          "after": "00021c0023a36a702140c8ae1e9fa29530b686a414292f134792aaa0dbf0b6a5"
+        }
+      ]
+    },
+    "S3_model.json": {
+      "beforeSha256": "984e4615612dd5f0339b5407b91400bb1c1b46a3fa7499335559d6c9689f048e",
+      "afterSha256": "8809ef3a666f73c58131f5678328687eb8d797ab0a53af63f97ed32631dff3c1",
+      "changedLeaves": [
+        {
+          "pointer": "/commitment/value",
+          "before": "0995e7ecd45325e45f2e4de880d4cc8bf16e7a7d7aa2484595f0051ab6ff3e9d",
+          "after": "2bc12db60f5946e4e63596218fa577367ab476f48a5b1b8d2dd457e9ac0513d4"
+        },
+        {
+          "pointer": "/transition/bindings/request/workflowHash",
+          "before": "d66c581c73dbe1953f73fc573d9377da3e792b350bc0f516475e57fef5ff5449",
+          "after": "490a46ad8295011b53f9399fc09de26b3f039d4a0c19958e7ef52951eee39c66"
+        },
+        {
+          "pointer": "/transition/bindings/transitionCommitment",
+          "before": "be53b27e7df5d5c16594dc9a1df779e5291ab7fc4196f3aa03ec037314f3010f",
+          "after": "00021c0023a36a702140c8ae1e9fa29530b686a414292f134792aaa0dbf0b6a5"
+        }
+      ]
+    },
+    "S4_eval.content.json": {
+      "beforeSha256": "4783c68ffbae1b11475a009ccd421b15045287929143d0f975cb1842933d7a62",
+      "afterSha256": "bf73e16f59a924dcf4fff4c8bef8d32d656a2a80cdfbb153c2b61b3776338af1",
+      "changedLeaves": [
+        {
+          "pointer": "/transition/bindings/request/parents/0/stateCommitment",
+          "before": "0995e7ecd45325e45f2e4de880d4cc8bf16e7a7d7aa2484595f0051ab6ff3e9d",
+          "after": "2bc12db60f5946e4e63596218fa577367ab476f48a5b1b8d2dd457e9ac0513d4"
+        },
+        {
+          "pointer": "/transition/bindings/request/workflowHash",
+          "before": "d66c581c73dbe1953f73fc573d9377da3e792b350bc0f516475e57fef5ff5449",
+          "after": "490a46ad8295011b53f9399fc09de26b3f039d4a0c19958e7ef52951eee39c66"
+        },
+        {
+          "pointer": "/transition/bindings/transitionCommitment",
+          "before": "1283c79f6f9cd06e7f538bb7d9ed33594d0bd319988848bd93723a24b702f68f",
+          "after": "647a0cdaeaf208cc81cbc78f626c336681e2095b96d27ece9a488d39e0597543"
+        }
+      ]
+    },
+    "S4_eval.json": {
+      "beforeSha256": "e45cdbe4feb80505f9eafce07fa96f1afa2c2c629a5c08ec901506c732423df9",
+      "afterSha256": "314fec8325dac68bc58f8d6ae142cea9c5f4bba824e8f31ff5dc5658ce677699",
+      "changedLeaves": [
+        {
+          "pointer": "/commitment/value",
+          "before": "4783c68ffbae1b11475a009ccd421b15045287929143d0f975cb1842933d7a62",
+          "after": "bf73e16f59a924dcf4fff4c8bef8d32d656a2a80cdfbb153c2b61b3776338af1"
+        },
+        {
+          "pointer": "/transition/bindings/request/parents/0/stateCommitment",
+          "before": "0995e7ecd45325e45f2e4de880d4cc8bf16e7a7d7aa2484595f0051ab6ff3e9d",
+          "after": "2bc12db60f5946e4e63596218fa577367ab476f48a5b1b8d2dd457e9ac0513d4"
+        },
+        {
+          "pointer": "/transition/bindings/request/workflowHash",
+          "before": "d66c581c73dbe1953f73fc573d9377da3e792b350bc0f516475e57fef5ff5449",
+          "after": "490a46ad8295011b53f9399fc09de26b3f039d4a0c19958e7ef52951eee39c66"
+        },
+        {
+          "pointer": "/transition/bindings/transitionCommitment",
+          "before": "1283c79f6f9cd06e7f538bb7d9ed33594d0bd319988848bd93723a24b702f68f",
+          "after": "647a0cdaeaf208cc81cbc78f626c336681e2095b96d27ece9a488d39e0597543"
+        }
+      ]
+    }
+  }
+}

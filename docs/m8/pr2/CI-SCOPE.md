@@ -36,7 +36,9 @@ other conditions remain core-sensitive. A new/deleted workflow is core-sensitive
 This permits this authorized trigger-only migration without exempting future
 runtime/dependency edits to cryptographic workflows.
 
-Every other path, including unknown paths, root dependency locks, Docker/Compose,
+Apart from the separately authorized, exact six-file migration described in
+[M5-FIXTURE-MIGRATION.md](M5-FIXTURE-MIGRATION.md), every other path, including
+unknown paths, root dependency locks, Docker/Compose,
 nodes, engines, schemas, chain contracts and core tests, requires core execution.
 Mixed frontend/core changes require core execution. Empty diffs are conservative.
 Scope code is CI policy, not a security boundary against a contributor who can
@@ -75,14 +77,16 @@ and [required-check troubleshooting](https://docs.github.com/en/pull-requests/ho
 ## Reproducible validation
 
 `python -m unittest discover -s .github -p test_ci_scope.py -v`:
-13 passing cases, no cryptographic imports or runtime execution. Covers frontend,
+23 passing cases, no cryptographic imports or runtime execution. Covers frontend,
 M8 docs, mixed/core/unknown paths, root dependencies, schema/contract paths, pure
 trigger edits versus runtime/security changes, workflow addition/deletion, manual
 events, PR merge-base, complete feature branch, regular push, 500+ files, deleted
-core paths, missing revisions, and exact scope wiring in all six workflows.
+core paths, missing revisions, exact scope wiring in all six workflows, and the
+authorized metadata migration plus arbitrary/partial/policy/runtime/core edits.
 
 Before publishing, classify the complete actual PR diff and a synthetic new-branch
-event using the committed HEAD. Both must report core=false for this PR. Verify
+event using the committed HEAD, plus the follow-up push from the previous HEAD.
+All must report core=false for this PR. Verify
 all original job execution text is identical after stripping only scope plumbing.
 Record actual remote run conclusions in the PR; never claim heavy regressions
 passed when they were intentionally skipped.

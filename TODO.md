@@ -120,6 +120,7 @@ and run 39381943437 contains the authoritative public evidence package.
 - [x] Exercise frontend unit/build/type/lint and production Chromium journeys on three formats.
 - [x] Record visual comparisons, backend gaps, traceability and ADR-017.
 - [x] Implement owner-authorized frontend/core CI scope conditions and synthetic tests; inspect dev protections without changing them.
+- [x] Apply the separately authorized exact M5 metadata refresh; retain reproducibility assertion, negative CI-scope tests and historical proof provenance.
 - [ ] Obtain human review and CI disposition; leave PR2 open, no automatic merge.
 - [ ] Integrate authenticated Room/invitation/connector/policy services only in a separately approved scope.
 - [ ] Reevaluate M8-SEC-001 before PR7 or 2026-11-21, whichever is earlier (no renewal in PR2).

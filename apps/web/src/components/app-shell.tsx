@@ -61,15 +61,19 @@ export function AppShell({
   contextLabel = "No room selected",
   preview = false,
   pageHeader,
+  activeModule,
+  graphHref,
 }: {
   children: ReactNode;
   inspector?: ReactNode;
   contextLabel?: string;
   preview?: boolean;
   pageHeader?: ReactNode;
+  activeModule?: string;
+  graphHref?: string;
 }) {
   const pathname = usePathname();
-  const moduleId = pathname.split("/")[2] ?? "rooms";
+  const moduleId = activeModule ?? pathname.split("/")[2] ?? "rooms";
   const current = findModule(moduleId);
   const [panel, setPanel] = useState<"details" | "navigation" | null>(null);
   const mainRef = useRef<HTMLElement>(null);
@@ -84,7 +88,7 @@ export function AppShell({
     <Link
       key={item.id}
       href={
-        preview && item.id === "rooms" ? "/preview/rooms" : moduleHref(item.id)
+        preview && item.id === "rooms" ? "/preview/rooms" : preview && item.id === "graph" && graphHref ? graphHref : moduleHref(item.id)
       }
       className="nav-link"
       aria-current={moduleId === item.id ? "page" : undefined}

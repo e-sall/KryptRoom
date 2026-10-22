@@ -122,11 +122,22 @@ and run 39381943437 contains the authoritative public evidence package.
 - [x] Implement owner-authorized frontend/core CI scope conditions and synthetic tests; inspect dev protections without changing them.
 - [x] Apply the separately authorized exact M5 metadata refresh; retain reproducibility assertion, negative CI-scope tests and historical proof provenance.
 - [x] Apply the separately authorized two-file M7 synthetic-vector refresh; verify M5/M7 together, exact hash-bound CI classification and historical Layer B/Layer C distinction.
-- [ ] Obtain human review and CI disposition; leave PR2 open, no automatic merge.
+- [x] Owner-approved PR2 merged through #15 at `a88df46a0213d7c422410db4d5cde32f8c3de897`; ten post-merge workflows passed.
 - [ ] Integrate authenticated Room/invitation/connector/policy services only in a separately approved scope.
 - [ ] Reevaluate M8-SEC-001 before PR7 or 2026-11-21, whichever is earlier (no renewal in PR2).
 
-## Explicitly deferred work
+## M8 PR3 — Graph Workspace
+
+- [x] Merge approved PR #15 into dev after head/check/invariant verification.
+- [x] Start PR3 from verified merge `a88df46a0213d7c422410db4d5cde32f8c3de897`.
+- [x] Audit recovered P04/P11 and actual immutable multi-parent core contracts.
+- [x] Implement isolated graph model/layout, three modes, selection, viewport and inspector.
+- [x] Test DAG negatives, frontend regressions, keyboard, touch, responsive and privacy boundaries.
+- [x] Document converted-reference comparisons and HTML/React adaptations.
+- [ ] Independent PR3 review and final CI disposition; no automatic merge.
+- [ ] Preserve M8-SEC-001 reevaluation before PR7 or 2026-11-21.
+
+## Explicitly deferred work (unchanged)
 
 - [ ] Choose project licensing terms before encouraging substantial third-party code contributions.
 - [ ] Confirm a private vulnerability-reporting channel in repository settings.
@@ -135,6 +146,6 @@ and run 39381943437 contains the authoritative public evidence package.
 - FHE analytics beyond the bounded M6 fixed-vector addition.
 - Proofs beyond M5's bounded metadata relation, post-quantum identity, and RunReceipts.
 - Mainnet deployment, on-chain state/storage/computation, tokens, payments, or blockchain governance.
-- Web product functionality beyond the disconnected M8 PR1/PR2 presentation scope.
-- RoomState branch UI, merge implementation, and dynamic membership.
+- Web product functionality beyond the disconnected M8 PR1/PR2/PR3 presentation scope.
+- Authoritative RoomState branch operations, merge implementation, and dynamic membership.
 

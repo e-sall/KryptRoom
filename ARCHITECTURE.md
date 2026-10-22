@@ -23,6 +23,15 @@ fixture diagram, not the PR3 graph editor and not canonical runtime lineage.
 Readiness always denies execution. Local field validation is not authorization.
 See `docs/m8/pr2/README.md` for exact scope, tests and backend gaps.
 
+PR3 replaces only the preview Workspace placeholder with a read-only interactive
+DAG. A safe presentation model, deterministic rank/lane layout, viewport/selection
+state and inspector are separate modules. Parent arrays remain ordered and
+multi-valued; edges never mutate source states. HTML controls overlay SVG paths.
+P11 uses horizontal desktop/tablet layout and a vertical narrow-canvas layout.
+No API DTO, hashing, artifact resolution or disclosure decision is implemented.
+The future server adapter must provide authorized, field-filtered metadata.
+Production Graph remains unavailable. See `docs/m8/pr3/README.md`.
+
 The Control Plane and signed metadata in this target diagram are planned. Neither participates in the current demos; only participant runtimes and their local storage are implemented.
 
 ```text

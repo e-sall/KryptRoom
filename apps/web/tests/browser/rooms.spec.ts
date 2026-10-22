@@ -91,7 +91,7 @@ test("P03 list, cards, search, filter, expansion and scoped navigation", async (
     .getByRole("link", { name: "Open Workspace", exact: true })
     .click();
   await expect(
-    page.getByRole("heading", { name: "Graph Workspace is reserved for PR3" }),
+    page.getByRole("heading", { name: "State Graph", exact: true }),
   ).toBeVisible();
   await page.getByRole("link", { name: "All example Rooms" }).click();
   await expect(

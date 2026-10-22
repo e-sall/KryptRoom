@@ -1,5 +1,25 @@
 # Architectural decisions
 
+## ADR-018 — Read-only synthetic graph presentation, separate from core authority
+
+**Decision:** Implement PR3 as an isolated preview DAG with a readonly display
+projection, deterministic topological/rank layout, HTML node buttons, SVG directed
+edges and local viewport/selection state. Preserve ordered multiple parents.
+Use existing shell/modal controls for desktop, tablet and mobile inspection.
+Do not introduce React Flow for this bounded read-only surface or invent a
+Workspace API. No raw RoomState serialization is passed into browser fixtures.
+
+**Reason:** RoomState is immutable, while server authorization and production
+Workspace services are still absent. Display navigation must not imply state
+creation, secret access or proof verification.
+
+**Consequences:** Preview interactions are real frontend behavior over labelled
+synthetic data, not backend integration. Production Graph stays unavailable.
+Layout performance is bounded by the tested 24-node example; advanced layout,
+virtualization, edit operations and server adapters require separate review.
+No dependency, CI exception or M1–M7 change. P09/P10 remain future work.
+Evidence and visual adaptations: `docs/m8/pr3/README.md`.
+
 ## PR #15 maintenance decision — exact synthetic M5/M7 CI migration
 
 Owner-approved CI trigger changes alter the workflowHash bound into synthetic

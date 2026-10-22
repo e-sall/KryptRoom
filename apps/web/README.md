@@ -67,3 +67,5 @@ by the PR1 badge API.
 See [the implementation evidence](../../docs/m8/pr1/README.md) for source
 provenance, deviations, executed checks and limitations.
 See [PR2 evidence](../../docs/m8/pr2/README.md) for Rooms/Easy Setup and screenshots.
+See [PR3 evidence](../../docs/m8/pr3/README.md) for the read-only synthetic Graph
+Workspace, interaction checks, source comparisons and integration boundaries.

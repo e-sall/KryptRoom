@@ -98,7 +98,18 @@ Status: **VERIFIED** for the bounded state-only Base Sepolia acceptance. The V1
 contract and sole canonical event are finalized, standalone Layers A/B pass,
 and run 39381943437 contains the authoritative public evidence package.
 
-## Explicitly deferred
+## M8 PR1 — Design System & App Shell
+
+- [x] Audit the actual dev baseline and supplied M8 source archive.
+- [x] Add reusable tokens, identity, controls and honest module placeholders.
+- [x] Add desktop sidebar/inspector, tablet rail/bottom inspector and mobile sheets/navigation.
+- [x] Run targeted component, production-build, keyboard, responsive and browser checks.
+- [x] Document source comparisons, conversion failures and integration boundaries.
+- [ ] Receive CI and human design/technical/security approval, then merge PR1 separately.
+- [ ] Resolve or explicitly accept the documented lint-tooling debt (unpatched braces advisory and ESLint 9 support lifecycle).
+- [ ] Implement PR2–7 in separate approved increments; no backend capability inferred.
+
+## Explicitly deferred work
 
 - [ ] Choose project licensing terms before encouraging substantial third-party code contributions.
 - [ ] Confirm a private vulnerability-reporting channel in repository settings.
@@ -107,6 +118,6 @@ and run 39381943437 contains the authoritative public evidence package.
 - FHE analytics beyond the bounded M6 fixed-vector addition.
 - Proofs beyond M5's bounded metadata relation, post-quantum identity, and RunReceipts.
 - Mainnet deployment, on-chain state/storage/computation, tokens, payments, or blockchain governance.
-- Web frontend.
+- Web product functionality beyond the disconnected M8 PR1 foundation.
 - RoomState branch UI, merge implementation, and dynamic membership.
 

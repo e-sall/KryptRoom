@@ -6,6 +6,8 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Added
 
+- M8 PR1 design-system and responsive app-shell foundation in `apps/web`, with the supplied M8 palette/identity, honest unavailable routes, component gallery, keyboard-safe dialogs and isolated frontend CI. No core cryptographic implementation, backend, proof or chain behavior changed. Local component/browser evidence and visual-reference limitations are recorded in `docs/m8/pr1/README.md`.
+
 - M7 evidence-only anchor recovery after run 39379898215: bounded canonical-receipt polling, explicit orphan handling, exact-one-event validation, and a mutually exclusive `resume_existing_anchor` mode that cannot deploy or broadcast. Run 39381943437 reused the existing canonical transaction, reached Base `finalized`, passed standalone Layers A/B, and uploaded the authoritative public package. Status: verified for the bounded state-only acceptance.
 
 - M7 live-acceptance recovery after run 39377159223: explicit deploy/resume modes, stable JSON-RPC User-Agent, immutable existing-deployment validation, deployer-nonce retry guard, and duplicate-anchor preflight. This first recovery stage established the authoritative V1 deployment used by the later anchor transaction.

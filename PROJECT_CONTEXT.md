@@ -31,7 +31,7 @@ M1 through M6 are runtime-verified on bounded synthetic fixtures. M7 is verified
 - Post-quantum target: OpenSSL 3.5 or newer, ML-KEM, ML-DSA, and hybrid X25519 + ML-KEM-768 key establishment.
 - Artifact encryption: AES-256-GCM with random nonces and node-local 256-bit keys for M2.5. No plaintext key reaches another participant or the Control Plane. Production KMS/HSM integration remains future work.
 - Current M7 audit implementation: chain-agnostic AnchorCommitment and immutable `ChainAnchor`, initially Base Sepolia, with only one bytes32 KryptRoom value on-chain. The authoritative V1 deployment and sole canonical state-only acceptance event are finalized and independently verified; the public evidence package is attached to run 39381943437.
-- Frontend, later: Next.js, TypeScript, Tailwind, shadcn/ui, and React Flow.
+- M8 PR1 frontend: isolated Next.js/TypeScript/Tailwind design-system and responsive app shell in `apps/web`. Business routes explicitly remain unavailable; no application API, authentication, cryptographic invocation or chain connection is implemented. shadcn/ui and React Flow remain optional future choices. See `docs/m8/pr1/README.md` for source fidelity and bounded test evidence.
 
 ## Target backend-to-operation mapping (not a capability inventory)
 

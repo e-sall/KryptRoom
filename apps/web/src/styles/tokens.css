@@ -1,0 +1,53 @@
+/* Locked swatches: consolidated M8 DESIGN-SYSTEM.md + P01/P03/P04/P11 SVGs.
+   Fonts, breakpoints, focus, spacing and semantic aliases are engineering adaptations. */
+:root {
+  color-scheme: dark;
+  --kr-background: #10100f;
+  --kr-surface: #191918;
+  --kr-elevated: #242422;
+  --kr-border: #343432;
+  --kr-text-primary: #f1f0eb;
+  --kr-text-secondary: #a9a9a2;
+  --kr-blue: #7caad5;
+  --kr-blue-muted: #334b60;
+  --kr-action: #edece6;
+  --kr-success: #84b89a;
+  --kr-warning: #dbb477;
+  --kr-error: #d58b88;
+  --kr-logo-upper: #e0ded8;
+  --kr-logo-lower: #777770;
+  --kr-selected: #30302d;
+  --kr-disabled: #a9a9a2;
+  --kr-focus: #7caad5;
+  --kr-backdrop: rgb(0 0 0 / 65%);
+  --kr-font-sans: Arial, Helvetica, sans-serif;
+  --kr-font-serif: Georgia, "Times New Roman", serif;
+  --kr-font-mono: "SFMono-Regular", Consolas, monospace;
+  --kr-space-1: 4px;
+  --kr-space-2: 8px;
+  --kr-space-3: 12px;
+  --kr-space-4: 16px;
+  --kr-space-6: 24px;
+  --kr-space-8: 32px;
+  --kr-space-12: 48px;
+  --kr-space-16: 64px;
+  --kr-space-24: 96px;
+  --kr-radius-control: 8px;
+  --kr-radius-card: 14px;
+  --kr-radius-shell: 20px;
+  --kr-radius-pill: 999px;
+  --kr-duration: 160ms;
+  --kr-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@theme inline {
+  --color-canvas: var(--kr-background);
+  --color-surface: var(--kr-surface);
+  --color-elevated: var(--kr-elevated);
+  --color-ink: var(--kr-text-primary);
+  --color-muted: var(--kr-text-secondary);
+  --color-accent: var(--kr-blue);
+  --font-sans: var(--kr-font-sans);
+  --font-serif: var(--kr-font-serif);
+  --font-mono: var(--kr-font-mono);
+}

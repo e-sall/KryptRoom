@@ -1,5 +1,20 @@
 # Architectural decisions
 
+## PR #15 maintenance decision — exact synthetic M5/M7 CI migration
+
+Owner-approved CI trigger changes alter the workflowHash bound into synthetic
+M5 metadata. Regenerate only the authorized six M5 and two dependent M7 vectors
+with unchanged original generators. Pin exact old/new file bytes in CI routing,
+check transitive M5 inputs, preserve all core/mixed/manual behavior and keep both
+reproducibility jobs active. Never exempt the fixture directories generally.
+
+M7's representative descriptor retains fixed proof fields but its updated
+commitments have no new Groth16 coverage. This is Layer B consistency only;
+historical Layer C proofs and finalized on-chain acceptance remain immutable.
+No new architecture, crypto implementation or live acceptance is introduced.
+Evidence: `docs/m8/pr2/M5-FIXTURE-MIGRATION.md` and
+`docs/m8/pr2/M7-FIXTURE-MIGRATION.md`. PR remains subject to human review.
+
 ## ADR-017 — Isolate PR2 synthetic Rooms and ephemeral Easy Setup
 
 **Decision:** Keep `/app/rooms` explicitly disconnected. Put P03/P06 interactive

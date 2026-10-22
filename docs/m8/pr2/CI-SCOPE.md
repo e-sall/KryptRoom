@@ -37,7 +37,8 @@ This permits this authorized trigger-only migration without exempting future
 runtime/dependency edits to cryptographic workflows.
 
 Apart from the separately authorized, exact six-file migration described in
-[M5-FIXTURE-MIGRATION.md](M5-FIXTURE-MIGRATION.md), every other path, including
+[M5-FIXTURE-MIGRATION.md](M5-FIXTURE-MIGRATION.md) and the two-file dependent
+[M7 migration](M7-FIXTURE-MIGRATION.md), every other path, including
 unknown paths, root dependency locks, Docker/Compose,
 nodes, engines, schemas, chain contracts and core tests, requires core execution.
 Mixed frontend/core changes require core execution. Empty diffs are conservative.
@@ -77,12 +78,16 @@ and [required-check troubleshooting](https://docs.github.com/en/pull-requests/ho
 ## Reproducible validation
 
 `python -m unittest discover -s .github -p test_ci_scope.py -v`:
-23 passing cases, no cryptographic imports or runtime execution. Covers frontend,
+31 passing cases, no cryptographic imports or runtime execution. Covers frontend,
 M8 docs, mixed/core/unknown paths, root dependencies, schema/contract paths, pure
 trigger edits versus runtime/security changes, workflow addition/deletion, manual
 events, PR merge-base, complete feature branch, regular push, 500+ files, deleted
 core paths, missing revisions, exact scope wiring in all six workflows, and the
-authorized metadata migration plus arbitrary/partial/policy/runtime/core edits.
+authorized metadata migrations plus arbitrary/partial/policy/runtime/core edits.
+M7 recognition additionally requires its two exact old/new hashes and exact M5
+source hashes: either the complete authorized M5 migration or already-migrated,
+unchanged M5 bytes for a follow-up push. Wrong baselines, later edits and rollback
+remain core. The M7 reproduction workflow is unchanged and remains active.
 
 Before publishing, classify the complete actual PR diff and a synthetic new-branch
 event using the committed HEAD, plus the follow-up push from the previous HEAD.

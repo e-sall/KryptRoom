@@ -70,6 +70,18 @@ MIGRATION_WORKFLOW = ".github/workflows/private-nn.yml"
 MIGRATION_OLD_WORKFLOW = "d66c581c73dbe1953f73fc573d9377da3e792b350bc0f516475e57fef5ff5449"
 MIGRATION_NEW_WORKFLOW = "490a46ad8295011b53f9399fc09de26b3f039d4a0c19958e7ef52951eee39c66"
 
+# One downstream synthetic-vector refresh, not historical proof/chain evidence.
+M7_MIGRATION_FILES = {
+    "tests/chain_anchor/fixtures/state-proof.json": (
+        "55ec723b51ea52defa59688a180da6feea07e4815161cd673401ac62ba7304d4",
+        "425fbe7b5424b7bcb6737f18853c44ed1d014afa009faa37db101a0c4bd2e5d1",
+    ),
+    "tests/chain_anchor/fixtures/vectors.json": (
+        "95fa998eb32fb4ee7edced2daa865162fae9b839d7812039fcd8289957ac77b8",
+        "a4bde7cf4c96d05fd92f3f84b05f3d99da0591c25abff93fe9d77d0242b31039",
+    ),
+}
+
 
 def content_hash(text):
     return hashlib.sha256(text.encode("utf-8")).hexdigest() if text is not None else None
@@ -90,12 +102,35 @@ def exact_fixture_migration(paths, read_before, read_after):
     after = content_hash(read_after(MIGRATION_WORKFLOW))
     return before in {MIGRATION_OLD_WORKFLOW, MIGRATION_NEW_WORKFLOW} and after == MIGRATION_NEW_WORKFLOW
 
+def exact_m7_fixture_migration(paths, read_before, read_after):
+    if set(paths) & set(M7_MIGRATION_FILES) != set(M7_MIGRATION_FILES):
+        return False
+    for path, (old, new) in M7_MIGRATION_FILES.items():
+        if content_hash(read_before(path)) != old or content_hash(read_after(path)) != new:
+            return False
+    # Full PR: the complete, previously authorized M5 migration must match.
+    if set(paths) & set(MIGRATION_FILES):
+        return exact_fixture_migration(paths, read_before, read_after)
+    # Follow-up push: all M5 files must already be the exact migrated bytes.
+    for path, (_, expected) in MIGRATION_FILES.items():
+        if content_hash(read_before(path)) != expected or content_hash(read_after(path)) != expected:
+            return False
+    for path, expected in MIGRATION_S1.items():
+        if content_hash(read_before(path)) != expected or content_hash(read_after(path)) != expected:
+            return False
+    return all(content_hash(read(MIGRATION_WORKFLOW)) == MIGRATION_NEW_WORKFLOW
+               for read in (read_before, read_after))
+
+
 def requires_core(paths, read_before, read_after):
     if not paths:
         return True
     migration = exact_fixture_migration(paths, read_before, read_after)
+    m7_migration = exact_m7_fixture_migration(paths, read_before, read_after)
     for path in paths:
         if migration and path in MIGRATION_FILES:
+            continue
+        if m7_migration and path in M7_MIGRATION_FILES:
             continue
         if path.startswith(("apps/web/", "docs/m8/")) or path in DOCS | FILTER_FILES:
             continue

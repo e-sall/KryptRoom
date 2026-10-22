@@ -193,3 +193,13 @@ execution. Six integration jobs retain every original step behind a shared scope
 condition. Security/contract jobs still run. Existing manual execution and branch
 events remain. No live-chain workflow was touched or dispatched. See
 [CI-SCOPE.md](CI-SCOPE.md) for algorithm, test cases, protection inspection and limits.
+
+### Authorized downstream fixture maintenance
+
+The exact M5 metadata migration exposed M7's dependent golden vectors.
+The separately authorized [two-file M7 correction](M7-FIXTURE-MIGRATION.md)
+restores deterministic reproduction without changing generators or assertions.
+Its [exhaustive inventory](M7-FIXTURE-HASHES.json) preserves old/new values.
+This establishes Layer B metadata consistency only, not a new Layer C Groth16
+proof or blockchain acceptance. Historical proof/anchor evidence remains intact.
+See PR #15 for final-head CI conclusions; leave the PR open for human review.

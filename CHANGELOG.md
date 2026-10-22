@@ -6,6 +6,8 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Added
 
+- PR #15 separately authorized M7 downstream synthetic-vector refresh: only state-proof.json and vectors.json, unchanged original generator, ten derived JSON leaves, exact old/new hash classification tied to the approved M5 migration. Historical proof/chain acceptance remains untouched; Layer B consistency is not new Layer C proof validity. See `docs/m8/pr2/M7-FIXTURE-MIGRATION.md`.
+
 - PR #15 owner-authorized M5 synthetic metadata maintenance: regenerate exactly six golden fixture files with the unchanged generator after the approved CI workflowHash update; pin exact before/after bytes in CI scope recognition with negative tests. S1, codeHash, policies, CryptoContexts, proof semantics and historical proof provenance remain unchanged. No new Groth16 validation; see `docs/m8/pr2/M5-FIXTURE-MIGRATION.md`.
 
 - Owner-authorized M8 CI scoping: retain security/contract checks, skip heavy M2/M2.5/M3/M4/M6 and Groth16 acceptance jobs for frontend/M8-docs-only changes, preserve core execution and manual events. Add synthetic scope regression tests; no cryptographic job steps or runtime settings changed. See `docs/m8/pr2/CI-SCOPE.md`.

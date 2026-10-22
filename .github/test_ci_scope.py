@@ -8,7 +8,7 @@ import unittest
 
 from ci_scope import (
     CONDITION, GATE, MIGRATION_FILES, MIGRATION_S1, MIGRATION_WORKFLOW,
-    classify_event, requires_core, workflow_execution,
+    M7_MIGRATION_FILES, classify_event, requires_core, workflow_execution,
 )
 
 
@@ -262,6 +262,121 @@ class ExactMigrationTests(unittest.TestCase):
                         self.assertEqual(value, change[label])
             count += len(entry["changedLeaves"])
         self.assertEqual(count, 35)
+        for path, expected in evidence["unchangedSourceAndHistoricalReportsLfSha256"].items():
+            raw = (self.root / path).read_bytes().replace(b"\r\n", b"\n")
+            self.assertEqual(hashlib.sha256(raw).hexdigest(), expected, path)
+
+
+class ExactM7MigrationTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.root = Path(__file__).resolve().parents[1]
+        cls.paths = set(MIGRATION_FILES) | set(MIGRATION_S1) | set(M7_MIGRATION_FILES) | {MIGRATION_WORKFLOW}
+        cls.before = cls.snapshot("7a0b261599cae121a08f1d13e260724056455b4f")
+        cls.pr_before = cls.snapshot("acf5f262b03d6c0db3ff36b413f330b61f1181d2")
+        cls.after = {p: (cls.root / p).read_bytes().decode().replace("\r\n", "\n") for p in cls.paths}
+
+    @classmethod
+    def snapshot(cls, revision):
+        return {p: subprocess.check_output(["git", "show", revision + ":" + p],
+                                          cwd=cls.root).decode() for p in cls.paths}
+
+    def decision(self, paths=None, before=None, after=None):
+        return requires_core(list(M7_MIGRATION_FILES) if paths is None else paths,
+                             (self.before if before is None else before).get,
+                             (self.after if after is None else after).get)
+
+    def test_exact_followup_and_complete_pr(self):
+        self.assertFalse(self.decision())
+        self.assertFalse(self.decision(
+            list(M7_MIGRATION_FILES) + list(MIGRATION_FILES) + [MIGRATION_WORKFLOW,
+                "apps/web/src/page.tsx", "docs/m8/pr2/M7-FIXTURE-MIGRATION.md"],
+            before=self.pr_before))
+
+    def test_arbitrary_partial_deleted_or_wrong_old_m7_bytes_require_core(self):
+        for path in M7_MIGRATION_FILES:
+            with self.subTest(path=path):
+                self.assertTrue(self.decision(after={**self.after, path: self.after[path] + " "}))
+                self.assertTrue(self.decision(before={**self.before, path: self.before[path] + " "}))
+                self.assertTrue(self.decision(after={**self.after, path: None}))
+                self.assertTrue(self.decision(paths=[p for p in M7_MIGRATION_FILES if p != path]))
+
+    def test_m5_migration_required_exactly_not_mixed_or_partial(self):
+        for path in MIGRATION_FILES:
+            with self.subTest(path=path):
+                self.assertTrue(self.decision(after={**self.after, path: self.after[path] + " "}))
+                self.assertTrue(self.decision(before={**self.before, path: self.pr_before[path]}))
+                self.assertTrue(self.decision(before=self.pr_before))
+                paths = list(M7_MIGRATION_FILES) + [p for p in MIGRATION_FILES if p != path]
+                self.assertTrue(self.decision(paths=paths, before=self.pr_before))
+
+    def test_policy_context_s1_and_runtime_changes_require_core(self):
+        for path in MIGRATION_S1:
+            self.assertTrue(self.decision(after={**self.after, path: self.after[path] + " "}))
+        path = "tests/state_proof/fixtures/S4_eval.json"
+        for field in ("policy", "cryptoContext"):
+            value = json.loads(self.after[path])
+            self.assertIn(field, value)
+            value[field] = {"changed": True}
+            self.assertTrue(self.decision(after={**self.after, path: json.dumps(value)}))
+        self.assertTrue(self.decision(after={**self.after, MIGRATION_WORKFLOW:
+            self.after[MIGRATION_WORKFLOW].replace("node-version: 22", "node-version: 24")}))
+
+    def test_extra_crypto_file_generators_assertions_contract_dependencies_require_core(self):
+        for path in [
+            "tests/chain_anchor/fixtures/extra.json", "tests/state_proof/fixtures/extra.json",
+            "tests/chain_anchor/generate_vectors.py", "tests/chain_anchor/vector_builder.py",
+            "tests/state_proof/generate_fixture.py", "tests/chain_anchor/test_anchor.py",
+            "engines/chain_anchor/commitment.py", "engines/zk/proof_receipt.py",
+            "engines/zk/state-transition-proof/shared/src/lib.rs",
+            "chain/contracts/src/KryptRoomAnchorV1.sol", "packages/manifests/state-proof.schema.json",
+            "tests/chain_anchor/requirements.txt", "package-lock.json",
+        ]:
+            with self.subTest(path=path):
+                self.assertTrue(self.decision(paths=list(M7_MIGRATION_FILES) + [path]))
+                self.assertTrue(self.decision(paths=list(M7_MIGRATION_FILES) + list(MIGRATION_FILES)
+                                             + [path], before=self.pr_before))
+
+    def test_other_runtime_workflow_change_requires_core(self):
+        path = ".github/workflows/public-chain-anchor.yml"
+        self.assertTrue(self.decision(paths=list(M7_MIGRATION_FILES) + [path],
+            before={**self.before, path: OLD}, after={**self.after, path: OLD.replace(
+                "real-core-command", "changed-runtime-command")}))
+
+    def test_rollback_and_future_fixture_refresh_require_core(self):
+        self.assertTrue(self.decision(before=self.after, after=self.before))
+        self.assertTrue(self.decision(before=self.after))
+
+    def test_exhaustive_inventory_and_frozen_sources(self):
+        evidence = json.loads((self.root / "docs/m8/pr2/M7-FIXTURE-HASHES.json").read_text())
+        self.assertFalse(evidence["newGroth16Proof"])
+        self.assertFalse(evidence["newBlockchainCommitment"])
+        count = 0
+        for name, record in evidence["fixtures"].items():
+            path = "tests/chain_anchor/fixtures/" + name
+            old, new = self.before[path], self.after[path]
+            self.assertEqual(record["beforeSha256"], hashlib.sha256(old.encode()).hexdigest())
+            self.assertEqual(record["afterSha256"], hashlib.sha256(new.encode()).hexdigest())
+            changes = []
+            def walk(a, b, pointer=""):
+                self.assertEqual(type(a), type(b))
+                if isinstance(a, dict):
+                    self.assertEqual(a.keys(), b.keys())
+                    for key in a:
+                        walk(a[key], b[key], pointer + "/" + key)
+                elif a != b:
+                    changes.append({"pointer": pointer, "before": a, "after": b})
+            walk(json.loads(old), json.loads(new))
+            self.assertEqual(changes, record["changedLeaves"])
+            count += len(changes)
+        self.assertEqual(count, 10)
+        old = json.loads(self.before["tests/chain_anchor/fixtures/state-proof.json"])
+        new = json.loads(self.after["tests/chain_anchor/fixtures/state-proof.json"])
+        for field in ("programVKey", "elfSha256", "createdAt", "proofSystem", "proofSystemVersion",
+                      "programVersion", "roomId", "transitionId", "outputStateId"):
+            self.assertEqual(old[field], new[field])
+        for field in ("sha256", "sizeBytes", "mediaType"):
+            self.assertEqual(old["proofArtifact"][field], new["proofArtifact"][field])
         for path, expected in evidence["unchangedSourceAndHistoricalReportsLfSha256"].items():
             raw = (self.root / path).read_bytes().replace(b"\r\n", b"\n")
             self.assertEqual(hashlib.sha256(raw).hexdigest(), expected, path)

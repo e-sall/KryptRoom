@@ -1,9 +1,16 @@
-# KryptRoom web — M8 PR1
+# KryptRoom web — M8 PR1 / PR2
 
 Next.js App Router, React, TypeScript and Tailwind foundation. **No workspace API,
 authentication, participant data, cryptographic execution or chain integration.**
 Every business module explicitly displays an unavailable state. The component
 gallery is an interface example, not a simulated service.
+
+PR2 adds `/preview/rooms` and `/preview/rooms/new`: explicitly synthetic
+Rooms discovery and progressive setup. All data is fixed example metadata;
+fields/view state live only in React memory. `/app/rooms/new` remains unavailable.
+No invitation, connection, Room creation or policy write can occur, including
+when every example field is complete. Workspace navigation stops at a PR3
+unavailable page; no graph editor, computation, proof or result is implemented.
 
 ## Run locally
 
@@ -44,6 +51,8 @@ These generated directories and all `.env*` files are ignored.
 - `src/app/app/[module]`: unavailable modules, ready for PR2–5 route-specific views.
 - `src/app/[section]`: unavailable marketing/demo sections for PR6.
 - `src/components/design-system-preview.tsx`: local presentation state only.
+- `src/features/rooms`: isolated preview view models, context, components and CSS.
+- `src/app/preview/rooms`: preview-only routes; never a production API fallback.
 
 The app has its own exact-version package lock. Root PSI dependencies and core
 workflows are unchanged. No shadcn generator, chart library, React Flow, global
@@ -57,3 +66,4 @@ by the PR1 badge API.
 
 See [the implementation evidence](../../docs/m8/pr1/README.md) for source
 provenance, deviations, executed checks and limitations.
+See [PR2 evidence](../../docs/m8/pr2/README.md) for Rooms/Easy Setup and screenshots.

@@ -23,6 +23,19 @@ permissions:
   contents: read
 
 jobs:
+  change-scope:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      core: ${{ steps.scope.outputs.core }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - id: scope
+        run: python3 .github/ci_scope.py
+
   policy:
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -35,6 +48,8 @@ jobs:
       - run: npm test
 
   cryptographic-integration:
+    needs: change-scope
+    if: ${{ needs.change-scope.outputs.core == 'true' }}
     name: M2.5 persistent-state cryptographic integration
     runs-on: ubuntu-latest
     timeout-minutes: 40

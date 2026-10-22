@@ -13,6 +13,16 @@ explicitly unavailable; example component states are isolated in `/design-system
 No production Control Plane, authentication or API is implied. See
 [`docs/m8/pr1/README.md`](docs/m8/pr1/README.md) for the frontend boundary and evidence.
 
+PR2 extends presentation only. `/preview/rooms` owns a separate React context for
+synthetic P03 Room summaries and P06 setup drafts. The provider survives preview
+route changes, but has no browser storage, API adapter, server action or core
+import. Production `/app` routes cannot read this provider or fixture collection.
+The shared shell accepts optional page-header and inspector content; its original
+defaults remain intact. The Room mini-history is an accessible, read-only P03
+fixture diagram, not the PR3 graph editor and not canonical runtime lineage.
+Readiness always denies execution. Local field validation is not authorization.
+See `docs/m8/pr2/README.md` for exact scope, tests and backend gaps.
+
 The Control Plane and signed metadata in this target diagram are planned. Neither participates in the current demos; only participant runtimes and their local storage are implemented.
 
 ```text

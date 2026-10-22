@@ -65,7 +65,22 @@ env:
   SP1_WORKER_RECURSION_PROVER_BUFFER_SIZE: 1
 
 jobs:
+  change-scope:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      core: ${{ steps.scope.outputs.core }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - id: scope
+        run: python3 .github/ci_scope.py
+
   real-sp1-groth16-proof:
+    needs: change-scope
+    if: ${{ needs.change-scope.outputs.core == 'true' }}
     runs-on: ${{ vars.KRYPTROOM_M5_RUNNER || 'ubuntu-24.04' }}
     timeout-minutes: 90
     steps:

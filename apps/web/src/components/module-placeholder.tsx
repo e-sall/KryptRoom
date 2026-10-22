@@ -1,4 +1,4 @@
-import { Badge, Button, Card, StatusView } from "./ui";
+import { Badge, Button, ButtonLink, Card, StatusView } from "./ui";
 import { Icon } from "./icon";
 import type { Module } from "@/lib/navigation";
 
@@ -56,6 +56,11 @@ export function ModulePlaceholder({ module }: { module: Module }) {
           computation is started here.
         </p>
       </div>
+      {rooms && (
+        <ButtonLink href="/preview/rooms">
+          Explore synthetic Rooms preview
+        </ButtonLink>
+      )}
     </>
   );
 }

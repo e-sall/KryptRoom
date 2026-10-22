@@ -1,0 +1,79 @@
+{
+  "baselineCommit": "7a0b261599cae121a08f1d13e260724056455b4f",
+  "hashEncoding": "SHA-256 of Git blob bytes (LF), not CRLF working-tree conversions",
+  "newGroth16Proof": false,
+  "newBlockchainCommitment": false,
+  "fixtures": {
+    "state-proof.json": {
+      "beforeSha256": "55ec723b51ea52defa59688a180da6feea07e4815161cd673401ac62ba7304d4",
+      "afterSha256": "425fbe7b5424b7bcb6737f18853c44ed1d014afa009faa37db101a0c4bd2e5d1",
+      "changedLeaves": [
+        {
+          "pointer": "/outputStateCommitment",
+          "before": "4783c68ffbae1b11475a009ccd421b15045287929143d0f975cb1842933d7a62",
+          "after": "bf73e16f59a924dcf4fff4c8bef8d32d656a2a80cdfbb153c2b61b3776338af1"
+        },
+        {
+          "pointer": "/proofArtifact/uri",
+          "before": "proofs/rooms/cancer-collaboration-room/transitions/private-model-evaluation-to-S4/stateproof-b26ee61e127525ad573e889e8ea664da/proof.bin",
+          "after": "proofs/rooms/cancer-collaboration-room/transitions/private-model-evaluation-to-S4/stateproof-3a07048632c0913814aec7ad5282f014/proof.bin"
+        },
+        {
+          "pointer": "/proofId",
+          "before": "stateproof-b26ee61e127525ad573e889e8ea664da",
+          "after": "stateproof-3a07048632c0913814aec7ad5282f014"
+        },
+        {
+          "pointer": "/publicValuesSha256",
+          "before": "f3a01116979ac92283e09da5c1eca9b3a4c17d2f11f14cb900ddbb9d6c050de1",
+          "after": "5556d8d8c9747f98f68d951dc38ed27a4c56c90b4dddcc8f622c02d5ae511ac4"
+        },
+        {
+          "pointer": "/receiptHash",
+          "before": "efb5f78f465add31f5161213b21eda4a271a52c7bc2f063709355ce6cc02e1d8",
+          "after": "5daeb33b95705d41fc3f82370822b1902f81581b881b1ee86d6755b9259a1b24"
+        },
+        {
+          "pointer": "/transitionCommitment",
+          "before": "1283c79f6f9cd06e7f538bb7d9ed33594d0bd319988848bd93723a24b702f68f",
+          "after": "647a0cdaeaf208cc81cbc78f626c336681e2095b96d27ece9a488d39e0597543"
+        }
+      ]
+    },
+    "vectors.json": {
+      "beforeSha256": "95fa998eb32fb4ee7edced2daa865162fae9b839d7812039fcd8289957ac77b8",
+      "afterSha256": "a4bde7cf4c96d05fd92f3f84b05f3d99da0591c25abff93fe9d77d0242b31039",
+      "changedLeaves": [
+        {
+          "pointer": "/stateOnlyAnchorCommitment",
+          "before": "0xbeb356e0fb84d976fea8d349f10d6aec168811e1ffc92fbea8b2ee4a04eb62d9",
+          "after": "0x4333ef919d4131fc15079dd6cf8c25ac89c5466ca7fc9ff573365682a21b305e"
+        },
+        {
+          "pointer": "/stateProofAnchorCommitment",
+          "before": "0x5141aa2f8e8903860db82dd06e6b9a6edf2a2b4ac170a9f7ba08c1a183b6b7a6",
+          "after": "0x8110535dfa5b78e549e395cfcb590b89824a7ec7a3f2905f710110fbf4b73444"
+        },
+        {
+          "pointer": "/stateProofDocumentCommitment",
+          "before": "c2f9b2538e52d8bcf5cd77862fac7366c4b19bdfb21a9a79df60b2dca7fbca5e",
+          "after": "15e33b991d992442f8ecb2c05ef26f8e592dcbc493affd983c3bdecc4e41447c"
+        },
+        {
+          "pointer": "/subjectCommitment",
+          "before": "4783c68ffbae1b11475a009ccd421b15045287929143d0f975cb1842933d7a62",
+          "after": "bf73e16f59a924dcf4fff4c8bef8d32d656a2a80cdfbb153c2b61b3776338af1"
+        }
+      ]
+    }
+  },
+  "unchangedSourceAndHistoricalReportsLfSha256": {
+    "tests/chain_anchor/generate_vectors.py": "61f0aadc3e8e995cb4ce8536d4a7780eb5af3c539aec86306b6ff069cae7078f",
+    "tests/chain_anchor/vector_builder.py": "7e2c1e552578615a4fe2ca446f8697f546db2f1453422f3d9905afdecc7a4fc1",
+    "tests/chain_anchor/test_anchor.py": "983a2032833154de231f51fce1587ef12b4ac6eb262b1b362c24c80968562b9e",
+    "tests/state_proof/generate_fixture.py": "356f316ce683955a757cb9add48fd1d435284111a7845e7439ef38d2f011a836",
+    "docs/STATE_PROOF.md": "96fcf3964727e4c86a46b9c7122e174260a2c68d338aad081280a8a70e3a3989",
+    "docs/M5_VALIDATION.md": "b5a171272fe4b05eeff2b360934a2596b4dcba81d9ab30298b86224b6aa4d914",
+    "docs/PUBLIC_CHAIN_ANCHOR.md": "94f1feac93f156aa2c3ee7afae873092889084c98c09e079c5fd429bc83b8e83"
+  }
+}

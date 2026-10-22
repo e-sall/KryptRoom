@@ -6,6 +6,14 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Added
 
+- PR #15 separately authorized M7 downstream synthetic-vector refresh: only state-proof.json and vectors.json, unchanged original generator, ten derived JSON leaves, exact old/new hash classification tied to the approved M5 migration. Historical proof/chain acceptance remains untouched; Layer B consistency is not new Layer C proof validity. See `docs/m8/pr2/M7-FIXTURE-MIGRATION.md`.
+
+- PR #15 owner-authorized M5 synthetic metadata maintenance: regenerate exactly six golden fixture files with the unchanged generator after the approved CI workflowHash update; pin exact before/after bytes in CI scope recognition with negative tests. S1, codeHash, policies, CryptoContexts, proof semantics and historical proof provenance remain unchanged. No new Groth16 validation; see `docs/m8/pr2/M5-FIXTURE-MIGRATION.md`.
+
+- Owner-authorized M8 CI scoping: retain security/contract checks, skip heavy M2/M2.5/M3/M4/M6 and Groth16 acceptance jobs for frontend/M8-docs-only changes, preserve core execution and manual events. Add synthetic scope regression tests; no cryptographic job steps or runtime settings changed. See `docs/m8/pr2/CI-SCOPE.md`.
+
+- M8 PR2 isolated Rooms Home and Easy Setup preview: P03 List/Cards, search/status filters, expansion, selected-room details/mini-history and scoped navigation; P06 four-step ephemeral form, explicit unavailable service actions and always-denied readiness. Reuses PR1 identity/tokens/shell. No backend, persistence, crypto or chain implementation added. Evidence and limitations: `docs/m8/pr2/README.md`.
+
 - PR #14 final follow-up: canonical thin P11 K identity consistent with corrected P05/P06, gray branch tokens, logo/runtime-dependency regression checks and bounded lint-tooling exception M8-SEC-001 (reevaluate before PR7 or 2026-11-21, whichever is earlier). No core or dependency-version change.
 
 - M8 PR1 design-system and responsive app-shell foundation in `apps/web`, with the supplied M8 palette/identity, honest unavailable routes, component gallery, keyboard-safe dialogs and isolated frontend CI. No core cryptographic implementation, backend, proof or chain behavior changed. Local component/browser evidence and visual-reference limitations are recorded in `docs/m8/pr1/README.md`.

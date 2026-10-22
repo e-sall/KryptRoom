@@ -6,6 +6,8 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Added
 
+- Owner-authorized M8 CI scoping: retain security/contract checks, skip heavy M2/M2.5/M3/M4/M6 and Groth16 acceptance jobs for frontend/M8-docs-only changes, preserve core execution and manual events. Add synthetic scope regression tests; no cryptographic job steps or runtime settings changed. See `docs/m8/pr2/CI-SCOPE.md`.
+
 - M8 PR2 isolated Rooms Home and Easy Setup preview: P03 List/Cards, search/status filters, expansion, selected-room details/mini-history and scoped navigation; P06 four-step ephemeral form, explicit unavailable service actions and always-denied readiness. Reuses PR1 identity/tokens/shell. No backend, persistence, crypto or chain implementation added. Evidence and limitations: `docs/m8/pr2/README.md`.
 
 - PR #14 final follow-up: canonical thin P11 K identity consistent with corrected P05/P06, gray branch tokens, logo/runtime-dependency regression checks and bounded lint-tooling exception M8-SEC-001 (reevaluate before PR7 or 2026-11-21, whichever is earlier). No core or dependency-version change.

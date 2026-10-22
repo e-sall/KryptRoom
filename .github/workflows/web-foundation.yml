@@ -3,10 +3,10 @@ name: M8 Web Foundation
 on:
   pull_request:
     branches: [dev, main]
-    paths: ['apps/web/**', '.github/workflows/web-foundation.yml']
+    paths: ['apps/web/**', 'docs/m8/**', 'ARCHITECTURE.md', 'PROJECT_CONTEXT.md', 'CHANGELOG.md', 'TODO.md', 'docs/DECISIONS.md', '.github/workflows/**', '.github/ci_scope.py', '.github/test_ci_scope.py']
   push:
     branches: [dev, main]
-    paths: ['apps/web/**', '.github/workflows/web-foundation.yml']
+    paths: ['apps/web/**', 'docs/m8/**', 'ARCHITECTURE.md', 'PROJECT_CONTEXT.md', 'CHANGELOG.md', 'TODO.md', 'docs/DECISIONS.md', '.github/workflows/**', '.github/ci_scope.py', '.github/test_ci_scope.py']
   workflow_dispatch:
 
 concurrency:
@@ -37,6 +37,8 @@ jobs:
           cache-dependency-path: apps/web/package-lock.json
       - name: Verify pinned package manager
         run: test "$(npm --version)" = "10.9.4"
+      - name: Verify frontend/core CI scope decisions
+        run: python3 -m unittest discover -s ../../.github -p 'test_ci_scope.py' -v
       - run: npm ci
       - run: npm run lint
       - run: npm test

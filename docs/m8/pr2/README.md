@@ -4,12 +4,13 @@
 
 Branch: `feat/m8-rooms-easy-setup`.
 Verified base: `acf5f262b03d6c0db3ff36b413f330b61f1181d2`, the merged PR #14.
-Fetched origin/dev and checked GitHub's merged status before editing. Publication
-is currently blocked by the CI execution boundary described below. No PR or
-final-head CI success is claimed. No automatic merge; main unchanged.
+Fetched origin/dev and checked GitHub's merged status before editing. The owner
+authorized targeted CI scope conditions on 2026-10-22; see [CI scope](CI-SCOPE.md).
+Final-head GitHub evidence is recorded in the PR. No automatic merge; main unchanged.
 
-Only M8 PR2 presentation is implemented. No M1–M7 code, dependency pins, schema,
-runtime, protocol or security claim changes. No PR3–7 implementation. No license.
+Only M8 PR2 presentation and the explicitly authorized CI scope conditions are
+implemented. No M1–M7 code, dependency pins, schema, runtime, protocol or security
+claim changes. No PR3–7 implementation. No license.
 
 ## P03 — Rooms Home
 
@@ -183,13 +184,10 @@ Local PR2 implementation is ready for technical/design/security review, not a
 production service launch. Human acceptance of documented visual adaptations,
 tooling debt and final-head CI is required. Leave the PR open; do not merge main.
 
-### Publication blocker: explicit no-cryptographic-execution boundary
+### CI scope authorization
 
-The existing `private-join.yml` runs its real SPU cryptographic-integration job on
-pushes to `feat/**`, without frontend path exclusions. Other existing PR workflows
-also execute cryptographic regressions. Publishing this feature branch would
-therefore violate the mission's prohibition on launching cryptographic computation.
-No workflow was disabled, changed or bypassed and no branch was pushed. Requested
-owner direction: authorize narrow frontend-only CI scoping, or explicitly authorize
-the existing cryptographic CI regressions. Until resolved, PR creation and final-head
-GitHub CI verification remain incomplete; this is not a merge-ready verdict.
+The owner selected targeted frontend CI scoping rather than heavy cryptographic
+execution. Six integration jobs retain every original step behind a shared scope
+condition. Security/contract jobs still run. Existing manual execution and branch
+events remain. No live-chain workflow was touched or dispatched. See
+[CI-SCOPE.md](CI-SCOPE.md) for algorithm, test cases, protection inspection and limits.

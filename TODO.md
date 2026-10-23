@@ -145,6 +145,7 @@ and run 39381943437 contains the authoritative public evidence package.
 - [x] Preserve Room identity, immutable ordered parent references and exact-state Graph navigation.
 - [x] Exercise frontend regression, keyboard, responsive, system-state and privacy tests.
 - [x] Record source conversions, application captures and explicit HTML adaptations in ADR-019/report.
+- [x] Address PR #17 narrow Analytics label spacing with a failing-then-passing browser regression, four-width visual evidence and unchanged chart/table values.
 - [ ] Independent PR4 review and final-head CI disposition; **do not automatically merge**.
 - [ ] Authenticated services and real disclosure remain separately scoped future work.
 - [ ] M8-SEC-001 reevaluation before PR7 or 2026-11-21, whichever is earlier; no renewal.

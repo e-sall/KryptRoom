@@ -110,7 +110,8 @@ Necessary adaptations:
   vertical space. The inspector covers all requested authority boundaries.
 - Desktop sidebar/right inspector; tablet compact rail/below-content inspector;
   mobile stacked categories/inputs and bottom sheet, not scaled desktop controls.
-- Mobile chart labels are larger; accessible SVG title/description and a semantic
+- Chart categories use two lines (Cohort / A–D), retaining larger mobile text;
+  accessible SVG title/description and a semantic
   table provide alternate reading. At 320px the page remains within its viewport.
 - Phase emphasis lasts 280ms and is removed under reduced motion. Phase selection
   remains visible without motion. Keyboard tabs support Left/Right/Home/End.
@@ -152,8 +153,8 @@ captures above are committed; they contain only the synthetic interface.
 - Existing M5 Python: 13 PASS; existing M7 Python: 45 PASS in `.venv-m7`.
   The default host Python initially lacked `cryptography`; using the existing
   project environment resolved the import failure without installing packages.
-- Production Chromium PR1–PR4: **52 PASS, 2 inherited non-mobile sheet cases
-  intentionally skipped** (54 total); all 12 new PR4 cases PASS. Desktop
+- Production Chromium PR1–PR4 after the review follow-up: **55 PASS, 2 inherited
+  non-mobile sheet cases intentionally skipped** (57 total); all 15 PR4 cases PASS. Desktop
   1440×1000, tablet 834×1112, mobile 390×844, narrow checks 320×740.
   Coverage includes keyboard/focus return, sheets, reduced motion, all five
   system states, exact-state navigation, immutable source state, storage empty,
@@ -177,6 +178,39 @@ A development-server-generated AGENTS file was removed from the PR scope after
 reading its local Next guidance; no pre-existing instruction file was removed.
 
 ## Privacy, cryptographic controls and acceptance
+
+### PR #17 targeted visual review follow-up — 2026-10-23
+
+The mobile `.analytics-chart text { font-size: 26px; }` rule made single-line
+category labels too close when the 520-unit SVG scaled down. The new browser
+regression test failed against the original production build at 320px: the
+first adjacent category clearance was only **4.9586 CSS px**, below the explicit
+8px minimum. This was a spacing/readability defect, not a changed sample value.
+
+The bounded correction uses two SVG `tspan` lines per category (Cohort / A–D)
+and extends the viewBox height from 240 to 270 to avoid clipping the second line.
+Bar coordinates, axis coordinates, values, colors, type sizes and Design System
+are unchanged. The shared fixed values remain A=42, B=68, C=55, D=81. SVG title,
+description, accessible naming and the semantic Table alternative remain intact.
+
+The added Playwright case runs at **320, 390, 834 and 1440px** in all three
+browser projects. After fonts load, it checks actual rendered text rectangles:
+at least 8px between adjacent category boxes, no pairwise category/value/axis
+collision, and no text outside the SVG. It also checks page overflow, all four
+category names, exact chart/table parity and the SVG title/description. The
+existing network/page-error guards cover this case too. The original version
+fails this test and the corrected version passes; no assertion was relaxed.
+
+Lint, typecheck, production build (50 pages), 67 unit tests and the full browser
+suite were rerun. Chromium/Axe coverage remains bounded, not a claim of all-browser
+or full WCAG certification. Remote checks for the new HEAD are recorded in the PR.
+Affected Analytics full-page/viewport captures have been refreshed, including
+`app-result-320.png`. Focused chart captures: [320px](app-chart-320.png),
+[390px](app-chart-390.png), [tablet](app-chart-834.png), [desktop](app-chart-1440.png).
+Only the chart markup, browser test and M8 evidence/documentation were changed;
+CSS, dependencies, CI, M1–M7, cryptographic fixtures and backend boundaries were not.
+
+### Unchanged boundaries
 
 Diff checks against the base must show no M1–M7 code, contracts, fixtures,
 generators, workflows, CI classifier, dependencies or runtime security changes.

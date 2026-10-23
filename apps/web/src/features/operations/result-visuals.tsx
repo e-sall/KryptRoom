@@ -26,14 +26,15 @@ export function JoinResult({ stateLabel }: { stateLabel: string }) {
 }
 export function AnalyticsChart() {
   const id = useId();
-  return <figure className="analytics-chart"><svg viewBox="0 0 520 240" role="img" aria-labelledby={`${id}-title ${id}-desc`}>
+  return <figure className="analytics-chart"><svg viewBox="0 0 520 270" role="img" aria-labelledby={`${id}-title ${id}-desc`}>
     <title id={`${id}-title`}>Illustrative aggregate units by cohort</title>
     <desc id={`${id}-desc`}>Fixed samples: Cohort A 42, B 68, C 55, D 81. Not computed from private data. The table view contains exactly these values.</desc>
     {[0, 50, 100].map((v) => <g key={v}><path className="chart-grid" d={`M40 ${200 - v * 1.7} H510`} /><text className="chart-axis" x="38" y={204 - v * 1.7} textAnchor="end">{v}</text></g>)}
     {sampleAggregates.map((bar, i) => <g key={bar.cohort}><rect className={i === 3 ? "chart-bar emphasized" : "chart-bar"}
       x={65 + i * 114} y={200 - bar.value * 1.7} width="62" height={bar.value * 1.7} rx="5" />
       <text x={96 + i * 114} y={190 - bar.value * 1.7} textAnchor="middle">{bar.value}</text>
-      <text x={96 + i * 114} y="225" textAnchor="middle">Cohort {bar.cohort}</text></g>)}
+      <text x={96 + i * 114} y="225" textAnchor="middle"><tspan>Cohort </tspan>
+        <tspan x={96 + i * 114} dy="1.15em">{bar.cohort}</tspan></text></g>)}
   </svg><figcaption>Fixed synthetic units · no underlying records. Chart and table use the same four values.</figcaption></figure>;
 }
 export function AnalyticsTable() {

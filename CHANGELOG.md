@@ -6,6 +6,8 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Added
 
+- PR #17 visual review follow-up: split Analytics cohort labels into two SVG lines with sufficient viewBox height, preserve all four chart/table values, add rendered-box collision/clipping/overflow checks at 320/390/834/1440px and refresh visual evidence. No Design System, CI, dependency, backend or M1–M7 change.
+
 - M8 PR4 synthetic Computations & Results: P07 three-phase Clean explanation with ordered multi-parent selections and fail-closed Readiness/Review; P08 Premium V3 separate PSI/Join/Analytics views, fixed-value chart/table, progressive details and exact-state Graph navigation. Responsive inspector and browser/privacy coverage reuse PR1–PR3. Correct a pre-existing multi-child SVG title hydration mismatch in Room mini-history. No backend, dependency, CI or M1–M7 change. See `docs/m8/pr4/README.md`.
 
 - M8 PR3 interactive synthetic Graph Workspace: ordered multi-parent DAG, Classic/Detailed/Focus, pointer/touch pan, zoom/fit, keyboard navigation, accessible state list and responsive inspector. Based on verified PR #15 merge `a88df46`; production Graph stays unavailable. No M1–M7, dependency or CI routing change. See `docs/m8/pr3/README.md`.

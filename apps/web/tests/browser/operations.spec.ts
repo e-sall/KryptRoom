@@ -32,6 +32,50 @@ test.afterEach(async ({ page }) => {
   // Check every complete journey before the browser fixture closes.
   expect(journeyProblems.get(page)).toEqual([]);
 });
+test("P08 chart label clearance at 320 390 tablet and desktop", async ({ page }, info) => {
+  test.setTimeout(60_000);
+  for (const width of [320, 390, 834, 1440]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.goto(room + "/results/analytics");
+    await page.evaluate(() => document.fonts.ready);
+    const chart = page.getByRole("img", { name: /Illustrative aggregate units/ });
+    await expect(chart).toBeVisible();
+    await expect(chart.locator("title")).toHaveText("Illustrative aggregate units by cohort");
+    await expect(chart.locator("desc")).toContainText("The table view contains exactly these values.");
+    const geometry = await chart.evaluate((svg) => {
+      const bounds = svg.getBoundingClientRect();
+      const texts = [...svg.querySelectorAll("text")].map((text) => {
+        const box = text.getBoundingClientRect();
+        return { label: text.textContent?.trim(), left: box.left, right: box.right, top: box.top, bottom: box.bottom };
+      });
+      return { texts, left: bounds.left, right: bounds.right, top: bounds.top, bottom: bounds.bottom };
+    });
+    const categories = geometry.texts.filter((text) => text.label?.startsWith("Cohort"));
+    expect(categories.map((text) => text.label)).toEqual(["Cohort A", "Cohort B", "Cohort C", "Cohort D"]);
+    for (let i = 1; i < categories.length; i++) {
+      expect(categories[i].left - categories[i - 1].right, `${width}px category clearance`).toBeGreaterThanOrEqual(8);
+    }
+    // Actual rendered SVG boxes, not text-length estimates: catch collisions
+    // between values, categories and axes, plus clipping at the SVG boundary.
+    for (const [i, text] of geometry.texts.entries()) {
+      expect(text.left).toBeGreaterThanOrEqual(geometry.left);
+      expect(text.right).toBeLessThanOrEqual(geometry.right);
+      expect(text.top).toBeGreaterThanOrEqual(geometry.top);
+      expect(text.bottom).toBeLessThanOrEqual(geometry.bottom);
+      for (const other of geometry.texts.slice(i + 1)) {
+        expect(text.right <= other.left || other.right <= text.left || text.bottom <= other.top || other.bottom <= text.top,
+          `${width}px collision: ${text.label} / ${other.label}`).toBe(true);
+      }
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await page.locator(".analytics-chart").screenshot({ path: info.outputPath(`chart-${width}.png`) });
+    const values = await chart.locator("text").filter({ hasText: /^(42|68|55|81)$/ }).allTextContents();
+    expect(values).toEqual(["42", "68", "55", "81"]);
+    await page.getByRole("tab", { name: "Table", exact: true }).click();
+    await expect(page.getByRole("table").getByRole("cell")).toHaveText(values);
+    await expect(page.getByRole("table").getByRole("rowheader")).toHaveText(categories.map((text) => text.label!));
+  }
+});
 test("P07 complete Clean workflow and Room Graph integration", async ({ page }, info) => {
   await page.goto("/preview/rooms");
   await page.getByRole("button", { name: "Expand Supply Chain Collaboration" }).click();

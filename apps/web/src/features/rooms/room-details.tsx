@@ -19,14 +19,12 @@ export function MiniHistory({ room }: { room: ExampleRoom }) {
       <figcaption className="eyebrow">STATE HISTORY · SYNTHETIC</figcaption>
       <svg viewBox="0 0 300 160" role="img" aria-labelledby={title}>
         <title id={title}>
-          Illustrative lineage for {room.name}:{" "}
-          {room.states
+          {`Illustrative lineage for ${room.name}: ${room.states
             .map(
               (s) =>
                 `${s.id} ${s.label}, parents ${s.parent_state_ids.join(", ") || "none"}`,
             )
-            .join("; ")}
-          . Not a runtime record.
+            .join("; ")}. Not a runtime record.`}
         </title>
         {room.states.flatMap((state, index) =>
           state.parent_state_ids.map((parent) => {

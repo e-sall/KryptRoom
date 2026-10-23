@@ -1,5 +1,27 @@
 # Architectural decisions
 
+## ADR-019 — Explanatory workflows and fixed results are not computation authority
+
+**Decision:** Implement P07/P08 in isolated Room-scoped preview routes. Reuse the
+PR3 readonly state catalog and ordered parents; keep local phase/input choices
+separate from the fixed P08 values. Never insert a hypothetical node into the
+graph. Exact-state links select an existing validated Room/state pair. Shared
+presentation vocabulary is not an operation API or policy contract.
+
+**Reason:** The Workspace services remain placeholders. A complete checklist,
+animation, result page or state link must not imply actual computation, storage,
+approval or disclosure. M1–M7 capabilities do not establish frontend authority.
+
+**Consequences:** PSI cardinality and four aggregate values are fixed synthetic
+design fixtures. Join has no rows or matched identifiers. Actions remain disabled,
+proof is Not assessed, commitments and chain status are unavailable. No network,
+browser storage, key access or private runtime import. P08 historical state labels
+are reconciled explicitly with PR3 rather than silently replacing its states.
+Production Computations/Results stay unavailable. HTML controls and finite motion
+provide accessible desktop/tablet/mobile navigation without a second design system.
+No new dependency, CI exception, crypto validation or M1–M7 change.
+Evidence and limitations: `docs/m8/pr4/README.md`.
+
 ## ADR-018 — Read-only synthetic graph presentation, separate from core authority
 
 **Decision:** Implement PR3 as an isolated preview DAG with a readonly display

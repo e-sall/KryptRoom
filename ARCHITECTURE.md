@@ -32,6 +32,18 @@ No API DTO, hashing, artifact resolution or disclosure decision is implemented.
 The future server adapter must provide authorized, field-filtered metadata.
 Production Graph remains unavailable. See `docs/m8/pr3/README.md`.
 
+PR4 adds presentation-only `features/operations`: shared operation vocabulary,
+ordered input selection, a three-phase explanatory diagram and Readiness/Review
+inspector; separate PSI/Join/Analytics result routes use fixed P08 display values.
+Result context is derived from existing graph fixtures, not a second RoomState
+catalog. Exact-state graph routes validate Room/state pairs against that catalog.
+Workflow phases never create graph nodes or generate results. Selecting a sample
+result does not disclose a private output. Run/approve/save/reveal/download remain
+disabled; `/app/computations` and `/app/results` have no fixture fallback.
+The preview has no I/O, storage, authentication or definitive API DTO. Desktop,
+tablet and mobile reuse the existing shell/inspector/modal. See ADR-019 and
+`docs/m8/pr4/README.md`; no M1–M7 or CI routing change.
+
 The Control Plane and signed metadata in this target diagram are planned. Neither participates in the current demos; only participant runtimes and their local storage are implemented.
 
 ```text

@@ -63,6 +63,7 @@ export function AppShell({
   pageHeader,
   activeModule,
   graphHref,
+  previewRoomId,
 }: {
   children: ReactNode;
   inspector?: ReactNode;
@@ -71,6 +72,7 @@ export function AppShell({
   pageHeader?: ReactNode;
   activeModule?: string;
   graphHref?: string;
+  previewRoomId?: string;
 }) {
   const pathname = usePathname();
   const moduleId = activeModule ?? pathname.split("/")[2] ?? "rooms";
@@ -88,7 +90,10 @@ export function AppShell({
     <Link
       key={item.id}
       href={
-        preview && item.id === "rooms" ? "/preview/rooms" : preview && item.id === "graph" && graphHref ? graphHref : moduleHref(item.id)
+        preview && item.id === "rooms" ? "/preview/rooms"
+          : preview && previewRoomId && ["graph", "computations", "results"].includes(item.id)
+            ? `/preview/rooms/${encodeURIComponent(previewRoomId)}/${item.id === "graph" ? "workspace" : item.id}`
+            : preview && item.id === "graph" && graphHref ? graphHref : moduleHref(item.id)
       }
       className="nav-link"
       aria-current={moduleId === item.id ? "page" : undefined}

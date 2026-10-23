@@ -134,8 +134,20 @@ and run 39381943437 contains the authoritative public evidence package.
 - [x] Implement isolated graph model/layout, three modes, selection, viewport and inspector.
 - [x] Test DAG negatives, frontend regressions, keyboard, touch, responsive and privacy boundaries.
 - [x] Document converted-reference comparisons and HTML/React adaptations.
-- [ ] Independent PR3 review and final CI disposition; no automatic merge.
+- [x] PR #16 merged into dev at `2c912bcfc52d281ecdfda5798fc75e47b87fdf1e`, independently rechecked before PR4.
 - [ ] Preserve M8-SEC-001 reevaluation before PR7 or 2026-11-21.
+
+## M8 PR4 — Computations & Results
+
+- [x] Verify PR #16 merge/base, original P07/P08/P04/P11 and absent Workspace services.
+- [x] Implement Clean interactive explanatory workflow and fail-closed Readiness/Review.
+- [x] Implement separate Premium V3 PSI/Join/Analytics fixed result views and chart/table.
+- [x] Preserve Room identity, immutable ordered parent references and exact-state Graph navigation.
+- [x] Exercise frontend regression, keyboard, responsive, system-state and privacy tests.
+- [x] Record source conversions, application captures and explicit HTML adaptations in ADR-019/report.
+- [ ] Independent PR4 review and final-head CI disposition; **do not automatically merge**.
+- [ ] Authenticated services and real disclosure remain separately scoped future work.
+- [ ] M8-SEC-001 reevaluation before PR7 or 2026-11-21, whichever is earlier; no renewal.
 
 ## Explicitly deferred work (unchanged)
 
@@ -146,6 +158,6 @@ and run 39381943437 contains the authoritative public evidence package.
 - FHE analytics beyond the bounded M6 fixed-vector addition.
 - Proofs beyond M5's bounded metadata relation, post-quantum identity, and RunReceipts.
 - Mainnet deployment, on-chain state/storage/computation, tokens, payments, or blockchain governance.
-- Web product functionality beyond the disconnected M8 PR1/PR2/PR3 presentation scope.
+- Web product functionality beyond the disconnected M8 PR1–PR4 presentation scope.
 - Authoritative RoomState branch operations, merge implementation, and dynamic membership.
 

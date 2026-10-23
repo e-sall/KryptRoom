@@ -9,10 +9,11 @@ import { StateCanvas } from "./state-canvas";
 import { GraphInspector, type InspectorTab } from "./graph-inspector";
 import "./graph.css";
 
-export function GraphWorkspace({ room }: { room: ExampleRoom }) {
+export function GraphWorkspace({ room, initialSelected }: { room: ExampleRoom; initialSelected?: string }) {
   const [mode, setMode] = useState<GraphMode>("classic");
   const [previousMode, setPreviousMode] = useState<"classic" | "detailed">("classic");
-  const [selected, setSelected] = useState<string | null>(() => graphFixture(room.id).at(-1)?.id ?? null);
+  const [selected, setSelected] = useState<string | null>(() =>
+    graphFixture(room.id).find((s) => s.id === initialSelected)?.id ?? graphFixture(room.id).at(-1)?.id ?? null);
   const [tab, setTab] = useState<InspectorTab>("Overview");
   const [scenario, setScenario] = useState<"normal" | ViewState>("normal");
   const [stress, setStress] = useState(false);
@@ -26,7 +27,7 @@ export function GraphWorkspace({ room }: { room: ExampleRoom }) {
   }
   const inspector = <GraphInspector graph={graph} state={state} detailed={mode === "detailed"}
     tab={tab} onTab={setTab} onSelect={setSelected} blocked={scenario === "blocked"} />;
-  return <AppShell preview activeModule="graph" graphHref={`/preview/rooms/${room.id}/workspace`}
+  return <AppShell preview activeModule="graph" previewRoomId={room.id} graphHref={`/preview/rooms/${room.id}/workspace`}
     contextLabel={state ? `${state.id} · ${state.title} · synthetic` : "No state selected"}
     inspector={inspector} pageHeader={<div className="graph-header">
       <div><p className="eyebrow">{room.name} · SYNTHETIC PREVIEW</p>
@@ -39,6 +40,8 @@ export function GraphWorkspace({ room }: { room: ExampleRoom }) {
     <div className="graph-workspace">
       <div className="graph-navigation"><ButtonLink href={`/preview/rooms/${room.id}`}>Back to Room details</ButtonLink>
         <ButtonLink href="/preview/rooms">All example Rooms</ButtonLink>
+        <ButtonLink href={`/preview/rooms/${room.id}/computations`}>Explore Computations</ButtonLink>
+        <ButtonLink href={`/preview/rooms/${room.id}/results`}>Explore Results</ButtonLink>
         {mode === "focus" && <Button onClick={() => setMode(previousMode)}>Return to full view</Button>}
         <Button disabled>Proofs &amp; Provenance · PR5</Button><Button disabled>Activity · PR5</Button></div>
       <p className="caption">Illustrative topology, not M1–M7 runtime lineage. No computation, proof or transaction.</p>

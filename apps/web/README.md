@@ -1,4 +1,4 @@
-# KryptRoom web — M8 PR1 / PR2
+# KryptRoom web — M8 PR1–PR4
 
 Next.js App Router, React, TypeScript and Tailwind foundation. **No workspace API,
 authentication, participant data, cryptographic execution or chain integration.**
@@ -9,8 +9,9 @@ PR2 adds `/preview/rooms` and `/preview/rooms/new`: explicitly synthetic
 Rooms discovery and progressive setup. All data is fixed example metadata;
 fields/view state live only in React memory. `/app/rooms/new` remains unavailable.
 No invitation, connection, Room creation or policy write can occur, including
-when every example field is complete. Workspace navigation stops at a PR3
-unavailable page; no graph editor, computation, proof or result is implemented.
+when every example field is complete. PR3 adds a read-only synthetic graph;
+PR4 adds explanatory Computations and fixed Results previews, not actual
+computations or private outputs. Production business routes stay unavailable.
 
 ## Run locally
 
@@ -69,3 +70,7 @@ provenance, deviations, executed checks and limitations.
 See [PR2 evidence](../../docs/m8/pr2/README.md) for Rooms/Easy Setup and screenshots.
 See [PR3 evidence](../../docs/m8/pr3/README.md) for the read-only synthetic Graph
 Workspace, interaction checks, source comparisons and integration boundaries.
+See [PR4 evidence](../../docs/m8/pr4/README.md) for the Clean workflow, three
+Premium V3 result pages, exact-state links, responsive captures and validation.
+Start at `/preview/rooms/supply-chain/computations` or
+`/preview/rooms/supply-chain/results`. No workflow phase invokes a runtime.

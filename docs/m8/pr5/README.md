@@ -125,7 +125,7 @@ not PR7 certification.
 
 Commands in `apps/web`: `npm run lint`, `npm run typecheck`,
 `npm run build`, `npm test`, `npm run test:e2e`.
-Final local results (2026-10-24): lint PASS; typecheck PASS; production build
+Initial delivery results (2026-10-24, before the navigation follow-up below): lint PASS; typecheck PASS; production build
 PASS (68 static pages); **79 unit/component tests PASS**; full Chromium suite
 **73 PASS, 2 inherited non-mobile sheet skips** (75 total). All 18 PR5 browser
 cases pass; rerun after the viewport-only sheet capture adjustment also passes.
@@ -200,3 +200,67 @@ is introduced. Production dependency exclusion remains covered by frontend tests
 Final CI conclusions belong to the exact published HEAD / PR checks, not a
 self-referential commit hash inside this report. The PR is left open for
 independent review; green CI is not a new cryptographic acceptance.
+
+## Independent review follow-up — RoomTrail state continuity
+
+Reviewed starting HEAD: `2bb7bb15c3390a54fb2652c453c2f1ffabb465e9`,
+PR #18 on the same `feat/m8-proofs-provenance-activity` branch.
+The existing StateLinks and shell already preserved selected states, but
+RoomTrail accepted no state and always linked to the generic module routes.
+For example, Proofs S2 → Activity silently lost S2 in the breadcrumb.
+
+The correction is limited to seven files:
+
+- `apps/web/src/features/operations/preview-controls.tsx`: optional
+  `selectedStateId`, validated against the unchanged current Room catalog;
+  append the encoded ID only for Graph, Proofs and Activity. Missing or invalid
+  IDs keep the original generic links. Computations/Results destinations stay
+  generic; no new route or global selection store.
+- `apps/web/src/features/provenance/proofs-workspace.tsx`: pass the currently
+  visible valid state, including changes made after page load.
+- `apps/web/src/features/provenance/activity-workspace.tsx`: distinguish
+  navigation context (valid explicit state filter, otherwise the actual event's
+  state) from event selection. No matching event still means an empty inspector
+  and no StateLinks. Breadcrumb and shell share that navigation context; a
+  non-normal display clears it. No replacement event is fabricated.
+- `apps/web/src/features/operations/results-workspace.tsx`: pass only the
+  existing visible associated state. Supply Chain Analytics uses S4, Join S2;
+  PSI has no associated state and remains generic. Computations' potentially
+  multiple input states are not reinterpreted as one selected state.
+- `apps/web/tests/room-trail.test.tsx`: eleven new unit/component cases.
+- `apps/web/tests/browser/provenance.spec.ts`: four new real Next.js journeys,
+  each run on desktop, tablet and mobile (twelve browser cases).
+- This report; no other documentation or locked design asset changes.
+
+Regression journeys explicitly cover Proofs S2 → Activity S2, Activity S3 →
+Proofs S3, both Proofs and Activity S4 → Graph S4, generic navigation, no-event
+Activity filtering, Room changes to Insights and empty Research, and existing
+Computations/Results navigation. Existing sidebar, StateLinks and mobile
+journeys remain covered by the full frontend suite. Default page selection
+behavior is unchanged; RoomTrail itself never invents a default state.
+
+The new unit suite reproduced five failures before the source correction and
+passes afterward. During validation, the new test's unsupported Testing Library
+`exact` option was removed (string role names are already exact), and the
+browser journey was synchronized with completion of the Results route
+transition before its next click. No existing assertion was weakened.
+
+No visual geometry changed, so the accepted screenshot gallery is retained.
+The production browser regression generates fresh evidence, including existing
+320px, accessibility and mobile-sheet checks. This remains a navigation-only
+frontend correction, not new cryptographic validation. M8-SEC-001 and all
+boundaries in the preceding section remain unchanged.
+
+Final local follow-up validation (2026-10-24):
+
+- Lint, typecheck and production build: PASS (same 68 generated pages).
+- Targeted unit/component suite: 36 PASS; full suite: **90 PASS** (previously 79,
+  eleven added, none removed).
+- Targeted RoomTrail production-browser rerun: **12 PASS**; full frontend
+  regression: **85 PASS / 2 inherited skips** (previously 73 PASS / 2 skips,
+  twelve added). All three Chromium viewport projects are covered.
+- Unchanged read-only CI classification suite: **31 PASS**. No generator run
+  or fixture migration is part of this local correction.
+- Whitespace check and protected core/CI/catalog/dependency/debt comparisons:
+  PASS. Remote CI results are recorded on PR #18 against its final published
+  HEAD; expected heavy-integration skips are not represented as executions.

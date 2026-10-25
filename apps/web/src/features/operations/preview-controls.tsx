@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useId, type ReactNode } from "react";
 import { Button, StatusView, type ViewState } from "@/components/ui";
 import { exampleRooms } from "@/features/rooms/preview-model";
+import { graphFixture } from "@/features/graph/fixtures";
 import { previewRoomPath } from "./presentation";
 
 export type DisplayScenario = "normal" | ViewState;
@@ -12,15 +13,17 @@ export function RoomChooser({ roomId, screen }: { roomId: string; screen: "compu
       aria-current={r.id === roomId ? "page" : undefined} href={previewRoomPath(r.id, screen)}>{r.name}</Link>)}</nav>
   </details>;
 }
-export function RoomTrail({ roomId, screen }: { roomId: string; screen: "computations" | "results" | "proofs" | "activity" }) {
+export function RoomTrail({ roomId, screen, selectedStateId }: { roomId: string; screen: "computations" | "results" | "proofs" | "activity"; selectedStateId?: string }) {
+  const state = graphFixture(roomId).find((s) => s.id === selectedStateId);
+  const suffix = state ? "/" + encodeURIComponent(state.id) : "";
   return <nav className="operation-trail" aria-label="Room preview journey">
     <Link href="/preview/rooms">Rooms</Link><span aria-hidden="true">/</span>
     <Link href={`/preview/rooms/${roomId}`}>Room details</Link><span aria-hidden="true">/</span>
-    <Link href={previewRoomPath(roomId, "workspace")}>Graph Workspace</Link><span aria-hidden="true">/</span>
+    <Link href={previewRoomPath(roomId, "workspace") + suffix}>Graph Workspace</Link><span aria-hidden="true">/</span>
     <Link href={previewRoomPath(roomId, "computations")} aria-current={screen === "computations" ? "page" : undefined}>Computations</Link>
     <span aria-hidden="true">/</span><Link href={previewRoomPath(roomId, "results")} aria-current={screen === "results" ? "page" : undefined}>Results</Link>
-    <span aria-hidden="true">/</span><Link href={previewRoomPath(roomId, "proofs")} aria-current={screen === "proofs" ? "page" : undefined}>Proofs &amp; Provenance</Link>
-    <span aria-hidden="true">/</span><Link href={previewRoomPath(roomId, "activity")} aria-current={screen === "activity" ? "page" : undefined}>Activity</Link>
+    <span aria-hidden="true">/</span><Link href={previewRoomPath(roomId, "proofs") + suffix} aria-current={screen === "proofs" ? "page" : undefined}>Proofs &amp; Provenance</Link>
+    <span aria-hidden="true">/</span><Link href={previewRoomPath(roomId, "activity") + suffix} aria-current={screen === "activity" ? "page" : undefined}>Activity</Link>
   </nav>;
 }
 export function PreviewTabs<T extends string>({ label, options, value, onChange, children }: {

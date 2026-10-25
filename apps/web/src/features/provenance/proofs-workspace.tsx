@@ -42,7 +42,7 @@ export function ProofsWorkspace({ room, initialSelected }: { room: ExampleRoom; 
     contextLabel={state ? `${state.id} · ${stage} · no verification performed` : "No state selected"}
     pageHeader={<div className="operation-header"><p className="eyebrow">{room.name} · SYNTHETIC PREVIEW</p><h1>Proofs &amp; Provenance</h1><p>Understand the evidence. Know its limits.</p><RoomChooser roomId={room.id} screen="proofs" /></div>}
     inspector={<ProofInspector roomId={room.id} graph={graph} state={state} stage={stage} item={item} check={check} onSelect={setSelected} />}>
-    <RoomTrail roomId={room.id} screen="proofs" />
+    <RoomTrail roomId={room.id} screen="proofs" selectedStateId={state?.id} />
     <p className="operation-boundary">Illustrative states only. No verification performed, no transaction, no real proof or chain record supplied.</p>
     {state ? <><div className="provenance-state-picker" role="group" aria-label="RoomState selection">{graph.states.map((s) => <button key={s.id} aria-pressed={selected === s.id} onClick={() => setSelected(s.id)}>{s.id}<span>{s.title}</span></button>)}</div>
       <div className="provenance-workspace"><nav className="provenance-stages" aria-label="Provenance stages">{stages.map((s, i) => <button key={s} aria-current={s === stage ? "step" : undefined} onClick={() => setStage(s)}><span>0{i + 1}</span>{s}</button>)}</nav>

@@ -46,7 +46,7 @@ export function ResultsWorkspace({ room, operation = "psi" }: { room: ExampleRoo
     pageHeader={<div className="operation-header"><p className="eyebrow">{room.name} · SYNTHETIC PREVIEW</p><h1>Results</h1>
       <p>Only the intended insight. Never the underlying records.</p><RoomChooser roomId={room.id} screen="results" /></div>}
     inspector={<ResultInspector roomId={room.id} operation={operation} visible={visible} />}>
-    <RoomTrail roomId={room.id} screen="results" />
+    <RoomTrail roomId={room.id} screen="results" selectedStateId={visible ? context.associated?.id : undefined} />
     <p className="operation-boundary">Fixed design examples, not engine outputs. No real computation or authorized disclosure has occurred.</p>
     <nav className="operation-picker result-picker" aria-label="Result category">{operationIds.map((id) => <Link key={id}
       aria-current={id === operation ? "page" : undefined} href={`${previewRoomPath(room.id, "results")}/${id}`}>

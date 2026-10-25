@@ -37,13 +37,17 @@ export function ActivityWorkspace({ room, initialSelected }: { room: ExampleRoom
   const [scenario, setScenario] = useState<DisplayScenario>("normal");
   const filtered = filterEvents(events, type, stateId);
   const event = scenario === "normal" ? filtered.find((e) => e.id === selected) ?? filtered[0] : undefined;
+  // A valid explicit filter remains navigation context even with no matching event.
+  // It never supplies an event or inspector selection.
+  const navigationStateId = scenario === "normal"
+    ? graph.states.find((s) => s.id === (stateId || event?.stateId))?.id : undefined;
   function selectState(id: string) { setStateId(id); setSelected(undefined); }
   const index = filtered.findIndex((e) => e.id === event?.id);
-  return <AppShell preview previewRoomId={room.id} previewStateId={event?.stateId} activeModule="activity"
+  return <AppShell preview previewRoomId={room.id} previewStateId={navigationStateId} activeModule="activity"
     contextLabel={event ? `${event.id} · ${event.stateId} · illustrative` : "No event selected"}
     pageHeader={<div className="operation-header"><p className="eyebrow">{room.name} · SYNTHETIC PREVIEW</p><h1>Activity &amp; History</h1><p>A history connected to its states.</p><RoomChooser roomId={room.id} screen="activity" /></div>}
     inspector={<ActivityInspector roomId={room.id} graph={graph} event={event} tab={tab} onTab={setTab} onState={selectState} />}>
-    <RoomTrail roomId={room.id} screen="activity" />
+    <RoomTrail roomId={room.id} screen="activity" selectedStateId={navigationStateId} />
     <p className="operation-boundary">Illustrative relationships, not execution logs. Sample sequence numbers are not audit timestamps. No live telemetry.</p>
     {scenario === "normal" && events.length > 0 ? <section className="activity-workspace" aria-label="Illustrative activity">
       <div className="activity-controls"><div role="group" aria-label="Activity type" className="segmented-control">{activityTypes.map((t) => <button key={t} aria-pressed={type === t} onClick={() => { setType(t); setSelected(undefined); }}>{t}</button>)}</div>

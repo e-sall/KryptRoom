@@ -1,6 +1,7 @@
 import { test, expect, type Page, type TestInfo } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 const room = "/preview/rooms/supply-chain";
+const roomTrail = (page: Page) => page.getByRole("navigation", { name: "Room preview journey" });
 const problems = new WeakMap<Page, string[]>();
 test.beforeEach(async ({ page }) => {
   const errors: string[] = [];
@@ -178,4 +179,70 @@ test("PR4 results link to the same existing state without expanding the catalog"
   await page.getByText("Change example Room", { exact: true }).click();
   await page.getByRole("navigation", { name: "Example Room selection" }).getByRole("link", { name: "Research Partnership" }).click();
   await expect(page.getByRole("heading", { name: "No examples in this view" })).toBeVisible();
+});
+
+test("RoomTrail preserves Proofs S2 to Activity S2 and Activity S3 to Proofs S3", async ({ page }) => {
+  await page.goto(room + "/proofs/S2");
+  await roomTrail(page).getByRole("link", { name: "Activity", exact: true }).click();
+  await expect(page).toHaveURL(room + "/activity/S2");
+  await expect(page.getByRole("combobox", { name: "Related state" })).toHaveValue("S2");
+  await expect(page.locator("main").getByRole("link", { name: "Open S2 in Graph" })).toHaveAttribute("href", room + "/workspace/S2");
+  await page.getByRole("combobox", { name: "Related state" }).selectOption("S3");
+  await roomTrail(page).getByRole("link", { name: "Proofs & Provenance", exact: true }).click();
+  await expect(page).toHaveURL(room + "/proofs/S3");
+  await expect(page.getByRole("group", { name: "RoomState selection" }).getByRole("button", { name: /^S3/ })).toHaveAttribute("aria-pressed", "true");
+});
+
+test("RoomTrail returns both Proofs and Activity S4 to selected Graph S4", async ({ page }) => {
+  for (const screen of ["proofs", "activity"]) {
+    await page.goto(room + "/" + screen + "/S4");
+    await roomTrail(page).getByRole("link", { name: "Graph Workspace", exact: true }).click();
+    await expect(page).toHaveURL(room + "/workspace/S4");
+    await expect(page.getByRole("button", { name: "State S4: Private Analytics", pressed: true })).toBeVisible();
+  }
+});
+
+test("RoomTrail empty Activity filter preserves explicit state without inventing an event", async ({ page }, info) => {
+  await page.goto(room + "/activity/S1");
+  await page.getByRole("group", { name: "Activity type" }).getByRole("button", { name: "Security", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "No matching examples" })).toBeVisible();
+  await expect(page.getByRole("list", { name: "Sample timeline" }).getByRole("button")).toHaveCount(0);
+  const inspector = await openInspector(page, info);
+  await expect(inspector.getByRole("heading", { name: "No event selected" })).toBeVisible();
+  await expect(inspector.getByRole("navigation", { name: "Selected state destinations" })).toHaveCount(0);
+  await closeInspector(page, info);
+  await roomTrail(page).getByRole("link", { name: "Proofs & Provenance", exact: true }).click();
+  await expect(page).toHaveURL(room + "/proofs/S1");
+  await expect(page.getByRole("group", { name: "RoomState selection" }).getByRole("button", { name: /^S1/ })).toHaveAttribute("aria-pressed", "true");
+});
+
+test("RoomTrail keeps generic Computations Results and Room changes scoped to existing states", async ({ page }) => {
+  await page.goto(room + "/computations");
+  await page.getByRole("checkbox", { name: /S2 · Private Join/ }).check();
+  for (const [label, path] of [["Graph Workspace", "workspace"], ["Proofs & Provenance", "proofs"], ["Activity", "activity"]]) {
+    await expect(roomTrail(page).getByRole("link", { name: label, exact: true })).toHaveAttribute("href", room + "/" + path);
+  }
+  await roomTrail(page).getByRole("link", { name: "Results", exact: true }).click();
+  await expect(page).toHaveURL(room + "/results");
+  await expect(roomTrail(page).getByRole("link", { name: "Graph Workspace" })).toHaveAttribute("href", room + "/workspace");
+  await page.getByRole("navigation", { name: "Result category" }).getByRole("link", { name: /Private Analytics/ }).click();
+  await expect(page).toHaveURL(room + "/results/analytics");
+  await expect(roomTrail(page).getByRole("link", { name: "Proofs & Provenance", exact: true })).toHaveAttribute("href", room + "/proofs/S4");
+  await roomTrail(page).getByRole("link", { name: "Proofs & Provenance", exact: true }).click();
+  await expect(page).toHaveURL(room + "/proofs/S4");
+  for (const screen of ["proofs", "activity"]) {
+    await page.goto(room + "/" + screen + "/S4");
+    await page.getByText("Change example Room", { exact: true }).click();
+    await page.getByRole("navigation", { name: "Example Room selection" }).getByRole("link", { name: "Joint Insights Room", exact: true }).click();
+    await expect(page).toHaveURL("/preview/rooms/insights/" + screen);
+    for (const link of await roomTrail(page).getByRole("link").all()) {
+      expect(await link.getAttribute("href")).not.toContain("supply-chain");
+      expect(await link.getAttribute("href")).not.toContain("/S4");
+    }
+    await page.getByText("Change example Room", { exact: true }).click();
+    await page.getByRole("navigation", { name: "Example Room selection" }).getByRole("link", { name: "Research Partnership", exact: true }).click();
+    await expect(page).toHaveURL("/preview/rooms/research/" + screen);
+    await expect(page.getByRole("heading", { name: "No examples in this view" })).toBeVisible();
+    await expect(roomTrail(page).getByRole("link", { name: "Graph Workspace" })).toHaveAttribute("href", "/preview/rooms/research/workspace");
+  }
 });

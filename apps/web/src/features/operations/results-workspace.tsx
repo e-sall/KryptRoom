@@ -8,11 +8,14 @@ import { operations, operationIds, previewRoomPath, resultContext, statePath, ty
 import { DisplayExamples, UnavailableDisplay, RoomChooser, RoomTrail, PreviewTabs, type DisplayScenario } from "./preview-controls";
 import { AnalyticsChart, AnalyticsTable, JoinResult, PsiResult } from "./result-visuals";
 import "./operations.css";
+import { provenancePath } from "@/features/provenance/presentation";
 
 function ContextLinks({ roomId, operation }: { roomId: string; operation: OperationId }) {
   const context = resultContext(roomId, operation);
   return <>
     {context.associated && <Link href={statePath(roomId, context.associated.id)}>Inspect {context.associated.id} · {context.associated.title} in Graph</Link>}
+    {context.associated && <Link href={provenancePath(roomId, "proofs", context.associated.id)}>Provenance of {context.associated.id}</Link>}
+    {context.associated && <Link href={provenancePath(roomId, "activity", context.associated.id)}>Activity for {context.associated.id}</Link>}
     {context.sources.map((s) => <Link key={s.id} href={statePath(roomId, s.id)}>Source {s.id} · {s.title}</Link>)}
   </>;
 }
@@ -38,12 +41,12 @@ export function ResultsWorkspace({ room, operation = "psi" }: { room: ExampleRoo
   const [scenario, setScenario] = useState<DisplayScenario>("normal");
   const context = resultContext(room.id, operation), item = operations[operation];
   const visible = scenario === "normal" && context.available;
-  return <AppShell preview previewRoomId={room.id} activeModule="results"
+  return <AppShell preview previewRoomId={room.id} previewStateId={visible ? context.associated?.id : undefined} activeModule="results"
     contextLabel={visible ? `${item.title} · ${context.id} · illustrative` : "No result selected"}
     pageHeader={<div className="operation-header"><p className="eyebrow">{room.name} · SYNTHETIC PREVIEW</p><h1>Results</h1>
       <p>Only the intended insight. Never the underlying records.</p><RoomChooser roomId={room.id} screen="results" /></div>}
     inspector={<ResultInspector roomId={room.id} operation={operation} visible={visible} />}>
-    <RoomTrail roomId={room.id} screen="results" />
+    <RoomTrail roomId={room.id} screen="results" selectedStateId={visible ? context.associated?.id : undefined} />
     <p className="operation-boundary">Fixed design examples, not engine outputs. No real computation or authorized disclosure has occurred.</p>
     <nav className="operation-picker result-picker" aria-label="Result category">{operationIds.map((id) => <Link key={id}
       aria-current={id === operation ? "page" : undefined} href={`${previewRoomPath(room.id, "results")}/${id}`}>

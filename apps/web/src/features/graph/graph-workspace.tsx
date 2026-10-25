@@ -27,7 +27,7 @@ export function GraphWorkspace({ room, initialSelected }: { room: ExampleRoom; i
   }
   const inspector = <GraphInspector graph={graph} state={state} detailed={mode === "detailed"}
     tab={tab} onTab={setTab} onSelect={setSelected} blocked={scenario === "blocked"} />;
-  return <AppShell preview activeModule="graph" previewRoomId={room.id} graphHref={`/preview/rooms/${room.id}/workspace`}
+  return <AppShell preview activeModule="graph" previewRoomId={room.id} previewStateId={!stress ? state?.id : undefined} graphHref={`/preview/rooms/${room.id}/workspace`}
     contextLabel={state ? `${state.id} · ${state.title} · synthetic` : "No state selected"}
     inspector={inspector} pageHeader={<div className="graph-header">
       <div><p className="eyebrow">{room.name} · SYNTHETIC PREVIEW</p>
@@ -43,7 +43,8 @@ export function GraphWorkspace({ room, initialSelected }: { room: ExampleRoom; i
         <ButtonLink href={`/preview/rooms/${room.id}/computations`}>Explore Computations</ButtonLink>
         <ButtonLink href={`/preview/rooms/${room.id}/results`}>Explore Results</ButtonLink>
         {mode === "focus" && <Button onClick={() => setMode(previousMode)}>Return to full view</Button>}
-        <Button disabled>Proofs &amp; Provenance · PR5</Button><Button disabled>Activity · PR5</Button></div>
+        {!stress && <><ButtonLink href={`/preview/rooms/${room.id}/proofs${state ? "/" + state.id : ""}`}>Explore Proofs &amp; Provenance</ButtonLink>
+          <ButtonLink href={`/preview/rooms/${room.id}/activity${state ? "/" + state.id : ""}`}>Explore Activity</ButtonLink></>}</div>
       <p className="caption">Illustrative topology, not M1–M7 runtime lineage. No computation, proof or transaction.</p>
       {visible ? <StateCanvas graph={graph} selected={selected} onSelect={setSelected} mode={mode} /> :
         <div className="graph-panel graph-system-state"><StatusView

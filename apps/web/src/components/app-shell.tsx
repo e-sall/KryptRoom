@@ -64,6 +64,7 @@ export function AppShell({
   activeModule,
   graphHref,
   previewRoomId,
+  previewStateId,
 }: {
   children: ReactNode;
   inspector?: ReactNode;
@@ -73,6 +74,7 @@ export function AppShell({
   activeModule?: string;
   graphHref?: string;
   previewRoomId?: string;
+  previewStateId?: string;
 }) {
   const pathname = usePathname();
   const moduleId = activeModule ?? pathname.split("/")[2] ?? "rooms";
@@ -91,8 +93,8 @@ export function AppShell({
       key={item.id}
       href={
         preview && item.id === "rooms" ? "/preview/rooms"
-          : preview && previewRoomId && ["graph", "computations", "results"].includes(item.id)
-            ? `/preview/rooms/${encodeURIComponent(previewRoomId)}/${item.id === "graph" ? "workspace" : item.id}`
+          : preview && previewRoomId && ["graph", "computations", "results", "proofs", "activity"].includes(item.id)
+            ? `/preview/rooms/${encodeURIComponent(previewRoomId)}/${item.id === "graph" ? "workspace" : item.id}${previewStateId && ["graph", "proofs", "activity"].includes(item.id) ? "/" + encodeURIComponent(previewStateId) : ""}`
             : preview && item.id === "graph" && graphHref ? graphHref : moduleHref(item.id)
       }
       className="nav-link"

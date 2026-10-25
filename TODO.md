@@ -146,11 +146,24 @@ and run 39381943437 contains the authoritative public evidence package.
 - [x] Exercise frontend regression, keyboard, responsive, system-state and privacy tests.
 - [x] Record source conversions, application captures and explicit HTML adaptations in ADR-019/report.
 - [x] Address PR #17 narrow Analytics label spacing with a failing-then-passing browser regression, four-width visual evidence and unchanged chart/table values.
-- [ ] Independent PR4 review and final-head CI disposition; **do not automatically merge**.
+- [x] Independent PR4 review and final-head CI approved; PR #17 merged into dev at `60ede3fcc13d6cc7c008ed425e751894d625342f` with explicit maintainer authorization.
 - [ ] Authenticated services and real disclosure remain separately scoped future work.
 - [ ] M8-SEC-001 reevaluation before PR7 or 2026-11-21, whichever is earlier; no renewal.
 
 ## Explicitly deferred work (unchanged)
+
+### M8 PR5 — Proofs, Provenance & Activity
+
+- [x] Audit merged PR #17, original P09 V3/P10 V1/P04/P08/P11 and real M5/M7 contracts without invoking them.
+- [x] Implement four conceptual provenance stages and contextual inspector with no inferred verdict.
+- [x] Implement derived sample timeline, List/Graph, filters, progressive details and diagnostic inspector.
+- [x] Reuse immutable PR3 state relationships; preserve Room and exact-state navigation.
+- [x] Exercise unit, production-browser, responsive, accessibility and privacy regressions; record visual evidence.
+- [ ] Independent PR5 review and final-head CI disposition; **leave open, do not merge**.
+- [ ] Authenticated field-filtered provenance/activity adapters remain future work; not implied by core tests.
+- [ ] Preserve M8-SEC-001 reevaluation before PR7 or 2026-11-21, whichever is earlier.
+
+### Other deferred work
 
 - [ ] Choose project licensing terms before encouraging substantial third-party code contributions.
 - [ ] Confirm a private vulnerability-reporting channel in repository settings.
@@ -159,6 +172,6 @@ and run 39381943437 contains the authoritative public evidence package.
 - FHE analytics beyond the bounded M6 fixed-vector addition.
 - Proofs beyond M5's bounded metadata relation, post-quantum identity, and RunReceipts.
 - Mainnet deployment, on-chain state/storage/computation, tokens, payments, or blockchain governance.
-- Web product functionality beyond the disconnected M8 PR1–PR4 presentation scope.
+- Web product functionality beyond the disconnected M8 PR1–PR5 presentation scope.
 - Authoritative RoomState branch operations, merge implementation, and dynamic membership.
 

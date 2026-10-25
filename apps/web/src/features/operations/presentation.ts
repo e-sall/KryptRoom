@@ -23,7 +23,7 @@ export function isOperation(value: string): value is OperationId {
 }
 export const phases = ["Protected Inputs", "Private Operation", "New State & Review"] as const;
 export type Phase = 0 | 1 | 2;
-export const previewRoomPath = (roomId: string, screen: "workspace" | "computations" | "results") =>
+export const previewRoomPath = (roomId: string, screen: "workspace" | "computations" | "results" | "proofs" | "activity") =>
   `/preview/rooms/${encodeURIComponent(roomId)}/${screen}`;
 export const statePath = (roomId: string, stateId: string) =>
   `${previewRoomPath(roomId, "workspace")}/${encodeURIComponent(stateId)}`;

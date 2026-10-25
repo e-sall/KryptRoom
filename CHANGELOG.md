@@ -6,6 +6,8 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Added
 
+- M8 PR5 synthetic Proofs/Provenance and Activity: four P09 stages, contextual evidence/check inspection, ordered lineage, P10 timeline/graph and filters, exact-state navigation across Graph/Results/Proofs/Activity, responsive diagnostic inspectors and fail-closed system states. No proof verdict, anchor, audit event, API, dependency, CI or M1–M7 change. See ADR-020 and `docs/m8/pr5/README.md`.
+
 - PR #17 visual review follow-up: split Analytics cohort labels into two SVG lines with sufficient viewBox height, preserve all four chart/table values, add rendered-box collision/clipping/overflow checks at 320/390/834/1440px and refresh visual evidence. No Design System, CI, dependency, backend or M1–M7 change.
 
 - M8 PR4 synthetic Computations & Results: P07 three-phase Clean explanation with ordered multi-parent selections and fail-closed Readiness/Review; P08 Premium V3 separate PSI/Join/Analytics views, fixed-value chart/table, progressive details and exact-state Graph navigation. Responsive inspector and browser/privacy coverage reuse PR1–PR3. Correct a pre-existing multi-child SVG title hydration mismatch in Room mini-history. No backend, dependency, CI or M1–M7 change. See `docs/m8/pr4/README.md`.

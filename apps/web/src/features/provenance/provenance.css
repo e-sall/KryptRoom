@@ -1,0 +1,86 @@
+/* P09 V3 / P10 V1, responsive semantic HTML on the existing P11 shell. */
+.provenance-state-picker { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.provenance-state-picker button { flex: 1 1 110px; background: var(--kr-elevated); border: 1px solid #62625b; border-radius: 8px; padding: 12px; color: var(--kr-text-primary); text-align: left; font-family: var(--kr-font-mono); }
+.provenance-state-picker button span { display: block; margin-top: 8px; font: 11px var(--kr-font-sans); color: var(--kr-text-secondary); }
+.provenance-state-picker button[aria-pressed="true"], .evidence-grid button[aria-pressed="true"], .verification-flow button[aria-pressed="true"], .lineage-nodes button[aria-pressed="true"] { background: #2d3941; border-color: var(--kr-blue); }
+.provenance-workspace { display: grid; grid-template-columns: 135px minmax(0, 1fr); border: 1px solid #44443f; border-radius: 14px; overflow: hidden; background: var(--kr-elevated); }
+.provenance-stages { padding: 22px 12px; border-right: 1px solid #44443f; display: flex; flex-direction: column; gap: 12px; }
+.provenance-stages button { padding: 14px 10px; text-align: left; background: none; border: 1px solid transparent; border-radius: 8px; color: var(--kr-text-secondary); font-size: 12px; }
+.provenance-stages button span { display: block; font-family: var(--kr-font-mono); font-size: 11px; margin-bottom: 8px; }
+.provenance-stages button[aria-current] { border-color: var(--kr-blue); background: #2d3941; color: var(--kr-text-primary); }
+.provenance-scene { min-width: 0; padding: 24px; background-image: radial-gradient(#41413b .65px, transparent .65px); background-size: 28px 28px; }
+.provenance-scene > h2 { font: 400 clamp(25px, 2.3vw, 34px)/1.25 var(--kr-font-serif); margin: 18px 0 24px; }
+.provenance-selected { border: 1px solid #63727b; border-radius: 10px; background: #2d3941; padding: 16px; font-size: 14px; }
+.provenance-selected span { display: block; color: #c2d4e2; font-size: 11px; line-height: 1.6; margin-top: 8px; }
+.provenance-links { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; margin: 22px 0 12px; }
+.provenance-links a, .provenance-relations button { color: var(--kr-blue); text-decoration: underline; text-underline-offset: 3px; }
+.provenance-relations { font-size: 12px; margin: 18px 0; }
+.provenance-relations ol, .provenance-relations ul { padding-left: 20px; }
+.provenance-relations button { border: 0; background: none; padding: 10px 0; text-align: left; font-size: 12px; line-height: 1.6; }
+.provenance-lineage { margin: 24px 0; min-width: 0; }
+.provenance-lineage figcaption { font-size: 11px; color: var(--kr-text-secondary); margin-bottom: 16px; }
+.lineage-dag { position: relative; }
+.lineage-rank + .lineage-rank { margin-top: 44px; }
+.lineage-edges { position: absolute; width: 100%; height: 100%; inset: 0; pointer-events: none; overflow: visible; }
+.lineage-edges path { fill: none; stroke: #7a817f; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.lineage-edges path[data-selected="true"] { stroke: var(--kr-blue); stroke-width: 2; }
+.lineage-nodes { display: flex; justify-content: center; gap: 16px; position: relative; }
+.lineage-nodes button { flex: 1; max-width: 240px; height: 140px; min-width: 0; border: 1px solid #62625b; border-radius: 10px; padding: 16px 12px; color: var(--kr-text-primary); background: #2b2b29; display: flex; flex-direction: column; justify-content: center; gap: 12px; text-align: left; }
+.lineage-nodes strong { font-size: 14px; font-weight: 400; }
+.lineage-nodes small { font: 10px/1.5 var(--kr-font-mono); color: var(--kr-text-secondary); }
+.lineage-nodes .eyebrow { margin: 0; font-size: 10px; }
+.evidence-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 28px 0; }
+.evidence-grid button, .verification-flow button { width: 100%; background: #2b2b29; color: var(--kr-text-primary); border: 1px solid #62625b; border-radius: 10px; padding: 18px 14px; text-align: left; display: flex; flex-direction: column; gap: 12px; }
+.evidence-grid .eyebrow, .verification-flow .eyebrow { font-size: 9px; margin: 0; }
+.evidence-grid strong, .verification-flow strong { font-weight: 400; font-size: 14px; line-height: 1.5; }
+.provenance-explanation { border-top: 1px solid #55554f; padding: 18px 0; }
+.provenance-explanation h3, .verification-verdict h3, .anchor-flow h3 { font-size: 15px; font-weight: 400; }
+.provenance-explanation p, .verification-verdict p, .anchor-flow p { color: var(--kr-text-secondary); font-size: 12px; line-height: 1.7; }
+.verification-flow, .anchor-flow { list-style: none; padding: 0; margin: 26px 0; display: grid; gap: 18px; }
+.verification-flow { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.verification-flow li { position: relative; min-width: 0; }
+.verification-flow button { height: 100%; min-height: 150px; }
+.verification-flow li + li::before { content: "→"; position: absolute; left: -14px; top: 45%; color: var(--kr-blue); font-size: 12px; }
+.verification-verdict { border: 1px dashed #6e6e64; border-radius: 10px; padding: 20px; background: #242422; }
+.anchor-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.anchor-flow li { background: #242422; border: 1px dashed #6e6e64; border-radius: 10px; padding: 16px; }
+.anchor-flow .eyebrow { font-size: 9px; }
+.activity-workspace { border: 1px solid #44443f; border-radius: 14px; background: var(--kr-elevated); padding: 24px; }
+.activity-controls { display: flex; flex-direction: column; gap: 20px; }
+.activity-controls .segmented-control { display: flex; flex-wrap: wrap; }
+.activity-controls label { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-size: 12px; color: var(--kr-text-secondary); }
+.activity-controls select { max-width: 100%; min-height: 44px; padding: 10px; color: var(--kr-text-primary); border: 1px solid #62625b; border-radius: 8px; background: #242422; font-size: 12px; }
+.activity-timeline { list-style: none; margin: 26px 0; padding: 0; }
+.activity-timeline li + li { margin-top: 12px; }
+.activity-timeline button { display: flex; gap: 18px; width: 100%; text-align: left; padding: 20px; border: 1px solid #55554f; border-radius: 10px; color: var(--kr-text-primary); background: #242422; }
+.activity-timeline button[aria-pressed="true"], .activity-graph-events button[aria-pressed="true"] { border-color: var(--kr-blue); background: #2d3941; }
+.timeline-sequence { flex-shrink: 0; color: var(--kr-text-secondary); font: 24px var(--kr-font-serif); }
+.timeline-sequence small { display: block; font: 8px var(--kr-font-mono); margin-top: 8px; }
+.timeline-body { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.timeline-body .eyebrow { font-size: 9px; margin: 0; }
+.timeline-body strong { font-weight: 400; font-size: 15px; line-height: 1.4; }
+.timeline-body > span:last-child { font-size: 11px; color: var(--kr-text-secondary); }
+.timeline-marker { margin-left: auto; color: var(--kr-blue); }
+.activity-selection { border-top: 1px solid #55554f; padding-top: 20px; }
+.activity-selection h2 { font: 400 24px/1.35 var(--kr-font-serif); }
+.activity-selection p, .activity-selection details { color: var(--kr-text-secondary); font-size: 12px; line-height: 1.7; }
+.activity-graph-events { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0; }
+.activity-graph-events button { border: 1px solid #62625b; border-radius: 8px; padding: 12px; color: var(--kr-text-primary); background: #242422; text-align: left; font-size: 12px; }
+.provenance-inspector .operation-tabs { gap: 8px; }
+@media (max-width: 700px) {
+  .provenance-workspace { grid-template-columns: minmax(0, 1fr); }
+  .provenance-stages { flex-direction: row; flex-wrap: wrap; border-right: 0; border-bottom: 1px solid #44443f; gap: 8px; padding: 14px; }
+  .provenance-stages button { flex: 1 1 40%; min-width: 0; }
+  .provenance-scene, .activity-workspace { padding: 16px; }
+  .provenance-state-picker button { flex-basis: 40%; }
+  .evidence-grid, .anchor-flow { grid-template-columns: minmax(0, 1fr); }
+  .verification-flow { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+  .verification-flow button { min-height: 100px; }
+  .verification-flow li + li::before { content: "↓"; left: 50%; top: -22px; }
+  .activity-timeline button { padding: 16px 12px; gap: 12px; }
+  .timeline-marker { display: none; }
+  .lineage-nodes { gap: 8px; }
+  .lineage-nodes button { padding: 14px 8px; }
+  .lineage-nodes strong { font-size: 12px; }
+  .provenance-inspector .operation-tabs { gap: 8px; }
+}

@@ -1,5 +1,36 @@
 # Architectural decisions
 
+## ADR-020 — Provenance presentation never establishes proof or chain authority
+
+**Decision:** Add P09 V3 / P10 V1 only to Room-scoped synthetic preview routes.
+Derive all state references and ordered relationships from the unchanged PR3
+catalog. Local stage, evidence, conceptual-check, event and filter selection
+affects presentation only. Exact-state routes validate Room/state pairs; links
+and the shared shell retain selected state context where it exists.
+
+**Reason:** Inspection of RoomState, StateProof, ChainAnchor and the actual
+M5/M7 verifiers establishes data contracts, not a Workspace API. Control API,
+orchestrator and proof service are placeholders. No authenticated metadata,
+verification, activity or anchoring adapter exists.
+
+**Consequences:** Evidence availability is not a verdict. Structural validation
+is distinct from M7 Layer A (chain inclusion and canonical finality), Layer B
+(document/commitment consistency) and explicit separate M5 Layer C verification.
+A consistent StateProofDocumentCommitment does not establish Groth16 validity.
+No verifier, hashing, artifact reading, RPC, transaction, browser business
+storage or permissions are introduced. Verify/anchor/approve/download remain
+disabled. No fixture is regenerated and no historical acceptance evidence is
+attached to a synthetic RoomState.
+
+P10 sample sequence numbers replace fictitious audit times; event wording is
+conceptual, not a claim of a completed run, approval, denial or invitation.
+P09/P10 older S2/S3 labels are reconciled with PR3, not copied into a competing
+catalog. Responsive HTML controls and decorative SVG relationships preserve
+keyboard access and the existing P11 shell. Converted source captures are
+distinct from application evidence; no pixel-perfect claim. M8-SEC-001 and its
+before-PR7 / 2026-11-21 earliest deadline remain unchanged.
+See `docs/m8/pr5/README.md` for traceability and validation.
+
 ## ADR-019 — Explanatory workflows and fixed results are not computation authority
 
 **Decision:** Implement P07/P08 in isolated Room-scoped preview routes. Reuse the

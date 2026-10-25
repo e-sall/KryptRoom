@@ -44,6 +44,16 @@ The preview has no I/O, storage, authentication or definitive API DTO. Desktop,
 tablet and mobile reuse the existing shell/inspector/modal. See ADR-019 and
 `docs/m8/pr4/README.md`; no M1–M7 or CI routing change.
 
+PR5 adds presentation-only `features/provenance`: four P09 stages and the P10
+hybrid timeline/graph, with contextual inspectors, progressive details and
+Room/state-specific navigation. Both derive from PR3 rather than loading core
+documents or historical transactions. Sample activity order is not execution
+chronology. No StateProof/ChainAnchor serializer, verification or anchoring
+adapter exists; all real actions remain unavailable. Structural validation,
+document consistency, cryptographic verification and canonical finality are
+explained separately and none is performed by this frontend. Production
+Proofs/Activity remain disconnected. See ADR-020 and `docs/m8/pr5/README.md`.
+
 The Control Plane and signed metadata in this target diagram are planned. Neither participates in the current demos; only participant runtimes and their local storage are implemented.
 
 ```text

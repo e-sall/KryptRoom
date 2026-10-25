@@ -6,19 +6,21 @@ import { exampleRooms } from "@/features/rooms/preview-model";
 import { previewRoomPath } from "./presentation";
 
 export type DisplayScenario = "normal" | ViewState;
-export function RoomChooser({ roomId, screen }: { roomId: string; screen: "computations" | "results" }) {
+export function RoomChooser({ roomId, screen }: { roomId: string; screen: "computations" | "results" | "proofs" | "activity" }) {
   return <details className="operation-room-chooser"><summary>Change example Room</summary>
     <nav aria-label="Example Room selection">{exampleRooms.map((r) => <Link key={r.id}
       aria-current={r.id === roomId ? "page" : undefined} href={previewRoomPath(r.id, screen)}>{r.name}</Link>)}</nav>
   </details>;
 }
-export function RoomTrail({ roomId, screen }: { roomId: string; screen: "computations" | "results" }) {
+export function RoomTrail({ roomId, screen }: { roomId: string; screen: "computations" | "results" | "proofs" | "activity" }) {
   return <nav className="operation-trail" aria-label="Room preview journey">
     <Link href="/preview/rooms">Rooms</Link><span aria-hidden="true">/</span>
     <Link href={`/preview/rooms/${roomId}`}>Room details</Link><span aria-hidden="true">/</span>
     <Link href={previewRoomPath(roomId, "workspace")}>Graph Workspace</Link><span aria-hidden="true">/</span>
     <Link href={previewRoomPath(roomId, "computations")} aria-current={screen === "computations" ? "page" : undefined}>Computations</Link>
     <span aria-hidden="true">/</span><Link href={previewRoomPath(roomId, "results")} aria-current={screen === "results" ? "page" : undefined}>Results</Link>
+    <span aria-hidden="true">/</span><Link href={previewRoomPath(roomId, "proofs")} aria-current={screen === "proofs" ? "page" : undefined}>Proofs &amp; Provenance</Link>
+    <span aria-hidden="true">/</span><Link href={previewRoomPath(roomId, "activity")} aria-current={screen === "activity" ? "page" : undefined}>Activity</Link>
   </nav>;
 }
 export function PreviewTabs<T extends string>({ label, options, value, onChange, children }: {

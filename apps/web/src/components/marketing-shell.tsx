@@ -3,6 +3,7 @@ import { ButtonLink } from "./ui";
 import { Icon } from "./icon";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import "@/features/marketing/marketing.css";
 
 export function MarketingShell({ children }: { children: ReactNode }) {
   return (
@@ -18,6 +19,7 @@ export function MarketingShell({ children }: { children: ReactNode }) {
               {name}
             </Link>
           ))}
+          <Link href="/demo">Demo</Link>
         </nav>
         <ButtonLink href="/book-demo" variant="primary">
           Book a Demo <Icon name="arrow" />
@@ -27,9 +29,9 @@ export function MarketingShell({ children }: { children: ReactNode }) {
         {children}
       </main>
       <footer className="marketing-footer">
-        <span>KryptRoom · Interface foundation</span>
+        <span>KryptRoom · Experimental research prototype</span>
         <Link href="/design-system">Design system</Link>
-        <Link href="/app/rooms">Open workspace</Link>
+        <Link href="/preview/rooms">Explore synthetic workspace</Link>
       </footer>
     </div>
   );

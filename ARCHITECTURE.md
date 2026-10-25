@@ -54,6 +54,15 @@ document consistency, cryptographic verification and canonical finality are
 explained separately and none is performed by this frontend. Production
 Proofs/Activity remain disconnected. See ADR-020 and `docs/m8/pr5/README.md`.
 
+PR6 adds `features/marketing`: P01 hero, P02 explanatory steps and a seven-scene
+P05 replay at `/demo`. Scene, mode and selected-state values are ephemeral React
+view state. Diagram edges and metadata derive from the unchanged PR3 catalog.
+The marketing replay neither mounts the Rooms draft provider nor calls a service.
+Explore/Presentation share fixed desktop proportions; responsive layouts retain
+the controls and contextual explanation. Booking has no provider and stays
+unavailable. Product preview, bounded verified core and future operational
+integration are explicitly separate. See ADR-021 and `docs/m8/pr6/README.md`.
+
 The Control Plane and signed metadata in this target diagram are planned. Neither participates in the current demos; only participant runtimes and their local storage are implemented.
 
 ```text

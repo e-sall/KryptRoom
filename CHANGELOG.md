@@ -6,6 +6,8 @@ All notable project changes are recorded here. The project follows milestone-ori
 
 ### Added
 
+- M8 PR6 marketing and interactive demo: canonical P01 hero and usable CTA, four-step P02 explanation, seven-scene restored-V1 P05 with stable Explore/Presentation geometry, ordered synthetic DAG and exact-state workspace links. Honest product/core/integration and booking boundaries; no core, CI, dependency, fixture or historical-evidence changes. See ADR-021 and `docs/m8/pr6/README.md`.
+
 - M8 PR5 synthetic Proofs/Provenance and Activity: four P09 stages, contextual evidence/check inspection, ordered lineage, P10 timeline/graph and filters, exact-state navigation across Graph/Results/Proofs/Activity, responsive diagnostic inspectors and fail-closed system states. No proof verdict, anchor, audit event, API, dependency, CI or M1–M7 change. See ADR-020 and `docs/m8/pr5/README.md`.
 
 - PR #17 visual review follow-up: split Analytics cohort labels into two SVG lines with sufficient viewBox height, preserve all four chart/table values, add rendered-box collision/clipping/overflow checks at 320/390/834/1440px and refresh visual evidence. No Design System, CI, dependency, backend or M1–M7 change.

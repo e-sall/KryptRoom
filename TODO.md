@@ -159,9 +159,19 @@ and run 39381943437 contains the authoritative public evidence package.
 - [x] Implement derived sample timeline, List/Graph, filters, progressive details and diagnostic inspector.
 - [x] Reuse immutable PR3 state relationships; preserve Room and exact-state navigation.
 - [x] Exercise unit, production-browser, responsive, accessibility and privacy regressions; record visual evidence.
-- [ ] Independent PR5 review and final-head CI disposition; **leave open, do not merge**.
+- [x] Independent PR5 review and final-head CI approved; PR #18 merged into dev at `b2459744ef9b10971a8e95a9abb2da26f4b75d6e`.
 - [ ] Authenticated field-filtered provenance/activity adapters remain future work; not implied by core tests.
 - [ ] Preserve M8-SEC-001 reevaluation before PR7 or 2026-11-21, whichever is earlier.
+
+### M8 PR6 — Marketing & Interactive Demo
+
+- [x] Audit merged PR #18 and original P01/P02/restored-V1 P05/P11 sources.
+- [x] Implement hero, honest CTA/booking, four-step explanation and seven-scene demo.
+- [x] Keep Explore/Presentation geometry stable and reuse the existing ordered DAG.
+- [x] Add unit/browser coverage, responsive captures and source traceability.
+- [ ] Independent PR6 review and final-head CI disposition; leave open, do not merge.
+- [ ] Booking provider and authenticated operational integration remain future work.
+- [ ] Reevaluate M8-SEC-001 before PR7 or 2026-11-21, whichever is earlier.
 
 ### Other deferred work
 
@@ -172,6 +182,6 @@ and run 39381943437 contains the authoritative public evidence package.
 - FHE analytics beyond the bounded M6 fixed-vector addition.
 - Proofs beyond M5's bounded metadata relation, post-quantum identity, and RunReceipts.
 - Mainnet deployment, on-chain state/storage/computation, tokens, payments, or blockchain governance.
-- Web product functionality beyond the disconnected M8 PR1–PR5 presentation scope.
+- Web product functionality beyond the disconnected M8 PR1–PR6 presentation scope.
 - Authoritative RoomState branch operations, merge implementation, and dynamic membership.
 

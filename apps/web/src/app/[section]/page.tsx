@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { MarketingShell } from "@/components/marketing-shell";
-import { ButtonLink, Badge } from "@/components/ui";
+import { InteractiveDemo } from "@/features/marketing/interactive-demo";
+import { MarketingContent } from "@/features/marketing/marketing-pages";
 
 const sections: Record<string, string> = {
   product: "Product",
@@ -31,17 +32,12 @@ export default async function MarketingPage({
   if (!title) notFound();
   return (
     <MarketingShell>
-      <section className="hero placeholder-marketing">
-        <p className="eyebrow">KRYPTROOM · PR 1 FOUNDATION</p>
+      <section className="marketing-page-heading">
+        <p className="eyebrow">{section === "demo" ? "INTERACTIVE PRODUCT PREVIEW · SYNTHETIC" : "KRYPTROOM · PRIVATE DATA COLLABORATION"}</p>
         <h1>{title}</h1>
-        <Badge status="unavailable" />
-        <p className="hero-description">
-          {section === "book-demo"
-            ? "Booking is not connected yet. No availability or reservation is offered in this preview."
-            : "This page is reserved for the marketing and demo implementation in PR 6."}
-        </p>
-        <ButtonLink href="/app/rooms">Explore the app shell</ButtonLink>
+        {section === "demo" && <p className="caption">Explore a preloaded scenario. No computation, proof, authorization or blockchain transaction is executed.</p>}
       </section>
+      {section === "demo" ? <InteractiveDemo /> : <MarketingContent section={section} />}
     </MarketingShell>
   );
 }

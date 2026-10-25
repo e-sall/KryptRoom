@@ -1,5 +1,30 @@
 # Architectural decisions
 
+## ADR-021 — Marketing replay is a view over synthetic presentation states
+
+**Decision:** Implement P01/P02 and P05 restored V1 in the existing marketing
+routes. Preserve the desktop 231:493:248 column ratio across Explore and
+Presentation, seven bounded scenes, initial scene 04 and canonical thin K.
+Reuse the PR3 Supply Chain catalog and ordered S4 parents rather than introducing
+another state model. Restart returns to scene 01 and Explore. Mode changes
+preserve scene and selection; there is no autoplay or hidden execution.
+
+**Reason:** Marketing must explain persistent private collaboration without
+impersonating its operational backend. The recovered original DIL identifies
+restored V1; the portable conversion is supporting geometry evidence, not a
+certified interactive original. The founder's current logo correction and the
+existing P11 canonical component supersede the recovered older mark.
+
+**Consequences:** Semantic buttons, keyboard navigation, responsive reflow,
+progressive explanations and exact-state preview links adapt the source to the
+application. Future diagram stages are hidden rather than made illegible by
+low opacity. P02 uses the four labels explicitly requested in the PR6 mission
+and retains the layered/network motif; scroll/pointer behavior is a documented
+engineering adaptation, not recovered interaction evidence. Booking remains
+unavailable without a real provider. No API, verifier, runtime, storage,
+permission grant or disclosure is introduced. M8-SEC-001 stays open with its
+original before-PR7 / 2026-11-21 earliest deadline. See `docs/m8/pr6/README.md`.
+
 ## ADR-020 — Provenance presentation never establishes proof or chain authority
 
 **Decision:** Add P09 V3 / P10 V1 only to Room-scoped synthetic preview routes.

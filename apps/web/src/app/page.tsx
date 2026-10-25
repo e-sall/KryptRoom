@@ -1,5 +1,7 @@
 import { MarketingShell } from "@/components/marketing-shell";
 import { ButtonLink } from "@/components/ui";
+import { HowItWorks } from "@/features/marketing/how-it-works";
+import { ProductBoundary } from "@/features/marketing/product-boundary";
 
 export default function Home() {
   return (
@@ -16,9 +18,15 @@ export default function Home() {
           <ButtonLink href="/book-demo" variant="primary">
             Book a Demo
           </ButtonLink>
-          <ButtonLink href="/app/rooms">Explore Product</ButtonLink>
+          <ButtonLink href="/demo">Explore Product</ButtonLink>
         </div>
       </section>
+      <section className="marketing-cadran marketing-intro"><p className="eyebrow">THE COLLABORATION PROBLEM</p><h2>Shared insight.<br />Without a shared raw dataset.</h2>
+        <p>Two organizations can have a common question without permission to exchange their records. KryptRoom is built around protected computation and reusable states, with disclosure kept separate.</p></section>
+      <HowItWorks />
+      <ProductBoundary />
+      <section className="marketing-cadran marketing-outro"><h2>See a state become a starting point.</h2><p>Seven scenes. Two fictional organizations. One protected collaboration, explained.</p>
+        <div className="button-row"><ButtonLink href="/demo" variant="primary">Explore the interactive demo</ButtonLink><ButtonLink href="/book-demo">Book a Demo</ButtonLink></div></section>
     </MarketingShell>
   );
 }

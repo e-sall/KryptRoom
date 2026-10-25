@@ -37,6 +37,14 @@ M1 through M6 are runtime-verified on bounded synthetic fixtures. M7 is verified
 - M8 PR4 adds isolated Computations/Results previews under the selected Room: three explanatory workflow phases, ordered input selection, Readiness/Review, three editorial fixed result views, chart/table and exact-state Graph links. No execution, approval, persistence or disclosure authority is granted; production Computations/Results remain unavailable. Based on merged PR #16 at `2c912bcfc52d281ecdfda5798fc75e47b87fdf1e`. See `docs/m8/pr4/README.md`.
 - M8 PR5 starts from merged PR #17 / dev `60ede3fcc13d6cc7c008ed425e751894d625342f`. Synthetic P09 Lineage/Evidence/Verification/Anchoring and P10 timeline/graph share PR3 states and exact-state links. No verification, chain interaction, audit telemetry or backend authority; production routes remain unavailable. Core M1–M7, CI, fixtures, dependencies and M8-SEC-001 are unchanged. See ADR-020 and `docs/m8/pr5/README.md`.
 
+M8 PR6 is based on merged PR #18 / dev
+`b2459744ef9b10971a8e95a9abb2da26f4b75d6e`. P01/P02 marketing and P05 restored-V1
+seven-scene replay explain persistent collaboration using the existing synthetic
+PR3 states. Mode/scene selection does not execute, persist, authorize or reveal
+anything. Booking and production adapters remain unavailable. M1–M7, historical
+evidence, CI, dependencies and M8-SEC-001 remain unchanged. See ADR-021 and
+`docs/m8/pr6/README.md`. PR7 is not started.
+
 ## Target backend-to-operation mapping (not a capability inventory)
 
 - Exact matching: PSI.

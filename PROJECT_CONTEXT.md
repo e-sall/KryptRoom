@@ -43,7 +43,21 @@ seven-scene replay explain persistent collaboration using the existing synthetic
 PR3 states. Mode/scene selection does not execute, persist, authorize or reveal
 anything. Booking and production adapters remain unavailable. M1–M7, historical
 evidence, CI, dependencies and M8-SEC-001 remain unchanged. See ADR-021 and
-`docs/m8/pr6/README.md`. PR7 is not started.
+`docs/m8/pr6/README.md`. PR #19 is merged into dev at
+`8e8d8349db565278a866bd82f743f03fd1ee8c35`.
+
+M8 PR7 consolidates responsive, keyboard and final freeze QA on that baseline.
+It adds the founder-approved editorial homepage, an accessible seven-scene autoplay
+showcase sharing the existing catalog, original founder portrait and final FAQ.
+It fixes focus hidden behind fixed navigation, retires mobile sheets on tablet
+transition with a visible focus fallback, and removes obsolete PR5 placeholder
+copy. The application designs, business model and core runtime are preserved;
+the homepage follows the later founder-approved redesign. The founder renewed
+M8-SEC-001 for ESLint 9 EOL only until **2026-11-01 23:59 America/Toronto**, with
+reevaluation before PR7 merge or expiration. The withdrawn GHSA portion is closed.
+See `docs/m8/pr7/README.md`, the security reevaluation and Freeze QA report.
+PR7 must remain open for independent review; M8 is not declared completed and no
+production deployment or M9 work is authorized.
 
 ## Target backend-to-operation mapping (not a capability inventory)
 

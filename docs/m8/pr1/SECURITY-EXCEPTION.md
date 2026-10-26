@@ -1,4 +1,39 @@
-# M8-SEC-001 — Temporary PR1 lint-tooling exception
+# M8-SEC-001 — Current decision and historical PR1 record
+
+## Founder renewal — 2026-10-25 (current)
+
+**APPROVED — LIMITED EXCEPTION RENEWAL.** The founder explicitly authorized
+PR7 implementation after the pre-PR7 security reevaluation. This supersedes the
+original deadline below; the original record is preserved as dated evidence.
+
+- Scope: **ESLint 9 end-of-support risk only**, development tooling in `apps/web`.
+- Owner: repository maintainer / founder **e-sall**; frontend maintainer performs
+  compatibility checks and reports to the founder. No delegated renewal authority.
+- Expiration: **2026-11-01 at 23:59 America/Toronto** (2026-11-02 04:59 UTC).
+- Mandatory reevaluation: **before PR7 merge or expiration, whichever is first**.
+  Any later extension requires a new explicit founder approval.
+- GHSA-vfj7-8cjw-p6xm portion: **CLOSED — upstream withdrawal on 2026-10-23**,
+  not a package patch or evidence that ESLint is supported. The
+  [official advisory](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm)
+  states that the issue is not practically exploitable. Current full and production
+  audits report zero findings. See [reevaluation evidence](../pr7/PRE-PR7-SECURITY-REEVALUATION-REPORT.md).
+- ESLint 9 remains EOL. The direct supported ESLint 10 / official Next config
+  probe fails strict peer resolution; no forced dependencies or audit suppression.
+- Preserve existing CI security controls, read-only permissions, isolation,
+  dependency pins, audits, tests and production trace checks. No runtime,
+  production, cryptographic or future vulnerability is covered by this renewal.
+- No production service deployment is authorized. No new material risk may be
+  accepted implicitly: stop and report it.
+
+Exit: install a supported compatible lint chain under a separately reviewed
+change, then pass clean install, both audits, lint, typecheck, build, unit/browser
+tests, production exclusion checks and required CI. Until then, monitor official
+release/peer metadata; a bounded daily read-only Codex watch has been scheduled
+through the expiration date, notifying only actionable changes or deadline action.
+The watch cannot renew the exception or authorize a merge. Check manually before
+merge even if no notification has arrived. Zero audit findings do not remove EOL risk.
+
+## Historical PR1 decision — superseded, not current approval
 
 Reviewed: **2026-10-22**. Scope: `apps/web` only, PR #14. Owner: repository
 maintainer (`e-sall`), with the frontend maintainer responsible for reevaluation.

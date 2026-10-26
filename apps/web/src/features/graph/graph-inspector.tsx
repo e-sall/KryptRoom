@@ -59,6 +59,6 @@ export function GraphInspector({ state, graph, detailed, tab, onTab, onSelect, b
     </div>
     {!detailed && <p className="caption">Detailed view includes context and protected reference labels.</p>}
     <Button disabled>Authorized result unavailable</Button>
-    <p className="caption">A commitment is not a verified proof. Proofs &amp; Provenance and Activity are reserved for PR5.</p>
+    <p className="caption">A commitment is not a verified proof. Proofs &amp; Provenance and Activity show synthetic examples, not verifier or runtime records.</p>
   </div>;
 }

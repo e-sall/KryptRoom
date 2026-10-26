@@ -15,11 +15,11 @@ export function MarketingShell({ children }: { children: ReactNode }) {
         <Brand />
         <nav aria-label="Product navigation">
           {["Product", "Technology", "Security", "Developers"].map((name) => (
-            <Link key={name} href={`/${name.toLowerCase()}`}>
+            <Link prefetch={false} key={name} href={`/${name.toLowerCase()}`}>
               {name}
             </Link>
           ))}
-          <Link href="/demo">Demo</Link>
+          <Link prefetch={false} href="/demo">Demo</Link>
         </nav>
         <ButtonLink href="/book-demo" variant="primary">
           Book a Demo <Icon name="arrow" />
@@ -30,8 +30,8 @@ export function MarketingShell({ children }: { children: ReactNode }) {
       </main>
       <footer className="marketing-footer">
         <span>KryptRoom · Experimental research prototype</span>
-        <Link href="/design-system">Design system</Link>
-        <Link href="/preview/rooms">Explore synthetic workspace</Link>
+        <Link prefetch={false} href="/design-system">Design system</Link>
+        <Link prefetch={false} href="/preview/rooms">Explore synthetic workspace</Link>
       </footer>
     </div>
   );

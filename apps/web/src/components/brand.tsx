@@ -29,7 +29,7 @@ export function Brand({
   compact?: boolean;
 }) {
   return (
-    <Link
+    <Link prefetch={false}
       href={href}
       className={`brand${compact ? " brand-compact" : ""}`}
       aria-label="KryptRoom home"

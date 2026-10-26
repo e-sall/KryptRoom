@@ -1,5 +1,15 @@
 # Changelog
 
+- M8 PR7 founder-directed homepage: editorial narrative, framed autoplay showcase
+  with pause/resume/replay and visibility/motion controls, original founder portrait,
+  bounded cryptographic evidence and final ten-question FAQ. Full `/demo` retained.
+- M8 PR7 freeze candidate: responsive modal retirement, visible keyboard focus
+  around fixed navigation, current synthetic Graph guidance, complete journeys,
+  viewport/state/deep-link and optional cross-browser QA. Founder-approved
+  M8-SEC-001 renewal covers ESLint 9 EOL only through 2026-11-01 23:59 Toronto;
+  withdrawn GHSA portion closed. No dependency, CI, core or historical evidence
+  changes. See `docs/m8/pr7/README.md`. Independent review and merge remain pending.
+
 All notable project changes are recorded here. The project follows milestone-oriented development; it has not adopted semantic versioning yet.
 
 ## Unreleased

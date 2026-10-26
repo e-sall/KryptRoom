@@ -14,7 +14,9 @@ describe("P01 P02 P05 presentation contracts", () => {
   it("preserves the tagline and accessible demo/booking destinations", () => {
     render(<Home />);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Compute together. Reveal nothing.");
-    expect(screen.getByRole("link", { name: "Explore Product" })).toHaveAttribute("href", "/demo");
+    const links = screen.getAllByRole("link", { name: "Explore Product" });
+    expect(links).toHaveLength(2);
+    links.forEach(link => expect(link).toHaveAttribute("href", "/demo"));
     screen.getAllByRole("link", { name: "Book a Demo" }).forEach((link) => expect(link).toHaveAttribute("href", "/book-demo"));
   });
   it("offers exactly the four approved steps and keeps every explanation available", async () => {

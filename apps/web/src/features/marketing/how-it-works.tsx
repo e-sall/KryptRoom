@@ -11,22 +11,35 @@ export const collaborationSteps = Object.freeze([
 export function HowItWorks() {
   const [step, setStep] = useState(0);
   const section = useRef<HTMLElement>(null);
+  const manualSelection = useRef(false);
   useEffect(() => {
+    // Scrolling a clicked control into view must not overwrite that choice.
+    // Resume scroll-following only on a new deliberate scrolling gesture.
+    const resumeScroll = () => { manualSelection.current = false; };
+    const resumeScrollKeys = (event: KeyboardEvent) => {
+      if (["PageDown", "PageUp", "ArrowDown", "ArrowUp", "Home", "End", " "].includes(event.key)) resumeScroll();
+    };
     function onScroll() {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || window.innerWidth < 768) return;
+      if (manualSelection.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches || window.innerWidth < 768) return;
       const items = [...(section.current?.querySelectorAll<HTMLElement>("[data-story-step]") ?? [])];
       const nearest = items.map((element, index) => ({ index, distance: Math.abs(element.getBoundingClientRect().top - innerHeight * 0.42) })).sort((a, b) => a.distance - b.distance)[0];
       const bounds = section.current?.getBoundingClientRect();
       if (nearest && bounds && bounds.top < innerHeight * 0.65 && bounds.bottom > innerHeight * 0.4) setStep(nearest.index);
     }
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("wheel", resumeScroll, { passive: true });
+    window.addEventListener("touchmove", resumeScroll, { passive: true });
+    window.addEventListener("keydown", resumeScrollKeys);
+    return () => {
+      window.removeEventListener("scroll", onScroll); window.removeEventListener("wheel", resumeScroll);
+      window.removeEventListener("touchmove", resumeScroll); window.removeEventListener("keydown", resumeScrollKeys);
+    };
   }, []);
   return <section ref={section} className="marketing-cadran how-it-works" aria-labelledby="how-title" id="how-it-works">
     <p className="eyebrow">HOW KRYPTROOM WORKS</p><h2 id="how-title">A shared goal.<br />Independent control.</h2>
     <p className="caption">Conceptual journey · not a connected setup or execution service.</p>
     <div className="how-layout"><ol aria-label="Four collaboration steps">{collaborationSteps.map((item, i) =>
-      <li key={item.title} data-story-step={i}><button aria-current={step === i ? "step" : undefined} onClick={() => setStep(i)}>
+      <li key={item.title} data-story-step={i}><button aria-current={step === i ? "step" : undefined} onClick={() => { manualSelection.current = true; setStep(i); }}>
         <span className="story-number">{String(i + 1).padStart(2, "0")}</span><span><strong>{item.title}</strong><small>{item.concept}</small></span></button>
         <p>{item.text}</p><p className="caption">{item.detail}</p></li>)}</ol>
       <div className="how-visual-sticky"><figure className="how-visual" data-step={step} onPointerMove={(event) => {

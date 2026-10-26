@@ -1,5 +1,46 @@
 # Architectural decisions
 
+## ADR-022 — Freeze QA preserves the presentation/core boundary
+
+**Decision:** PR7 on merged PR #19 fixes observed focus occlusion and modal
+retirement at responsive transitions, with regression tests. Keep P11's full
+sidebar/right inspector, tablet rail/below inspector and mobile sheet/bottom nav.
+Keep all shared tokens, canonical K, catalogs, P05 ratios and core code unchanged.
+Record source comparison, complete journeys, system-state checks and bounded
+browser evidence; do not equate automated accessibility checks with certification.
+
+The later founder mission explicitly adds an editorial homepage and separate
+autoplay showcase over the same synthetic catalog, with visibility/motion gating,
+pause/resume/replay and static fallback. `/demo` retains its existing P05 modes.
+Use the supplied original founder portrait and put the ten-question FAQ last.
+A shared focus-visibility guard supplements native keyboard scrolling around fixed
+bars and deliberately leaves pointer/tap activation stable;
+modal openers receive explicit focus for engines that do not focus pointer-clicked
+buttons. Optional Windows WebKit QA normalizes and asserts real CSS dimensions;
+fractional CSSOM widths are compared consistently, with no error filtering.
+Speculative Next Link prefetching is disabled using the documented frontend prop
+after WebKit preload errors; navigation remains explicit and tested, with possible
+first-activation latency. Modal Tab traversal includes every visible control and
+link. No page-error filtering or security-header/runtime relaxation.
+Manual How It Works selection wins over programmatic focus scrolling; deliberate
+wheel/touch/scroll-key input resumes scroll following. No core authority changes.
+
+**Security disposition:** Following the pre-PR7 gate, the founder explicitly
+renewed M8-SEC-001 on 2026-10-25 for ESLint 9 EOL only, expiring November 1 at
+23:59 America/Toronto. GHSA-vfj7-8cjw-p6xm is closed by upstream withdrawal,
+not a package patch. No forced incompatible dependencies, CI change, audit/test
+suppression, production deployment or extension to other risks. Reevaluate before
+PR7 merge or expiry, stop on a material new risk; a later extension requires new
+explicit founder approval. See the current `docs/m8/pr1/SECURITY-EXCEPTION.md`.
+
+**Consequences:** Firefox/WebKit representative checks use the already pinned
+Playwright package in an optional local config; the authoritative CI remains
+Chromium with all existing security/contract/scope controls. No extra package,
+workflow, manual crypto dispatch or transaction. The PR remains open. A frontend
+freeze candidate does not provide authenticated collaboration, private-data
+handling, operational keys, authorized proof APIs or a production Control Plane.
+See `docs/m8/pr7/README.md` and `FREEZE-QA-REPORT.md` for review gates.
+
 ## ADR-021 — Marketing replay is a view over synthetic presentation states
 
 **Decision:** Implement P01/P02 and P05 restored V1 in the existing marketing

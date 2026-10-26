@@ -84,7 +84,7 @@
   .showcase-dag svg { display: none; }
   .showcase-dag ol { display: grid; gap: 14px; }
   .showcase-state { position: static; width: 100%; min-height: 108px; transform: none; padding: 12px; gap: 7px; }
-  .showcase-state > span { font-size: 12px; }.showcase-state strong { font-size: 16px; }.showcase-state strong span { font-size: 14px; }.showcase-state small { font-size: 12px; }
+  .showcase-state > span { font-size: 12px; }.showcase-state strong { font-size: 16px; line-height: 20px; }.showcase-state strong span { font-size: 14px; line-height: 20px; }.showcase-state small { font-size: 12px; }
   .showcase-lineage figcaption { font-size: 12px; line-height: 1.7; }
   .showcase-organizations { flex-direction: column; gap: 10px; }.showcase-organizations > span { font-size: 14px; }.showcase-organizations small { font-size: 12px; }
   .showcase-protected-inputs, .showcase-operation, .showcase-operation > span { font-size: 12px; }

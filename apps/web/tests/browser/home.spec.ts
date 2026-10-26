@@ -131,6 +131,9 @@ test("review F03: narrow ordered state cards have readable noncolliding labels",
     const labels=await show.locator(".showcase-state > span, .showcase-state strong > span, .showcase-state small, .showcase-context dt, .showcase-context dd").evaluateAll(es=>es.map(e=>({font:parseFloat(getComputedStyle(e).fontSize),rect:e.getBoundingClientRect().toJSON(),parent:e.parentElement!.getBoundingClientRect().toJSON(),overflow:e.scrollWidth>e.clientWidth+1})));
     for(const label of labels) {expect(label.font).toBeGreaterThanOrEqual(12);expect(label.rect.left).toBeGreaterThanOrEqual(label.parent.left);expect(label.rect.right).toBeLessThanOrEqual(label.parent.right+1);expect(label.overflow).toBe(false);}
     for(const state of await show.locator(".showcase-state").all()) {
+      // Explicit line boxes also cover hidden monospace metrics before the
+      // first screenshot/font resolution on Linux, without relaxing stability.
+      expect(await state.locator("strong, strong > span").evaluateAll(es=>es.map(e=>getComputedStyle(e).lineHeight))).toEqual(["20px","20px"]);
       const lines=await state.locator(":scope > span, :scope > strong, :scope > small").evaluateAll(es=>es.map(e=>e.getBoundingClientRect().toJSON()));
       for(let i=1;i<lines.length;i++) expect(lines[i].top).toBeGreaterThanOrEqual(lines[i-1].bottom);
     }

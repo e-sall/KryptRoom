@@ -6,9 +6,9 @@
   "fingerprints": {
     "apps/web/src/features/marketing/home-page.tsx": "22a8b7d345d1e48a77f2c12931c4cdd55c2828975e7d1817b59f45fa93cbad50",
     "apps/web/src/features/marketing/home-showcase.tsx": "0c20ef9fd76a8adc4d5b39fc1b9919b6812c0a5f17320430cdac45d34226118c",
-    "apps/web/src/features/marketing/home.css": "921b59ba2a673b0c81cd196eb7848c73f42d483df13c63da4f22e40169e78ec6",
+    "apps/web/src/features/marketing/home.css": "c0484cacb7bbc92a4314d0001aa998fd03da34fe11b2de75aec578ec21c61a6b",
     "apps/web/tests/home.test.tsx": "605d5b71544b412b2e3205c76be27d47967da59012ec206f9e9d2955ba4b7ddf",
-    "apps/web/tests/browser/home.spec.ts": "efc7778177ae610b4ffbd9e12f1cd0db7b6092e8178a9d44169e2ab80a012ca9",
+    "apps/web/tests/browser/home.spec.ts": "dee4d31ace43d04e01f5596b598fbbd849067a784263f2d926d3fbe4e9dfe294",
     "apps/web/public/images/elimane-sall.jpeg": "99c3f94ae1e61e9e53109ed533ff140aed095f43eb0cc85ad0bce91d85117160"
   },
   "observations": [
@@ -291,10 +291,10 @@
             "x": 16,
             "y": 328.015625,
             "width": 358,
-            "height": 1612.015625,
+            "height": 1632.015625,
             "top": 328.015625,
             "right": 374,
-            "bottom": 1940.03125,
+            "bottom": 1960.03125,
             "left": 16
           }
         }
@@ -371,10 +371,10 @@
             "x": 16,
             "y": 399.859375,
             "width": 288,
-            "height": 1666.40625,
+            "height": 1686.40625,
             "top": 399.859375,
             "right": 304,
-            "bottom": 2066.265625,
+            "bottom": 2086.265625,
             "left": 16
           }
         }

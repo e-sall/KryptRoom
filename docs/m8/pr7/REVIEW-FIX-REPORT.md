@@ -35,6 +35,14 @@ test results. Final published SHA and exact-head CI outcomes are recorded in PR2
   a false S2→S3 transition: the exact parent lists and summary preserve
   S1→S2, S1→S3, S2→S4, S3→S4, with S4 parents **[S2, S3]**. The separate persistent
   state illustration shares these readable cards and the unchanged canonical model.
+  The first hosted Linux run exposed a 4 px scene-height drift: its trace shows
+  all four hidden cards shrinking by exactly 1 px between Organizations and
+  Protected Inputs (115.1875→114.1875 px per card), while the context height is
+  unchanged. Explicit 20 px line boxes for mobile IDs/titles replace platform
+  `normal` font metrics. The original <1 px scene-stability assertion is retained;
+  the targeted mobile regression also checks both computed line heights.
+  Exact measurements and upstream run/artifact references are preserved in
+  [LINUX-HEIGHT-DIAGNOSTIC.json](review-fixes/LINUX-HEIGHT-DIAGNOSTIC.json).
 - **F04:** remove only `unoptimized`, supply breakpoint-specific `sizes` and use
   the existing Next.js default local image optimizer. No Next configuration,
   dependency, CDN, remote source or security header changes. Intrinsic dimensions,
@@ -95,7 +103,7 @@ claim that mobile content fits into one screen. Viewport captures retain the nav
   process allowed the unchanged clean-install command to succeed.
 - Final-source lint (zero warnings), **106 unit/component tests**, production
   build (68 pages) and typecheck: PASS.
-- Final-source complete Chromium: **145 PASS / 2 inherited justified non-mobile
+- Complete local Chromium before the hosted line-metrics follow-up: **145 PASS / 2 inherited justified non-mobile
   inspector exclusions**, 147 total, 3.5 minutes. Baseline 133 passes retained,
   plus four targeted cases across three profiles. No added skip or retry.
 - CI classifier: **31 PASS**, unchanged. Browser request, storage, page-error,
@@ -104,9 +112,16 @@ claim that mobile content fits into one screen. Viewport captures retain the nav
   suspension failure described above. After the timer correction, that unchanged
   scenario passed **five consecutive WebKit mobile executions**.
 
-- Final-source complete Windows WebKit: **30 PASS**, 2.9 minutes. All 22 baseline
+- Complete local Windows WebKit before the hosted line-metrics follow-up: **30 PASS**, 2.9 minutes. All 22 baseline
   cases retained, plus four targeted cases across desktop/mobile. Chromium is
   156.0.8078.4; WebKit is the pinned Playwright 27.2 engine.
+- Hosted Linux on first published `5c575b8`: 144 Chromium passes, 1 mobile
+  stability failure and 2 inherited exclusions. Trace inspected and correction
+  scoped to explicit mobile line boxes; unchanged stability assertion retained.
+  After correction: lint, 106 unit tests, build, typecheck, **21 targeted Chromium
+  passes** and 31 classifier passes. Final complete-suite and exact-head CI
+  outcomes are recorded in PR20 after publication; no earlier green run is
+  represented as a green hosted run of this changed head.
 
 Exact published commit and hosted workflow/check results are maintained in PR20
 to avoid creating another commit merely to embed its own SHA. No error suppression
@@ -127,7 +142,8 @@ Seven documentation/tracking files: `CHANGELOG.md`, `TODO.md`,
 `docs/DECISIONS.md`, `docs/m8/pr1/SECURITY-EXCEPTION.md`,
 `docs/m8/pr7/README.md`, `FREEZE-QA-REPORT.md` and this report.
 The [review-fixes directory](review-fixes) adds **39 PNG captures** plus
-`OBSERVATIONS.json` and `SECURITY-CHECKS.json`: **53 changed files** in this follow-up.
+`OBSERVATIONS.json`, `SECURITY-CHECKS.json` and `LINUX-HEIGHT-DIAGNOSTIC.json`:
+**54 changed files** in this follow-up against the independently reviewed head.
 
 ## Security reevaluation
 

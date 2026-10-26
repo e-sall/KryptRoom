@@ -1,5 +1,12 @@
 # TODO
 
+## PR20 independent review follow-up
+
+- [x] Implement targeted F01–F04 presentation fixes with regression coverage.
+- [ ] Obtain final founder visual approval; leave PR20 open and unmerged.
+- [ ] Reevaluate M8-SEC-001 before PR7 merge or 2026-11-01 23:59 Toronto,
+  whichever comes first. No automatic renewal or production deployment approval.
+
 ## Repository foundation
 
 - [x] Record product and architecture context.

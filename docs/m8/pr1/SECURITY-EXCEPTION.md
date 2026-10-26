@@ -2,6 +2,11 @@
 
 ## Founder renewal — 2026-10-25 (current)
 
+PR20 final-review reevaluation on 2026-10-26: unchanged scope and expiration;
+withdrawal reconfirmed, full/production audits zero, strict isolated ESLint 10
+compatibility probe still fails. See the [current follow-up evidence](../pr7/REVIEW-FIX-REPORT.md#security-reevaluation).
+This evidence update does not renew or broaden the founder's decision.
+
 **APPROVED — LIMITED EXCEPTION RENEWAL.** The founder explicitly authorized
 PR7 implementation after the pre-PR7 security reevaluation. This supersedes the
 original deadline below; the original record is preserved as dated evidence.

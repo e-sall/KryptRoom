@@ -1,5 +1,10 @@
 # Changelog
 
+- PR20 independent review F01–F04: readable showcase heading below floating
+  navigation, progressive synthetic storytelling, legible ordered mobile state
+  cards and responsive delivery of the unchanged founder portrait. Targeted
+  regressions and before/after evidence: `docs/m8/pr7/REVIEW-FIX-REPORT.md`.
+
 - M8 PR7 founder-directed homepage: editorial narrative, framed autoplay showcase
   with pause/resume/replay and visibility/motion controls, original founder portrait,
   bounded cryptographic evidence and final ten-question FAQ. Full `/demo` retained.

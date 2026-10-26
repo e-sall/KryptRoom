@@ -2,6 +2,14 @@
 
 ## ADR-022 — Freeze QA preserves the presentation/core boundary
 
+PR20 independent review follow-up (2026-10-26): reserve stable space while
+revealing illustrative stages progressively; use readable ordered state cards
+instead of a miniature mobile DAG, retaining every canonical parent reference.
+Use the existing Next image optimizer for responsive delivery of the unchanged
+public founder portrait, without a config/dependency/security-header change.
+Keep heading and whole desktop frame below actual floating-navigation bounds.
+See `docs/m8/pr7/REVIEW-FIX-REPORT.md`; founder visual approval remains pending.
+
 **Decision:** PR7 on merged PR #19 fixes observed focus occlusion and modal
 retirement at responsive transitions, with regression tests. Keep P11's full
 sidebar/right inspector, tablet rail/below inspector and mobile sheet/bottom nav.

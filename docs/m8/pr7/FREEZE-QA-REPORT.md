@@ -1,5 +1,10 @@
 # KRYPTROOM M8 — FINAL RELEASE / FREEZE QA REPORT
 
+**Current follow-up:** independent review required targeted F01–F04 fixes after
+the baseline below. See the [PR20 Final Review Fix Report](REVIEW-FIX-REPORT.md)
+for the new evidence and validation. This historical QA record does not constitute
+founder visual approval, M8 completion or merge authorization.
+
 **Freeze candidate, not M8 closure or release authorization.** Reviewed 2026-10-25
 on branch `feat/m8-responsive-accessibility-final-qa`, based on merged PR #19 / dev
 `8e8d8349db565278a866bd82f743f03fd1ee8c35`. Exact published head and final CI

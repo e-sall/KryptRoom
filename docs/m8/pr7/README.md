@@ -1,5 +1,10 @@
 # KRYPTROOM M8 — PR7 IMPLEMENTATION REPORT
 
+**PR20 independent review follow-up (2026-10-26):** F01–F04 targeted corrections
+and the current validation/security disposition are in the
+[Final Review Fix Report](REVIEW-FIX-REPORT.md). Earlier captures and results below
+remain historical evidence. PR20 stays open; founder visual approval is pending.
+
 Date: 2026-10-25, America/Toronto. Branch:
 `feat/m8-responsive-accessibility-final-qa`. Base: merged PR #19 / dev
 `8e8d8349db565278a866bd82f743f03fd1ee8c35` (verified again after the marketing

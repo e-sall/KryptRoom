@@ -1,11 +1,12 @@
 "use client";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Brand } from "@/components/brand";
 import { Button, ButtonLink } from "@/components/ui";
 import { demoGraph, demoScenes } from "./demo-model";
 
 export const showcaseDuration = 6000;
 const media = "(prefers-reduced-motion: reduce)";
+const subscribeHydration = () => () => {};
 function subscribeMotion(notify: () => void) {
   if (!window.matchMedia) return () => {};
   const query = window.matchMedia(media); query.addEventListener("change", notify);
@@ -17,7 +18,7 @@ function subscribeVisibility(notify: () => void) {
 }
 
 /** One read-only catalog shared with /demo; the timer advances presentation only. */
-export function ShowcaseLineage({ scene = 6 }: { scene?: number }) {
+export function ShowcaseLineage({ scene = 6, concealed = false }: { scene?: number; concealed?: boolean }) {
   const paths: Record<string, string> = {
     "S1-S2": "M200 150 C260 150 260 54 340 54", "S1-S3": "M200 150 C260 150 260 246 340 246",
     "S2-S4": "M600 54 C690 54 670 150 760 150", "S3-S4": "M600 246 C690 246 670 150 760 150",
@@ -26,7 +27,7 @@ export function ShowcaseLineage({ scene = 6 }: { scene?: number }) {
     "S1-S2": "M500 65 V95 H230 V123", "S1-S3": "M500 65 V95 H770 V123",
     "S2-S4": "M230 210 V235 H500 V267", "S3-S4": "M770 210 V235 H500 V267",
   };
-  return <figure className="showcase-lineage" aria-label="Synthetic RoomState lineage">
+  return <figure className="showcase-lineage" aria-label="Synthetic RoomState lineage" data-concealed={concealed} aria-hidden={concealed || undefined}>
     <div className="showcase-dag" data-stage={scene}>
       {([false, true] as const).map(narrow => <svg key={String(narrow)} className={narrow ? "showcase-edges-mobile" : "showcase-edges-desktop"}
         viewBox={`0 0 1000 ${narrow ? 340 : 300}`} preserveAspectRatio="none" aria-hidden="true">
@@ -47,6 +48,9 @@ export function HomeShowcase() {
   const [scene, setScene] = useState(0);
   const [playing, setPlaying] = useState(true);
   const [visible, setVisible] = useState(false);
+  // Server/no-JS output stays a complete static diagram. Only the hydrated
+  // slideshow conceals future stages; visibility preserves their layout space.
+  const storyReady = useSyncExternalStore(subscribeHydration, () => true, () => false);
   const reduced = useSyncExternalStore(subscribeMotion, () => window.matchMedia?.(media).matches ?? true, () => true);
   const pageVisible = useSyncExternalStore(subscribeVisibility, () => document.visibilityState === "visible", () => false);
   const running = playing && visible && pageVisible && !reduced;
@@ -55,14 +59,16 @@ export function HomeShowcase() {
     const observer = new IntersectionObserver(entries => setVisible(entries.some(e => e.isIntersecting)), { threshold: 0.15 });
     observer.observe(ref.current); return () => observer.disconnect();
   }, []);
-  useEffect(() => {
+  // Stop the timer in the same commit that exposes data-running=false. Passive
+  // cleanup can leave one queued clock tick between the DOM update and teardown.
+  useLayoutEffect(() => {
     if (!running) return;
     const timer = window.setInterval(() => setScene(index => (index + 1) % demoScenes.length), showcaseDuration);
     return () => window.clearInterval(timer);
   }, [running]);
   const current = demoScenes[scene];
   return <section ref={ref} className="home-showcase" aria-labelledby="showcase-title" id="product-demo" data-running={running} data-scene={scene + 1}>
-    <div className="showcase-heading"><div><p className="eyebrow">THE PRODUCT, IN MOTION</p><h2 id="showcase-title">A shared question.<br />A protected way forward.</h2></div>
+    <div className="showcase-heading"><div><p className="eyebrow">THE PRODUCT, IN MOTION</p><h2 id="showcase-title">A shared question.<br />{" "}A protected way forward.</h2></div>
       <p>Seven moments in a private collaboration.<br />Synthetic demonstration · no live execution.</p></div>
     <div className="showcase-window">
       <div className="showcase-topbar"><Brand /><span>Supply Chain Collaboration</span><span className="badge badge-preview">SYNTHETIC PREVIEW</span></div>
@@ -70,16 +76,19 @@ export function HomeShowcase() {
         <nav className="showcase-scenes" aria-label="Homepage demo scenes">{demoScenes.map((s, i) => <button key={s.name}
           aria-current={scene === i ? "step" : undefined} onClick={() => { setPlaying(false); setScene(i); }}
           aria-label={`Show scene ${i + 1}: ${s.name}`}><span>{String(i + 1).padStart(2, "0")}</span><span>{s.name}</span></button>)}</nav>
-        <div className="showcase-stage" aria-label="Homepage demo visualization">
+        <div className="showcase-stage" aria-label="Homepage demo visualization" data-story-ready={storyReady} data-focus={scene}>
           <div className="showcase-organizations" data-active={scene === 0}><span>Organization A<small>Own environment</small></span><span>Organization B<small>Own environment</small></span></div>
-          <div className="showcase-protected-inputs" data-active={scene === 1}>Protected inputs <span aria-hidden="true">↓</span></div>
-          <div className="showcase-operation" data-active={scene === 2}>Private computation <span>Illustration only</span></div>
-          <ShowcaseLineage scene={scene} />
+          <div className="showcase-protected-inputs" data-active={scene === 1} data-concealed={storyReady && scene < 1} aria-hidden={storyReady && scene < 1 || undefined}>Protected inputs <span aria-hidden="true">↓</span></div>
+          <div className="showcase-operation" data-active={scene === 2} data-concealed={storyReady && scene < 2} aria-hidden={storyReady && scene < 2 || undefined}>Private computation <span>Illustration only</span></div>
+          <div className="showcase-lineage-slot"><ShowcaseLineage scene={scene} concealed={storyReady && scene < 3} />
+            {storyReady && scene < 3 && <p className="showcase-next-stage">{["Two independent environments. One shared question.", "Protected inputs stay with their owners.", "A private operation can evolve a reusable state."][scene]}<small>Illustration · lineage appears at State Creation</small></p>}
+          </div>
+          <p className="showcase-story-note" data-highlight={scene >= 4}>{current.note}</p>
         </div>
         <aside className="showcase-context" aria-label="Homepage demo context">
           <p className="eyebrow">SCENE {String(scene + 1).padStart(2, "0")} / 07</p>
           <div className="showcase-current" aria-live={running ? "off" : "polite"} aria-atomic="true"><h3>{current.name}</h3><p>{current.description}</p></div>
-          <dl><dt>State</dt><dd>S4 · synthetic</dd><dt>Ordered parents</dt><dd>S2 · S3</dd><dt>Proof</dt><dd>Not assessed</dd><dt>Anchor</dt><dd>Not anchored</dd></dl>
+          <dl data-focus={scene}><dt>State</dt><dd>S4 · synthetic</dd><dt>Ordered parents</dt><dd>S2 · S3</dd><dt>Proof</dt><dd>Not assessed</dd><dt>Anchor</dt><dd>Not anchored</dd></dl>
           <p className="caption">No dataset, proof, transaction or disclosed result is loaded.</p>
         </aside>
       </div>

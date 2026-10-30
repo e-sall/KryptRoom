@@ -2,6 +2,14 @@
 
 ## Founder renewal — 2026-10-25 (current)
 
+Marketing V4 reevaluation, 2026-10-29: scope, owner and expiration unchanged.
+Official npm peer metadata still excludes ESLint 10 in React 7.37.5, JSX-a11y
+6.10.2 and import 2.32.0. Current full and production audits return zero;
+production dependency/trace checks exclude braces and lint tooling. The GHSA
+withdrawal remains in force. See [V4 evidence](../pr7/MARKETING-V4-REPORT.md#security).
+This is evidence collection, not a renewal, merge approval or production approval.
+
+
 PR20 final-review reevaluation on 2026-10-26: unchanged scope and expiration;
 withdrawal reconfirmed, full/production audits zero, strict isolated ESLint 10
 compatibility probe still fails. See the [current follow-up evidence](../pr7/REVIEW-FIX-REPORT.md#security-reevaluation).

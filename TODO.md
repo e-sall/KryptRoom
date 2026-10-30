@@ -1,5 +1,13 @@
 # TODO
 
+## PR20 Marketing V4
+
+- [x] Implement the founder-directed marketing surfaces and targeted regressions.
+- [x] Prepare exact-head hosted check tracking in PR20; its current ledger is authoritative.
+- [ ] Obtain founder visual acceptance and separate merge authorization.
+- [ ] Reevaluate the unchanged ESLint EOL exception before merge or expiration.
+
+
 ## PR20 independent review follow-up
 
 - [x] Implement targeted F01–F04 presentation fixes with regression coverage.

@@ -9,10 +9,10 @@ describe("founder-approved homepage", () => {
   it("preserves the locked order, original portrait and honest technical boundaries", () => {
     const { container } = render(<Home />);
     const order = [...container.querySelectorAll(".home-page > section")].map(s => s.getAttribute("aria-labelledby"));
-    expect(order).toEqual(["home-title", "showcase-title", "why-title", "how-title", "persistent-title", "foundation-title", "founder-title", "final-title", "faq-title"]);
+    expect(order).toEqual(["home-title", "showcase-title", "why-title", "how-title", "persistent-title", "founder-title", "final-title", "faq-title"]);
     const portrait = screen.getByAltText("Elimane Sall, founder of KryptRoom");
-    expect(portrait).toHaveAttribute("src", expect.stringContaining("/_next/image?url=%2Fimages%2Felimane-sall.jpeg"));
-    expect(portrait).toHaveAttribute("srcset", expect.stringContaining("640w"));
+    expect(portrait).toHaveAttribute("src", "/images/elimane-sall-768.webp");
+    expect(portrait.closest("picture")?.querySelector("source")).toHaveAttribute("srcset", expect.stringContaining("1200w"));
     expect(portrait).toHaveAttribute("width", "3367"); expect(portrait).toHaveAttribute("height", "3958");
     expect(screen.getByText(/industrial engineering student at Polytechnique/)).toBeVisible();
     expect(screen.getByText(/no general malicious security/)).toBeVisible();

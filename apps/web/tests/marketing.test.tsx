@@ -14,9 +14,9 @@ describe("P01 P02 P05 presentation contracts", () => {
   it("preserves the tagline and accessible demo/booking destinations", () => {
     render(<Home />);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Compute together. Reveal nothing.");
-    const links = screen.getAllByRole("link", { name: "Explore Product" });
-    expect(links).toHaveLength(2);
-    links.forEach(link => expect(link).toHaveAttribute("href", "/demo"));
+    const link = screen.getByRole("link", { name: "See how it works" });
+    expect(link).toHaveAttribute("href", "/#how-it-works");
+    expect(screen.queryByRole("link", { name: "Explore Product" })).not.toBeInTheDocument();
     screen.getAllByRole("link", { name: "Book a Demo" }).forEach((link) => expect(link).toHaveAttribute("href", "/book-demo"));
   });
   it("offers exactly the four approved steps and keeps every explanation available", async () => {
@@ -84,6 +84,6 @@ describe("P01 P02 P05 presentation contracts", () => {
     const { container } = render(<MarketingContent section="book-demo" />);
     expect(screen.getByText("Unavailable", { exact: true })).toBeVisible();
     expect(container.querySelectorAll("form,input,iframe")).toHaveLength(0);
-    expect(screen.getByRole("link", { name: "Explore the interactive demo" })).toHaveAttribute("href", "/demo");
+    expect(screen.getByRole("link", { name: "Contact the Founder" })).toHaveAttribute("href", "mailto:elimanesall.eng@gmail.com?subject=KryptRoom%20-%20Demo%20Inquiry");
   });
 });

@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-29",
+  "scope": "read-only dependency/advisory review, no dependency or CI changes",
+  "fullAuditFindings": 0,
+  "productionAuditFindings": 0,
+  "productionBracesAbsent": true,
+  "productionTraceDevLintHits": [],
+  "officialMetadata": {
+    "eslint": "10.13.0",
+    "eslint-config-next": "16.4.3",
+    "eslint-plugin-react": {
+      "version": "7.37.5",
+      "peer": "^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9.7"
+    },
+    "eslint-plugin-jsx-a11y": {
+      "version": "6.10.2",
+      "peer": "^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9"
+    },
+    "eslint-plugin-import": {
+      "version": "2.32.0",
+      "peer": "^2 || ^3 || ^4 || ^5 || ^6 || ^7.2.0 || ^8 || ^9"
+    },
+    "typescript-eslint": "8.72.1"
+  },
+  "advisory": {
+    "id": "GHSA-vfj7-8cjw-p6xm",
+    "status": "withdrawn",
+    "withdrawn": "2026-10-23"
+  },
+  "exception": {
+    "id": "M8-SEC-001",
+    "scope": "ESLint 9 EOL only, development tooling",
+    "owner": "e-sall",
+    "expires": "2026-11-01T23:59:00-05:00",
+    "timezone": "America/Toronto",
+    "renewedByThisWork": false,
+    "mandatoryReview": "Before PR20 merge or expiration, whichever is first"
+  },
+  "sources": [
+    "https://eslint.org/version-support/",
+    "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+    "https://registry.npmjs.org/eslint/latest",
+    "https://registry.npmjs.org/eslint-config-next/latest"
+  ]
+}

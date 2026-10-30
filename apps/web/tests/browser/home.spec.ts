@@ -15,7 +15,7 @@ test.afterEach(async ({ page }) => {
 });
 test("autoplay advances seven scenes, loops, pauses, resumes and suspends", async ({ page }) => {
   await page.clock.install(); await page.goto("/");
-  const showcase = page.getByRole("region", { name: "A shared question. A protected way forward." });
+  const showcase = page.getByRole("region", { name: "THE PRODUCT, IN MOTION" });
   await showcase.scrollIntoViewIfNeeded(); await expect(showcase).toHaveAttribute("data-running", "true");
   for (let i = 0; i < 7; i++) { await expect(showcase).toHaveAttribute("data-scene", String(i + 1)); await page.clock.runFor(6100); }
   await expect(showcase).toHaveAttribute("data-scene", "1");
@@ -145,8 +145,8 @@ test("review F03: narrow ordered state cards have readable noncolliding labels",
 
 test("review F04: original portrait uses local responsive optimization without layout shift", async ({page}) => {
   let release!:()=>void; const gate=new Promise<void>(resolve=>{release=resolve;});
-  await page.route("**/_next/image?**",async route=>{await gate;await route.continue();});
-  const response=page.waitForResponse(r=>r.url().includes("/_next/image?"));
+  await page.route("**/images/elimane-sall-*.webp",async route=>{await gate;await route.continue();});
+  const response=page.waitForResponse(r=>/\/images\/elimane-sall-\d+\.webp/.test(r.url()));
   await page.goto("/",{waitUntil:"domcontentloaded"});
   const portrait=page.getByAltText("Elimane Sall, founder of KryptRoom"); await portrait.scrollIntoViewIfNeeded();
   const before=await portrait.boundingBox(); release(); const delivered=await response;
@@ -154,9 +154,8 @@ test("review F04: original portrait uses local responsive optimization without l
   expect((await delivered.body()).length).toBeLessThan(300000);
   await portrait.evaluate(async e=>{await (e as HTMLImageElement).decode();});
   const url=new URL(await portrait.evaluate(e=>(e as HTMLImageElement).currentSrc));
-  expect(url.pathname).toBe("/_next/image");expect(url.searchParams.get("url")).toBe("/images/elimane-sall.jpeg");
-  expect(Number(url.searchParams.get("w"))).toBeLessThanOrEqual(1080);
-  await expect(portrait).toHaveAttribute("srcset",/640w/);await expect(portrait).toHaveAttribute("width","3367");await expect(portrait).toHaveAttribute("height","3958");
+  expect(url.pathname).toMatch(/^\/images\/elimane-sall-(480|768|1200)\.webp$/);
+  await expect(page.locator(".founder-profile source")).toHaveAttribute("srcset",/1200w/);await expect(portrait).toHaveAttribute("width","3367");await expect(portrait).toHaveAttribute("height","3958");
   const after=await portrait.boundingBox();expect(after!.width).toBe(before!.width);expect(after!.height).toBe(before!.height);
   expect(await portrait.evaluate(e=>({fit:getComputedStyle(e).objectFit,position:getComputedStyle(e).objectPosition}))).toEqual({fit:"cover",position:"50% 35%"});
 });

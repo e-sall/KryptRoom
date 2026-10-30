@@ -1,9 +1,11 @@
+import { solutions } from "@/features/marketing/solutions";
 import { notFound } from "next/navigation";
 import { MarketingShell } from "@/components/marketing-shell";
 import { InteractiveDemo } from "@/features/marketing/interactive-demo";
 import { MarketingContent } from "@/features/marketing/marketing-pages";
 
 const sections: Record<string, string> = {
+  ...Object.fromEntries(solutions.map(s => [s.slug, s.name])),
   product: "Product",
   technology: "Technology",
   security: "Security",

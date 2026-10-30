@@ -251,7 +251,7 @@ test("P01 hero, marketing routes and missing route", async ({
     path: testInfo.outputPath("marketing.png"),
     fullPage: true,
   });
-  await page.getByRole("link", { name: "Security", exact: true }).click();
+  await page.getByRole("link", { name: "Security & limitations", exact: true }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Security");
   await expect(page.getByText("Unavailable", { exact: true })).toBeVisible();
   const response = await page.goto("/app/not-a-module");

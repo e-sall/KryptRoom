@@ -44,7 +44,7 @@ test("P01 hero, honest booking and four P02 steps", async ({ page }, info) => {
       await expect(steps.getByRole("button").nth(index)).toHaveAttribute("aria-current", "step");
     }
   }
-  await page.locator(".hero").getByRole("link", { name: "Explore Product", exact: true }).click(); await expect(page).toHaveURL("/demo");
+  await page.locator(".hero").getByRole("link", { name: "See how it works", exact: true }).click(); await expect(page).toHaveURL("/#how-it-works");
   await page.goto("/book-demo"); await expect(page.getByText("Unavailable", { exact: true })).toBeVisible();
   await expect(page.locator("form,input,iframe")).toHaveCount(0); await capture(page, info, "booking-unavailable");
 });

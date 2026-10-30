@@ -142,3 +142,18 @@ Milestone 2.5 persists the validated M2 handoff as immutable RoomState S1. Each 
 
 The disclosure default remains deny. Cardinality may be released to Lab A, Lab B, and the UI. The synthetic M2.5 aggregate, explicitly opted-in M3 scalars, M4 evaluation MSE, and M6 vector sum are authorized only to their exact named participants. Matched identifiers, plaintext joined rows, model parameters, predictions, gradients, and activations remain forbidden. M7 publishes only one opaque commitment and an ordinary Ethereum sender; that address is not participant identity or approval. ML beyond the fixed M4 network, FHE beyond the bounded M6 addition, threshold/multiparty FHE, proofs beyond M5's bounded metadata relation, ZK proof of FHE arithmetic, blockchain state/compute, frontend, branching/merge behavior, and dynamic membership remain out of scope.
 
+
+### PR20 Marketing V4 review candidate
+
+The founder requested a further marketing pass on 2026-10-29. Local OFL
+Newsreader/DM Sans typography, a left-aligned canonical brand, Product/Technology/
+Solutions navigation and four illustrative industry pages improve presentation.
+The `/book-demo` Coming soon page opens an explicitly authorized founder mailto;
+it does not collect details, reserve slots or provide a booking backend.
+Technology and Security retain the bounded runtime/trust claims, including
+planned-only quantum research. The original portrait is unchanged; local
+quality-92 responsive renditions avoid a second lossy optimization pass.
+The synthetic catalog and ordered parents remain unchanged. M1–M7, fixtures,
+CI, dependency pins and runtime security configuration are unchanged.
+See `docs/m8/pr7/MARKETING-V4-REPORT.md`. Founder acceptance and merge are pending;
+M8-SEC-001 remains ESLint 9 EOL only through 2026-11-01 23:59 Toronto.

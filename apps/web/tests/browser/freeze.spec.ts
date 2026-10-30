@@ -74,7 +74,7 @@ test("rotation retires modal sheet, preserves state and restores visible focus",
 
 test("marketing reverse keyboard focus clears sticky header", async ({ page }, info) => {
   await setCssViewport(page, { width: 320, height: 800 }); await page.goto("/");
-  await page.locator(".hero").getByRole("link", { name: "Explore Product", exact: true }).focus();
+  await page.locator(".hero").getByRole("link", { name: "See how it works", exact: true }).focus();
   for (let i = 0; i < 30; i++) {
     await page.keyboard.press(i < 15 ? "Tab" : "Shift+Tab"); await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => resolve())));
     const focus = await page.evaluate(() => {
@@ -95,7 +95,9 @@ test("marketing reverse keyboard focus clears sticky header", async ({ page }, i
 test("complete M8 journey preserves context and changes Room without stale events", async ({ page }, info) => {
   test.setTimeout(90_000);
   await page.goto("/");
-  await page.locator(".hero").getByRole("link", { name: "Explore Product", exact: true }).click();
+  await page.locator(".hero").getByRole("link", { name: "See how it works", exact: true }).click();
+  await expect(page).toHaveURL("/#how-it-works");
+  await page.getByRole("link", { name: /Open full demo/ }).click();
   await expect(page).toHaveURL("/demo");
   await page.getByRole("button", { name: "Restart demo" }).click();
   const scenes = page.getByRole("navigation", { name: "Demo scenes" }).getByRole("button");

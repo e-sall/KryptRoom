@@ -1,5 +1,11 @@
 # Changelog
 
+- M8 PR20 Marketing V4: scoped editorial typography, left-brand navigation and
+  accessible Solutions disclosure, four proposed industry scenarios, enriched
+  Product/Technology/Security pages, honest demo contact, refined synthetic
+  choreography and high-quality responsive founder portrait. See
+  `docs/m8/pr7/MARKETING-V4-REPORT.md`. PR20 remains unmerged.
+
 - PR20 independent review F01–F04: readable showcase heading below floating
   navigation, progressive synthetic storytelling, legible ordered mobile state
   cards and responsive delivery of the unchanged founder portrait. Targeted

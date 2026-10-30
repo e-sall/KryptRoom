@@ -68,18 +68,18 @@ export function HomeShowcase() {
   }, [running]);
   const current = demoScenes[scene];
   return <section ref={ref} className="home-showcase" aria-labelledby="showcase-title" id="product-demo" data-running={running} data-scene={scene + 1}>
-    <div className="showcase-heading"><div><p className="eyebrow">THE PRODUCT, IN MOTION</p><h2 id="showcase-title">A shared question.<br />{" "}A protected way forward.</h2></div>
-      <p>Seven moments in a private collaboration.<br />Synthetic demonstration · no live execution.</p></div>
+    <div className="showcase-heading"><h2 id="showcase-title" className="eyebrow">THE PRODUCT, IN MOTION</h2></div>
     <div className="showcase-window">
       <div className="showcase-topbar"><Brand /><span>Supply Chain Collaboration</span><span className="badge badge-preview">SYNTHETIC PREVIEW</span></div>
       <div className="showcase-body">
         <nav className="showcase-scenes" aria-label="Homepage demo scenes">{demoScenes.map((s, i) => <button key={s.name}
           aria-current={scene === i ? "step" : undefined} onClick={() => { setPlaying(false); setScene(i); }}
           aria-label={`Show scene ${i + 1}: ${s.name}`}><span>{String(i + 1).padStart(2, "0")}</span><span>{s.name}</span></button>)}</nav>
-        <div className="showcase-stage" aria-label="Homepage demo visualization" data-story-ready={storyReady} data-focus={scene}>
+        <div className="showcase-stage" data-running={running} aria-label="Homepage demo visualization" data-story-ready={storyReady} data-focus={scene}>
           <div className="showcase-organizations" data-active={scene === 0}><span>Organization A<small>Own environment</small></span><span>Organization B<small>Own environment</small></span></div>
           <div className="showcase-protected-inputs" data-active={scene === 1} data-concealed={storyReady && scene < 1} aria-hidden={storyReady && scene < 1 || undefined}>Protected inputs <span aria-hidden="true">↓</span></div>
           <div className="showcase-operation" data-active={scene === 2} data-concealed={storyReady && scene < 2} aria-hidden={storyReady && scene < 2 || undefined}>Private computation <span>Illustration only</span></div>
+          <div className="showcase-film" aria-hidden="true" data-act={scene}><div className="film-orbit film-orbit-a" /><div className="film-orbit film-orbit-b" /><div className="film-packets"><i /><i /><i /></div></div>
           <div className="showcase-lineage-slot"><ShowcaseLineage scene={scene} concealed={storyReady && scene < 3} />
             {storyReady && scene < 3 && <p className="showcase-next-stage">{["Two independent environments. One shared question.", "Protected inputs stay with their owners.", "A private operation can evolve a reusable state."][scene]}<small>Illustration · lineage appears at State Creation</small></p>}
           </div>

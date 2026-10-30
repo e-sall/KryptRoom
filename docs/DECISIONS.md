@@ -468,3 +468,22 @@ optional pre-provisioned infrastructure; it changes no proof semantics. See
 
 **Status:** Accepted and runtime-verified on the synthetic Linux restart/reload fixture.
 
+
+## M8 PR20 Marketing V4 presentation decisions (2026-10-29)
+
+Keep all changes within marketing, its tests and evidence. Use self-hosted OFL
+Newsreader and DM Sans with marketing-scoped aliases, local WOFF2 and preloads;
+no remote font request, package addition or application-token change. Asset
+license notices cover the fonts only, not a new repository license.
+Native details/summary provides a no-JS Solutions disclosure; Escape restores
+focus and leaving the disclosure closes it. Four static scenario pages are
+proposed uses, never customer/deployment claims.
+Use fixed synthetic scenes with lightweight CSS illustration and existing
+visibility/motion/timer controls, never execution telemetry. Preserve exact
+parents and complete static fallback. Store three quality-92 WebP derivatives
+of the unchanged original portrait and select through a native picture/source
+inside the existing Next image component. This avoids the default optimizer’s
+second lossy pass without changing the image optimizer allowlist or security
+configuration. Booking remains Coming soon with founder-authorized mailto only.
+No backend, crypto, CI, dependency, production deployment or merge authority is
+introduced. Current security exception scope and expiration remain unchanged.

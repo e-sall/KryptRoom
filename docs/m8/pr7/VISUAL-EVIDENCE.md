@@ -1,3 +1,5 @@
+> Marketing V4 follow-up (2026-10-29): see [current implementation and visual QA](MARKETING-V4-REPORT.md). Earlier evidence below remains historical; it is not a claim of founder acceptance of V4. PR20 stays open and unmerged.
+
 # PR7 visual evidence and comparison
 
 Actual production-build screenshots, captured 2026-10-25. No mockup or generated

@@ -1,3 +1,5 @@
+> Marketing V4 follow-up (2026-10-29): see [current implementation and visual QA](MARKETING-V4-REPORT.md). Earlier evidence below remains historical; it is not a claim of founder acceptance of V4. PR20 stays open and unmerged.
+
 # KRYPTROOM M8 — PR7 IMPLEMENTATION REPORT
 
 **PR20 independent review follow-up (2026-10-26):** F01–F04 targeted corrections

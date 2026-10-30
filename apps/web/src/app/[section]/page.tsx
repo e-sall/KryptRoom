@@ -34,7 +34,7 @@ export default async function MarketingPage({
   if (!title) notFound();
   return (
     <MarketingShell>
-      <section className="marketing-page-heading">
+      <section className="marketing-page-heading" hidden={["product","technology","security","developers"].includes(section)}>
         <p className="eyebrow">{section === "demo" ? "INTERACTIVE PRODUCT PREVIEW · SYNTHETIC" : "KRYPTROOM · PRIVATE DATA COLLABORATION"}</p>
         <h1>{title}</h1>
         {section === "demo" && <p className="caption">Explore a preloaded scenario. No computation, proof, authorization or blockchain transaction is executed.</p>}

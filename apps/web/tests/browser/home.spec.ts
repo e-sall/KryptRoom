@@ -17,12 +17,12 @@ test("autoplay advances seven scenes, loops, pauses, resumes and suspends", asyn
   await page.clock.install(); await page.goto("/");
   const showcase = page.getByRole("region", { name: "THE PRODUCT, IN MOTION" });
   await showcase.scrollIntoViewIfNeeded(); await expect(showcase).toHaveAttribute("data-running", "true");
-  for (let i = 0; i < 7; i++) { await expect(showcase).toHaveAttribute("data-scene", String(i + 1)); await page.clock.runFor(6100); }
+  for (let i = 0; i < 7; i++) { await expect(showcase).toHaveAttribute("data-scene", String(i + 1)); await page.clock.runFor([2600,2800,3200,3600,3800,4000,3600][i]+50); }
   await expect(showcase).toHaveAttribute("data-scene", "1");
   await showcase.getByRole("button", { name: "Pause demo" }).click();
   const paused = await showcase.getAttribute("data-scene"); await page.clock.runFor(15000);
   await expect(showcase).toHaveAttribute("data-scene", paused!);
-  await showcase.getByRole("button", { name: "Resume demo" }).click(); await page.clock.runFor(6100);
+  await showcase.getByRole("button", { name: "Resume demo" }).click(); await page.clock.runFor(4100);
   await expect(showcase).not.toHaveAttribute("data-scene", paused!);
   await page.getByRole("heading", { name: "Questions & answers" }).scrollIntoViewIfNeeded();
   await expect(showcase).toHaveAttribute("data-running", "false");
@@ -81,7 +81,7 @@ test("reduced motion and no-JavaScript keep honest static explanations", async (
   await expect(showcase.getByText("Not assessed", { exact:true })).toBeVisible(); await expect(showcase.getByText("Not anchored", { exact:true })).toBeVisible();
   const context = await browser.newContext({ javaScriptEnabled:false, viewport:info.project.use.viewport }); const staticPage = await context.newPage();
   await setCssViewport(staticPage, info.project.use.viewport ?? { width: 1440, height: 900 }); await staticPage.goto("http://127.0.0.1:3000/"); await expect(staticPage.getByText(/This is a static synthetic collaboration diagram/)).toBeVisible();
-  await expect(staticPage.getByRole("link", { name:/Open full demo/ })).toHaveAttribute("href", "/demo");
+  await expect(staticPage.getByRole("link", { name:"Interactive demo",exact:true })).toHaveAttribute("href", "/demo");
   await expect(staticPage.locator(".showcase-state")).toHaveCount(8); await context.close();
 });
 
@@ -119,7 +119,7 @@ test("review F02: automatic storytelling progressively reveals inputs, operation
     if(scene===5) await expect(show.locator(".showcase-story-note")).toContainText("No proof or chain record");
     if(scene===6) await expect(show.locator(".showcase-story-note")).toContainText("existing synthetic Supply Chain states");
     expect((await show.locator(".showcase-stage").boundingBox())!.height).toBe(initial!.height);
-    await page.clock.runFor(6100);
+    await page.clock.runFor([2600,2800,3200,3600,3800,4000,3600][scene]+50);
   }
 });
 

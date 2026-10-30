@@ -487,3 +487,11 @@ second lossy pass without changing the image optimizer allowlist or security
 configuration. Booking remains Coming soon with founder-authorized mailto only.
 No backend, crypto, CI, dependency, production deployment or merge authority is
 introduced. Current security exception scope and expiration remain unchanged.
+
+## M8 Marketing V5 (2026-10-30)
+
+Use a marketing-only desktop scale and a shared branch-axis constraint. Replace
+the long How narrative with four condensed controls and a Room/input/state
+illustration. Retain context and original semantic boundaries. Nonuniform
+presentation dwell times total 23.6s; CSS pointer halo does not move controls.
+No new dependency, backend, runtime or CI change. See the V5 report.

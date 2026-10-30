@@ -97,7 +97,7 @@ test("complete M8 journey preserves context and changes Room without stale event
   await page.goto("/");
   await page.locator(".hero").getByRole("link", { name: "See how it works", exact: true }).click();
   await expect(page).toHaveURL("/#how-it-works");
-  await page.getByRole("link", { name: /Open full demo/ }).click();
+  await page.getByRole("link", { name: "Interactive demo", exact:true }).click();
   await expect(page).toHaveURL("/demo");
   await page.getByRole("button", { name: "Restart demo" }).click();
   const scenes = page.getByRole("navigation", { name: "Demo scenes" }).getByRole("button");

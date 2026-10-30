@@ -1,5 +1,10 @@
 # Changelog
 
+- M8 Marketing V5: compact desktop composition, shorter meaningful seven-scene
+  replay, condensed How It Works, founder icons and pointer CTA. Exact-head
+  validation in PR20; founder approval pending. See `docs/m8/pr7/MARKETING-V5-REPORT.md`.
+
+
 - M8 PR20 Marketing V4: scoped editorial typography, left-brand navigation and
   accessible Solutions disclosure, four proposed industry scenarios, enriched
   Product/Technology/Security pages, honest demo contact, refined synthetic

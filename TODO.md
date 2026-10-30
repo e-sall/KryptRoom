@@ -1,5 +1,10 @@
 # TODO
 
+- M8 Marketing V5: compact desktop composition, shorter meaningful seven-scene
+  replay, condensed How It Works, founder icons and pointer CTA. Exact-head
+  validation in PR20; founder approval pending. See `docs/m8/pr7/MARKETING-V5-REPORT.md`.
+
+
 ## PR20 Marketing V4
 
 - [x] Implement the founder-directed marketing surfaces and targeted regressions.

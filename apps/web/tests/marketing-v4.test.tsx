@@ -23,7 +23,7 @@ describe("marketing V4 founder direction", () => {
  it("keeps eight precise technology sections and planned quantum status",()=>{
   const {container}=render(<MarketingContent section="technology"/>);
   expect(container.querySelectorAll(".editorial-rows > section")).toHaveLength(8);
-  for(const text of ["Planned Research & Development","not threshold FHE","not MPC arithmetic","semi-honest","Layer B","Layer C"]) expect(container).toHaveTextContent(text);
+  for(const text of ["Planned R&D","not threshold FHE","not MPC arithmetic","semi-honest","Layer B","Layer C"]) expect(container).toHaveTextContent(text);
   expect(container.textContent).not.toContain("—");
  });
 });

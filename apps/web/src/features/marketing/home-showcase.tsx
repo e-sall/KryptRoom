@@ -1,10 +1,11 @@
 "use client";
 import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Brand } from "@/components/brand";
-import { Button, ButtonLink } from "@/components/ui";
+import { Button } from "@/components/ui";
 import { demoGraph, demoScenes } from "./demo-model";
 
-export const showcaseDuration = 6000;
+export const showcaseDurations = [2600, 2800, 3200, 3600, 3800, 4000, 3600] as const;
+export const showcaseDuration = 3600;
 const media = "(prefers-reduced-motion: reduce)";
 const subscribeHydration = () => () => {};
 function subscribeMotion(notify: () => void) {
@@ -63,9 +64,9 @@ export function HomeShowcase() {
   // cleanup can leave one queued clock tick between the DOM update and teardown.
   useLayoutEffect(() => {
     if (!running) return;
-    const timer = window.setInterval(() => setScene(index => (index + 1) % demoScenes.length), showcaseDuration);
-    return () => window.clearInterval(timer);
-  }, [running]);
+    const timer = window.setTimeout(() => setScene(index => (index + 1) % demoScenes.length), showcaseDurations[scene]);
+    return () => window.clearTimeout(timer);
+  }, [running, scene]);
   const current = demoScenes[scene];
   return <section ref={ref} className="home-showcase" aria-labelledby="showcase-title" id="product-demo" data-running={running} data-scene={scene + 1}>
     <div className="showcase-heading"><h2 id="showcase-title" className="eyebrow">THE PRODUCT, IN MOTION</h2></div>
@@ -83,11 +84,13 @@ export function HomeShowcase() {
           <div className="showcase-lineage-slot"><ShowcaseLineage scene={scene} concealed={storyReady && scene < 3} />
             {storyReady && scene < 3 && <p className="showcase-next-stage">{["Two independent environments. One shared question.", "Protected inputs stay with their owners.", "A private operation can evolve a reusable state."][scene]}<small>Illustration · lineage appears at State Creation</small></p>}
           </div>
+
           <p className="showcase-story-note" data-highlight={scene >= 4}>{current.note}</p>
         </div>
         <aside className="showcase-context" aria-label="Homepage demo context">
           <p className="eyebrow">SCENE {String(scene + 1).padStart(2, "0")} / 07</p>
           <div className="showcase-current" aria-live={running ? "off" : "polite"} aria-atomic="true"><h3>{current.name}</h3><p>{current.description}</p></div>
+          <div className="showcase-moments" role="group" aria-label="Illustrative state details"><section data-moment="4" hidden={scene !== 4}><span>PROTECTED S4</span><strong>Policy gate → permitted output</strong><small>Illustration only · no value disclosed</small></section><section data-moment="5" hidden={scene !== 5}><span>PROVENANCE</span><strong>Commitment ≠ proof ≠ anchor</strong><small>Proof: Not assessed · Anchor: Not anchored</small></section><section data-moment="6" hidden={scene !== 6}><span>INSPECT S4 · SYNTHETIC</span><strong>Parents [S2, S3]</strong><small>Persistent state · ordered lineage · protected artifacts</small></section></div>
           <dl data-focus={scene}><dt>State</dt><dd>S4 · synthetic</dd><dt>Ordered parents</dt><dd>S2 · S3</dd><dt>Proof</dt><dd>Not assessed</dd><dt>Anchor</dt><dd>Not anchored</dd></dl>
           <p className="caption">No dataset, proof, transaction or disclosed result is loaded.</p>
         </aside>
@@ -95,8 +98,8 @@ export function HomeShowcase() {
       <div className="showcase-controls"><div><Button disabled={reduced} onClick={() => setPlaying(p => !p)} aria-pressed={!playing}>{playing ? "Pause demo" : "Resume demo"}</Button>
         <Button variant="ghost" onClick={() => { setScene(0); setPlaying(true); }}>Replay demo</Button></div>
         <span className="caption">{reduced ? "Reduced motion · choose any scene" : !playing ? "Paused · explore at your pace" : running ? "Automatic visual walkthrough" : "Autoplay waits while out of view"}</span>
-        <ButtonLink href="/demo">Open full demo <span aria-hidden="true">↗</span></ButtonLink></div>
+        </div>
     </div>
-    <noscript><p>This is a static synthetic collaboration diagram. JavaScript is required for the optional slideshow. The explanations and full demo link remain available.</p></noscript>
+    <noscript><p>This is a static synthetic collaboration diagram. JavaScript is required for the optional slideshow. The explanations and footer demo link remain available.</p></noscript>
   </section>;
 }

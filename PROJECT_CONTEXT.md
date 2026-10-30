@@ -157,3 +157,10 @@ The synthetic catalog and ordered parents remain unchanged. M1–M7, fixtures,
 CI, dependency pins and runtime security configuration are unchanged.
 See `docs/m8/pr7/MARKETING-V4-REPORT.md`. Founder acceptance and merge are pending;
 M8-SEC-001 remains ESLint 9 EOL only through 2026-11-01 23:59 Toronto.
+
+### Marketing V5 desktop review candidate
+
+PR20 reduces the desktop marketing scale, condenses How It Works and introduces
+scene-dependent synthetic presentation timing and distinct state context cards.
+The original catalog, core, fixtures, CI and security expiry remain unchanged.
+See `docs/m8/pr7/MARKETING-V5-REPORT.md`; founder desktop acceptance is pending.

@@ -1,0 +1,4 @@
+"use client";
+import { ButtonLink } from "@/components/ui";
+import { Icon } from "@/components/icon";
+export function FinalCTA(){return <section className="home-final-cta" aria-labelledby="final-title" onPointerMove={e=>{if(e.pointerType!=="mouse"||matchMedia("(prefers-reduced-motion: reduce)").matches)return;const r=e.currentTarget.getBoundingClientRect();e.currentTarget.style.setProperty("--halo-x",`${(e.clientX-r.left)/r.width*100}%`);e.currentTarget.style.setProperty("--halo-y",`${(e.clientY-r.top)/r.height*100}%`);}} onPointerLeave={e=>{e.currentTarget.style.removeProperty("--halo-x");e.currentTarget.style.removeProperty("--halo-y");}}><p className="eyebrow">A SHARED QUESTION. A PROTECTED WAY FORWARD.</p><h2 id="final-title">A new starting point<br/>for working together.</h2><div className="button-row"><ButtonLink href="/book-demo" variant="primary">Book a Demo <Icon name="arrow"/></ButtonLink></div></section>}

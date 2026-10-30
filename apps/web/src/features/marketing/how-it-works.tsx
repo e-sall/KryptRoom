@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 export const collaborationSteps = Object.freeze([
   { title: "Create Room", concept: "Protected collaboration", text: "Define a shared purpose. Each organization keeps control of its own environment.", detail: "A Room coordinates a collaboration; it is not a central warehouse of raw datasets." },
@@ -8,8 +8,10 @@ export const collaborationSteps = Object.freeze([
   { title: "Run Computation", concept: "Persistent state", text: "Evolve a protected RoomState. Reveal only explicitly authorized outputs.", detail: "Protected artifacts stay protected and can support subsequent authorized computations. A result does not imply permission to reveal it." },
 ].map((step) => Object.freeze(step)));
 
+const subscribeHydration = () => () => {};
 export function HowItWorks() {
   const [step, setStep] = useState(0);
+  const hydrated = useSyncExternalStore(subscribeHydration, () => true, () => false);
   const section = useRef<HTMLElement>(null);
   const manualSelection = useRef(false);
   useEffect(() => {
@@ -21,10 +23,13 @@ export function HowItWorks() {
     };
     function onScroll() {
       if (manualSelection.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches || window.innerWidth < 768) return;
-      const items = [...(section.current?.querySelectorAll<HTMLElement>("[data-story-step]") ?? [])];
-      const nearest = items.map((element, index) => ({ index, distance: Math.abs(element.getBoundingClientRect().top - innerHeight * 0.42) })).sort((a, b) => a.distance - b.distance)[0];
       const bounds = section.current?.getBoundingClientRect();
-      if (nearest && bounds && bounds.top < innerHeight * 0.65 && bounds.bottom > innerHeight * 0.4) setStep(nearest.index);
+      if (!bounds) return;
+      // Natural document scrolling through the track; phase four begins well
+      // before the sticky panel releases. No wheel/key default is intercepted.
+      const distance = bounds.height - (section.current?.querySelector(".how-panel")?.getBoundingClientRect().height ?? 0);
+      const progress = Math.max(0, Math.min(1, (110 - bounds.top) / Math.max(1, distance)));
+      setStep(Math.min(3, Math.floor(progress / .22)));
     }
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("wheel", resumeScroll, { passive: true });
@@ -35,8 +40,8 @@ export function HowItWorks() {
       window.removeEventListener("touchmove", resumeScroll); window.removeEventListener("keydown", resumeScrollKeys);
     };
   }, []);
-  return <section ref={section} className="marketing-cadran how-it-works" aria-labelledby="how-title" id="how-it-works">
-    <p className="eyebrow">HOW KRYPTROOM WORKS</p><h2 id="how-title">A shared goal.<br />Independent control.</h2>
+  return <section ref={section} className="how-it-works" data-enhanced={hydrated} aria-labelledby="how-title" id="how-it-works">
+    <p className="eyebrow section-label">HOW KRYPTROOM WORKS</p><div className="how-panel"><h2 id="how-title">A shared goal.<br />Independent control.</h2>
     <p className="caption">Conceptual journey · not a connected setup or execution service.</p>
     <div className="how-layout"><ol aria-label="Four collaboration steps">{collaborationSteps.map((item, i) =>
       <li key={item.title} data-story-step={i}><button aria-current={step === i ? "step" : undefined} onClick={() => { manualSelection.current = true; setStep(i); }}>
@@ -50,6 +55,6 @@ export function HowItWorks() {
         <svg viewBox="0 0 440 260" role="img" aria-labelledby="how-visual-title" aria-describedby="how-visual-desc"><title id="how-visual-title">{`${collaborationSteps[step].title}: protected collaboration`}</title><desc id="how-visual-desc">Conceptual Room and two independent organizations, protected inputs and a reusable state. Contains no private data and performs no computation.</desc><rect x="12" y="12" width="416" height="236" rx="16" fill="#202421" stroke="#5e6c64"/><text x="220" y="40">Shared Room · illustrative</text><g opacity={step>=1?1:.35}><rect x="36" y="64" width="160" height="58" rx="8" fill="#30332e" stroke="#6c776e"/><rect x="244" y="64" width="160" height="58" rx="8" fill="#30332e" stroke="#6c776e"/><text x="116" y="98">Organization A</text><text x="324" y="98">Organization B</text></g><g opacity={step>=2?1:.25}><path d="M116 123v33h208v-33" fill="none" stroke="#7caad5"/><text x="220" y="147">Protected inputs</text></g><g opacity={step===3?1:.25}><path d="M220 157v22" stroke="#7caad5"/><rect x="95" y="180" width="250" height="46" rx="8" fill="#2c414c" stroke="#7caad5"/><text x="220" y="208">Private operation → RoomState</text></g></svg>
         <figcaption aria-live="polite"><span>{String(step + 1).padStart(2, "0")} / 04</span><strong>{collaborationSteps[step].title}</strong><p>{collaborationSteps[step].text}</p></figcaption>
       </figure><p className="caption">Scroll or choose a step. All explanations remain available without motion.</p></div>
-    </div>
+    </div></div>
   </section>;
 }

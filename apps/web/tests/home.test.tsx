@@ -3,7 +3,8 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import Home from "../src/app/page";
 import { HomeShowcase } from "../src/features/marketing/home-showcase";
-import { demoGraph, demoScenes } from "../src/features/marketing/demo-model";
+import { businessScenes } from "../src/features/marketing/business-story";
+import { demoGraph } from "../src/features/marketing/demo-model";
 
 describe("founder-approved homepage", () => {
   it("preserves the locked order, original portrait and honest technical boundaries", () => {
@@ -25,13 +26,15 @@ describe("founder-approved homepage", () => {
     const user = userEvent.setup(); render(<HomeShowcase />);
     expect(screen.getByRole("button", { name: "Pause demo" })).toBeDisabled();
     const scenes = within(screen.getByRole("navigation", { name: "Homepage demo scenes" }));
-    for (const [index, s] of demoScenes.entries()) {
+    for (const [index, s] of businessScenes.entries()) {
       await user.click(scenes.getByRole("button", { name: `Show scene ${index + 1}: ${s.name}` }));
-      expect(screen.getByLabelText("Homepage demo context")).toHaveTextContent(s.description);
+      expect(screen.getByText(s.heading)).toBeVisible();
+      expect(screen.getByText(s.description)).toBeVisible();
     }
     await user.click(screen.getByRole("button", { name: "Replay demo" }));
     expect(scenes.getByRole("button", { name: /Show scene 1:/ })).toHaveAttribute("aria-current", "step");
-    expect(screen.getByText("Not assessed")).toBeVisible(); expect(screen.getByText("Not anchored")).toBeVisible();
+    expect(screen.getByText("Interactive concept · Synthetic data")).toBeVisible();
+    expect(screen.getByText(/No LLM\/RAG is connected/)).toBeInTheDocument();
     expect(JSON.stringify(demoGraph.states)).toBe(before);
   });
 });

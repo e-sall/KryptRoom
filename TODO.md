@@ -1,5 +1,12 @@
 # TODO
 
+- M8 Marketing V6: commercial synthetic manufacturing/logistics film, separate
+  technical demo refinement, noncolliding state cards, natural sticky How story,
+  exterior section labels and targeted typography/CTA refinements. See
+  `docs/m8/pr7/MARKETING-V6-REPORT.md`. PR20 remains open; founder desktop visual
+  review and separate merge authorization remain required. No M8 completion claim.
+
+
 - M8 Marketing V5: compact desktop composition, shorter meaningful seven-scene
   replay, condensed How It Works, founder icons and pointer CTA. Exact-head
   validation in PR20; founder approval pending. See `docs/m8/pr7/MARKETING-V5-REPORT.md`.

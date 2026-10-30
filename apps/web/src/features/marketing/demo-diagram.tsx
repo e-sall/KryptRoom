@@ -3,10 +3,10 @@ import { demoGraph } from "./demo-model";
 /** P05's branched silhouette with HTML labels; all edges come from the PR3 catalog. */
 export function DemoDiagram({ scene, selected, onSelect }: { scene: number; selected: string; onSelect: (id: string) => void }) {
   const paths: Record<string, string> = {
-    "S1-S2": "M180 120 C230 120 230 48 290 48",
-    "S1-S3": "M180 120 C230 120 230 192 290 192",
-    "S2-S4": "M510 48 C580 48 560 120 640 120",
-    "S3-S4": "M510 192 C580 192 560 120 640 120",
+    "S1-S2": "M180 120 C230 120 230 50.85 290 50.85",
+    "S1-S3": "M180 120 C230 120 230 189.15 290 189.15",
+    "S2-S4": "M510 50.85 C580 50.85 560 120 640 120",
+    "S3-S4": "M510 189.15 C580 189.15 560 120 640 120",
   };
   const mobilePaths: Record<string, string> = {
     "S1-S2": "M500 74 V100 H230 V125", "S1-S3": "M500 74 V100 H770 V125",

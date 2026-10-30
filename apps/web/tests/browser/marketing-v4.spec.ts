@@ -27,11 +27,11 @@ test("V4 typography, real choreography, portrait DPR and founder alignment",asyn
  await page.goto("/");await page.evaluate(()=>document.fonts.ready);
  expect(await page.locator("h1").evaluate(e=>getComputedStyle(e).fontFamily)).toContain("KR Newsreader");
  const show=page.locator(".home-showcase");await show.scrollIntoViewIfNeeded();await expect(show).toHaveAttribute("data-running","true");
- await expect(show.locator(".showcase-film")).toHaveAttribute("data-act","0");
- expect(await show.locator(".showcase-film").textContent()).toBe("");
- const running=await show.locator(".film-packets i").first().evaluate(e=>getComputedStyle(e).animationPlayState);expect(running).toBe("running");
- await show.getByRole("button",{name:"Pause demo"}).click();expect(await show.locator(".film-packets i").first().evaluate(e=>getComputedStyle(e).animationPlayState)).toBe("paused");
- await page.emulateMedia({reducedMotion:"reduce"});expect(await show.locator(".film-packets i").first().evaluate(e=>getComputedStyle(e).animationName)).toBe("none");
+ await expect(show.locator(".business-canvas")).toHaveAttribute("data-act","0");
+
+ const running=await show.locator(".business-flow i").first().evaluate(e=>getComputedStyle(e).animationPlayState);expect(running).toBe("running");
+ await show.getByRole("button",{name:"Pause demo"}).click();expect(await show.locator(".business-flow i").first().evaluate(e=>getComputedStyle(e).animationPlayState)).toBe("paused");
+ await page.emulateMedia({reducedMotion:"reduce"});expect(await show.locator(".business-flow i").first().evaluate(e=>getComputedStyle(e).animationName)).toBe("none");
  if(info.project.name==="desktop") {const rects=await page.locator(".founder-profile picture, .founder-profile > div").evaluateAll(es=>es.map(e=>e.getBoundingClientRect().toJSON()));expect(Math.abs((rects[0].top+rects[0].bottom)/2-(rects[1].top+rects[1].bottom)/2)).toBeLessThan(2);}
  const ctx=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:2});const dpr=await ctx.newPage();await dpr.goto("http://127.0.0.1:3000/");const portrait=dpr.getByAltText("Elimane Sall, founder of KryptRoom");await portrait.scrollIntoViewIfNeeded();await portrait.evaluate(async e=>(e as HTMLImageElement).decode());
  const measured=await portrait.evaluate(e=>({source:(e as HTMLImageElement).currentSrc,width:e.getBoundingClientRect().width,dpr:devicePixelRatio}));expect(measured.source).toMatch(/-(768|1200)\.webp$/);expect(measured.dpr).toBe(2);await ctx.close();

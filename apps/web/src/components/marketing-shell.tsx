@@ -8,6 +8,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import "@/features/marketing/marketing.css";
 import "@/features/marketing/editorial.css";
+import "@/features/marketing/commercial.css";
 
 export function MarketingShell({ children }: { children: ReactNode }) {
   const dropdown = useRef<HTMLDetailsElement>(null);
@@ -25,7 +26,7 @@ export function MarketingShell({ children }: { children: ReactNode }) {
           <Link prefetch={false} href="/technology">Technology</Link>
           <details className="solutions-dropdown" ref={dropdown} onKeyDown={e => { if (e.key === "Escape") { e.preventDefault(); dropdown.current?.removeAttribute("open"); dropdown.current?.querySelector("summary")?.focus(); } }} onBlur={e => { if (!e.currentTarget.contains(e.relatedTarget as Node)) e.currentTarget.removeAttribute("open"); }}>
             <summary>Solutions <svg className="solutions-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="m2 4 4 4 4-4" stroke="currentColor" strokeWidth="1.3" /></svg></summary>
-            <div className="solutions-menu"><p className="eyebrow">POSSIBLE APPLICATIONS</p>{solutions.map(s => <Link prefetch={false} key={s.slug} href={`/${s.slug}`} onClick={() => dropdown.current?.removeAttribute("open")}><Icon name={s.icon} /><span><strong>{({"solutions-manufacturing":"Manufacturing","solutions-healthcare":"Healthcare","solutions-finance":"Financial Services","solutions-research":"Research"})[s.slug]}</strong><small>{({"solutions-manufacturing":"Protected supplier collaboration.","solutions-healthcare":"Confidential cohort research.","solutions-finance":"Controlled institutional comparisons.","solutions-research":"Independent teams, private computation."})[s.slug]}</small></span><span aria-hidden="true">→</span></Link>)}</div>
+            <div className="solutions-menu"><p className="eyebrow">POSSIBLE APPLICATIONS</p>{solutions.map(s => <Link prefetch={false} key={s.slug} href={`/${s.slug}`} onClick={() => dropdown.current?.removeAttribute("open")}><Icon name={s.icon} /><span><strong>{({"solutions-manufacturing":"Manufacturing","solutions-healthcare":"Healthcare","solutions-finance":"Financial Services","solutions-research":"Research"})[s.slug]}</strong><small>{({"solutions-manufacturing":"Protected supplier collaboration.","solutions-healthcare":"Confidential cohort research.","solutions-finance":"Controlled institutional comparisons.","solutions-research":"Independent teams, private computation."})[s.slug]}</small></span></Link>)}</div>
           </details>
         </nav>
         <ButtonLink href="/book-demo" variant="primary">

@@ -2,6 +2,14 @@
 
 ## Founder renewal — 2026-10-25 (current)
 
+Marketing V6 reevaluation, 2026-10-30: unchanged founder authorization, owner,
+scope and expiration. ESLint current is 10.14.0; official Next config current is
+16.4.3. React 7.37.5, JSX-a11y 6.10.2 and import 2.32.0 still exclude ESLint 10
+in their declared peers. No compatible drop-in official chain is established.
+Full and production npm audits return zero findings; braces is absent from the
+production tree. GHSA withdrawal remains in force. See [V6 evidence](../pr7/MARKETING-V6-REPORT.md#security-disposition).
+This is reevaluation evidence, not renewal, merge authority or deployment approval.
+
 Marketing V4 reevaluation, 2026-10-29: scope, owner and expiration unchanged.
 Official npm peer metadata still excludes ESLint 10 in React 7.37.5, JSX-a11y
 6.10.2 and import 2.32.0. Current full and production audits return zero;

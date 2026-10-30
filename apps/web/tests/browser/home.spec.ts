@@ -2,6 +2,12 @@ import { test, expect, type Page, type TestInfo } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { setCssViewport } from "./css-viewport";
 const problems = new WeakMap<Page, string[]>();
+async function controlledClock(page: Page) {
+  await page.clock.install();
+  // Stop wall-time drift between scene assertions. runFor advances all timers
+  // explicitly; slow engine/CPU time must not skip an act while it is inspected.
+  await page.clock.pauseAt(new Date(await page.evaluate(() => Date.now() + 1000)));
+}
 test.beforeEach(async ({ page }, info) => {
   await setCssViewport(page, info.project.use.viewport ?? { width: 1440, height: 900 });
   const errors: string[] = []; problems.set(page, errors);
@@ -14,7 +20,7 @@ test.afterEach(async ({ page }) => {
   expect(await page.evaluate(() => [localStorage.length, sessionStorage.length, document.cookie])).toEqual([0, 0, ""]);
 });
 test("autoplay advances seven scenes, loops, pauses, resumes and suspends", async ({ page }) => {
-  await page.clock.install(); await page.goto("/");
+  await controlledClock(page); await page.goto("/");
   const showcase = page.getByRole("region", { name: "THE PRODUCT, IN MOTION" });
   await showcase.scrollIntoViewIfNeeded(); await expect(showcase).toHaveAttribute("data-running", "true");
   for (let i = 0; i < 7; i++) { await expect(showcase).toHaveAttribute("data-scene", String(i + 1)); await page.clock.runFor([2600,2800,3200,3600,3800,4000,3600][i]+50); }
@@ -43,12 +49,12 @@ test("showcase framing, stable scenes, section evidence and accessible FAQ", asy
   const width = info.project.use.viewport?.width ?? 1440;
   const sizes = width >= 1280 ? [[1440,900],[1366,768],[1280,800],[1024,768]] : width >= 768 ? [[834,1112],[768,1024]] : [[390,844],[375,812],[320,800]];
   for (const [w,h] of sizes) {
-    await setCssViewport(page, { width: w, height: h }); await page.goto("/");
+    await setCssViewport(page, { width: w, height: h }); await page.goto("/"); await page.evaluate(()=>document.fonts.ready);
     expect(await page.evaluate(() => innerWidth)).toBe(w);
     const showcase = page.locator(".home-showcase");
     for (let i = 0; i < 7; i++) {
       await showcase.getByRole("navigation").getByRole("button").nth(i).click();
-      const boxes = await showcase.locator(".showcase-window, .showcase-body, .showcase-stage, .showcase-context, .showcase-state").evaluateAll(es => es.map(e => { const r = e.getBoundingClientRect(); return { x:r.x, y:r.y, right:r.right, bottom:r.bottom, w:r.width, h:r.height, scrollH:e.scrollHeight, clientH:e.clientHeight }; }));
+      const boxes = await showcase.locator(".showcase-window, .business-canvas, .business-canvas > [data-visible='true']").evaluateAll(es => es.map(e => { const r = e.getBoundingClientRect(); return { x:r.x, y:r.y, right:r.right, bottom:r.bottom, w:r.width, h:r.height, scrollH:e.scrollHeight, clientH:e.clientHeight }; }));
       const frame = boxes[0];
       for (const b of boxes.slice(1)) { expect(b.x).toBeGreaterThanOrEqual(frame.x); expect(b.right).toBeLessThanOrEqual(frame.right + 1); expect(b.y).toBeGreaterThanOrEqual(frame.y); expect(b.bottom).toBeLessThanOrEqual(frame.bottom + 1); expect(b.scrollH).toBeLessThanOrEqual(b.clientH + 1); }
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= Math.ceil(visualViewport?.width ?? innerWidth))).toBe(true);
@@ -73,16 +79,16 @@ test("showcase framing, stable scenes, section evidence and accessible FAQ", asy
 });
 
 test("reduced motion and no-JavaScript keep honest static explanations", async ({ page, browser }, info) => {
-  await page.clock.install(); await page.emulateMedia({ reducedMotion: "reduce" }); await page.goto("/");
+  await controlledClock(page); await page.emulateMedia({ reducedMotion: "reduce" }); await page.goto("/");
   const showcase = page.locator(".home-showcase"); await showcase.scrollIntoViewIfNeeded();
   await expect(showcase).toHaveAttribute("data-running", "false"); await page.clock.runFor(20000);
   await expect(showcase).toHaveAttribute("data-scene", "1"); await expect(page.getByRole("button", { name: "Pause demo" })).toBeDisabled();
   await showcase.getByRole("navigation").getByRole("button").nth(6).click(); await expect(showcase).toHaveAttribute("data-scene", "7");
-  await expect(showcase.getByText("Not assessed", { exact:true })).toBeVisible(); await expect(showcase.getByText("Not anchored", { exact:true })).toBeVisible();
+  await expect(showcase.getByText(/Illustrative applications, no alert sent/)).toBeVisible();
   const context = await browser.newContext({ javaScriptEnabled:false, viewport:info.project.use.viewport }); const staticPage = await context.newPage();
-  await setCssViewport(staticPage, info.project.use.viewport ?? { width: 1440, height: 900 }); await staticPage.goto("http://127.0.0.1:3000/"); await expect(staticPage.getByText(/This is a static synthetic collaboration diagram/)).toBeVisible();
+  await setCssViewport(staticPage, info.project.use.viewport ?? { width: 1440, height: 900 }); await staticPage.goto("http://127.0.0.1:3000/"); await expect(staticPage.getByText(/Static synthetic business concept/)).toBeVisible();
   await expect(staticPage.getByRole("link", { name:"Interactive demo",exact:true })).toHaveAttribute("href", "/demo");
-  await expect(staticPage.locator(".showcase-state")).toHaveCount(8); await context.close();
+  await expect(staticPage.locator(".showcase-state")).toHaveCount(4); await context.close();
 });
 
 test("review F01: showcase title clears the floating navbar with the complete desktop frame", async ({ page }, info) => {
@@ -101,24 +107,19 @@ test("review F01: showcase title clears the floating navbar with the complete de
   }
 });
 
-test("review F02: automatic storytelling progressively reveals inputs, operation and exact lineage", async ({page}) => {
-  await page.clock.install(); await page.goto("/");
-  const show = page.locator(".home-showcase"); await show.scrollIntoViewIfNeeded(); await expect(show).toHaveAttribute("data-running","true");
-  const initial = await show.locator(".showcase-stage").boundingBox();
+test("V6 automatic business storytelling has distinct scenes, stable geometry and disclosure boundaries", async ({page}) => {
+  await controlledClock(page); await page.goto("/");
+  const show=page.locator(".home-showcase"); await show.scrollIntoViewIfNeeded(); await expect(show).toHaveAttribute("data-running","true");
+  const initial=await show.locator(".business-canvas").boundingBox();
+  const acts=[".business-shared-question",".business-input-mask",".business-computation",".business-insights",".business-dashboard",".business-assistant",".business-actions"];
   for(let scene=0;scene<7;scene++) {
     await expect(show).toHaveAttribute("data-scene",String(scene+1));
-    const inputs=show.locator(".showcase-protected-inputs"), operation=show.locator(".showcase-operation"), lineage=show.locator(".showcase-lineage");
-    if(scene>=1) await expect(inputs).toBeVisible(); else await expect(inputs).toBeHidden();
-    if(scene>=2) await expect(operation).toBeVisible(); else await expect(operation).toBeHidden();
-    if(scene>=3) await expect(lineage).toBeVisible(); else await expect(lineage).toBeHidden();
-    if(scene>=3) {
-      expect(await show.locator(".showcase-state small").allTextContents()).toEqual(["Parents: None","Parents: S1","Parents: S1","Parents: S2 · S3"]);
-      await expect(show.locator(".showcase-state")).toHaveCount(4);
-    }
-    if(scene===4) await expect(show.locator(".showcase-story-note")).toContainText("not a grant or a disclosed value");
-    if(scene===5) await expect(show.locator(".showcase-story-note")).toContainText("No proof or chain record");
-    if(scene===6) await expect(show.locator(".showcase-story-note")).toContainText("existing synthetic Supply Chain states");
-    expect((await show.locator(".showcase-stage").boundingBox())!.height).toBe(initial!.height);
+    for(let i=0;i<7;i++) { if(i===scene) await expect(show.locator(acts[i])).toBeVisible(); else await expect(show.locator(acts[i])).toBeHidden(); }
+    await expect(show.getByText("Interactive concept · Synthetic data")).toBeVisible();
+    if(scene===3) { await expect(show.locator(".business-gate")).toContainText("authorization boundary"); await expect(show.locator(".business-insights")).toContainText("Computation never implies permission to disclose"); }
+    if(scene===4) expect(await show.locator(".business-dashboard .business-kpis strong").allTextContents()).toEqual(["3","92%","2"]);
+    if(scene===5) { await expect(show.locator(".business-assistant")).toContainText("No LLM/RAG is connected; no raw secret data is queried"); await expect(show.locator(".business-story-caption")).toContainText("disclosure model remains to be defined"); }
+    expect((await show.locator(".business-canvas").boundingBox())!.height).toBe(initial!.height);
     await page.clock.runFor([2600,2800,3200,3600,3800,4000,3600][scene]+50);
   }
 });
@@ -127,8 +128,8 @@ test("review F03: narrow ordered state cards have readable noncolliding labels",
   await page.emulateMedia({reducedMotion:"reduce"});
   for(const width of [320,375,390]) {
     await setCssViewport(page,{width,height:844}); await page.goto("/");
-    const show=page.locator(".home-showcase"); await show.locator(".showcase-scenes button").nth(6).click();
-    const labels=await show.locator(".showcase-state > span, .showcase-state strong > span, .showcase-state small, .showcase-context dt, .showcase-context dd").evaluateAll(es=>es.map(e=>({font:parseFloat(getComputedStyle(e).fontSize),rect:e.getBoundingClientRect().toJSON(),parent:e.parentElement!.getBoundingClientRect().toJSON(),overflow:e.scrollWidth>e.clientWidth+1})));
+    const show=page.locator(".persistent-visual");
+    const labels=await show.locator(".showcase-state > span, .showcase-state strong > span, .showcase-state small").evaluateAll(es=>es.map(e=>({font:parseFloat(getComputedStyle(e).fontSize),rect:e.getBoundingClientRect().toJSON(),parent:e.parentElement!.getBoundingClientRect().toJSON(),overflow:e.scrollWidth>e.clientWidth+1})));
     for(const label of labels) {expect(label.font).toBeGreaterThanOrEqual(12);expect(label.rect.left).toBeGreaterThanOrEqual(label.parent.left);expect(label.rect.right).toBeLessThanOrEqual(label.parent.right+1);expect(label.overflow).toBe(false);}
     for(const state of await show.locator(".showcase-state").all()) {
       // Explicit line boxes also cover hidden monospace metrics before the

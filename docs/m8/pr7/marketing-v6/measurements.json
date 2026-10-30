@@ -1,0 +1,227 @@
+[
+  {
+    "width": 1366,
+    "height": 768,
+    "dpr": 1,
+    "zoom": 1,
+    "overflow": 0,
+    "panels": {
+      ".home-hero": {
+        "width": 1160,
+        "height": 414
+      },
+      ".business-window": {
+        "width": 1160,
+        "height": 579.59375
+      },
+      ".business-canvas": {
+        "width": 1086,
+        "height": 350
+      },
+      ".how-panel": {
+        "width": 1160,
+        "height": 529.46875
+      }
+    }
+  },
+  {
+    "width": 1440,
+    "height": 900,
+    "dpr": 1,
+    "zoom": 1,
+    "overflow": 0,
+    "panels": {
+      ".home-hero": {
+        "width": 1160,
+        "height": 414
+      },
+      ".business-window": {
+        "width": 1160,
+        "height": 579.59375
+      },
+      ".business-canvas": {
+        "width": 1086,
+        "height": 350
+      },
+      ".how-panel": {
+        "width": 1160,
+        "height": 529.46875
+      }
+    }
+  },
+  {
+    "width": 1536,
+    "height": 864,
+    "dpr": 1,
+    "zoom": 1,
+    "overflow": 0,
+    "panels": {
+      ".home-hero": {
+        "width": 1160,
+        "height": 414
+      },
+      ".business-window": {
+        "width": 1160,
+        "height": 579.59375
+      },
+      ".business-canvas": {
+        "width": 1086,
+        "height": 350
+      },
+      ".how-panel": {
+        "width": 1160,
+        "height": 529.46875
+      }
+    }
+  },
+  {
+    "width": 1600,
+    "height": 900,
+    "dpr": 1,
+    "zoom": 1,
+    "overflow": 0,
+    "panels": {
+      ".home-hero": {
+        "width": 1160,
+        "height": 414
+      },
+      ".business-window": {
+        "width": 1160,
+        "height": 579.59375
+      },
+      ".business-canvas": {
+        "width": 1086,
+        "height": 350
+      },
+      ".how-panel": {
+        "width": 1160,
+        "height": 529.46875
+      }
+    }
+  },
+  {
+    "width": 1920,
+    "height": 1080,
+    "dpr": 1,
+    "zoom": 1,
+    "overflow": 0,
+    "panels": {
+      ".home-hero": {
+        "width": 1160,
+        "height": 414
+      },
+      ".business-window": {
+        "width": 1160,
+        "height": 579.59375
+      },
+      ".business-canvas": {
+        "width": 1086,
+        "height": 350
+      },
+      ".how-panel": {
+        "width": 1160,
+        "height": 529.46875
+      }
+    }
+  },
+  {
+    "width": 834,
+    "height": 1112,
+    "dpr": 1,
+    "zoom": 1,
+    "overflow": 0,
+    "panels": {
+      ".home-hero": {
+        "width": 786,
+        "height": 421.34375
+      },
+      ".business-window": {
+        "width": 786,
+        "height": 655.1875
+      },
+      ".business-canvas": {
+        "width": 736,
+        "height": 360
+      },
+      ".how-panel": {
+        "width": 786,
+        "height": 606.015625
+      }
+    }
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "dpr": 1,
+    "zoom": 1,
+    "overflow": 0,
+    "panels": {
+      ".home-hero": {
+        "width": 358,
+        "height": 427.984375
+      },
+      ".business-window": {
+        "width": 358,
+        "height": 1212.875
+      },
+      ".business-canvas": {
+        "width": 336,
+        "height": 710
+      },
+      ".how-panel": {
+        "width": 358,
+        "height": 1719.6875
+      }
+    }
+  },
+  {
+    "width": 375,
+    "height": 812,
+    "dpr": 1,
+    "zoom": 1,
+    "overflow": 0,
+    "panels": {
+      ".home-hero": {
+        "width": 343,
+        "height": 427.984375
+      },
+      ".business-window": {
+        "width": 343,
+        "height": 1212.875
+      },
+      ".business-canvas": {
+        "width": 321,
+        "height": 710
+      },
+      ".how-panel": {
+        "width": 343,
+        "height": 1784.46875
+      }
+    }
+  },
+  {
+    "width": 320,
+    "height": 800,
+    "dpr": 1,
+    "zoom": 1,
+    "overflow": 0,
+    "panels": {
+      ".home-hero": {
+        "width": 288,
+        "height": 551.59375
+      },
+      ".business-window": {
+        "width": 288,
+        "height": 1212.875
+      },
+      ".business-canvas": {
+        "width": 266,
+        "height": 710
+      },
+      ".how-panel": {
+        "width": 288,
+        "height": 1896.03125
+      }
+    }
+  }
+]

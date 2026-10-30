@@ -40,7 +40,7 @@ test("P01 hero, honest booking and four P02 steps", async ({ page }, info) => {
     // A new user scroll gesture resumes scroll-following after manual selection.
     await page.mouse.wheel(0, 1);
     for (const index of [0, 3, 1]) {
-      await steps.locator("li").nth(index).evaluate((element) => window.scrollTo(0, scrollY + element.getBoundingClientRect().top - innerHeight * .42));
+      await page.locator("#how-it-works").evaluate((element,index) => { const panel=element.querySelector(".how-panel")!; window.scrollTo(0,scrollY+element.getBoundingClientRect().top-110+(element.getBoundingClientRect().height-panel.getBoundingClientRect().height)*index*.23); },index);
       await expect(steps.getByRole("button").nth(index)).toHaveAttribute("aria-current", "step");
     }
   }

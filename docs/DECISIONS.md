@@ -495,3 +495,19 @@ the long How narrative with four condensed controls and a Room/input/state
 illustration. Retain context and original semantic boundaries. Nonuniform
 presentation dwell times total 23.6s; CSS pointer halo does not move controls.
 No new dependency, backend, runtime or CI change. See the V5 report.
+
+
+## M8 Marketing V6 (2026-10-30)
+
+Separate commercial explanation from technical inspection. The homepage film uses
+one fixed manufacturing/logistics scenario and a UI-only summary (3 groups, 92%,
+2 suppliers). Authorization is a distinct illustrated boundary. The assistant is
+a future concept over explicitly permitted summaries; its disclosure model is
+not specified or implemented. No raw secret-data query, LLM, RAG, alert delivery,
+telemetry or real computation is introduced. `/demo` retains the existing catalog,
+seven technical scenes, exact ordered parents, mode/selection/inspector behavior.
+Use fixed reserved scene dimensions and real two-row node layout, not intersecting
+absolute cards. Natural CSS sticky scrolling controls How phases; manual controls,
+reverse scroll, reduced motion and full no-JS explanations remain. External section
+labels, local responsive portrait and canonical logo retain the approved identity.
+No dependency, CI, runtime security or M1–M7 change. See V6 report and evidence.

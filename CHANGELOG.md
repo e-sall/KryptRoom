@@ -1,5 +1,38 @@
 # Changelog
 
+- M8 Marketing V6: commercial synthetic manufacturing/logistics film, separate
+  technical demo refinement, noncolliding state cards, natural sticky How story,
+  exterior section labels and targeted typography/CTA refinements. See
+  `docs/m8/pr7/MARKETING-V6-REPORT.md`. PR20 remains open; founder desktop visual
+  review and separate merge authorization remain required. No M8 completion claim.
+
+
+- M8 Marketing V5: compact desktop composition, shorter meaningful seven-scene
+  replay, condensed How It Works, founder icons and pointer CTA. Exact-head
+  validation in PR20; founder approval pending. See `docs/m8/pr7/MARKETING-V5-REPORT.md`.
+
+
+- M8 PR20 Marketing V4: scoped editorial typography, left-brand navigation and
+  accessible Solutions disclosure, four proposed industry scenarios, enriched
+  Product/Technology/Security pages, honest demo contact, refined synthetic
+  choreography and high-quality responsive founder portrait. See
+  `docs/m8/pr7/MARKETING-V4-REPORT.md`. PR20 remains unmerged.
+
+- PR20 independent review F01–F04: readable showcase heading below floating
+  navigation, progressive synthetic storytelling, legible ordered mobile state
+  cards and responsive delivery of the unchanged founder portrait. Targeted
+  regressions and before/after evidence: `docs/m8/pr7/REVIEW-FIX-REPORT.md`.
+
+- M8 PR7 founder-directed homepage: editorial narrative, framed autoplay showcase
+  with pause/resume/replay and visibility/motion controls, original founder portrait,
+  bounded cryptographic evidence and final ten-question FAQ. Full `/demo` retained.
+- M8 PR7 freeze candidate: responsive modal retirement, visible keyboard focus
+  around fixed navigation, current synthetic Graph guidance, complete journeys,
+  viewport/state/deep-link and optional cross-browser QA. Founder-approved
+  M8-SEC-001 renewal covers ESLint 9 EOL only through 2026-11-01 23:59 Toronto;
+  withdrawn GHSA portion closed. No dependency, CI, core or historical evidence
+  changes. See `docs/m8/pr7/README.md`. Independent review and merge remain pending.
+
 All notable project changes are recorded here. The project follows milestone-oriented development; it has not adopted semantic versioning yet.
 
 ## Unreleased

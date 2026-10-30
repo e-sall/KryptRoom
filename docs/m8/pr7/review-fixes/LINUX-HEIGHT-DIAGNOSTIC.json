@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-26",
+  "failed_head": "5c575b829bd1c8e734e535739239bcb73a402df1",
+  "run_id": 40270116345,
+  "job_id": 121400896949,
+  "artifact_id": 12628031724,
+  "artifact_advertised_digest": "sha256:bb630e6db64370f9ae3d6a5d581170b4854bcf351b2858faa48c797817335b3e",
+  "test": "showcase framing, stable scenes, section evidence and accessible FAQ",
+  "project": "mobile",
+  "viewport_width_css_px": 390,
+  "trace_file": "1-trace.trace",
+  "organizations": {
+    "trace_call_id": "onoi@7105",
+    "frame_height": 1612.015625,
+    "stage_height": 981.078125,
+    "state_card_heights": [115.1875, 115.1875, 115.1875, 115.1875],
+    "context_height": 365.75
+  },
+  "protected_inputs": {
+    "trace_call_id": "onoi@7167",
+    "frame_height": 1608.015625,
+    "stage_height": 977.078125,
+    "state_card_heights": [114.1875, 114.1875, 114.1875, 114.1875],
+    "context_height": 365.75
+  },
+  "measured_total_drift_px": 4,
+  "correction": "Explicit 20px mobile ID/title line boxes instead of platform normal font metrics",
+  "assertion_relaxed": false,
+  "ci_modified": false,
+  "extra_regression": "Both mobile strong and nested title computed line-height must equal 20px"
+}

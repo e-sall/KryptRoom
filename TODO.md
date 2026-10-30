@@ -1,5 +1,32 @@
 # TODO
 
+- M8 Marketing V6: commercial synthetic manufacturing/logistics film, separate
+  technical demo refinement, noncolliding state cards, natural sticky How story,
+  exterior section labels and targeted typography/CTA refinements. See
+  `docs/m8/pr7/MARKETING-V6-REPORT.md`. PR20 remains open; founder desktop visual
+  review and separate merge authorization remain required. No M8 completion claim.
+
+
+- M8 Marketing V5: compact desktop composition, shorter meaningful seven-scene
+  replay, condensed How It Works, founder icons and pointer CTA. Exact-head
+  validation in PR20; founder approval pending. See `docs/m8/pr7/MARKETING-V5-REPORT.md`.
+
+
+## PR20 Marketing V4
+
+- [x] Implement the founder-directed marketing surfaces and targeted regressions.
+- [x] Prepare exact-head hosted check tracking in PR20; its current ledger is authoritative.
+- [ ] Obtain founder visual acceptance and separate merge authorization.
+- [ ] Reevaluate the unchanged ESLint EOL exception before merge or expiration.
+
+
+## PR20 independent review follow-up
+
+- [x] Implement targeted F01–F04 presentation fixes with regression coverage.
+- [ ] Obtain final founder visual approval; leave PR20 open and unmerged.
+- [ ] Reevaluate M8-SEC-001 before PR7 merge or 2026-11-01 23:59 Toronto,
+  whichever comes first. No automatic renewal or production deployment approval.
+
 ## Repository foundation
 
 - [x] Record product and architecture context.
@@ -109,7 +136,7 @@ and run 39381943437 contains the authoritative public evidence package.
 - [ ] Resolve or explicitly accept the documented lint-tooling debt (unpatched braces advisory and ESLint 9 support lifecycle).
 - [x] Align the single KLogo with the later P05/P06/P11 thin gray-branch identity and add regression checks.
 - [x] Record temporary exception M8-SEC-001 with production/reachability evidence.
-- [ ] Maintainer reevaluation of M8-SEC-001 **before PR7 starts or 2026-11-21, whichever is earlier**; no silent renewal.
+- [x] Pre-PR7 M8-SEC-001 reevaluation completed 2026-10-25; limited founder renewal recorded in `docs/m8/pr1/SECURITY-EXCEPTION.md`. See current PR7 gate below.
 - [ ] Implement PR2–7 in separate approved increments; no backend capability inferred.
 
 ## M8 PR2 — Rooms & Easy Setup
@@ -124,7 +151,7 @@ and run 39381943437 contains the authoritative public evidence package.
 - [x] Apply the separately authorized two-file M7 synthetic-vector refresh; verify M5/M7 together, exact hash-bound CI classification and historical Layer B/Layer C distinction.
 - [x] Owner-approved PR2 merged through #15 at `a88df46a0213d7c422410db4d5cde32f8c3de897`; ten post-merge workflows passed.
 - [ ] Integrate authenticated Room/invitation/connector/policy services only in a separately approved scope.
-- [ ] Reevaluate M8-SEC-001 before PR7 or 2026-11-21, whichever is earlier (no renewal in PR2).
+- [x] Pre-PR7 M8-SEC-001 reevaluation completed 2026-10-25; limited founder renewal recorded in `docs/m8/pr1/SECURITY-EXCEPTION.md`. See current PR7 gate below.
 
 ## M8 PR3 — Graph Workspace
 
@@ -135,7 +162,7 @@ and run 39381943437 contains the authoritative public evidence package.
 - [x] Test DAG negatives, frontend regressions, keyboard, touch, responsive and privacy boundaries.
 - [x] Document converted-reference comparisons and HTML/React adaptations.
 - [x] PR #16 merged into dev at `2c912bcfc52d281ecdfda5798fc75e47b87fdf1e`, independently rechecked before PR4.
-- [ ] Preserve M8-SEC-001 reevaluation before PR7 or 2026-11-21.
+- [x] Pre-PR7 M8-SEC-001 reevaluation completed 2026-10-25; limited founder renewal recorded in `docs/m8/pr1/SECURITY-EXCEPTION.md`. See current PR7 gate below.
 
 ## M8 PR4 — Computations & Results
 
@@ -148,7 +175,7 @@ and run 39381943437 contains the authoritative public evidence package.
 - [x] Address PR #17 narrow Analytics label spacing with a failing-then-passing browser regression, four-width visual evidence and unchanged chart/table values.
 - [x] Independent PR4 review and final-head CI approved; PR #17 merged into dev at `60ede3fcc13d6cc7c008ed425e751894d625342f` with explicit maintainer authorization.
 - [ ] Authenticated services and real disclosure remain separately scoped future work.
-- [ ] M8-SEC-001 reevaluation before PR7 or 2026-11-21, whichever is earlier; no renewal.
+- [x] Pre-PR7 M8-SEC-001 reevaluation completed 2026-10-25; limited founder renewal recorded in `docs/m8/pr1/SECURITY-EXCEPTION.md`. See current PR7 gate below.
 
 ## Explicitly deferred work (unchanged)
 
@@ -161,7 +188,7 @@ and run 39381943437 contains the authoritative public evidence package.
 - [x] Exercise unit, production-browser, responsive, accessibility and privacy regressions; record visual evidence.
 - [x] Independent PR5 review and final-head CI approved; PR #18 merged into dev at `b2459744ef9b10971a8e95a9abb2da26f4b75d6e`.
 - [ ] Authenticated field-filtered provenance/activity adapters remain future work; not implied by core tests.
-- [ ] Preserve M8-SEC-001 reevaluation before PR7 or 2026-11-21, whichever is earlier.
+- [x] Pre-PR7 M8-SEC-001 reevaluation completed 2026-10-25; limited founder renewal recorded in `docs/m8/pr1/SECURITY-EXCEPTION.md`. See current PR7 gate below.
 
 ### M8 PR6 — Marketing & Interactive Demo
 
@@ -169,9 +196,22 @@ and run 39381943437 contains the authoritative public evidence package.
 - [x] Implement hero, honest CTA/booking, four-step explanation and seven-scene demo.
 - [x] Keep Explore/Presentation geometry stable and reuse the existing ordered DAG.
 - [x] Add unit/browser coverage, responsive captures and source traceability.
-- [ ] Independent PR6 review and final-head CI disposition; leave open, do not merge.
+- [x] PR #19 reviewed and merged into dev at `8e8d8349db565278a866bd82f743f03fd1ee8c35`; verified before PR7.
 - [ ] Booking provider and authenticated operational integration remain future work.
-- [ ] Reevaluate M8-SEC-001 before PR7 or 2026-11-21, whichever is earlier.
+- [x] Pre-PR7 M8-SEC-001 reevaluation completed 2026-10-25; limited founder renewal recorded in `docs/m8/pr1/SECURITY-EXCEPTION.md`. See current PR7 gate below.
+
+### M8 PR7 — Responsive, Accessibility & Final Freeze QA
+
+- [x] Phase 0 reviewed; founder explicitly approved ESLint 9 EOL-only renewal on 2026-10-25.
+- [x] Close withdrawn GHSA portion with official evidence; preserve historical exception record.
+- [x] Reproduce and correct focus occlusion and mobile-sheet rotation defects; preserve P11 layouts.
+- [x] Add complete journey, responsive/state/invalid-route and representative cross-browser checks.
+- [ ] Independent review of final PR7 implementation, captures, Freeze QA and debt report.
+- [ ] Reevaluate M8-SEC-001 **before PR7 merge or 2026-11-01 23:59 America/Toronto**, whichever comes first. No automatic renewal.
+- [ ] Supported compatible lint-chain migration under separate review; read-only upstream monitoring active through expiration.
+- [ ] Explicit founder merge approval; do not merge PR7 or change main in this task.
+- [ ] Full manual assistive-technology and physical-device review; no WCAG certification claimed.
+- [ ] M8 closure only after independent final review and authorized merge. No M9 work begun.
 
 ### Other deferred work
 
@@ -182,6 +222,6 @@ and run 39381943437 contains the authoritative public evidence package.
 - FHE analytics beyond the bounded M6 fixed-vector addition.
 - Proofs beyond M5's bounded metadata relation, post-quantum identity, and RunReceipts.
 - Mainnet deployment, on-chain state/storage/computation, tokens, payments, or blockchain governance.
-- Web product functionality beyond the disconnected M8 PR1–PR6 presentation scope.
+- Web product functionality beyond the disconnected M8 PR1–PR7 presentation scope.
 - Authoritative RoomState branch operations, merge implementation, and dynamic membership.
 

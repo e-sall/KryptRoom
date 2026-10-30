@@ -83,13 +83,20 @@ export function AppShell({
   const mainRef = useRef<HTMLElement>(null);
   const previousPath = useRef(pathname);
   useEffect(() => {
+    if (!panel) return;
+    const mobile = window.matchMedia("(max-width: 767px)");
+    const retireSheet = () => { if (!mobile.matches) setPanel(null); };
+    mobile.addEventListener("change", retireSheet);
+    return () => mobile.removeEventListener("change", retireSheet);
+  }, [panel]);
+  useEffect(() => {
     if (preview || previousPath.current !== pathname) {
       mainRef.current?.focus({ preventScroll: true });
       previousPath.current = pathname;
     }
   }, [pathname, preview]);
   const navLink = (item: (typeof modules)[number], compact = false) => (
-    <Link
+    <Link prefetch={false}
       key={item.id}
       href={
         preview && item.id === "rooms" ? "/preview/rooms"
@@ -130,7 +137,7 @@ export function AppShell({
             <span>Interface preview</span>
           </div>
         </div>
-        <Link
+        <Link prefetch={false}
           href="/design-system"
           className="foundation-link"
           aria-label="Design system"
@@ -142,14 +149,14 @@ export function AppShell({
       <div className="app-body">
         <header className="topbar">
           <div className="mobile-brand">
-            <Link href="/" aria-label="KryptRoom home">
+            <Link prefetch={false} href="/" aria-label="KryptRoom home">
               <KLogo />
             </Link>
           </div>
           <nav aria-label="Breadcrumb">
             <ol className="breadcrumbs">
               <li>
-                <Link href={preview ? "/preview/rooms" : "/app/rooms"}>
+                <Link prefetch={false} href={preview ? "/preview/rooms" : "/app/rooms"}>
                   {preview ? "Design preview" : "Workspace"}
                 </Link>
               </li>
@@ -178,7 +185,7 @@ export function AppShell({
               <p className="eyebrow">CONTEXT</p>
               <p>{contextLabel}</p>
               <Button
-                onClick={() => setPanel("details")}
+                onClick={(event) => { event.currentTarget.focus(); setPanel("details"); }}
                 aria-haspopup="dialog"
               >
                 Workspace details <Icon name="arrow" />
@@ -196,7 +203,7 @@ export function AppShell({
           className="nav-link"
           type="button"
           aria-haspopup="dialog"
-          onClick={() => setPanel("navigation")}
+          onClick={(event) => { event.currentTarget.focus(); setPanel("navigation"); }}
           aria-label="More navigation"
         >
           <Icon name="menu" />
@@ -208,6 +215,7 @@ export function AppShell({
         onClose={() => setPanel(null)}
         title="Workspace details"
         className="bottom-sheet"
+        fallbackFocusRef={mainRef}
       >
         {inspector ?? <Inspector moduleId={moduleId} />}
       </Dialog>
@@ -216,10 +224,11 @@ export function AppShell({
         onClose={() => setPanel(null)}
         title="Navigation"
         className="bottom-sheet"
+        fallbackFocusRef={mainRef}
       >
         <nav className="sheet-navigation" aria-label="All modules">
           {modules.map((item) => navLink(item))}
-          <Link href="/design-system" onClick={() => setPanel(null)}>
+          <Link prefetch={false} href="/design-system" onClick={() => setPanel(null)}>
             Design system
           </Link>
         </nav>

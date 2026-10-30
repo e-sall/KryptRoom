@@ -1,0 +1,417 @@
+{
+  "date": "2026-10-26",
+  "reviewedHead": "9ca04473b81faf65991628b110691da3223c746e",
+  "engine": "Chromium 156.0.8078.4",
+  "devicePixelRatio": 1,
+  "fingerprints": {
+    "apps/web/src/features/marketing/home-page.tsx": "22a8b7d345d1e48a77f2c12931c4cdd55c2828975e7d1817b59f45fa93cbad50",
+    "apps/web/src/features/marketing/home-showcase.tsx": "0c20ef9fd76a8adc4d5b39fc1b9919b6812c0a5f17320430cdac45d34226118c",
+    "apps/web/src/features/marketing/home.css": "c0484cacb7bbc92a4314d0001aa998fd03da34fe11b2de75aec578ec21c61a6b",
+    "apps/web/tests/home.test.tsx": "605d5b71544b412b2e3205c76be27d47967da59012ec206f9e9d2955ba4b7ddf",
+    "apps/web/tests/browser/home.spec.ts": "dee4d31ace43d04e01f5596b598fbbd849067a784263f2d926d3fbe4e9dfe294",
+    "apps/web/public/images/elimane-sall.jpeg": "99c3f94ae1e61e9e53109ed533ff140aed095f43eb0cc85ad0bce91d85117160"
+  },
+  "observations": [
+    {
+      "width": 1440,
+      "height": 900,
+      "rectangles": [
+        {
+          "class": "marketing-navbar",
+          "id": "",
+          "rect": {
+            "x": 371.40625,
+            "y": 12,
+            "width": 697.1875,
+            "height": 68.59375,
+            "top": 12,
+            "right": 1068.59375,
+            "bottom": 80.59375,
+            "left": 371.40625
+          }
+        },
+        {
+          "class": "",
+          "id": "showcase-title",
+          "rect": {
+            "x": 66,
+            "y": 135.453125,
+            "width": 587.109375,
+            "height": 33,
+            "top": 135.453125,
+            "right": 653.109375,
+            "bottom": 168.453125,
+            "left": 66
+          }
+        },
+        {
+          "class": "showcase-window",
+          "id": "",
+          "rect": {
+            "x": 40,
+            "y": 178.453125,
+            "width": 1360,
+            "height": 576.03125,
+            "top": 178.453125,
+            "right": 1400,
+            "bottom": 754.484375,
+            "left": 40
+          }
+        }
+      ],
+      "states": [
+        "PROTECTED STATES1 Initial StateParents: None",
+        "PROTECTED STATES2 Private JoinParents: S1",
+        "PROTECTED STATES3 AnalyticsParents: S1",
+        "REUSABLE STATES4 Private AnalyticsParents: S2 · S3"
+      ],
+      "minimumStateLabelPx": 7,
+      "noHorizontalOverflow": true,
+      "portrait": {
+        "rendered": {
+          "x": 694.09375,
+          "y": 307.4375,
+          "width": 303.109375,
+          "height": 404.140625,
+          "top": 307.4375,
+          "right": 997.203125,
+          "bottom": 711.578125,
+          "left": 694.09375
+        },
+        "currentSrc": "/_next/image?url=%2Fimages%2Felimane-sall.jpeg&w=384&q=75",
+        "alt": "Elimane Sall, founder of KryptRoom",
+        "fit": "cover",
+        "position": "50% 35%"
+      },
+      "images": [
+        {
+          "url": "/_next/image?url=%2Fimages%2Felimane-sall.jpeg&w=384&q=75",
+          "status": 200,
+          "type": "image/webp",
+          "bytes": 13692
+        }
+      ]
+    },
+    {
+      "width": 1366,
+      "height": 768,
+      "rectangles": [
+        {
+          "class": "marketing-navbar",
+          "id": "",
+          "rect": {
+            "x": 334.40625,
+            "y": 12,
+            "width": 697.1875,
+            "height": 68.59375,
+            "top": 12,
+            "right": 1031.59375,
+            "bottom": 80.59375,
+            "left": 334.40625
+          }
+        },
+        {
+          "class": "",
+          "id": "showcase-title",
+          "rect": {
+            "x": 66,
+            "y": 135.453125,
+            "width": 587.109375,
+            "height": 33,
+            "top": 135.453125,
+            "right": 653.109375,
+            "bottom": 168.453125,
+            "left": 66
+          }
+        },
+        {
+          "class": "showcase-window",
+          "id": "",
+          "rect": {
+            "x": 40,
+            "y": 178.453125,
+            "width": 1286,
+            "height": 576.03125,
+            "top": 178.453125,
+            "right": 1326,
+            "bottom": 754.484375,
+            "left": 40
+          }
+        }
+      ],
+      "states": [
+        "PROTECTED STATES1 Initial StateParents: None",
+        "PROTECTED STATES2 Private JoinParents: S1",
+        "PROTECTED STATES3 AnalyticsParents: S1",
+        "REUSABLE STATES4 Private AnalyticsParents: S2 · S3"
+      ],
+      "minimumStateLabelPx": 7,
+      "noHorizontalOverflow": true,
+      "portrait": {
+        "rendered": {
+          "x": 660.796875,
+          "y": 254.34375,
+          "width": 283.828125,
+          "height": 378.4375,
+          "top": 254.34375,
+          "right": 944.625,
+          "bottom": 632.78125,
+          "left": 660.796875
+        },
+        "currentSrc": "/_next/image?url=%2Fimages%2Felimane-sall.jpeg&w=384&q=75",
+        "alt": "Elimane Sall, founder of KryptRoom",
+        "fit": "cover",
+        "position": "50% 35%"
+      },
+      "images": [
+        {
+          "url": "/_next/image?url=%2Fimages%2Felimane-sall.jpeg&w=384&q=75",
+          "status": 200,
+          "type": "image/webp",
+          "bytes": 13692
+        }
+      ]
+    },
+    {
+      "width": 834,
+      "height": 1112,
+      "rectangles": [
+        {
+          "class": "marketing-navbar",
+          "id": "",
+          "rect": {
+            "x": 68.40625,
+            "y": 12,
+            "width": 697.1875,
+            "height": 68.59375,
+            "top": 12,
+            "right": 765.59375,
+            "bottom": 80.59375,
+            "left": 68.40625
+          }
+        },
+        {
+          "class": "",
+          "id": "showcase-title",
+          "rect": {
+            "x": 50,
+            "y": 147.203125,
+            "width": 333.0625,
+            "height": 66,
+            "top": 147.203125,
+            "right": 383.0625,
+            "bottom": 213.203125,
+            "left": 50
+          }
+        },
+        {
+          "class": "showcase-window",
+          "id": "",
+          "rect": {
+            "x": 24,
+            "y": 237.203125,
+            "width": 786,
+            "height": 717.96875,
+            "top": 237.203125,
+            "right": 810,
+            "bottom": 955.171875,
+            "left": 24
+          }
+        }
+      ],
+      "states": [
+        "PROTECTED STATES1 Initial StateParents: None",
+        "PROTECTED STATES2 Private JoinParents: S1",
+        "PROTECTED STATES3 AnalyticsParents: S1",
+        "REUSABLE STATES4 Private AnalyticsParents: S2 · S3"
+      ],
+      "minimumStateLabelPx": 7,
+      "noHorizontalOverflow": true,
+      "portrait": {
+        "rendered": {
+          "x": 396.5,
+          "y": 409.21875,
+          "width": 310,
+          "height": 413.328125,
+          "top": 409.21875,
+          "right": 706.5,
+          "bottom": 822.546875,
+          "left": 396.5
+        },
+        "currentSrc": "/_next/image?url=%2Fimages%2Felimane-sall.jpeg&w=384&q=75",
+        "alt": "Elimane Sall, founder of KryptRoom",
+        "fit": "cover",
+        "position": "50% 35%"
+      },
+      "images": [
+        {
+          "url": "/_next/image?url=%2Fimages%2Felimane-sall.jpeg&w=384&q=75",
+          "status": 200,
+          "type": "image/webp",
+          "bytes": 13692
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "rectangles": [
+        {
+          "class": "marketing-navbar",
+          "id": "",
+          "rect": {
+            "x": 16,
+            "y": 6,
+            "width": 358,
+            "height": 120.046875,
+            "top": 6,
+            "right": 374,
+            "bottom": 126.046875,
+            "left": 16
+          }
+        },
+        {
+          "class": "",
+          "id": "showcase-title",
+          "rect": {
+            "x": 20,
+            "y": 193.046875,
+            "width": 350,
+            "height": 61.59375,
+            "top": 193.046875,
+            "right": 370,
+            "bottom": 254.640625,
+            "left": 20
+          }
+        },
+        {
+          "class": "showcase-window",
+          "id": "",
+          "rect": {
+            "x": 16,
+            "y": 328.015625,
+            "width": 358,
+            "height": 1632.015625,
+            "top": 328.015625,
+            "right": 374,
+            "bottom": 1960.03125,
+            "left": 16
+          }
+        }
+      ],
+      "states": [
+        "PROTECTED STATES1 Initial StateParents: None",
+        "PROTECTED STATES2 Private JoinParents: S1",
+        "PROTECTED STATES3 AnalyticsParents: S1",
+        "REUSABLE STATES4 Private AnalyticsParents: S2 · S3"
+      ],
+      "minimumStateLabelPx": 12,
+      "noHorizontalOverflow": true,
+      "portrait": {
+        "rendered": {
+          "x": 20,
+          "y": 281.09375,
+          "width": 350,
+          "height": 466.65625,
+          "top": 281.09375,
+          "right": 370,
+          "bottom": 747.75,
+          "left": 20
+        },
+        "currentSrc": "/_next/image?url=%2Fimages%2Felimane-sall.jpeg&w=384&q=75",
+        "alt": "Elimane Sall, founder of KryptRoom",
+        "fit": "cover",
+        "position": "50% 35%"
+      },
+      "images": [
+        {
+          "url": "/_next/image?url=%2Fimages%2Felimane-sall.jpeg&w=384&q=75",
+          "status": 200,
+          "type": "image/webp",
+          "bytes": 13692
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "height": 800,
+      "rectangles": [
+        {
+          "class": "marketing-navbar",
+          "id": "",
+          "rect": {
+            "x": 16,
+            "y": 6,
+            "width": 288,
+            "height": 169.09375,
+            "top": 6,
+            "right": 304,
+            "bottom": 175.09375,
+            "left": 16
+          }
+        },
+        {
+          "class": "",
+          "id": "showcase-title",
+          "rect": {
+            "x": 20,
+            "y": 234.09375,
+            "width": 280,
+            "height": 92.390625,
+            "top": 234.09375,
+            "right": 300,
+            "bottom": 326.484375,
+            "left": 20
+          }
+        },
+        {
+          "class": "showcase-window",
+          "id": "",
+          "rect": {
+            "x": 16,
+            "y": 399.859375,
+            "width": 288,
+            "height": 1686.40625,
+            "top": 399.859375,
+            "right": 304,
+            "bottom": 2086.265625,
+            "left": 16
+          }
+        }
+      ],
+      "states": [
+        "PROTECTED STATES1 Initial StateParents: None",
+        "PROTECTED STATES2 Private JoinParents: S1",
+        "PROTECTED STATES3 AnalyticsParents: S1",
+        "REUSABLE STATES4 Private AnalyticsParents: S2 · S3"
+      ],
+      "minimumStateLabelPx": 12,
+      "noHorizontalOverflow": true,
+      "portrait": {
+        "rendered": {
+          "x": 20,
+          "y": 305.140625,
+          "width": 280,
+          "height": 373.328125,
+          "top": 305.140625,
+          "right": 300,
+          "bottom": 678.46875,
+          "left": 20
+        },
+        "currentSrc": "/_next/image?url=%2Fimages%2Felimane-sall.jpeg&w=384&q=75",
+        "alt": "Elimane Sall, founder of KryptRoom",
+        "fit": "cover",
+        "position": "50% 35%"
+      },
+      "images": [
+        {
+          "url": "/_next/image?url=%2Fimages%2Felimane-sall.jpeg&w=384&q=75",
+          "status": 200,
+          "type": "image/webp",
+          "bytes": 13692
+        }
+      ]
+    }
+  ],
+  "fingerprintNormalization": "Git index blobs; Git text normalization applied"
+}

@@ -6,6 +6,7 @@ import {
   useRef,
   type KeyboardEvent,
   type ReactNode,
+  type RefObject,
 } from "react";
 import { Button } from "./ui";
 import { Icon } from "./icon";
@@ -17,12 +18,14 @@ export function Dialog({
   title,
   children,
   className = "",
+  fallbackFocusRef,
 }: {
   open: boolean;
   onClose: () => void;
   title: string;
   children: ReactNode;
   className?: string;
+  fallbackFocusRef?: RefObject<HTMLElement | null>;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = useId();
@@ -30,34 +33,33 @@ export function Dialog({
     if (event.key !== "Tab") return;
     const controls = Array.from(
       event.currentTarget.querySelectorAll<HTMLElement>(
-        'a[href], button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex="0"]',
+        'a[href], button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), summary, [tabindex="0"]',
       ),
     ).filter(
       (element) => element.tabIndex >= 0 && element.getClientRects().length > 0,
     );
-    const first = controls[0];
-    const last = controls.at(-1);
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last?.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first?.focus();
-    }
+    // Explicit traversal includes links even when the host's native Tab setting
+    // skips them. Keep every visible control reachable in the same DOM order.
+    event.preventDefault();
+    const index = controls.indexOf(document.activeElement as HTMLElement);
+    const next = index < 0 ? 0 : (index + (event.shiftKey ? -1 : 1) + controls.length) % controls.length;
+    controls[next]?.focus();
   }
   useEffect(() => {
     const dialog = ref.current;
     if (!open || !dialog) return;
     const trigger = document.activeElement as HTMLElement | null;
+    const fallback = fallbackFocusRef?.current;
     const previousOverflow = document.body.style.overflow;
     dialog.showModal();
     document.body.style.overflow = "hidden";
     return () => {
       dialog.close();
       document.body.style.overflow = previousOverflow;
-      if (trigger?.isConnected) trigger.focus();
+      if (trigger?.isConnected && trigger.getClientRects().length) trigger.focus();
+      else if (fallback?.isConnected) fallback.focus({ preventScroll: true });
     };
-  }, [open]);
+  }, [open, fallbackFocusRef]);
   return (
     <dialog
       ref={ref}

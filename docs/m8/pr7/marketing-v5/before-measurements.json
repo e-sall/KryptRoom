@@ -1,0 +1,367 @@
+[
+  {
+    "width": 1366,
+    "dpr": 1,
+    "zoom": 1,
+    "overflow": 0,
+    "components": {
+      ".marketing-navbar": {
+        "width": 686.5,
+        "height": 74
+      },
+      ".home-hero": {
+        "width": 1286,
+        "height": 469.40625
+      },
+      ".home-showcase": {
+        "width": 1286,
+        "height": 745.625
+      },
+      ".how-it-works": {
+        "width": 1286,
+        "height": 1313.40625
+      },
+      ".founder-scene": {
+        "width": 1286,
+        "height": 633.328125
+      },
+      ".home-final-cta": {
+        "width": 1286,
+        "height": 483.734375
+      }
+    },
+    "heroFont": "86px"
+  },
+  {
+    "width": 1366,
+    "route": "product",
+    "hero": {
+      "height": 515.140625,
+      "font": "79.228px"
+    }
+  },
+  {
+    "width": 1366,
+    "route": "technology",
+    "hero": {
+      "height": 436.75,
+      "font": "79.228px"
+    }
+  },
+  {
+    "width": 1366,
+    "route": "security",
+    "hero": {
+      "height": 436.75,
+      "font": "79.228px"
+    }
+  },
+  {
+    "width": 1366,
+    "route": "developers",
+    "hero": {
+      "height": 279.34375,
+      "font": "36px"
+    }
+  },
+  {
+    "width": 1366,
+    "route": "solutions-manufacturing",
+    "hero": {
+      "height": 436.75,
+      "font": "79.228px"
+    }
+  },
+  {
+    "width": 1440,
+    "dpr": 1,
+    "zoom": 1,
+    "overflow": 0,
+    "components": {
+      ".marketing-navbar": {
+        "width": 686.5,
+        "height": 74
+      },
+      ".home-hero": {
+        "width": 1360,
+        "height": 469.40625
+      },
+      ".home-showcase": {
+        "width": 1360,
+        "height": 745.625
+      },
+      ".how-it-works": {
+        "width": 1360,
+        "height": 1314.1875
+      },
+      ".founder-scene": {
+        "width": 1360,
+        "height": 633.328125
+      },
+      ".home-final-cta": {
+        "width": 1360,
+        "height": 483.734375
+      }
+    },
+    "heroFont": "86px"
+  },
+  {
+    "width": 1440,
+    "route": "product",
+    "hero": {
+      "height": 516.765625,
+      "font": "80px"
+    }
+  },
+  {
+    "width": 1440,
+    "route": "technology",
+    "hero": {
+      "height": 438.375,
+      "font": "80px"
+    }
+  },
+  {
+    "width": 1440,
+    "route": "security",
+    "hero": {
+      "height": 438.375,
+      "font": "80px"
+    }
+  },
+  {
+    "width": 1440,
+    "route": "developers",
+    "hero": {
+      "height": 279.34375,
+      "font": "36px"
+    }
+  },
+  {
+    "width": 1440,
+    "route": "solutions-manufacturing",
+    "hero": {
+      "height": 438.375,
+      "font": "80px"
+    }
+  },
+  {
+    "width": 1536,
+    "dpr": 1,
+    "zoom": 1,
+    "overflow": 0,
+    "components": {
+      ".marketing-navbar": {
+        "width": 686.5,
+        "height": 74
+      },
+      ".home-hero": {
+        "width": 1360,
+        "height": 469.40625
+      },
+      ".home-showcase": {
+        "width": 1360,
+        "height": 745.625
+      },
+      ".how-it-works": {
+        "width": 1360,
+        "height": 1314.1875
+      },
+      ".founder-scene": {
+        "width": 1360,
+        "height": 633.328125
+      },
+      ".home-final-cta": {
+        "width": 1360,
+        "height": 483.734375
+      }
+    },
+    "heroFont": "86px"
+  },
+  {
+    "width": 1536,
+    "route": "product",
+    "hero": {
+      "height": 516.765625,
+      "font": "80px"
+    }
+  },
+  {
+    "width": 1536,
+    "route": "technology",
+    "hero": {
+      "height": 438.375,
+      "font": "80px"
+    }
+  },
+  {
+    "width": 1536,
+    "route": "security",
+    "hero": {
+      "height": 438.375,
+      "font": "80px"
+    }
+  },
+  {
+    "width": 1536,
+    "route": "developers",
+    "hero": {
+      "height": 279.34375,
+      "font": "36px"
+    }
+  },
+  {
+    "width": 1536,
+    "route": "solutions-manufacturing",
+    "hero": {
+      "height": 438.375,
+      "font": "80px"
+    }
+  },
+  {
+    "width": 1600,
+    "dpr": 1,
+    "zoom": 1,
+    "overflow": 0,
+    "components": {
+      ".marketing-navbar": {
+        "width": 686.5,
+        "height": 74
+      },
+      ".home-hero": {
+        "width": 1360,
+        "height": 469.40625
+      },
+      ".home-showcase": {
+        "width": 1360,
+        "height": 745.625
+      },
+      ".how-it-works": {
+        "width": 1360,
+        "height": 1314.1875
+      },
+      ".founder-scene": {
+        "width": 1360,
+        "height": 633.328125
+      },
+      ".home-final-cta": {
+        "width": 1360,
+        "height": 483.734375
+      }
+    },
+    "heroFont": "86px"
+  },
+  {
+    "width": 1600,
+    "route": "product",
+    "hero": {
+      "height": 516.765625,
+      "font": "80px"
+    }
+  },
+  {
+    "width": 1600,
+    "route": "technology",
+    "hero": {
+      "height": 438.375,
+      "font": "80px"
+    }
+  },
+  {
+    "width": 1600,
+    "route": "security",
+    "hero": {
+      "height": 438.375,
+      "font": "80px"
+    }
+  },
+  {
+    "width": 1600,
+    "route": "developers",
+    "hero": {
+      "height": 279.34375,
+      "font": "36px"
+    }
+  },
+  {
+    "width": 1600,
+    "route": "solutions-manufacturing",
+    "hero": {
+      "height": 438.375,
+      "font": "80px"
+    }
+  },
+  {
+    "width": 1920,
+    "dpr": 1,
+    "zoom": 1,
+    "overflow": 0,
+    "components": {
+      ".marketing-navbar": {
+        "width": 686.5,
+        "height": 74
+      },
+      ".home-hero": {
+        "width": 1360,
+        "height": 469.40625
+      },
+      ".home-showcase": {
+        "width": 1360,
+        "height": 745.625
+      },
+      ".how-it-works": {
+        "width": 1360,
+        "height": 1314.1875
+      },
+      ".founder-scene": {
+        "width": 1360,
+        "height": 633.328125
+      },
+      ".home-final-cta": {
+        "width": 1360,
+        "height": 483.734375
+      }
+    },
+    "heroFont": "86px"
+  },
+  {
+    "width": 1920,
+    "route": "product",
+    "hero": {
+      "height": 516.765625,
+      "font": "80px"
+    }
+  },
+  {
+    "width": 1920,
+    "route": "technology",
+    "hero": {
+      "height": 438.375,
+      "font": "80px"
+    }
+  },
+  {
+    "width": 1920,
+    "route": "security",
+    "hero": {
+      "height": 438.375,
+      "font": "80px"
+    }
+  },
+  {
+    "width": 1920,
+    "route": "developers",
+    "hero": {
+      "height": 279.34375,
+      "font": "36px"
+    }
+  },
+  {
+    "width": 1920,
+    "route": "solutions-manufacturing",
+    "hero": {
+      "height": 438.375,
+      "font": "80px"
+    }
+  }
+]

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 export const collaborationSteps = Object.freeze([
   { title: "Create Room", concept: "Protected collaboration", text: "Define a shared purpose. Each organization keeps control of its own environment.", detail: "A Room coordinates a collaboration; it is not a central warehouse of raw datasets." },
@@ -8,25 +8,43 @@ export const collaborationSteps = Object.freeze([
   { title: "Run Computation", concept: "Persistent state", text: "Evolve a protected RoomState. Reveal only explicitly authorized outputs.", detail: "Protected artifacts stay protected and can support subsequent authorized computations. A result does not imply permission to reveal it." },
 ].map((step) => Object.freeze(step)));
 
+const subscribeHydration = () => () => {};
 export function HowItWorks() {
   const [step, setStep] = useState(0);
+  const hydrated = useSyncExternalStore(subscribeHydration, () => true, () => false);
   const section = useRef<HTMLElement>(null);
+  const manualSelection = useRef(false);
   useEffect(() => {
+    // Scrolling a clicked control into view must not overwrite that choice.
+    // Resume scroll-following only on a new deliberate scrolling gesture.
+    const resumeScroll = () => { manualSelection.current = false; };
+    const resumeScrollKeys = (event: KeyboardEvent) => {
+      if (["PageDown", "PageUp", "ArrowDown", "ArrowUp", "Home", "End", " "].includes(event.key)) resumeScroll();
+    };
     function onScroll() {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || window.innerWidth < 768) return;
-      const items = [...(section.current?.querySelectorAll<HTMLElement>("[data-story-step]") ?? [])];
-      const nearest = items.map((element, index) => ({ index, distance: Math.abs(element.getBoundingClientRect().top - innerHeight * 0.42) })).sort((a, b) => a.distance - b.distance)[0];
+      if (manualSelection.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches || window.innerWidth < 768) return;
       const bounds = section.current?.getBoundingClientRect();
-      if (nearest && bounds && bounds.top < innerHeight * 0.65 && bounds.bottom > innerHeight * 0.4) setStep(nearest.index);
+      if (!bounds) return;
+      // Natural document scrolling through the track; phase four begins well
+      // before the sticky panel releases. No wheel/key default is intercepted.
+      const distance = bounds.height - (section.current?.querySelector(".how-panel")?.getBoundingClientRect().height ?? 0);
+      const progress = Math.max(0, Math.min(1, (110 - bounds.top) / Math.max(1, distance)));
+      setStep(Math.min(3, Math.floor(progress / .22)));
     }
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("wheel", resumeScroll, { passive: true });
+    window.addEventListener("touchmove", resumeScroll, { passive: true });
+    window.addEventListener("keydown", resumeScrollKeys);
+    return () => {
+      window.removeEventListener("scroll", onScroll); window.removeEventListener("wheel", resumeScroll);
+      window.removeEventListener("touchmove", resumeScroll); window.removeEventListener("keydown", resumeScrollKeys);
+    };
   }, []);
-  return <section ref={section} className="marketing-cadran how-it-works" aria-labelledby="how-title" id="how-it-works">
-    <p className="eyebrow">HOW KRYPTROOM WORKS</p><h2 id="how-title">A shared goal.<br />Independent control.</h2>
+  return <section ref={section} className="how-it-works" data-enhanced={hydrated} aria-labelledby="how-title" id="how-it-works">
+    <p className="eyebrow section-label">HOW KRYPTROOM WORKS</p><div className="how-panel"><h2 id="how-title">A shared goal.<br />Independent control.</h2>
     <p className="caption">Conceptual journey · not a connected setup or execution service.</p>
     <div className="how-layout"><ol aria-label="Four collaboration steps">{collaborationSteps.map((item, i) =>
-      <li key={item.title} data-story-step={i}><button aria-current={step === i ? "step" : undefined} onClick={() => setStep(i)}>
+      <li key={item.title} data-story-step={i}><button aria-current={step === i ? "step" : undefined} onClick={() => { manualSelection.current = true; setStep(i); }}>
         <span className="story-number">{String(i + 1).padStart(2, "0")}</span><span><strong>{item.title}</strong><small>{item.concept}</small></span></button>
         <p>{item.text}</p><p className="caption">{item.detail}</p></li>)}</ol>
       <div className="how-visual-sticky"><figure className="how-visual" data-step={step} onPointerMove={(event) => {
@@ -34,22 +52,9 @@ export function HowItWorks() {
         const bounds = event.currentTarget.getBoundingClientRect();
         event.currentTarget.style.setProperty("--story-dx", ((event.clientX - bounds.left) / bounds.width - 0.5) * 4 + "px");
       }} onPointerLeave={(event) => event.currentTarget.style.setProperty("--story-dx", "0px")}>
-        <svg viewBox="0 0 360 390" role="img" aria-labelledby="how-visual-title" aria-describedby="how-visual-desc">
-          <title id="how-visual-title">Protected collaboration to reusable RoomState</title>
-          <desc id="how-visual-desc">Two separate organizations connect through abstract cryptographic layers and a network to a protected state. This diagram contains no private data and performs no computation.</desc>
-          <g className="how-organizations"><rect x="15" y="20" width="150" height="60" rx="9" /><rect x="195" y="20" width="150" height="60" rx="9" />
-            <text x="90" y="45">Organization A</text><text x="270" y="45">Organization B</text><text className="how-subtext" x="90" y="64">Own environment</text><text className="how-subtext" x="270" y="64">Own environment</text></g>
-          <g className="how-routes" data-active={step >= 1}><path d="M90 80 V103 Q90 115 102 115 H140 V141" /><path d="M270 80 V103 Q270 115 258 115 H220 V141" /></g>
-          <g className="how-layers" data-active={step >= 2}>
-            <path d="M20 163 L180 119 L340 163 L180 207 Z" /><path d="M20 200 L180 156 L340 200 L180 244 Z" /><path d="M20 237 L180 193 L340 237 L180 281 Z" />
-            <g className="how-network"><path d="M108 198 L141 191 L173 204 L207 190 L243 200 L200 226 L173 204 L130 217 L108 198 M130 217 L168 238 L200 226 L228 243 M141 191 L200 226" />
-              {[[108,198],[141,191],[173,204],[207,190],[243,200],[130,217],[200,226],[168,238],[228,243]].map(([x,y]) => <circle key={x + "-" + y} cx={x} cy={y} r="3" />)}</g>
-          </g>
-          <g className="how-state" data-active={step === 3}><path d="M180 282 V311 M176 306 L180 312 L184 306" /><rect x="60" y="322" width="240" height="52" rx="10" />
-            <text x="180" y="345">New protected RoomState</text><text className="how-subtext" x="180" y="363">Explicitly authorized outputs only</text></g>
-        </svg>
+        <svg viewBox="0 0 440 260" role="img" aria-labelledby="how-visual-title" aria-describedby="how-visual-desc"><title id="how-visual-title">{`${collaborationSteps[step].title}: protected collaboration`}</title><desc id="how-visual-desc">Conceptual Room and two independent organizations, protected inputs and a reusable state. Contains no private data and performs no computation.</desc><rect x="12" y="12" width="416" height="236" rx="16" fill="#202421" stroke="#5e6c64"/><text x="220" y="40">Shared Room · illustrative</text><g opacity={step>=1?1:.35}><rect x="36" y="64" width="160" height="58" rx="8" fill="#30332e" stroke="#6c776e"/><rect x="244" y="64" width="160" height="58" rx="8" fill="#30332e" stroke="#6c776e"/><text x="116" y="98">Organization A</text><text x="324" y="98">Organization B</text></g><g opacity={step>=2?1:.25}><path d="M116 123v33h208v-33" fill="none" stroke="#7caad5"/><text x="220" y="147">Protected inputs</text></g><g opacity={step===3?1:.25}><path d="M220 157v22" stroke="#7caad5"/><rect x="95" y="180" width="250" height="46" rx="8" fill="#2c414c" stroke="#7caad5"/><text x="220" y="208">Private operation → RoomState</text></g></svg>
         <figcaption aria-live="polite"><span>{String(step + 1).padStart(2, "0")} / 04</span><strong>{collaborationSteps[step].title}</strong><p>{collaborationSteps[step].text}</p></figcaption>
       </figure><p className="caption">Scroll or choose a step. All explanations remain available without motion.</p></div>
-    </div>
+    </div></div>
   </section>;
 }

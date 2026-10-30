@@ -37,12 +37,14 @@ test("P01 hero, honest booking and four P02 steps", async ({ page }, info) => {
   if (!story) throw new Error("Missing P02 section");
   await page.screenshot({ path: info.outputPath("how-it-works.png"), fullPage: true, clip: story });
   if (info.project.name === "desktop") {
+    // A new user scroll gesture resumes scroll-following after manual selection.
+    await page.mouse.wheel(0, 1);
     for (const index of [0, 3, 1]) {
-      await steps.locator("li").nth(index).evaluate((element) => window.scrollTo(0, scrollY + element.getBoundingClientRect().top - innerHeight * .42));
+      await page.locator("#how-it-works").evaluate((element,index) => { const panel=element.querySelector(".how-panel")!; window.scrollTo(0,scrollY+element.getBoundingClientRect().top-110+(element.getBoundingClientRect().height-panel.getBoundingClientRect().height)*index*.23); },index);
       await expect(steps.getByRole("button").nth(index)).toHaveAttribute("aria-current", "step");
     }
   }
-  await page.getByRole("link", { name: "Explore Product", exact: true }).click(); await expect(page).toHaveURL("/demo");
+  await page.locator(".hero").getByRole("link", { name: "See how it works", exact: true }).click(); await expect(page).toHaveURL("/#how-it-works");
   await page.goto("/book-demo"); await expect(page.getByText("Unavailable", { exact: true })).toBeVisible();
   await expect(page.locator("form,input,iframe")).toHaveCount(0); await capture(page, info, "booking-unavailable");
 });

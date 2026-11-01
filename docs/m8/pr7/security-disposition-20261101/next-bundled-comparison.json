@@ -1,0 +1,29 @@
+{
+  "dist/compiled/@vercel/nft/index.js": {
+    "sha256_16_4_3": "e436d398b2263fb87a2d8ee3d9dab8db2544c684ba9bc1c0d4ab4e67acbab207",
+    "sha256_16_4_2": "e436d398b2263fb87a2d8ee3d9dab8db2544c684ba9bc1c0d4ab4e67acbab207",
+    "sameBytes": true,
+    "firstPhasePreProcess": 2,
+    "optimizationLevel2": 2,
+    "amplificationLimit": false,
+    "sampleFirstPhase": "firstPhasePreProcess(e){let t=false;do{t=false;for(let s of e){let r=-1;while(-1!==(r=s.indexOf(\"**\",r+1))){let o=r;while(s[o+1]===\"**\"){o++}if(o>r){s.splice(r+1,o-r)}let a=s[r+1];const c=s[r+2];const u=s[r+3];if(a!==\"..\")continue;if(!c||c===\".\"||c===\"..\"||!u||u===\".\"||u===\"..\"){continue}t=true;s.splice(r,1);const d=s.slice(0);d[r]=\"**\";e.push(d);r--}if(!this.preserveMultipleSlashes){for(let e=1;e<s.length-1;e++){const r=s[e];if(e===1&&r===\"\"&&s[0]===\"\")continue;if(r===\".\"||r===\"\"){t=true;s.splice(e,1);e--}}if(s[0]===\".\"&&s.length===2&&(s[1]===\".\"||s[1]===\"\")){t=true;s.pop()}}let o=0;while(-1!==(o=s.indexOf(\"..\",o+1))){const e=s[o-1];if(e&&e!"
+  },
+  "dist/compiled/glob/glob.js": {
+    "sha256_16_4_3": "07bdb1b563a0d855d8fc2062a26b7f03f0a4e8f98e54134ab919d42e8e250316",
+    "sha256_16_4_2": "07bdb1b563a0d855d8fc2062a26b7f03f0a4e8f98e54134ab919d42e8e250316",
+    "sameBytes": true,
+    "firstPhasePreProcess": 0,
+    "optimizationLevel2": 0,
+    "amplificationLimit": false,
+    "sampleFirstPhase": ""
+  },
+  "dist/compiled/serve-handler/index.js": {
+    "sha256_16_4_3": "e6d71301fb19665ca3c193f77cb29f025283a9b38ac0187e3fcab502f789e7ea",
+    "sha256_16_4_2": "e6d71301fb19665ca3c193f77cb29f025283a9b38ac0187e3fcab502f789e7ea",
+    "sameBytes": true,
+    "firstPhasePreProcess": 0,
+    "optimizationLevel2": 0,
+    "amplificationLimit": false,
+    "sampleFirstPhase": ""
+  }
+}

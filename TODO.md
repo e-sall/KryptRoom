@@ -225,3 +225,5 @@ and run 39381943437 contains the authoritative public evidence package.
 - Web product functionality beyond the disconnected M8 PR1–PR7 presentation scope.
 - Authoritative RoomState branch operations, merge implementation, and dynamic membership.
 
+
+- [ ] PR20 V7.2: founder visual review and separate merge authorization; monitor M8-SEC-002, reevaluate before decisions, resolve compatible minimatch/build tooling. M8-SEC-001 expires 2026-11-01 23:59 Toronto independently. No automatic renewal.

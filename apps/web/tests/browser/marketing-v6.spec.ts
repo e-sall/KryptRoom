@@ -19,28 +19,15 @@ test('V6 real DAG rectangles remain disjoint on homepage, Product and technical 
  }
  await page.screenshot({path:info.outputPath('v6-technical-lineage.png'),fullPage:true});
 });
-test('V6 natural sticky story reaches four phases before release and reverses without a scroll trap',async({page})=>{
- await setCssViewport(page,{width:1366,height:768});await page.emulateMedia({reducedMotion:'no-preference'});await page.goto('/');
- const track=page.locator('#how-it-works'),panel=track.locator('.how-panel');await expect(track).toHaveAttribute('data-enhanced','true');
- for(const step of [0,1,2,3,1,0,3]){
-  await track.evaluate((e,i)=>{const p=e.querySelector('.how-panel')!;const r=e.getBoundingClientRect();const distance=r.height-p.getBoundingClientRect().height;scrollTo(0,scrollY+r.top-110+distance*(i*.23+.01));},step);
-  await expect(track.locator('.how-visual')).toHaveAttribute('data-step',String(step));
-  const r=await panel.boundingBox(),nav=await page.locator('.marketing-navbar').boundingBox();expect(r!.y).toBeGreaterThan(nav!.y+nav!.height+16);expect(r!.y+r!.height).toBeLessThanOrEqual(768);
- }
- const last=track.getByRole('button',{name:/Run Computation/});await last.focus();await page.keyboard.press('Enter');await expect(last).toHaveAttribute('aria-current','step');
- const before=await page.evaluate(()=>scrollY);await page.keyboard.press('PageDown');await expect.poll(()=>page.evaluate(()=>scrollY)).toBeGreaterThan(before);
- await track.evaluate(e=>scrollTo(0,scrollY+e.getBoundingClientRect().bottom+10));await expect(page.locator('.persistent-scene')).toBeInViewport();
- await page.emulateMedia({reducedMotion:'reduce'});expect(await panel.evaluate(e=>getComputedStyle(e).position)).toBe('static');
-});
-test('V6 exterior labels, combined positioning, subtle icons and decorative CTA retain accessible actions',async({page})=>{
+test('V7 contained labels, combined positioning, subtle icons and decorative CTA retain accessible actions',async({page})=>{
  await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await page.evaluate(()=>document.fonts.ready);
- for(const selector of ['.why-scene','.persistent-scene','.founder-scene','#how-it-works','.home-cta-section']){
+ for(const selector of ['.home-cta-section']){
   const section=page.locator(selector),label=await section.locator(':scope>.section-label').boundingBox(),panel=await section.locator(':scope>.section-panel,:scope>.how-panel,:scope>.home-final-cta').boundingBox();expect(label!.y+label!.height).toBeLessThan(panel!.y);expect(Math.abs(label!.x-panel!.x)).toBeLessThan(1);
  }
  const position=await page.locator('.hero-positioning').boundingBox(),headline=await page.locator('#home-title').boundingBox();expect(position!.y+position!.height).toBeLessThan(headline!.y);await expect(page.locator('.hero-positioning')).toContainText('with Incoming Quantum Computing Layer');await expect(page.locator('.home-hero>.quantum-marker')).toHaveCount(0);
- for(const link of await page.locator('.founder-links a').all()){expect(await link.evaluate(e=>getComputedStyle(e).borderTopWidth)).toBe('0px');const box=await link.boundingBox();expect(box!.width).toBeGreaterThanOrEqual(44);expect(await link.locator('svg').evaluate(e=>e.getBoundingClientRect().width)).toBe(18);}
+ for(const link of await page.locator('.founder-links a').all()){expect(await link.evaluate(e=>getComputedStyle(e).borderTopWidth)).toBe('0px');const box=await link.boundingBox();expect(box!.width).toBeGreaterThanOrEqual(44);expect(await link.locator('svg').evaluate(e=>e.getBoundingClientRect().width)).toBe(16);}
  await page.locator('.solutions-dropdown summary').click();await expect(page.locator('.solutions-menu>a>span[aria-hidden]')).toHaveCount(0);
- await expect(page.locator('.cta-structure')).toHaveAttribute('aria-hidden','true');await page.locator('.home-final-cta a').focus();await expect(page.locator('.home-final-cta a')).toBeFocused();await expect(page.locator('.home-final-cta a')).toHaveAttribute('href','/book-demo');
+ await expect(page.locator('.cta-structure').first()).toHaveAttribute('aria-hidden','true');await page.locator('.home-final-cta a').focus();await expect(page.locator('.home-final-cta a')).toBeFocused();await expect(page.locator('.home-final-cta a')).toHaveAttribute('href','/book-demo');
  await page.goto('/developers');const rects=await page.locator('.marketing-reading>p:last-of-type,.marketing-reading>.button-row').evaluateAll(es=>es.map(e=>e.getBoundingClientRect().toJSON()));expect(rects[1].top-rects[0].bottom).toBeGreaterThanOrEqual(24);
 });
 

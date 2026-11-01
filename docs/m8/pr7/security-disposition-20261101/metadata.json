@@ -1,0 +1,409 @@
+[
+  {
+    "name": "minimatch",
+    "latest": "11.0.3",
+    "engines": {
+      "node": "18 || 20 || >=22"
+    },
+    "dependencies": {
+      "brace-expansion": "^5.0.12",
+      "@isaacs/nonrecursive-glob-match": "^1.0.3"
+    },
+    "versions": [
+      "3.0.0",
+      "3.0.2",
+      "3.0.3",
+      "3.0.4",
+      "3.0.5",
+      "3.0.6",
+      "3.1.0",
+      "3.1.1",
+      "3.0.7",
+      "3.1.2",
+      "3.0.8",
+      "10.0.0",
+      "10.0.1",
+      "10.0.2",
+      "10.0.3",
+      "10.1.0",
+      "10.1.1",
+      "10.1.2",
+      "10.1.3",
+      "10.2.0",
+      "10.2.1",
+      "10.2.2",
+      "3.1.3",
+      "10.2.3",
+      "3.1.4",
+      "10.2.4",
+      "3.1.5",
+      "10.2.5",
+      "10.2.6",
+      "11.0.0",
+      "11.0.1",
+      "11.0.2",
+      "11.0.3"
+    ],
+    "dist": {
+      "shasum": "d794539f77c0a98ea4adca473768d1e1357204f5",
+      "tarball": "https://registry.npmjs.org/minimatch/-/minimatch-11.0.3.tgz",
+      "fileCount": 37,
+      "integrity": "sha512-iny/40PEGkNJQ5/Pv6z3nm6FbRAby32GeZRjCUJk2WnNDbgPSTcdI+DDvLqsgBdD4cD5sMtMheqPPnehCCa8Nw==",
+      "signatures": [
+        {
+          "sig": "MEUCIBnLUUnTzxl2Z+M3s8fSGAPcNUolW17SS0KQMV5sJmDSAiEAj4Q5XCHZMOV0YlMjd6iKTAKgWW2Z8HlpPBoOgJ4AKPQ=",
+          "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+        },
+        {
+          "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+          "sig": "MEUCIQC30zV4hJDherXkQIw6hiq65oKdYvVfsC6PJh/JM+tVGgIgGyjD1Jm0KcN0WSbcVTXJhqYjFwZKYoQY+A9gy6FJHZE="
+        }
+      ],
+      "unpackedSize": 428805
+    }
+  },
+  {
+    "name": "eslint",
+    "latest": "10.14.0",
+    "engines": {
+      "node": "^20.19.0 || ^22.13.0 || >=24"
+    },
+    "peers": {
+      "jiti": "*"
+    },
+    "dependencies": {
+      "ajv": "^6.14.0",
+      "debug": "^4.3.2",
+      "espree": "^11.2.0",
+      "ignore": "^5.2.0",
+      "esquery": "^1.7.0",
+      "esutils": "^2.0.2",
+      "find-up": "^5.0.0",
+      "is-glob": "^4.0.0",
+      "minimatch": "^10.2.6",
+      "optionator": "^0.9.3",
+      "cross-spawn": "^7.0.6",
+      "glob-parent": "^6.0.2",
+      "imurmurhash": "^0.1.4",
+      "@eslint/core": "^1.2.1",
+      "eslint-scope": "^9.1.2",
+      "@humanfs/node": "^0.16.8",
+      "@types/estree": "^1.0.6",
+      "fast-deep-equal": "^3.1.3",
+      "natural-compare": "^1.4.0",
+      "file-entry-cache": "11.1.5 || >11.1.6 <12",
+      "@eslint/plugin-kit": "^0.7.3",
+      "eslint-visitor-keys": "^5.0.1",
+      "@eslint/config-array": "^0.23.5",
+      "@humanwhocodes/retry": "^0.4.2",
+      "escape-string-regexp": "^4.0.0",
+      "@eslint/config-helpers": "^0.7.0",
+      "@eslint-community/regexpp": "^4.12.2",
+      "@eslint-community/eslint-utils": "^4.8.0",
+      "@humanwhocodes/module-importer": "^1.0.1",
+      "json-stable-stringify-without-jsonify": "^1.0.1"
+    },
+    "dist": {
+      "shasum": "b7574df08d11d9eaa04222f09606674a0ea51db9",
+      "tarball": "https://registry.npmjs.org/eslint/-/eslint-10.14.0.tgz",
+      "fileCount": 421,
+      "integrity": "sha512-T0pNsxkb9IKmtQjhpK3d7nWOpFv+YHuMbTJnSVMoQblF0onvXfErrtp4V1jHtsQPan7dKaGVD0q1WCXnzMF31A==",
+      "signatures": [
+        {
+          "sig": "MEQCIApUaOScCItkFJVKCmdOSIW1O8vO1VCVjTGlNhQkAehBAiBDLqTAogUmWTkvrKIPvKr1UNywEIYq7m4mPmY8Wgn2oA==",
+          "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+        },
+        {
+          "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+          "sig": "MEUCIQCeiINz8hJrAAzxyv1WrIABVsvctIYSRpdMEB0YknhHgQIgXPvFO8XyoaxrgdQa1Zvsqa8iqe55KSsD/Y6RmoOEV0Y="
+        }
+      ],
+      "unpackedSize": 2954291
+    }
+  },
+  {
+    "name": "eslint-config-next",
+    "latest": "16.4.3",
+    "peers": {
+      "eslint": ">=9.0.0",
+      "typescript": ">=3.3.1"
+    },
+    "dependencies": {
+      "globals": "16.4.0",
+      "typescript-eslint": "^8.56.0",
+      "eslint-plugin-react": "^7.37.0",
+      "eslint-plugin-import": "^2.32.0",
+      "eslint-plugin-jsx-a11y": "^6.10.0",
+      "@next/eslint-plugin-next": "16.4.3",
+      "eslint-plugin-react-hooks": "^7.1.0",
+      "eslint-import-resolver-node": "^0.3.6",
+      "eslint-import-resolver-typescript": "^3.5.2"
+    },
+    "dist": {
+      "shasum": "93c991ec7c79160a9ab6a35b04058285f217ee7d",
+      "tarball": "https://registry.npmjs.org/eslint-config-next/-/eslint-config-next-16.4.3.tgz",
+      "fileCount": 11,
+      "integrity": "sha512-j9IqBma6abp800frdUURaizYMgXOK+jNGyq6CsYcM9AxpSJs5D/TgMNGeAmRUilZvA7g9V1Tr71gNg9/SVTuMQ==",
+      "signatures": [
+        {
+          "sig": "MEQCIA9VPUgc9TxOdJyyR3WcODRbg/2J29l+Izl1WFNK0EYAAiBFhKFj+d3epcnQTvvCI8mkxrLVa0jhLdH2IcuqLNoa6g==",
+          "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+        },
+        {
+          "sig": "MEQCICTQOR8j/iR3TTMV8/4F1M4s0oJG13+gYA8EWpb1W1kSAiBBPdtKfxnyJtyNH6CXWRADRLtMJH2Jft8oyiN0tZPTCQ==",
+          "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+        }
+      ],
+      "attestations": {
+        "url": "https://registry.npmjs.org/-/npm/v1/attestations/eslint-config-next@16.4.3",
+        "provenance": {
+          "predicateType": "https://slsa.dev/provenance/v1"
+        }
+      },
+      "unpackedSize": 22082
+    }
+  },
+  {
+    "name": "@eslint/config-array",
+    "latest": "0.23.5",
+    "engines": {
+      "node": "^20.19.0 || ^22.13.0 || >=24"
+    },
+    "dependencies": {
+      "@eslint/object-schema": "^3.0.5",
+      "debug": "^4.3.1",
+      "minimatch": "^10.2.4"
+    },
+    "dist": {
+      "integrity": "sha512-Y3kKLvC1dvTOT+oGlqNQ1XLqK6D1HU2YXPc52NmAlJZbMMWDzGYXMiPRJ8TYD39muD/OTjlZmNJ4ib7dvSrMBA==",
+      "shasum": "56e86d243049195d8acc0c06a1b3dfdc3fa3de95",
+      "tarball": "https://registry.npmjs.org/@eslint/config-array/-/config-array-0.23.5.tgz",
+      "fileCount": 14,
+      "unpackedSize": 328752,
+      "attestations": {
+        "url": "https://registry.npmjs.org/-/npm/v1/attestations/@eslint%2fconfig-array@0.23.5",
+        "provenance": {
+          "predicateType": "https://slsa.dev/provenance/v1"
+        }
+      },
+      "signatures": [
+        {
+          "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+          "sig": "MEQCIAfMKAcX/P+BmtwuSz6BWUdqLhKypyUhyhS9j8SrU2e1AiByl62MU7iOL9IEPwsCry6sL8gB2DCts61CKVK0OLYHwg=="
+        }
+      ]
+    }
+  },
+  {
+    "name": "@eslint/eslintrc",
+    "latest": "3.3.7",
+    "engines": {
+      "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+    },
+    "dependencies": {
+      "ajv": "^6.14.0",
+      "debug": "^4.3.2",
+      "espree": "^10.0.1",
+      "ignore": "^5.2.0",
+      "globals": "^14.0.0",
+      "js-yaml": "^4.3.2",
+      "minimatch": "^3.1.5",
+      "import-fresh": "^3.2.1",
+      "strip-json-comments": "^3.1.1"
+    },
+    "dist": {
+      "shasum": "76d3dedec4a30ea32df797bf8a0085c1311b7316",
+      "tarball": "https://registry.npmjs.org/@eslint/eslintrc/-/eslintrc-3.3.7.tgz",
+      "fileCount": 31,
+      "integrity": "sha512-F42g89Qd5oAWtp0k0nnSrjziAKza7w8SVT4mStc18LZMaRb4J1HQAHLCalEtDCxrTuksx7NU9qsmeLwpOfPqWw==",
+      "signatures": [
+        {
+          "sig": "MEYCIQC3QDbCZuCxs9sm1rKefZgeYqp1oMk3S0vLRSGH/r9UiQIhAPaLShv3wTLaYtf+mBu6sXm/PvAJK5LKzhIPpNEN5auZ",
+          "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+        },
+        {
+          "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+          "sig": "MEQCICYSY+AoEM1MYtJ83Y6wz2GaIFY1M7QQaeYp6S+YjvFAAiARlJBDsxhqrDOMat5++ZyaDCL2fBF3ZWHqbk07FWENrA=="
+        }
+      ],
+      "attestations": {
+        "url": "https://registry.npmjs.org/-/npm/v1/attestations/@eslint%2feslintrc@3.3.7",
+        "provenance": {
+          "predicateType": "https://slsa.dev/provenance/v1"
+        }
+      },
+      "unpackedSize": 694640
+    }
+  },
+  {
+    "name": "@typescript-eslint/typescript-estree",
+    "latest": "8.72.1",
+    "engines": {
+      "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+    },
+    "peers": {
+      "typescript": ">=4.8.4 <6.1.0"
+    },
+    "dependencies": {
+      "debug": "^4.4.3",
+      "semver": "^7.7.3",
+      "minimatch": "^10.2.2",
+      "tinyglobby": "^0.2.15",
+      "ts-api-utils": "^2.5.0",
+      "@typescript-eslint/types": "8.72.1",
+      "@typescript-eslint/visitor-keys": "8.72.1",
+      "@typescript-eslint/tsconfig-utils": "8.72.1",
+      "@typescript-eslint/project-service": "8.72.1"
+    },
+    "dist": {
+      "shasum": "e93b9cc3a56bf12f5fed857bb8f4963cce7924ee",
+      "tarball": "https://registry.npmjs.org/@typescript-eslint/typescript-estree/-/typescript-estree-8.72.1.tgz",
+      "fileCount": 91,
+      "integrity": "sha512-DAlUoUV93hIvrtIQLwCbmZQYVZwOMhiHJrOVUUIWicFZaIYjTRqlY3I/NZevfkLmSqkNHRu2qYDcq9lrn16oOQ==",
+      "signatures": [
+        {
+          "sig": "MEQCICr0bd1l3oEE5hWe1PYlwHHCq/eeHB/j2g/jx5J2nRulAiB8ooIroEIX973kGTM/PcXf1gG+EhIm/hrwW0tf+J0c+A==",
+          "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+        },
+        {
+          "sig": "MEUCID/UY7MTcD9ax1FUGikwDYqkXT1sL7MCzhrKHPZDpQflAiEArmpv9xjuEonc9P1XuOVKFdGO9pNPcMImwUEGKh3OHnA=",
+          "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+        }
+      ],
+      "attestations": {
+        "url": "https://registry.npmjs.org/-/npm/v1/attestations/@typescript-eslint%2ftypescript-estree@8.72.1",
+        "provenance": {
+          "predicateType": "https://slsa.dev/provenance/v1"
+        }
+      },
+      "unpackedSize": 397929
+    }
+  },
+  {
+    "name": "eslint-plugin-react",
+    "latest": "7.37.5",
+    "engines": {
+      "node": ">=4"
+    },
+    "peers": {
+      "eslint": "^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9.7"
+    },
+    "dependencies": {
+      "array-includes": "^3.1.8",
+      "array.prototype.findlast": "^1.2.5",
+      "array.prototype.flatmap": "^1.3.3",
+      "array.prototype.tosorted": "^1.1.4",
+      "doctrine": "^2.1.0",
+      "es-iterator-helpers": "^1.2.1",
+      "estraverse": "^5.3.0",
+      "hasown": "^2.0.2",
+      "jsx-ast-utils": "^2.4.1 || ^3.0.0",
+      "minimatch": "^3.1.2",
+      "object.entries": "^1.1.9",
+      "object.fromentries": "^2.0.8",
+      "object.values": "^1.2.1",
+      "prop-types": "^15.8.1",
+      "resolve": "^2.0.0-next.5",
+      "semver": "^6.3.1",
+      "string.prototype.matchall": "^4.0.12",
+      "string.prototype.repeat": "^1.0.0"
+    },
+    "dist": {
+      "integrity": "sha512-Qteup0SqU15kdocexFNAJMvCJEfa2xUKNV4CC1xsVMrIIqEy3SQ/rqyxCWNzfrd3/ldy6HMlD2e0JDVpDg2qIA==",
+      "shasum": "2975511472bdda1b272b34d779335c9b0e877065",
+      "tarball": "https://registry.npmjs.org/eslint-plugin-react/-/eslint-plugin-react-7.37.5.tgz",
+      "fileCount": 406,
+      "unpackedSize": 937569,
+      "signatures": [
+        {
+          "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+          "sig": "MEUCICSNRvL9Jzj5j1Oy46rZG9V8PLLdyOF9okd8dfbGRNF+AiEA/388X+hcfwIUZjeT+53CI1bsDE+bvHxbpnN7jr7YeVo="
+        }
+      ]
+    }
+  },
+  {
+    "name": "eslint-plugin-jsx-a11y",
+    "latest": "6.10.2",
+    "engines": {
+      "node": ">=4.0"
+    },
+    "peers": {
+      "eslint": "^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9"
+    },
+    "dependencies": {
+      "aria-query": "^5.3.2",
+      "array-includes": "^3.1.8",
+      "array.prototype.flatmap": "^1.3.2",
+      "ast-types-flow": "^0.0.8",
+      "axe-core": "^4.10.0",
+      "axobject-query": "^4.1.0",
+      "damerau-levenshtein": "^1.0.8",
+      "emoji-regex": "^9.2.2",
+      "hasown": "^2.0.2",
+      "jsx-ast-utils": "^3.3.5",
+      "language-tags": "^1.0.9",
+      "minimatch": "^3.1.2",
+      "object.fromentries": "^2.0.8",
+      "safe-regex-test": "^1.0.3",
+      "string.prototype.includes": "^2.0.1"
+    },
+    "dist": {
+      "integrity": "sha512-scB3nz4WmG75pV8+3eRUQOHZlNSUhFNq37xnpgRkCCELU3XMvXAxLk1eqWWyE22Ki4Q01Fnsw9BA3cJHDPgn2Q==",
+      "shasum": "d2812bb23bf1ab4665f1718ea442e8372e638483",
+      "tarball": "https://registry.npmjs.org/eslint-plugin-jsx-a11y/-/eslint-plugin-jsx-a11y-6.10.2.tgz",
+      "fileCount": 229,
+      "unpackedSize": 752797,
+      "signatures": [
+        {
+          "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA",
+          "sig": "MEQCIBLVcMo1z8881smPVhZGfvKqwjP/+8M3bzoHT8HZNUjkAiA/xOYOovyHHvvQMOBMfy5+Yr/IUGMhxRrzLV+dMim4GA=="
+        }
+      ]
+    }
+  },
+  {
+    "name": "eslint-plugin-import",
+    "latest": "2.32.0",
+    "engines": {
+      "node": ">=4"
+    },
+    "peers": {
+      "eslint": "^2 || ^3 || ^4 || ^5 || ^6 || ^7.2.0 || ^8 || ^9"
+    },
+    "dependencies": {
+      "@rtsao/scc": "^1.1.0",
+      "array-includes": "^3.1.9",
+      "array.prototype.findlastindex": "^1.2.6",
+      "array.prototype.flat": "^1.3.3",
+      "array.prototype.flatmap": "^1.3.3",
+      "debug": "^3.2.7",
+      "doctrine": "^2.1.0",
+      "eslint-import-resolver-node": "^0.3.9",
+      "eslint-module-utils": "^2.12.1",
+      "hasown": "^2.0.2",
+      "is-core-module": "^2.16.1",
+      "is-glob": "^4.0.3",
+      "minimatch": "^3.1.2",
+      "object.fromentries": "^2.0.8",
+      "object.groupby": "^1.0.3",
+      "object.values": "^1.2.1",
+      "semver": "^6.3.1",
+      "string.prototype.trimend": "^1.0.9",
+      "tsconfig-paths": "^3.15.0"
+    },
+    "dist": {
+      "integrity": "sha512-whOE1HFo/qJDyX4SnXzP4N6zOWn79WhnCUY/iDR0mPfQZO8wcYE4JClzI2oZrhBnnMUCBCHZhO6VQyoBU95mZA==",
+      "shasum": "602b55faa6e4caeaa5e970c198b5c00a37708980",
+      "tarball": "https://registry.npmjs.org/eslint-plugin-import/-/eslint-plugin-import-2.32.0.tgz",
+      "fileCount": 132,
+      "unpackedSize": 1417661,
+      "signatures": [
+        {
+          "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+          "sig": "MEYCIQDB1cmN9UIDrsRT8rxmciSqaKZon/8NSub1RHdOqbXP5QIhAI5/WIZoQ5xVPcUeHZwhzG6NELESnUdt8ok4ZKrsEWdm"
+        }
+      ]
+    }
+  }
+]

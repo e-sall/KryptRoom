@@ -9,6 +9,7 @@ import type { ReactNode } from "react";
 import "@/features/marketing/marketing.css";
 import "@/features/marketing/editorial.css";
 import "@/features/marketing/commercial.css";
+import "@/features/marketing/refinement.css";
 
 export function MarketingShell({ children }: { children: ReactNode }) {
   const dropdown = useRef<HTMLDetailsElement>(null);

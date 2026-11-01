@@ -1,5 +1,16 @@
 # M8-SEC-001 — Current decision and historical PR1 record
 
+## Current cross-reference — 2026-11-01
+
+M8-SEC-001 remains ESLint 9 EOL only and expires **2026-11-01 23:59
+America/Toronto**. It is not renewed. The separate founder-approved
+[M8-SEC-002](../pr7/M8-SEC-002.md) permits bounded V7.2 development/build validation
+and PR20 publication for GHSA-g3hv-75wg-m249, with an independent 72-hour deadline.
+Full audit currently has 16 moderate propagated entries from that advisory;
+production audit remains zero. Historical zero-full-audit statements below are
+dated evidence, not the current disposition. Neither exception authorizes merge
+or deployment. Stop dependent operations at the earlier applicable deadline.
+
 ## Founder renewal — 2026-10-25 (current)
 
 Marketing V6 reevaluation, 2026-10-30: unchanged founder authorization, owner,

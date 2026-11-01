@@ -511,3 +511,7 @@ absolute cards. Natural CSS sticky scrolling controls How phases; manual control
 reverse scroll, reduced motion and full no-JS explanations remain. External section
 labels, local responsive portrait and canonical logo retain the approved identity.
 No dependency, CI, runtime security or M1–M7 change. See V6 report and evidence.
+
+## 2026-11-01 — V7.2 publication under a separate bounded exception
+
+The founder explicitly approved M8-SEC-002 for GHSA-g3hv-75wg-m249 in trusted development/build validation and publication to existing PR20. Receipt 2026-11-01T07:00:41Z; expiry 2026-11-04T07:00:41Z. This is risk acceptance for that scope, not a fix or production/merge authorization. M8-SEC-001 remains ESLint 9 EOL only and expires 2026-11-01 23:59 Toronto. Preserve source trust checks, CI restrictions and visible audits; stop on scope/control failure. See docs/m8/pr7/M8-SEC-002.md and V72-PUBLICATION-REPORT.md.

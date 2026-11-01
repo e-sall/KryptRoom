@@ -146,3 +146,7 @@ All notable project changes are recorded here. The project follows milestone-ori
 - The Linux M2.5 cryptographic integration created encrypted RoomState S1, terminated both nodes, restarted without source-input mounts, reloaded the persisted SPU shares, returned the authorized synthetic aggregate `68` through CHEETAH/FM128, and passed privacy/storage checks.
 - Public-repository pass (2026-10-13): all 28 tests and the real PSI demo passed with local networking permitted; documentation links and ignore rules checked. No runtime, workflow, or test implementation changed. Docker was unavailable locally, so SPU was not re-executed in this pass.
 
+
+## M8 PR20 — V7.2 publication
+
+Founder-directed marketing refinements, natural How step selection, desktop geometry/pointer regression evidence, and the separate bounded M8-SEC-002 development/build exception. No core, dependency, CI, merge or deployment change. See docs/m8/pr7/V72-PUBLICATION-REPORT.md.

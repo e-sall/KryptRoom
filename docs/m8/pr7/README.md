@@ -1,5 +1,12 @@
 > Current Marketing V6 candidate (2026-10-30): [commercial demo and visual QA report](MARKETING-V6-REPORT.md). Earlier reports/captures below remain historical. PR20 is open and unmerged; founder desktop visual approval is pending.
 
+Current publication follow-up: [V7.2 report](V72-PUBLICATION-REPORT.md),
+[precision QA/gallery](MARKETING-V72-REPORT.md) and founder-approved
+[M8-SEC-002](M8-SEC-002.md). PR20 remains open for founder visual review;
+no merge/deployment or M8 completion is authorized. M8-SEC-001's independent
+November 1, 2026 23:59 Toronto deadline remains unchanged. Final SHA and hosted
+checks are recorded in PR20. Earlier reports below retain their dated scope.
+
 > Marketing V4 follow-up (2026-10-29): see [current implementation and visual QA](MARKETING-V4-REPORT.md). Earlier evidence below remains historical; it is not a claim of founder acceptance of V4. PR20 stays open and unmerged.
 
 # KRYPTROOM M8 — PR7 IMPLEMENTATION REPORT

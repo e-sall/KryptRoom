@@ -1,0 +1,420 @@
+## Prototype 12 · Transition 01 → 02 V2
+
+On supprime complètement le zoom. Ta proposition est meilleure : **on montre une vraie interaction avec le produit**, pas une caméra qui se déplace sur une diapositive.
+
+Après consultation des recommandations de <Entity category="organization" value="Nielsen Norman Group"/> et <Entity category="organization" value="Google Material Design"/>, je retiens trois principes : accélération puis ralentissement (*slow–fast–slow*), micro-interactions généralement entre 100 et 400 ms, et transitions d'interface rapides qui préservent les repères visuels. <Cite refs={["turn497496search0","turn497496search3","turn497496search4"]}/>
+
+La nouvelle séquence est donc : **vue d'ensemble → déplacement naturel du curseur vers Demo → clic → menu de sélection → Manufacturer → ouverture de Create Room**.
+
+Le curseur suivra des trajectoires légèrement courbes avec des pauses aux points de décision. L'interface conservera son cadre fixe : seuls le menu et le contenu du workspace évolueront.
+
+<box gap={2}>
+  <AppBlock title="KryptRoom · Transition 01 → 02 V2" app_block_id="krmotion0202v2" language="html" variant="inline">
+    <div id="kr-tr02" style="font-family:Arial,Helvetica,sans-serif;color:#f1f0eb;width:100%;max-width:1120px">
+      <style>
+        #kr-tr02 *{box-sizing:border-box}
+        #kr-tr02 .screen{border-radius:12px;overflow:hidden;background:#10100f;border:1px solid #373739}
+        #kr-tr02 svg{display:block;width:100%;height:auto;aspect-ratio:1120/620}
+        #kr-tr02 .tools{display:flex;align-items:center;gap:10px;padding-top:12px}
+        #kr-tr02 button{font:600 12px Arial,sans-serif;cursor:pointer;border-radius:8px;padding:9px 15px;border:1px solid #505054;background:#2b2b2d;color:#eee}
+        #kr-tr02 button.primary{background:#f1f0eb;color:#181818;border-color:#f1f0eb;min-width:78px}
+        #kr-tr02 button:hover{filter:brightness(1.13)}
+        #kr-tr02 input{flex:1;min-width:35px;accent-color:#9db7cb;cursor:pointer}
+        #kr-tr02 .clock{font:11px monospace;color:#a8a8ab;white-space:nowrap}
+        #kr-tr02 .stage{padding-top:10px;font-size:11px;color:#a8b9c6;min-height:26px}
+        #kr-tr02 .hit{cursor:pointer}
+      </style>
+      <div class="screen">
+        <svg id="kr-tr02-svg" viewBox="0 0 1120 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animation de passage depuis la vue Overview à l'écran de création d'une Room par le menu de changement de compte.">
+          <defs>
+            <filter id="krtr-shadow" x="-25%" y="-25%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="9"/>
+            </filter>
+          </defs>
+          <rect x="1" y="1" width="1118" height="618" rx="13" fill="#181818" stroke="#38383A"/>
+          <rect x="1" y="1" width="184" height="618" rx="13" fill="#1D1D1E"/>
+          <path d="M184 1 V619 M1 61 H1119" stroke="#353537"/>
+          <g transform="translate(19 12) scale(1.22)">
+            <path d="M1 6 L7 3 L7 27 L1 24 Z" fill="#F1F0EB"/>
+            <path d="M9 12 L20 3 L16 12 L9 19 Z" fill="#A6A7A1"/>
+            <path d="M9 19 L16 12 L21 26 L14 23 Z" fill="#747671"/>
+          </g>
+          <text x="59" y="40" fill="#F1F0EB" font-family="Arial,sans-serif" font-size="19" font-weight="600" letter-spacing="-.5">KryptRoom</text>
+          <text x="21" y="101" fill="#858588" font-family="monospace" font-size="10" letter-spacing="1">WORKSPACE</text>
+
+          <g id="krtr-overview">
+            <g font-family="Arial,Helvetica,sans-serif">
+              <text x="211" y="37" fill="#98989A" font-size="12">Demo workspace</text>
+              <path d="M323 28 L328 32 L323 36" stroke="#77777A" fill="none" stroke-width="1.5"/>
+              <text x="344" y="37" fill="#E1E1E3" font-size="12">Overview</text>
+              <rect x="913" y="15" width="129" height="31" rx="8" fill="#29292A" stroke="#464648"/>
+              <circle cx="930" cy="30" r="4" fill="#ACB8C0"/>
+              <text x="942" y="35" fill="#D6D6D8" font-size="11">Demo</text>
+              <circle cx="1081" cy="31" r="16" fill="#34383D"/>
+              <text x="1081" y="36" text-anchor="middle" fill="#F0F0F1" font-size="12" font-weight="600">D</text>
+              <rect x="11" y="122" width="162" height="39" rx="7" fill="#303032"/>
+              <rect x="11" y="128" width="3" height="27" rx="1.5" fill="#9DB7CB"/>
+              <g stroke="#C4D0D8" stroke-width="1.5" fill="none">
+                <rect x="26" y="134" width="7" height="7" rx="1"/>
+                <rect x="37" y="134" width="7" height="7" rx="1"/>
+                <rect x="26" y="145" width="7" height="7" rx="1"/>
+                <rect x="37" y="145" width="7" height="7" rx="1"/>
+              </g>
+              <text x="58" y="147" fill="#F1F0EB" font-size="13" font-weight="600">Overview</text>
+              <text x="214" y="104" fill="#99A9B4" font-size="10" letter-spacing="1.2">ORGANIZATIONS / OVERVIEW</text>
+              <text x="214" y="147" fill="#F1F0EB" font-size="30" font-weight="600" letter-spacing="-.65">Two organizations. One shared goal.</text>
+              <text x="215" y="175" fill="#A9A9AC" font-size="13">Independent environments. A new way to work together.</text>
+            </g>
+            <rect x="212" y="207" width="428" height="330" rx="11" fill="#252526" stroke="#444448"/>
+            <rect x="651" y="207" width="428" height="330" rx="11" fill="#252526" stroke="#444448"/>
+            <g font-family="Arial,Helvetica,sans-serif">
+              <rect x="230" y="228" width="43" height="43" rx="9" fill="#33363A"/>
+              <g transform="translate(239 236)" stroke="#BBC9D3" stroke-width="1.7" fill="none" stroke-linejoin="round">
+                <path d="M1 27 V13 L9 18 V13 L17 18 V3 H25 V27 Z"/>
+                <path d="M5 23 H8 M13 23 H16 M21 23 H23"/>
+              </g>
+              <text x="286" y="246" fill="#F1F0EB" font-size="17" font-weight="600">Manufacturer</text>
+              <text x="287" y="265" fill="#A7A7AA" font-size="12">Organization A</text>
+              <rect x="524" y="238" width="99" height="24" rx="12" fill="#303134"/>
+              <text x="574" y="253" text-anchor="middle" fill="#C5C5C8" font-size="10">Independent</text>
+
+              <rect x="669" y="228" width="43" height="43" rx="9" fill="#353C42"/>
+              <g transform="translate(674 240)" stroke="#C3D2DB" stroke-width="1.7" fill="none" stroke-linejoin="round">
+                <path d="M1 1 H21 V20 H1 Z M21 7 H28 L34 14 V20 H21 Z"/>
+                <circle cx="9" cy="21" r="3" fill="#353C42"/>
+                <circle cx="28" cy="21" r="3" fill="#353C42"/>
+              </g>
+              <text x="723" y="246" fill="#F1F0EB" font-size="17" font-weight="600">Logistics Partner</text>
+              <text x="724" y="265" fill="#A7A7AA" font-size="12">Organization B</text>
+              <rect x="962" y="238" width="99" height="24" rx="12" fill="#303134"/>
+              <text x="1011" y="253" text-anchor="middle" fill="#C5C5C8" font-size="10">Independent</text>
+              <path d="M230 289 H622 M669 289 H1061" stroke="#414143"/>
+              <text x="230" y="310" fill="#8F9296" font-size="10" letter-spacing=".9">PRIVATE DATASETS</text>
+              <text x="669" y="310" fill="#8F9296" font-size="10" letter-spacing=".9">PRIVATE DATASETS</text>
+            </g>
+            <g font-family="Arial,Helvetica,sans-serif">
+              <g transform="translate(230 326)">
+                <rect width="392" height="76" rx="8" fill="#2E2E30" stroke="#474749"/>
+                <rect x="13" y="16" width="37" height="43" rx="7" fill="#38393C"/>
+                <g stroke="#BEC8CE" stroke-width="1.5" fill="none">
+                  <ellipse cx="31" cy="28" rx="9" ry="4"/>
+                  <path d="M22 28 V45 C22 51 40 51 40 45 V28 M22 36 C22 42 40 42 40 36"/>
+                </g>
+                <text x="64" y="32" fill="#ECECED" font-size="13" font-weight="600">Production planning</text>
+                <text x="64" y="52" fill="#A5A5A8" font-size="11">Local &amp; private</text>
+              </g>
+              <g transform="translate(230 414)">
+                <rect width="392" height="76" rx="8" fill="#2E2E30" stroke="#474749"/>
+                <rect x="13" y="16" width="37" height="43" rx="7" fill="#38393C"/>
+                <g stroke="#BEC8CE" stroke-width="1.5" fill="none">
+                  <ellipse cx="31" cy="28" rx="9" ry="4"/>
+                  <path d="M22 28 V45 C22 51 40 51 40 45 V28 M22 36 C22 42 40 42 40 36"/>
+                </g>
+                <text x="64" y="32" fill="#ECECED" font-size="13" font-weight="600">Supplier references</text>
+                <text x="64" y="52" fill="#A5A5A8" font-size="11">Local &amp; private</text>
+              </g>
+              <g transform="translate(669 326)">
+                <rect width="392" height="76" rx="8" fill="#2E2E30" stroke="#474749"/>
+                <rect x="13" y="16" width="37" height="43" rx="7" fill="#38393C"/>
+                <g stroke="#BEC8CE" stroke-width="1.5" fill="none">
+                  <ellipse cx="31" cy="28" rx="9" ry="4"/>
+                  <path d="M22 28 V45 C22 51 40 51 40 45 V28 M22 36 C22 42 40 42 40 36"/>
+                </g>
+                <text x="64" y="32" fill="#ECECED" font-size="13" font-weight="600">Shipment records</text>
+                <text x="64" y="52" fill="#A5A5A8" font-size="11">Local &amp; private</text>
+              </g>
+              <g transform="translate(669 414)">
+                <rect width="392" height="76" rx="8" fill="#2E2E30" stroke="#474749"/>
+                <rect x="13" y="16" width="37" height="43" rx="7" fill="#38393C"/>
+                <g stroke="#BEC8CE" stroke-width="1.5" fill="none">
+                  <ellipse cx="31" cy="28" rx="9" ry="4"/>
+                  <path d="M22 28 V45 C22 51 40 51 40 45 V28 M22 36 C22 42 40 42 40 36"/>
+                </g>
+                <text x="64" y="32" fill="#ECECED" font-size="13" font-weight="600">Arrival schedules</text>
+                <text x="64" y="52" fill="#A5A5A8" font-size="11">Local &amp; private</text>
+              </g>
+            </g>
+            <rect x="212" y="551" width="867" height="39" rx="8" fill="#252527" stroke="#414143"/>
+            <g stroke="#BFC6CB" stroke-width="1.4" fill="none">
+              <rect x="230" y="566" width="13" height="11" rx="2"/>
+              <path d="M233 566 V562 A3.5 3.5 0 0 1 240 562 V566"/>
+            </g>
+            <text x="255" y="574" fill="#C4C4C6" font-family="Arial,Helvetica,sans-serif" font-size="12">Each organization's private datasets remain under its own control.</text>
+          </g>
+
+          <g id="krtr-setup" opacity="0">
+            <g font-family="Arial,Helvetica,sans-serif">
+              <text x="211" y="37" fill="#98989A" font-size="12">Manufacturer</text>
+              <path d="M299 28 L304 32 L299 36" stroke="#77777A" fill="none" stroke-width="1.5"/>
+              <text x="319" y="37" fill="#98989A" font-size="12">Rooms</text>
+              <path d="M365 28 L370 32 L365 36" stroke="#77777A" fill="none" stroke-width="1.5"/>
+              <text x="385" y="37" fill="#E1E1E3" font-size="12">Create Room</text>
+              <rect x="907" y="15" width="135" height="31" rx="8" fill="#29292A" stroke="#464648"/>
+              <circle cx="925" cy="30" r="4" fill="#A5B7C4"/>
+              <text x="938" y="35" fill="#D6D6D8" font-size="11">Manufacturer</text>
+              <circle cx="1081" cy="31" r="16" fill="#34383D"/>
+              <text x="1081" y="36" text-anchor="middle" fill="#F0F0F1" font-size="12" font-weight="600">M</text>
+
+              <g stroke="#92999C" stroke-width="1.5" fill="none">
+                <rect x="26" y="135" width="7" height="7" rx="1"/>
+                <rect x="37" y="135" width="7" height="7" rx="1"/>
+                <rect x="26" y="146" width="7" height="7" rx="1"/>
+                <rect x="37" y="146" width="7" height="7" rx="1"/>
+              </g>
+              <text x="58" y="147" fill="#A4A4A7" font-size="13">Overview</text>
+              <rect x="11" y="173" width="162" height="39" rx="7" fill="#303032"/>
+              <rect x="11" y="179" width="3" height="27" rx="1.5" fill="#9DB7CB"/>
+              <rect x="26" y="185" width="19" height="17" rx="3" stroke="#CED5DA" stroke-width="1.5" fill="none"/>
+              <path d="M26 191 H45" stroke="#CED5DA" stroke-width="1.5"/>
+              <text x="58" y="197" fill="#F1F0EB" font-size="13" font-weight="600">Rooms</text>
+
+              <text x="214" y="104" fill="#99A9B4" font-size="10" letter-spacing="1.2">MANUFACTURER / ROOM SETUP</text>
+              <text x="214" y="147" fill="#F1F0EB" font-size="30" font-weight="600" letter-spacing="-.65">Create a private Room.</text>
+              <text x="215" y="175" fill="#A9A9AC" font-size="13">Invite a partner to collaborate without sharing raw datasets.</text>
+              <rect x="933" y="116" width="146" height="29" rx="14" fill="#303032" stroke="#4C4C50"/>
+              <circle cx="950" cy="130" r="4" fill="#A5A5A9"/>
+              <text x="963" y="134" fill="#D2D2D5" font-size="11">Draft · Not created</text>
+            </g>
+            <rect x="212" y="208" width="556" height="331" rx="11" fill="#252526" stroke="#424244"/>
+            <rect x="780" y="208" width="299" height="331" rx="11" fill="#252526" stroke="#454649"/>
+            <g font-family="Arial,Helvetica,sans-serif">
+              <text x="233" y="241" fill="#F1F0EB" font-size="16" font-weight="600">Room details</text>
+              <text x="233" y="263" fill="#A9A9AC" font-size="11">Define the collaboration and invite your partner.</text>
+              <path d="M233 278 H747" stroke="#444447"/>
+              <text x="234" y="303" fill="#BDBDC0" font-size="12">Room name</text>
+              <rect x="233" y="314" width="514" height="43" rx="7" fill="#2E2E30" stroke="#5A5A5D"/>
+              <text x="247" y="341" fill="#F1F0EB" font-size="14">Supply Chain Collaboration</text>
+              <text x="234" y="383" fill="#BDBDC0" font-size="12">Invite organization</text>
+              <rect x="233" y="394" width="514" height="49" rx="7" fill="#2E2E30" stroke="#5A5A5D"/>
+              <rect x="246" y="404" width="30" height="30" rx="7" fill="#353A3F"/>
+              <g transform="translate(251 411)" stroke="#B5CAD8" stroke-width="1.6" fill="none">
+                <path d="M1 1 H12 V13 H1 Z M12 5 H17 L21 9 V13 H12 Z"/>
+                <circle cx="5" cy="14" r="2.4" fill="#353A3F"/>
+                <circle cx="17" cy="14" r="2.4" fill="#353A3F"/>
+              </g>
+              <text x="287" y="414" fill="#EFEFF0" font-size="13" font-weight="600">Logistics Partner</text>
+              <text x="287" y="431" fill="#A7A7AA" font-size="11">Organization B</text>
+              <circle cx="723" cy="419" r="10" fill="#3A3D40"/>
+              <path d="M718 419 L722 423 L729 414" stroke="#C6D5DF" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              <g stroke="#BFC6CB" stroke-width="1.4" fill="none">
+                <rect x="234" y="472" width="13" height="11" rx="2"/>
+                <path d="M237 472 V468 A3.5 3.5 0 0 1 244 468 V472"/>
+              </g>
+              <text x="258" y="482" fill="#B6B6B9" font-size="11">Each organization retains control of its own inputs.</text>
+              <rect x="579" y="493" width="168" height="34" rx="8" fill="#F1F0EB"/>
+              <text x="654" y="515" text-anchor="middle" fill="#202021" font-size="12" font-weight="600">Create Room</text>
+              <path d="M718 510 H733 M727 504 L733 510 L727 516" stroke="#202021" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <text x="798" y="241" fill="#F1F0EB" font-size="16" font-weight="600">Room participants</text>
+              <text x="798" y="262" fill="#A5A5A8" font-size="11">Private collaboration preview</text>
+              <path d="M798 278 H1061" stroke="#444447"/>
+              <rect x="798" y="293" width="263" height="60" rx="8" fill="#2E2E30" stroke="#48484B"/>
+              <rect x="810" y="306" width="34" height="34" rx="8" fill="#33363A"/>
+              <text x="827" y="328" text-anchor="middle" fill="#E4E6E8" font-size="13" font-weight="600">M</text>
+              <text x="854" y="316" fill="#F1F0EB" font-size="13" font-weight="600">Manufacturer</text>
+              <text x="854" y="334" fill="#A5A5A8" font-size="11">Room creator</text>
+              <rect x="798" y="364" width="263" height="60" rx="8" fill="#2E2E30" stroke="#48484B"/>
+              <rect x="810" y="377" width="34" height="34" rx="8" fill="#333940"/>
+              <text x="827" y="399" text-anchor="middle" fill="#E4E6E8" font-size="13" font-weight="600">L</text>
+              <text x="854" y="387" fill="#F1F0EB" font-size="13" font-weight="600">Logistics Partner</text>
+              <text x="854" y="405" fill="#A5A5A8" font-size="11">Invitation to be sent</text>
+              <path d="M798 448 H1061" stroke="#444447"/>
+              <g stroke="#BFC6CB" stroke-width="1.4" fill="none">
+                <rect x="802" y="472" width="13" height="11" rx="2"/>
+                <path d="M805 472 V468 A3.5 3.5 0 0 1 812 468 V472"/>
+              </g>
+              <text x="825" y="482" fill="#C7C7C9" font-size="12">No datasets shared</text>
+              <text x="802" y="512" fill="#9D9DA1" font-size="11">Partner approval required to join.</text>
+            </g>
+            <rect x="212" y="551" width="867" height="39" rx="8" fill="#252527" stroke="#414143"/>
+            <g stroke="#BFC6CB" stroke-width="1.4" fill="none">
+              <rect x="230" y="566" width="13" height="11" rx="2"/>
+              <path d="M233 566 V562 A3.5 3.5 0 0 1 240 562 V566"/>
+            </g>
+            <text x="255" y="574" fill="#C4C4C6" font-family="Arial,Helvetica,sans-serif" font-size="12">Room creation does not disclose either organization's raw data.</text>
+          </g>
+
+          <path d="M21 559 H165" stroke="#414143"/>
+          <rect id="krtr-profile-hover" x="11" y="565" width="162" height="43" rx="8" fill="#323335" opacity="0"/>
+          <g id="krtr-profile-demo" font-family="Arial,Helvetica,sans-serif">
+            <circle cx="38" cy="585" r="13" fill="#36383B"/>
+            <text x="38" y="590" text-anchor="middle" fill="#E7E7E9" font-size="11">D</text>
+            <text x="58" y="582" fill="#E1E1E3" font-size="12">Demo</text>
+            <text x="58" y="597" fill="#909092" font-size="10">Workspace</text>
+            <path d="M155 579 L160 584 L155 589" stroke="#888B90" fill="none" stroke-width="1.3" stroke-linecap="round"/>
+          </g>
+          <g id="krtr-profile-manufacturer" opacity="0" font-family="Arial,Helvetica,sans-serif">
+            <circle cx="38" cy="585" r="13" fill="#36383B"/>
+            <text x="38" y="590" text-anchor="middle" fill="#E7E7E9" font-size="11">M</text>
+            <text x="58" y="582" fill="#E1E1E3" font-size="12">Manufacturer</text>
+            <text x="58" y="597" fill="#909092" font-size="10">Workspace</text>
+            <path d="M155 579 L160 584 L155 589" stroke="#888B90" fill="none" stroke-width="1.3" stroke-linecap="round"/>
+          </g>
+          <rect id="krtr-profile-hit" class="hit" x="11" y="565" width="162" height="43" rx="8" fill="transparent" tabindex="0" role="button" aria-label="Ouvrir le menu de changement de workspace"/>
+
+          <g id="krtr-pop" opacity="0">
+            <rect x="17" y="376" width="274" height="180" rx="14" fill="#000" opacity=".28" filter="url(#krtr-shadow)"/>
+            <rect x="14" y="370" width="274" height="181" rx="13" fill="#29292B" stroke="#525256"/>
+            <g font-family="Arial,Helvetica,sans-serif">
+              <text x="30" y="394" fill="#A3A3A7" font-size="10" font-weight="600" letter-spacing=".8">SWITCH WORKSPACE</text>
+              <path d="M28 407 H273" stroke="#454548"/>
+
+              <rect x="22" y="415" width="258" height="37" rx="7" fill="#303032"/>
+              <circle cx="43" cy="433" r="11" fill="#3A3B3E"/>
+              <text x="43" y="437" fill="#E8E8E9" text-anchor="middle" font-size="10">D</text>
+              <text x="63" y="431" fill="#E8E8EA" font-size="12" font-weight="600">Demo</text>
+              <text x="63" y="444" fill="#9D9DA1" font-size="10">Current workspace</text>
+              <path d="M255 430 L259 434 L265 427" stroke="#B7CCDA" stroke-width="1.6" fill="none" stroke-linejoin="round"/>
+
+              <rect id="krtr-man-hover" x="22" y="459" width="258" height="37" rx="7" fill="#3A3E42" opacity="0"/>
+              <circle cx="43" cy="477" r="11" fill="#40454A"/>
+              <text x="43" y="481" fill="#E8E8E9" text-anchor="middle" font-size="10">M</text>
+              <text x="63" y="475" fill="#F1F0EB" font-size="12" font-weight="600">Manufacturer</text>
+              <text x="63" y="488" fill="#A9A9AD" font-size="10">Open workspace</text>
+              <path d="M259 471 L265 477 L259 483" stroke="#AABBC6" stroke-width="1.4" fill="none"/>
+
+              <rect x="22" y="503" width="258" height="36" rx="7" fill="#29292B"/>
+              <circle cx="43" cy="520" r="11" fill="#3C4145"/>
+              <text x="43" y="524" fill="#E7E7E8" text-anchor="middle" font-size="10">L</text>
+              <text x="63" y="519" fill="#D6D6D8" font-size="12">Logistics Partner</text>
+              <text x="63" y="532" fill="#96969A" font-size="10">Another workspace</text>
+            </g>
+            <rect id="krtr-man-hit" class="hit" x="22" y="459" width="258" height="37" rx="7" fill="transparent" tabindex="0" role="button" aria-label="Sélectionner Manufacturer"/>
+          </g>
+
+          <g id="krtr-cursor" transform="translate(803 436)">
+            <path d="M1 1 V24 L7 18 L12 30 L18 27 L13 16 L22 16 Z" fill="#F1F0EB" stroke="#101011" stroke-width="2" stroke-linejoin="round"/>
+          </g>
+          <g id="krtr-click" opacity="0">
+            <circle cx="0" cy="0" r="17" fill="#C4D8E5" fill-opacity=".12" stroke="#C4D8E5" stroke-width="1.5"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="tools">
+        <button type="button" id="krtr-toggle" class="primary">Pause</button>
+        <button type="button" id="krtr-replay">↺ Replay</button>
+        <input type="range" id="krtr-seek" min="0" max="6700" step="10" value="0" aria-label="Faire défiler la transition"/>
+        <span class="clock" id="krtr-clock">0.0 / 6.7s</span>
+      </div>
+      <div class="stage" id="krtr-stage">01 · Overview</div>
+
+      <script>
+        (() => {
+          const root=document.getElementById('kr-tr02');
+          if(!root || root.dataset.ready)return;
+          root.dataset.ready='1';
+          const $=id=>root.querySelector('#'+id);
+          const ov=$('krtr-overview'),setup=$('krtr-setup'),pop=$('krtr-pop');
+          const demo=$('krtr-profile-demo'),man=$('krtr-profile-manufacturer');
+          const ph=$('krtr-profile-hover'),mh=$('krtr-man-hover');
+          const cursor=$('krtr-cursor'),ring=$('krtr-click');
+          const toggle=$('krtr-toggle'),replay=$('krtr-replay'),seek=$('krtr-seek'),clock=$('krtr-clock'),stage=$('krtr-stage');
+          let t=0,last=null,playing=true,manualHover=false;
+          const duration=6700;
+          const clamp=x=>Math.min(1,Math.max(0,x));
+          const bezier=(a,b,c,d,u)=>{let q=1-u;return q*q*q*a+3*q*q*u*b+3*q*u*u*c+u*u*u*d;};
+          function timing(x1,y1,x2,y2,p){
+            p=clamp(p);
+            let low=0,high=1;
+            for(let i=0;i<20;i++){
+              let mid=(low+high)/2;
+              if(bezier(0,x1,x2,1,mid)<p)low=mid;else high=mid;
+            }
+            return bezier(0,y1,y2,1,(low+high)/2);
+          }
+          const sfsl=p=>timing(.45,0,.23,1,p);
+          const out=p=>timing(.12,.75,.22,1,p);
+          const fade=(a,b)=>out((t-a)/(b-a));
+          const path=(p0,p1,p2,p3,k)=>({
+            x:bezier(p0.x,p1.x,p2.x,p3.x,k),
+            y:bezier(p0.y,p1.y,p2.y,p3.y,k)
+          });
+          function cursorPosition(){
+            if(t<850)return {x:803,y:436};
+            if(t<1810)return path({x:803,y:436},{x:677,y:487},{x:298,y:560},{x:80,y:583},sfsl((t-850)/960));
+            if(t<3130)return {x:80,y:583};
+            if(t<3610)return path({x:80,y:583},{x:79,y:558},{x:111,y:499},{x:126,y:477},sfsl((t-3130)/480));
+            return {x:126,y:477};
+          }
+          function render(){
+            let next=fade(4170,4460),prev=1-fade(4070,4290);
+            ov.setAttribute('opacity',String(prev));
+            setup.setAttribute('opacity',String(next));
+            demo.setAttribute('opacity',String(prev));
+            man.setAttribute('opacity',String(next));
+
+            let showMenu=fade(2270,2510)*(1-fade(3950,4130));
+            pop.setAttribute('opacity',String(showMenu));
+            pop.setAttribute('transform','translate(0 '+((1-fade(2270,2510))*7).toFixed(2)+')');
+            mh.setAttribute('opacity',String(manualHover || (t>=3550&&t<3990)?fade(3480,3610):0));
+            let hoverDemo=t>=1760&&t<2290;
+            ph.setAttribute('opacity',String(hoverDemo?fade(1670,1800)*.95:0));
+
+            let pos=cursorPosition();
+            let cursorFade=t<4140?1:1-fade(4100,4300);
+            cursor.setAttribute('opacity',String(cursorFade));
+            cursor.setAttribute('transform',`translate(${pos.x.toFixed(2)} ${pos.y.toFixed(2)})`);
+
+            let click1=t>=2120&&t<=2320;
+            let click2=t>=3850&&t<=4010;
+            let clickNow=click1||click2;
+            let c=click1?{x:80,y:583}:{x:126,y:477};
+            ring.setAttribute('transform',`translate(${c.x} ${c.y})`);
+            let cp=click1?(t-2120)/200:(t-3850)/160;
+            ring.setAttribute('opacity',clickNow?String((1-clamp(cp))*.8):'0');
+            ring.querySelector('circle').setAttribute('r',String(12+18*clamp(cp)));
+
+            let labels=[
+              [0,'01 · Vue d’ensemble : deux organisations indépendantes'],
+              [850,'Le curseur rejoint le profil Demo'],
+              [2110,'Clic sur Demo'],
+              [2270,'Le menu des workspaces s’ouvre'],
+              [3130,'Sélection de Manufacturer'],
+              [3850,'Clic sur Manufacturer'],
+              [4170,'Transition de contexte vers Manufacturer'],
+              [4560,'02 · Room setup · Prêt à créer la Room']
+            ];
+            let label=labels[0][1];
+            for(let i=0;i<labels.length;i++)if(t>=labels[i][0])label=labels[i][1];
+            stage.textContent=label;
+            seek.value=Math.round(t);
+            clock.textContent=(t/1000).toFixed(1)+' / 6.7s';
+            pop.style.pointerEvents=t>=2300&&t<4010?'auto':'none';
+          }
+          function tick(now){
+            if(last===null)last=now;
+            const dt=Math.min(now-last,80);last=now;
+            if(playing){t=Math.min(duration,t+dt);if(t>=duration){playing=false;toggle.textContent='Play';}}
+            render();requestAnimationFrame(tick);
+          }
+          const pause=()=>{playing=false;last=null;toggle.textContent='Play';render();};
+          const run=()=>{playing=true;last=null;toggle.textContent='Pause';render();};
+          toggle.addEventListener('click',()=>{if(playing)pause();else{if(t>=duration)t=0;run();}});
+          replay.addEventListener('click',()=>{t=0;manualHover=false;run();});
+          seek.addEventListener('input',()=>{t=Number(seek.value);pause();});
+          $('krtr-profile-hit').addEventListener('click',()=>{t=2750;manualHover=false;pause();});
+          $('krtr-man-hit').addEventListener('click',()=>{if(t>=2300&&t<4020){t=3880;manualHover=false;run();}});
+          $('krtr-man-hit').addEventListener('mouseenter',()=>{manualHover=true;render();});
+          $('krtr-man-hit').addEventListener('mouseleave',()=>{manualHover=false;render();});
+          for(const [id,action] of [['krtr-profile-hit',()=>{t=2750;pause();}],['krtr-man-hit',()=>{t=3880;run();}]]){
+            $(id).addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();action();}});
+          }
+          if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){playing=false;t=0;toggle.textContent='Play';}
+          render();requestAnimationFrame(tick);
+        })();
+      </script>
+    </div>
+  </AppBlock>
+</box>
+
+### Ce qui change réellement
+
+- **Aucun zoom de caméra** : la transition se fait par navigation dans l'interface.
+- **Curseur slow–fast–slow** : mouvement courbe, approche ralentie, courte pause, clic.
+- **Menu ancré au profil Demo** : apparition discrète, puis sélection de Manufacturer.
+- **Changement de workspace rapide** : la structure de KryptRoom reste fixe, seul le contenu est remplacé.
+- **Interaction testable** : tu peux aussi cliquer directement sur Demo et sélectionner Manufacturer dans la prévisualisation.
+
+L'animation dure **6,7 secondes**, dont une partie consacrée à la lecture et aux pauses. La véritable transition d'écran est bien plus courte.
+
+**Dis-moi si cette V2 atteint le rendu naturel que tu recherches.** Si oui, cette grammaire de mouvement servira aux douze transitions suivantes.

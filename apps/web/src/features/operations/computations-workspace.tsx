@@ -54,7 +54,7 @@ export function ComputationsWorkspace({ room }: { room: ExampleRoom }) {
                 <span><strong>{state.id} · {state.title}</strong><small>Parents: {state.parent_state_ids.join(" · ") || "None"}</small></span></label>)}</div></fieldset>
             <p className="caption" id="input-guidance">Fictional references are non-resolvable. No file upload, artifact lookup or local data connection.</p>
             <details><summary>Protected reference labels &amp; dependencies</summary><ul>{inputs.map((s) => <li key={s.id}>
-              <Link href={statePath(room.id, s.id)}>{s.id} · inspect in Graph</Link><p className="caption">{s.artifactLabels.join(" · ") || "No artifact label on this root"}</p>
+              <Link prefetch={false} href={statePath(room.id, s.id)}>{s.id} · inspect in Graph</Link><p className="caption">{s.artifactLabels.join(" · ") || "No artifact label on this root"}</p>
             </li>)}</ul></details></>}
           {phase === 1 && <><p>{operations[operation].explanation}</p><p className="caption">{operations[operation].requirement}</p>
             <p className="operation-caution">This visual step does not execute {operations[operation].code}. No timer, run ID or progress percentage exists.</p></>}

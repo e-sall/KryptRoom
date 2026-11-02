@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-29",
+  "fonts": {
+    "license": "SIL Open Font License 1.1, accompanying font-only notices",
+    "DM Sans": "https://fonts.gstatic.com/s/dmsans/v17/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K4.woff2",
+    "Newsreader": "https://fonts.gstatic.com/s/newsreader/v26/cY9AfjOCX1hbuyalUrK4397yjA.woff2",
+    "licenseSources": [
+      "https://raw.githubusercontent.com/google/fonts/main/ofl/newsreader/OFL.txt",
+      "https://raw.githubusercontent.com/google/fonts/main/ofl/dmsans/OFL.txt"
+    ]
+  },
+  "portrait": "Original unchanged. Three local Sharp WebP renditions, widths 480/768/1200, quality 92, effort 6. Resize only; no face alteration or AI asset.",
+  "files": [
+    {
+      "path": "apps/web/public/fonts/DM-Sans-OFL.txt",
+      "bytes": 4481,
+      "sha256": "be5f632588774077cbb19a8d3fd788fbc7861af041f4e7165eae5822b11392b3"
+    },
+    {
+      "path": "apps/web/public/fonts/dm-sans.woff2",
+      "bytes": 36932,
+      "sha256": "9fea608a947e67020c33cad9a6fe3d60c54119dfb8cff87768a8117a15ed7543"
+    },
+    {
+      "path": "apps/web/public/fonts/Newsreader-OFL.txt",
+      "bytes": 4487,
+      "sha256": "b82a97d07a954ebe64246945545f6b5fe2895e1caed00bb1bbf55d91deadc520"
+    },
+    {
+      "path": "apps/web/public/fonts/newsreader.woff2",
+      "bytes": 132000,
+      "sha256": "6e4f2958c3a7c4a80acde4e5a679abe7e01bc1e30b92be3c7a8b696ef401d101"
+    },
+    {
+      "path": "apps/web/public/images/elimane-sall-1200.webp",
+      "bytes": 202504,
+      "sha256": "53a7bfe158a28316a4496c3cf676b276058533209439ed6d9de4b00a094ef245"
+    },
+    {
+      "path": "apps/web/public/images/elimane-sall-480.webp",
+      "bytes": 42866,
+      "sha256": "7d1d1a7e8aacbd561ee3f360649479af90ef045dd36444df92ae9b14c54f76de"
+    },
+    {
+      "path": "apps/web/public/images/elimane-sall-768.webp",
+      "bytes": 92704,
+      "sha256": "056f4b83e111aecdeadc5be43c4bd60b1ab7c5f94f1eb6e0d49c92e1ea742088"
+    },
+    {
+      "path": "apps/web/public/images/elimane-sall.jpeg",
+      "bytes": 1900114,
+      "sha256": "99c3f94ae1e61e9e53109ed533ff140aed095f43eb0cc85ad0bce91d85117160"
+    }
+  ],
+  "licenseNoticeFormatting": "Upstream OFL notice text preserved; trailing line whitespace normalized."
+}

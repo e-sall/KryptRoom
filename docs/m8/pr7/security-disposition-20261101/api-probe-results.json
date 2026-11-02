@@ -1,0 +1,55 @@
+{
+  "legacy3Type": "function",
+  "fixed11Type": "object",
+  "defaultOptimizationLevel10": 1,
+  "legacyCall": {
+    "error": "TypeError",
+    "message": "fixed is not a function"
+  },
+  "namedApiProbes": [
+    {
+      "file": "src/a.ts",
+      "glob": "**/*.ts",
+      "v10": true,
+      "v11": true
+    },
+    {
+      "file": ".eslintrc.js",
+      "glob": "**/*.js",
+      "v10": true,
+      "v11": true
+    },
+    {
+      "file": "src/a.ts",
+      "glob": "src/*.{ts,tsx}",
+      "v10": true,
+      "v11": true
+    },
+    {
+      "file": "src/x/a.ts",
+      "glob": "src/**",
+      "v10": true,
+      "v11": true
+    },
+    {
+      "file": "src/a.js",
+      "glob": "!**/*.ts",
+      "v10": true,
+      "v11": true
+    },
+    {
+      "file": "C:/repo/src/a.ts",
+      "glob": "**/*.ts",
+      "v10": true,
+      "v11": true
+    },
+    {
+      "file": "src/a.ts",
+      "glob": "**/*.js",
+      "v10": false,
+      "v11": false
+    }
+  ],
+  "constructorNamedApi": "function",
+  "safeProbeOnly": true
+}

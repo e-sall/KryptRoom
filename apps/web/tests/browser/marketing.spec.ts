@@ -37,12 +37,16 @@ test("P01 hero, honest booking and four P02 steps", async ({ page }, info) => {
   if (!story) throw new Error("Missing P02 section");
   await page.screenshot({ path: info.outputPath("how-it-works.png"), fullPage: true, clip: story });
   if (info.project.name === "desktop") {
-    for (const index of [0, 3, 1]) {
-      await steps.locator("li").nth(index).evaluate((element) => window.scrollTo(0, scrollY + element.getBoundingClientRect().top - innerHeight * .42));
-      await expect(steps.getByRole("button").nth(index)).toHaveAttribute("aria-current", "step");
-    }
+    // Final compact scrollytelling: the document moves and selects stage 02.
+    await page.locator('#how-it-works').evaluate(e=>{const h=e as HTMLElement;scrollTo(0,scrollY+e.getBoundingClientRect().top-parseFloat(h.style.getPropertyValue('--how-top'))+.2*Number(h.dataset.scrollStep));});
+    await expect(page.locator('.how-visual')).toHaveAttribute('data-step','0');
+    const before=await page.evaluate(()=>scrollY);
+    const interval=await page.locator('#how-it-works').evaluate(e=>Number((e as HTMLElement).dataset.scrollStep));
+    await page.mouse.wheel(0,interval);
+    await expect.poll(()=>page.evaluate(()=>scrollY)).toBeGreaterThan(before);
+    await expect(steps.getByRole('button').nth(1)).toHaveAttribute('aria-current','step');
   }
-  await page.getByRole("link", { name: "Explore Product", exact: true }).click(); await expect(page).toHaveURL("/demo");
+  await page.locator(".hero").getByRole("link", { name: "See how it works", exact: true }).click(); await expect(page).toHaveURL("/#how-it-works");
   await page.goto("/book-demo"); await expect(page.getByText("Unavailable", { exact: true })).toBeVisible();
   await expect(page.locator("form,input,iframe")).toHaveCount(0); await capture(page, info, "booking-unavailable");
 });
@@ -80,7 +84,11 @@ test("P05 modes preserve geometry and selection, with real catalog DAG and works
   const before = await geometry();
   for (const mode of ["Presentation", "Explore"]) {
     await page.getByRole("button", { name: mode, exact: true }).click();
-    expect(await geometry()).toEqual(before);
+    // V7 deliberately expands the desktop Presentation canvas. Preserve
+    // selection and exact restoration on return to Explore.
+    if (mode === 'Explore') expect(await geometry()).toEqual(before);
+    else if ((await page.evaluate(()=>innerWidth)) >= 1200) expect((await geometry())[1][1]).toBeGreaterThan(before[1][1]);
+    else expect(await geometry()).toEqual(before);
     await expect(page.getByRole("button", { name: "Inspect S2: Private Join" })).toHaveAttribute("aria-pressed", "true");
     await expect(context.getByRole("link", { name: "Inspect S2 in workspace" })).toHaveAttribute("href", "/preview/rooms/supply-chain/workspace/S2");
     await capture(page, info, "demo-" + mode.toLowerCase() + "-selected-s2");

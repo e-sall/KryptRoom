@@ -1,5 +1,63 @@
 # Changelog
 
+- M8 final release preparation: preserve the validated local designs, curate
+  source/evidence commits, update obsolete browser expectations to the approved
+  scroll and Signal contracts, and analyze main/dev ancestry. Publication and
+  merge remain blocked by applicable security gates and explicit approval.
+
+- Local final marketing integration: founder-supplied The Signal V4 SVG/CSS on
+  the homepage; restore the preserved 92.4s film as a complementary `/demo`
+  walkthrough with a hotspot-preserving 50% pointer. Locked How implementation
+  remains byte-identical. See `docs/m8/pr7/FINAL-HERO-DEMO-INTEGRATION-REPORT.md`.
+  Local founder review only; security publication scope remains to disposition.
+
+- Local How viewport correction: replace rejected tall step blocks with one
+  constant-height compact card, section-bounded sticky progression and a short
+  exterior runway. Full-card geometry, bidirectional wheel progression and video:
+  `docs/m8/pr7/HOW-VIEWPORT-REPORT.md`. Founder viewport approval pending.
+
+- Local How functional correction: automatically select the scene from actual
+  document row positions in both directions. Keep native scrolling, selectable
+  buttons, meaningful step explanations and a section-bound desktop visual.
+  Wheel-only acceptance and video: `docs/m8/pr7/HOW-SCROLL-PROGRESSION-REPORT.md`.
+
+- Local PR20 How review: isolate the rejected cinematic integration in a verified
+  backup, temporarily omit the film, remove obsolete sticky/500 px rules and
+  their neutralizers. See `docs/m8/pr7/HOW-REVIEW-REPORT.md`. No publication.
+
+- M8 Marketing V6: commercial synthetic manufacturing/logistics film, separate
+  technical demo refinement, noncolliding state cards, natural sticky How story,
+  exterior section labels and targeted typography/CTA refinements. See
+  `docs/m8/pr7/MARKETING-V6-REPORT.md`. PR20 remains open; founder desktop visual
+  review and separate merge authorization remain required. No M8 completion claim.
+
+
+- M8 Marketing V5: compact desktop composition, shorter meaningful seven-scene
+  replay, condensed How It Works, founder icons and pointer CTA. Exact-head
+  validation in PR20; founder approval pending. See `docs/m8/pr7/MARKETING-V5-REPORT.md`.
+
+
+- M8 PR20 Marketing V4: scoped editorial typography, left-brand navigation and
+  accessible Solutions disclosure, four proposed industry scenarios, enriched
+  Product/Technology/Security pages, honest demo contact, refined synthetic
+  choreography and high-quality responsive founder portrait. See
+  `docs/m8/pr7/MARKETING-V4-REPORT.md`. PR20 remains unmerged.
+
+- PR20 independent review F01–F04: readable showcase heading below floating
+  navigation, progressive synthetic storytelling, legible ordered mobile state
+  cards and responsive delivery of the unchanged founder portrait. Targeted
+  regressions and before/after evidence: `docs/m8/pr7/REVIEW-FIX-REPORT.md`.
+
+- M8 PR7 founder-directed homepage: editorial narrative, framed autoplay showcase
+  with pause/resume/replay and visibility/motion controls, original founder portrait,
+  bounded cryptographic evidence and final ten-question FAQ. Full `/demo` retained.
+- M8 PR7 freeze candidate: responsive modal retirement, visible keyboard focus
+  around fixed navigation, current synthetic Graph guidance, complete journeys,
+  viewport/state/deep-link and optional cross-browser QA. Founder-approved
+  M8-SEC-001 renewal covers ESLint 9 EOL only through 2026-11-01 23:59 Toronto;
+  withdrawn GHSA portion closed. No dependency, CI, core or historical evidence
+  changes. See `docs/m8/pr7/README.md`. Independent review and merge remain pending.
+
 All notable project changes are recorded here. The project follows milestone-oriented development; it has not adopted semantic versioning yet.
 
 ## Unreleased
@@ -113,3 +171,7 @@ All notable project changes are recorded here. The project follows milestone-ori
 - The Linux M2.5 cryptographic integration created encrypted RoomState S1, terminated both nodes, restarted without source-input mounts, reloaded the persisted SPU shares, returned the authorized synthetic aggregate `68` through CHEETAH/FM128, and passed privacy/storage checks.
 - Public-repository pass (2026-10-13): all 28 tests and the real PSI demo passed with local networking permitted; documentation links and ignore rules checked. No runtime, workflow, or test implementation changed. Docker was unavailable locally, so SPU was not re-executed in this pass.
 
+
+## M8 PR20 — V7.2 publication
+
+Founder-directed marketing refinements, natural How step selection, desktop geometry/pointer regression evidence, and the separate bounded M8-SEC-002 development/build exception. No core, dependency, CI, merge or deployment change. See docs/m8/pr7/V72-PUBLICATION-REPORT.md.

@@ -42,7 +42,7 @@ export function ButtonLink({
   variant?: ButtonVariant;
 }) {
   return (
-    <Link href={href} className={`button button-${variant}`}>
+    <Link prefetch={false} href={href} className={`button button-${variant}`}>
       {children}
     </Link>
   );

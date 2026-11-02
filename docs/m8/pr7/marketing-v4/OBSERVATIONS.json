@@ -1,0 +1,235 @@
+{
+  "date": "2026-10-29",
+  "engine": "156.0.8078.4",
+  "observations": [
+    {
+      "width": 1440,
+      "height": 900,
+      "overflow": 0,
+      "nav": {
+        "x": 376.75,
+        "y": 14,
+        "width": 686.5,
+        "height": 74,
+        "top": 14,
+        "right": 1063.25,
+        "bottom": 88,
+        "left": 376.75
+      },
+      "title": {
+        "x": 44,
+        "y": 128.40625,
+        "width": 172.75,
+        "height": 17.59375,
+        "top": 128.40625,
+        "right": 216.75,
+        "bottom": 146,
+        "left": 44
+      },
+      "frame": {
+        "x": 40,
+        "y": 164,
+        "width": 1360,
+        "height": 596.03125,
+        "top": 164,
+        "right": 1400,
+        "bottom": 760.03125,
+        "left": 40
+      },
+      "portrait": {
+        "source": "http://127.0.0.1:3002/images/elimane-sall-480.webp",
+        "width": 340
+      },
+      "font": "\"KR Newsreader\", Georgia, serif"
+    },
+    {
+      "width": 1366,
+      "height": 768,
+      "overflow": 0,
+      "nav": {
+        "x": 339.75,
+        "y": 14,
+        "width": 686.5,
+        "height": 74,
+        "top": 14,
+        "right": 1026.25,
+        "bottom": 88,
+        "left": 339.75
+      },
+      "title": {
+        "x": 44,
+        "y": 128.40625,
+        "width": 172.75,
+        "height": 17.59375,
+        "top": 128.40625,
+        "right": 216.75,
+        "bottom": 146,
+        "left": 44
+      },
+      "frame": {
+        "x": 40,
+        "y": 164,
+        "width": 1286,
+        "height": 596.03125,
+        "top": 164,
+        "right": 1326,
+        "bottom": 760.03125,
+        "left": 40
+      },
+      "portrait": {
+        "source": "http://127.0.0.1:3002/images/elimane-sall-480.webp",
+        "width": 340
+      },
+      "font": "\"KR Newsreader\", Georgia, serif"
+    },
+    {
+      "width": 834,
+      "height": 1112,
+      "overflow": 0,
+      "nav": {
+        "x": 107.75,
+        "y": 14,
+        "width": 618.5,
+        "height": 74,
+        "top": 14,
+        "right": 726.25,
+        "bottom": 88,
+        "left": 107.75
+      },
+      "title": {
+        "x": 28,
+        "y": 128.15625,
+        "width": 172.75,
+        "height": 17.59375,
+        "top": 128.15625,
+        "right": 200.75,
+        "bottom": 145.75,
+        "left": 28
+      },
+      "frame": {
+        "x": 24,
+        "y": 163.75,
+        "width": 786,
+        "height": 735.96875,
+        "top": 163.75,
+        "right": 810,
+        "bottom": 899.71875,
+        "left": 24
+      },
+      "portrait": {
+        "source": "http://127.0.0.1:3002/images/elimane-sall-480.webp",
+        "width": 310
+      },
+      "font": "\"KR Newsreader\", Georgia, serif"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "overflow": 0,
+      "nav": {
+        "x": 16,
+        "y": 8,
+        "width": 358,
+        "height": 125,
+        "top": 8,
+        "right": 374,
+        "bottom": 133,
+        "left": 16
+      },
+      "title": {
+        "x": 20,
+        "y": 172.609375,
+        "width": 350,
+        "height": 17.59375,
+        "top": 172.609375,
+        "right": 370,
+        "bottom": 190.203125,
+        "left": 20
+      },
+      "frame": {
+        "x": 16,
+        "y": 208.203125,
+        "width": 358,
+        "height": 1633.203125,
+        "top": 208.203125,
+        "right": 374,
+        "bottom": 1841.40625,
+        "left": 16
+      },
+      "portrait": {
+        "source": "http://127.0.0.1:3002/images/elimane-sall-480.webp",
+        "width": 334
+      },
+      "font": "\"KR Newsreader\", Georgia, serif"
+    },
+    {
+      "width": 320,
+      "height": 800,
+      "overflow": 0,
+      "nav": {
+        "x": 16,
+        "y": 8,
+        "width": 288,
+        "height": 125,
+        "top": 8,
+        "right": 304,
+        "bottom": 133,
+        "left": 16
+      },
+      "title": {
+        "x": 20,
+        "y": 173.21875,
+        "width": 280,
+        "height": 17.59375,
+        "top": 173.21875,
+        "right": 300,
+        "bottom": 190.8125,
+        "left": 20
+      },
+      "frame": {
+        "x": 16,
+        "y": 208.8125,
+        "width": 288,
+        "height": 1653.59375,
+        "top": 208.8125,
+        "right": 304,
+        "bottom": 1862.40625,
+        "left": 16
+      },
+      "portrait": {
+        "source": "http://127.0.0.1:3002/images/elimane-sall-480.webp",
+        "width": 264
+      },
+      "font": "\"KR Newsreader\", Georgia, serif"
+    },
+    {
+      "portraitDpr": 1,
+      "url": "http://127.0.0.1:3002/images/elimane-sall-480.webp",
+      "bytes": 42866,
+      "status": 200
+    },
+    {
+      "portraitDpr": 2,
+      "url": "http://127.0.0.1:3002/images/elimane-sall-768.webp",
+      "bytes": 92704,
+      "status": 200
+    }
+  ],
+  "sourceFingerprintsGitIndexLF": {
+    "apps/web/src/app/[section]/page.tsx": "b1e271dfe464804101bfa5b539bb62140a39ee41a230a906289cc18f6b97085e",
+    "apps/web/src/components/marketing-shell.tsx": "11961edc763017586cc866367a372fb3ef04bdee037b2cfd28072f98e7363e03",
+    "apps/web/src/features/marketing/editorial.css": "1dab708779af7456288676f43400c101beaca45f099e4fe27267f07bd02df1a4",
+    "apps/web/src/features/marketing/home-page.tsx": "0f8a91fcbce0bbad39cb1d6da51f6b485a5775fb95dc736c8ed6ba9e93f7a76a",
+    "apps/web/src/features/marketing/home-showcase.tsx": "b6af8fcc4cf6149306f7213859f3bbbcc9649bc649970e5e00d65260fff44db1",
+    "apps/web/src/features/marketing/marketing-pages.tsx": "b788810e8c7f0680061c2199999d17167aad5b09bfdd107952cc51f1bb3bc112",
+    "apps/web/src/features/marketing/solutions.ts": "cc8e18da219e3bd4580c937808e2614d7a453fdb1d51d836e6ffda858c965725",
+    "apps/web/tests/browser/foundation.spec.ts": "d1ae400f787d392612f9fb43394d2a7abb840dad873aa31f917a4f244d31b41e",
+    "apps/web/tests/browser/freeze.spec.ts": "7906e37cf4549f17da7b82525a685f29136ef022300c53cd4d3cda6ec8dd7ff3",
+    "apps/web/tests/browser/home.spec.ts": "fa2b286620117ef8a5ba1f28f8bcabf69bb0257feed1ec29d41242d28177c4bb",
+    "apps/web/tests/browser/marketing-v4.spec.ts": "baa9c20ab06e1a46f6cda709c127c5bac7ab2ea2d06d975b0b997e0f6812690a",
+    "apps/web/tests/browser/marketing.spec.ts": "55278e20ae5f6416bbd10add4f9d91ba8b72408d3891f73181541a00db0423dc",
+    "apps/web/tests/home.test.tsx": "1f7f46c5fc08d948af4de8fea6e4e9c049287009fe9dbb1e0c1a71e9914ad2ef",
+    "apps/web/tests/marketing-v4.test.tsx": "8760781aa608f20b12175f1797fbafdeb158f013a9dafc272dbf30b0a9a113be",
+    "apps/web/tests/marketing.test.tsx": "8637364df8089141cd6b3f24550b7e65de16a9da94f1c6da28db1d0582a8448a"
+  }
+}

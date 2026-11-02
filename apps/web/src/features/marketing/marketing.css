@@ -1,7 +1,11 @@
 /* P01/P02/P05 presentation only. Shared tokens and canonical K remain unchanged. */
 .marketing-navbar { position: sticky; top: 12px; z-index: 20; }
 .marketing-navbar nav { flex-wrap: wrap; gap: 24px; }
-.marketing-shell { scroll-padding-top: 120px; }
+/* The document scrolls, not the shell. Keep keyboard focus below the sticky bar. */
+html:has(.marketing-shell) { scroll-padding-top: 120px; }
+@media (max-width: 767px) {
+  html:has(.marketing-shell) { scroll-padding-top: 184px; }
+}
 .marketing-shell main { min-width: 0; }
 .marketing-cadran { border: 1px solid var(--kr-border); border-radius: 22px; background: var(--kr-surface); padding: 48px; margin-bottom: 32px; }
 .marketing-cadran > h2 { font-family: var(--kr-font-serif); font-size: clamp(26px, 3vw, 36px); font-weight: 400; }

@@ -1,5 +1,96 @@
 # Architectural decisions
 
+## 2026-11-01 — exact Signal V4 homepage and preserved /demo walkthrough
+
+The founder locks The Signal V4 for the homepage and authorizes reuse of the
+preserved film as a complementary `/demo` section. Preserve source SVG attributes,
+text and CSS keyframes through mechanical JSX transcription, rather than HTML
+injection; retain the existing injection guard. A single bar group uses the
+original eight-second CSS timeline. The film retains its clock, scenes and
+trajectories; only its pointer path scales by .5 about the original (1,1) tip.
+Hold the ending because no loop was approved. Keep locked How and technical demo
+source byte-identical. Mobile readability uses external text, not a redesigned
+SVG. Local evidence and publication/security boundaries are recorded in
+`m8/pr7/FINAL-HERO-DEMO-INTEGRATION-REPORT.md`.
+
+## 2026-11-01 — one viewport-fitted card, exterior progression only
+
+Supersede the founder-rejected tall How rows. Keep navigation compact and only
+the active description/detail visible. A single fixed-height card sticks beneath
+the measured navbar; short exterior travel drives stages by document geometry.
+Subtract navbar bounds and safety margins from actual innerHeight. Never enlarge
+the card to create progress, intercept native scrolling or reveal an empty spacer.
+Mobile retains normal flow/manual selection. See `m8/pr7/HOW-VIEWPORT-REPORT.md`
+for executed Chromium/WebKit geometry and wheel evidence. No publication approval.
+
+## 2026-11-01 — founder requires real scene progression during native scroll
+
+Supersede V7.2's manual-only How selection with deterministic geometry selection:
+the last of four real step rows above a 40% viewport line is active. Give each
+existing explanation a readable content block and constrain sticky behavior to
+the desktop right visual. Native scroll remains unmodified; button/keyboard
+selection aligns the corresponding row. No timers, wheel/touch interception or
+empty section spacer. The rejected film stays isolated. See
+`m8/pr7/HOW-SCROLL-PROGRESSION-REPORT.md` for executed wheel-only acceptance/video.
+
+## 2026-11-01 — rejected cinematic integration and natural How review
+
+Preserve the rejected film and source provenance in a verified archive outside
+the checkout, then omit its homepage mount. No improvised replacement. Remove
+obsolete sticky/500 px rules and redundant neutralizers at source, retaining
+native scrolling and the four selectable steps. Disclose that stabilized local
+pre-fix behavior did not reproduce a persistent trap. No publication or new
+security approval. See `m8/pr7/HOW-REVIEW-REPORT.md`.
+
+## ADR-022 — Freeze QA preserves the presentation/core boundary
+
+PR20 independent review follow-up (2026-10-26): reserve stable space while
+revealing illustrative stages progressively; use readable ordered state cards
+instead of a miniature mobile DAG, retaining every canonical parent reference.
+Use the existing Next image optimizer for responsive delivery of the unchanged
+public founder portrait, without a config/dependency/security-header change.
+Keep heading and whole desktop frame below actual floating-navigation bounds.
+See `docs/m8/pr7/REVIEW-FIX-REPORT.md`; founder visual approval remains pending.
+
+**Decision:** PR7 on merged PR #19 fixes observed focus occlusion and modal
+retirement at responsive transitions, with regression tests. Keep P11's full
+sidebar/right inspector, tablet rail/below inspector and mobile sheet/bottom nav.
+Keep all shared tokens, canonical K, catalogs, P05 ratios and core code unchanged.
+Record source comparison, complete journeys, system-state checks and bounded
+browser evidence; do not equate automated accessibility checks with certification.
+
+The later founder mission explicitly adds an editorial homepage and separate
+autoplay showcase over the same synthetic catalog, with visibility/motion gating,
+pause/resume/replay and static fallback. `/demo` retains its existing P05 modes.
+Use the supplied original founder portrait and put the ten-question FAQ last.
+A shared focus-visibility guard supplements native keyboard scrolling around fixed
+bars and deliberately leaves pointer/tap activation stable;
+modal openers receive explicit focus for engines that do not focus pointer-clicked
+buttons. Optional Windows WebKit QA normalizes and asserts real CSS dimensions;
+fractional CSSOM widths are compared consistently, with no error filtering.
+Speculative Next Link prefetching is disabled using the documented frontend prop
+after WebKit preload errors; navigation remains explicit and tested, with possible
+first-activation latency. Modal Tab traversal includes every visible control and
+link. No page-error filtering or security-header/runtime relaxation.
+Manual How It Works selection wins over programmatic focus scrolling; deliberate
+wheel/touch/scroll-key input resumes scroll following. No core authority changes.
+
+**Security disposition:** Following the pre-PR7 gate, the founder explicitly
+renewed M8-SEC-001 on 2026-10-25 for ESLint 9 EOL only, expiring November 1 at
+23:59 America/Toronto. GHSA-vfj7-8cjw-p6xm is closed by upstream withdrawal,
+not a package patch. No forced incompatible dependencies, CI change, audit/test
+suppression, production deployment or extension to other risks. Reevaluate before
+PR7 merge or expiry, stop on a material new risk; a later extension requires new
+explicit founder approval. See the current `docs/m8/pr1/SECURITY-EXCEPTION.md`.
+
+**Consequences:** Firefox/WebKit representative checks use the already pinned
+Playwright package in an optional local config; the authoritative CI remains
+Chromium with all existing security/contract/scope controls. No extra package,
+workflow, manual crypto dispatch or transaction. The PR remains open. A frontend
+freeze candidate does not provide authenticated collaboration, private-data
+handling, operational keys, authorized proof APIs or a production Control Plane.
+See `docs/m8/pr7/README.md` and `FREEZE-QA-REPORT.md` for review gates.
+
 ## ADR-021 — Marketing replay is a view over synthetic presentation states
 
 **Decision:** Implement P01/P02 and P05 restored V1 in the existing marketing
@@ -419,3 +510,50 @@ optional pre-provisioned infrastructure; it changes no proof semantics. See
 
 **Status:** Accepted and runtime-verified on the synthetic Linux restart/reload fixture.
 
+
+## M8 PR20 Marketing V4 presentation decisions (2026-10-29)
+
+Keep all changes within marketing, its tests and evidence. Use self-hosted OFL
+Newsreader and DM Sans with marketing-scoped aliases, local WOFF2 and preloads;
+no remote font request, package addition or application-token change. Asset
+license notices cover the fonts only, not a new repository license.
+Native details/summary provides a no-JS Solutions disclosure; Escape restores
+focus and leaving the disclosure closes it. Four static scenario pages are
+proposed uses, never customer/deployment claims.
+Use fixed synthetic scenes with lightweight CSS illustration and existing
+visibility/motion/timer controls, never execution telemetry. Preserve exact
+parents and complete static fallback. Store three quality-92 WebP derivatives
+of the unchanged original portrait and select through a native picture/source
+inside the existing Next image component. This avoids the default optimizer’s
+second lossy pass without changing the image optimizer allowlist or security
+configuration. Booking remains Coming soon with founder-authorized mailto only.
+No backend, crypto, CI, dependency, production deployment or merge authority is
+introduced. Current security exception scope and expiration remain unchanged.
+
+## M8 Marketing V5 (2026-10-30)
+
+Use a marketing-only desktop scale and a shared branch-axis constraint. Replace
+the long How narrative with four condensed controls and a Room/input/state
+illustration. Retain context and original semantic boundaries. Nonuniform
+presentation dwell times total 23.6s; CSS pointer halo does not move controls.
+No new dependency, backend, runtime or CI change. See the V5 report.
+
+
+## M8 Marketing V6 (2026-10-30)
+
+Separate commercial explanation from technical inspection. The homepage film uses
+one fixed manufacturing/logistics scenario and a UI-only summary (3 groups, 92%,
+2 suppliers). Authorization is a distinct illustrated boundary. The assistant is
+a future concept over explicitly permitted summaries; its disclosure model is
+not specified or implemented. No raw secret-data query, LLM, RAG, alert delivery,
+telemetry or real computation is introduced. `/demo` retains the existing catalog,
+seven technical scenes, exact ordered parents, mode/selection/inspector behavior.
+Use fixed reserved scene dimensions and real two-row node layout, not intersecting
+absolute cards. Natural CSS sticky scrolling controls How phases; manual controls,
+reverse scroll, reduced motion and full no-JS explanations remain. External section
+labels, local responsive portrait and canonical logo retain the approved identity.
+No dependency, CI, runtime security or M1–M7 change. See V6 report and evidence.
+
+## 2026-11-01 — V7.2 publication under a separate bounded exception
+
+The founder explicitly approved M8-SEC-002 for GHSA-g3hv-75wg-m249 in trusted development/build validation and publication to existing PR20. Receipt 2026-11-01T07:00:41Z; expiry 2026-11-04T07:00:41Z. This is risk acceptance for that scope, not a fix or production/merge authorization. M8-SEC-001 remains ESLint 9 EOL only and expires 2026-11-01 23:59 Toronto. Preserve source trust checks, CI restrictions and visible audits; stop on scope/control failure. See docs/m8/pr7/M8-SEC-002.md and V72-PUBLICATION-REPORT.md.

@@ -779,6 +779,10 @@ svg {
   }
 }
 @media (max-width: 767px) {
+  /* Reserve the fixed navigation area when the browser scrolls keyboard focus. */
+  html:has(.app-frame) {
+    scroll-padding-bottom: calc(90px + env(safe-area-inset-bottom));
+  }
   .app-frame {
     display: block;
     margin: 0;

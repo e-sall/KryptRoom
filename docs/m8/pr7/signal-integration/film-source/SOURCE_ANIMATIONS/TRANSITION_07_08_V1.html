@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:16px;background:#10100f">
+<div id="kr7801" style="width:100%;color:#f1f0eb;font-family:Arial,Helvetica,sans-serif">
+<style>
+#kr7801 *{box-sizing:border-box}
+#kr7801 .viewport{background:#10100f;border:1px solid #38383a;border-radius:12px;overflow:hidden}
+#kr7801 svg{display:block;width:100%;height:auto;aspect-ratio:1120/620}
+#kr7801 .transport{display:flex;gap:10px;align-items:center;margin-top:12px}
+#kr7801 button{border:1px solid #505054;border-radius:8px;background:#2b2b2d;color:#eee;font:600 12px Arial,sans-serif;padding:9px 15px;cursor:pointer}
+#kr7801 button.main{background:#f1f0eb;color:#181818;border-color:#f1f0eb;min-width:76px}
+#kr7801 button:hover{filter:brightness(1.12)}
+#kr7801 input[type=range]{flex:1;min-width:35px;accent-color:#a5bfd1;cursor:pointer}
+#kr7801 .clock{font:11px monospace;color:#aaa;white-space:nowrap}
+#kr7801 .stage{font:11px Arial,sans-serif;color:#b7c6d0;margin-top:8px;min-height:19px}
+#kr7801 .navHit{cursor:pointer}
+#kr7801 button:focus-visible,#kr7801 input:focus-visible{outline:2px solid #9db7cb;outline-offset:3px}
+</style>
+<div class="viewport">
+<svg viewBox="0 0 1120 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animation de fin de calcul privé, autorisation du résultat agrégé, puis navigation vers la galerie Analytics">
+<rect x="1" y="1" width="1118" height="618" rx="13" fill="#181818" stroke="#38383A"/>
+<rect x="1" y="1" width="184" height="618" rx="13" fill="#1D1D1E"/>
+<path d="M184 1 V619 M1 61 H1119" stroke="#353537"/>
+
+<g transform="translate(19 12) scale(1.22)">
+<path d="M1 6 L7 3 L7 27 L1 24 Z" fill="#F1F0EB"/>
+<path d="M9 12 L20 3 L16 12 L9 19 Z" fill="#A6A7A1"/>
+<path d="M9 19 L16 12 L21 26 L14 23 Z" fill="#747671"/>
+</g>
+<g font-family="Arial,Helvetica,sans-serif">
+<text x="59" y="40" fill="#F1F0EB" font-size="19" font-weight="600" letter-spacing="-.5">KryptRoom</text>
+<text x="21" y="101" fill="#858588" font-family="monospace" font-size="10" letter-spacing="1">WORKSPACE</text>
+<g stroke="#92999C" stroke-width="1.5" fill="none">
+<rect x="26" y="135" width="7" height="7" rx="1"/><rect x="37" y="135" width="7" height="7" rx="1"/><rect x="26" y="146" width="7" height="7" rx="1"/><rect x="37" y="146" width="7" height="7" rx="1"/>
+<rect x="26" y="185" width="19" height="17" rx="3"/><path d="M26 191 H45"/>
+<ellipse cx="35" cy="236" rx="9" ry="4"/><path d="M26 236 V250 C26 256 44 256 44 250 V236 M26 243 C26 249 44 249 44 243"/>
+</g>
+<g fill="#A4A4A7" font-size="13">
+<text x="58" y="147">Overview</text><text x="58" y="197">Rooms</text><text x="58" y="247">Datasets</text>
+</g>
+
+<g id="kr78compActive">
+<rect x="11" y="273" width="162" height="39" rx="7" fill="#303032"/>
+<rect x="11" y="279" width="3" height="27" rx="1.5" fill="#9DB7CB"/>
+<g fill="none" stroke="#CED5DA" stroke-width="1.5" stroke-linecap="round">
+<rect x="26" y="285" width="19" height="18" rx="4"/><path d="M30 294 H41 M35.5 289 V300"/>
+</g>
+<text x="58" y="299" fill="#F1F0EB" font-size="13" font-weight="600">Computations</text>
+</g>
+<g id="kr78compIdle" opacity="0">
+<g stroke="#92999C" stroke-width="1.5" fill="none" stroke-linecap="round">
+<rect x="26" y="285" width="19" height="18" rx="4"/><path d="M30 294 H41 M35.5 289 V300"/>
+</g>
+<text x="58" y="299" fill="#A4A4A7" font-size="13">Computations</text>
+</g>
+<g id="kr78analyticsIdle">
+<rect id="kr78hover" x="11" y="324" width="162" height="39" rx="7" fill="#303032" opacity="0"/>
+<g stroke="#92999C" stroke-width="1.5" fill="none">
+<rect x="26" y="337" width="19" height="17" rx="3"/><path d="M30 350 V345 M35.5 350 V341 M41 350 V347"/>
+</g>
+<text x="58" y="350" fill="#A4A4A7" font-size="13">Analytics</text>
+</g>
+<g id="kr78analyticsActive" opacity="0">
+<rect x="11" y="324" width="162" height="39" rx="7" fill="#303032"/>
+<rect x="11" y="330" width="3" height="27" rx="1.5" fill="#9DB7CB"/>
+<g stroke="#CED5DA" stroke-width="1.5" fill="none">
+<rect x="26" y="337" width="19" height="17" rx="3"/><path d="M30 350 V345 M35.5 350 V341 M41 350 V347"/>
+</g>
+<text x="58" y="350" fill="#F1F0EB" font-size="13" font-weight="600">Analytics</text>
+</g>
+<g fill="none" stroke="#92999C" stroke-width="1.5">
+<path d="M26 389 H45 V403 H36 L31 408 V403 H26 Z"/>
+</g>
+<text x="58" y="402" fill="#A4A4A7" font-size="13">Ask AI</text>
+<path d="M21 559 H165" stroke="#414143"/>
+<circle cx="38" cy="584" r="12" fill="#36383B"/>
+<text x="38" y="588" text-anchor="middle" fill="#E7E7E9" font-size="11">L</text>
+<text x="58" y="581" fill="#E1E1E3" font-size="12">Logistics</text>
+<text x="58" y="596" fill="#909092" font-size="10">Workspace</text>
+<rect x="907" y="15" width="135" height="31" rx="8" fill="#29292A" stroke="#464648"/>
+<circle cx="925" cy="30" r="4" fill="#A5B7C4"/>
+<text x="938" y="35" fill="#D6D6D8" font-size="11">Logistics Partner</text>
+<circle cx="1081" cy="31" r="16" fill="#34383D"/>
+<text x="1081" y="36" text-anchor="middle" fill="#F0F0F1" font-size="12" font-weight="600">L</text>
+</g>
+
+<!-- Execution view -->
+<g id="kr78execution" font-family="Arial,Helvetica,sans-serif">
+<text x="211" y="37" fill="#98989A" font-size="12">Logistics Partner</text>
+<path d="M320 28 L325 32 L320 36" fill="none" stroke="#77777A" stroke-width="1.5"/>
+<text x="340" y="37" fill="#98989A" font-size="12">Computations</text>
+<path d="M436 28 L441 32 L436 36" fill="none" stroke="#77777A" stroke-width="1.5"/>
+<text x="456" y="37" fill="#E1E1E3" font-size="12">Private execution</text>
+
+<text x="214" y="104" fill="#99A9B4" font-size="10" letter-spacing="1.2">SUPPLY CHAIN COLLABORATION / COMPUTATIONS</text>
+<text x="214" y="147" fill="#F1F0EB" font-size="30" font-weight="600" letter-spacing="-.65">Private computation in progress.</text>
+<text x="215" y="175" fill="#A9A9AC" font-size="13">Supply Chain Risk · Computing authorized aggregate indicators.</text>
+<rect x="944" y="116" width="135" height="29" rx="14" fill="#30363B" stroke="#536372"/>
+<circle id="kr78pulse" cx="960" cy="130" r="4" fill="#A9C4D5"/>
+<text id="kr78head" x="973" y="134" fill="#D9E3E9" font-size="11">Computation running</text>
+
+<rect x="212" y="202" width="540" height="337" rx="11" fill="#252526" stroke="#434346"/>
+<text x="231" y="230" fill="#F1F0EB" font-size="15" font-weight="600">Execution timeline</text>
+<text x="733" y="231" text-anchor="end" fill="#A9C0D0" font-family="monospace" font-size="11">DEMO</text>
+<text x="231" y="248" fill="#A1A1A5" font-size="10.5">Supply Chain Risk · Private workflow</text>
+<path d="M231 258 H733" stroke="#414144"/>
+<path d="M249 292 V490" stroke="#45494C" stroke-width="1.8" stroke-dasharray="3 6"/>
+
+<rect x="231" y="267" width="502" height="52" rx="8" fill="#2E2E30" stroke="#444447"/>
+<rect x="231" y="325" width="502" height="52" rx="8" fill="#2E2E30" stroke="#444447"/>
+<rect id="kr78row3" x="231" y="383" width="502" height="74" rx="8" fill="#30383E" stroke="#657F91"/>
+<rect id="kr78row4" x="231" y="463" width="502" height="56" rx="8" fill="#29292B" stroke="#404043"/>
+
+<circle cx="249" cy="292" r="10" fill="#3C4C56" stroke="#7892A4" stroke-width="1.3"/>
+<circle cx="249" cy="350" r="10" fill="#3C4C56" stroke="#7892A4" stroke-width="1.3"/>
+<circle id="kr78dot3" cx="249" cy="410" r="10" fill="#394B58" stroke="#7892A4" stroke-width="1.3"/>
+<circle id="kr78dot4" cx="249" cy="490" r="10" fill="#303034" stroke="#515156" stroke-width="1.3"/>
+<g stroke="#D2E5F0" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M244 292 L248 296 L255 288"/>
+<path d="M244 350 L248 354 L255 346"/>
+<path id="kr78check3" d="M244 410 L248 414 L255 406" opacity="0"/>
+<path id="kr78check4" d="M244 490 L248 494 L255 486" opacity="0"/>
+</g>
+<g id="kr78spin3"><path d="M249 402 A8 8 0 0 1 257 410" stroke="#D3E7F3" stroke-width="2" fill="none" stroke-linecap="round"/></g>
+<g id="kr78spin4" opacity="0"><path d="M249 482 A8 8 0 0 1 257 490" stroke="#D3E7F3" stroke-width="2" fill="none" stroke-linecap="round"/></g>
+
+<g font-size="12.7" font-weight="600" fill="#EAEAEC">
+<text x="271" y="286">Validate protected inputs</text>
+<text x="271" y="344">Establish private execution</text>
+<text x="271" y="402">Compute aggregate risk indicators</text>
+<text x="271" y="486">Authorize aggregate output</text>
+</g>
+<g font-size="10.5">
+<text x="271" y="303" fill="#99999D">Check that both parties' inputs are ready</text>
+<text x="271" y="361" fill="#99999D">Initialize the protected computation context</text>
+<text x="271" y="420" fill="#99999D">Privacy-preserving calculation in progress</text>
+<text id="kr78note4" x="271" y="503" fill="#99999D">Awaiting completion and output authorization</text>
+<text x="717" y="292" text-anchor="end" fill="#C6DAE7">Complete</text>
+<text x="717" y="350" text-anchor="end" fill="#C6DAE7">Complete</text>
+<text id="kr78s3" x="717" y="402" text-anchor="end" fill="#C6DAE7">Working</text>
+<text id="kr78s4" x="717" y="490" text-anchor="end" fill="#89898E">Pending</text>
+</g>
+<rect x="271" y="434" width="438" height="5" rx="2.5" fill="#414247"/>
+<rect id="kr78bar" x="271" y="434" width="293.46" height="5" rx="2.5" fill="#B0C9D9"/>
+
+<!-- Right inspector -->
+<rect x="764" y="202" width="315" height="337" rx="11" fill="#252526" stroke="#454649"/>
+<text x="782" y="229" fill="#F1F0EB" font-size="14.5" font-weight="600">Private execution</text>
+<text x="782" y="247" fill="#9D9EA2" font-size="10.5">Room · Supply Chain Collaboration</text>
+<path d="M782 258 H1061" stroke="#414144"/>
+<rect x="782" y="270" width="131" height="65" rx="8" fill="#303133" stroke="#4B4D51"/>
+<circle cx="799" cy="290" r="10" fill="#3E4246"/>
+<text x="799" y="294" text-anchor="middle" fill="#ECEFF0" font-size="10">M</text>
+<text x="816" y="288" fill="#EBEBED" font-size="11" font-weight="600">Manufacturer</text>
+<text x="795" y="321" fill="#A9BCC8" font-size="10">2 protected inputs</text>
+<rect x="926" y="270" width="135" height="65" rx="8" fill="#30363B" stroke="#52606A"/>
+<circle cx="943" cy="290" r="10" fill="#43515C"/>
+<text x="943" y="294" text-anchor="middle" fill="#ECEFF0" font-size="10">L</text>
+<text x="960" y="288" fill="#EBEBED" font-size="10.8" font-weight="600">Logistics Partner</text>
+<text x="940" y="321" fill="#B4C8D6" font-size="10">2 protected inputs</text>
+
+<path d="M846 335 V350 H993 V335 M920 350 V366" fill="none" stroke="#65737E" stroke-width="1.5"/>
+<rect id="kr78engineBox" x="782" y="369" width="279" height="66" rx="8" fill="#30363B" stroke="#576D7B"/>
+<circle cx="804" cy="391" r="12" fill="#3B4B56"/>
+<path id="kr78engineSpin" d="M804 382 A9 9 0 0 1 813 391" stroke="#C3DCEA" stroke-width="2" stroke-linecap="round" fill="none"/>
+<path id="kr78engineCheck" d="M798 392 L803 397 L811 386" stroke="#D3E5EF" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0"/>
+<text x="827" y="388" fill="#F1F0EB" font-size="12.5" font-weight="600">Private computation</text>
+<text id="kr78engineSub" x="827" y="406" fill="#AFC3D0" font-size="10.5">Protected inputs · Secure execution</text>
+<rect x="796" y="422" width="251" height="4" rx="2" fill="#41464A"/>
+<rect id="kr78engineBar" x="796" y="422" width="168.17" height="4" rx="2" fill="#A8C3D6"/>
+
+<path d="M920 435 V452" stroke="#65737E" stroke-width="1.5"/>
+<rect id="kr78outputBox" x="782" y="452" width="279" height="57" rx="8" fill="#2E2F31" stroke="#48494D"/>
+<rect x="797" y="465" width="24" height="24" rx="6" fill="#3A3C40"/>
+<g stroke="#AAB7C0" stroke-width="1.4" fill="none">
+<rect x="803" y="475" width="12" height="10" rx="2"/>
+<path d="M806 475 V472 A3 3 0 0 1 812 472 V475"/>
+</g>
+<text x="833" y="472" fill="#DADADD" font-size="11.5" font-weight="600">Authorized output</text>
+<text id="kr78outputText" x="833" y="491" fill="#A1A1A6" font-size="10.5">Not yet available</text>
+<text id="kr78outputStatus" x="1045" y="488" text-anchor="end" fill="#94969A" font-size="10">Pending</text>
+<text x="783" y="526" fill="#A6AFB6" font-size="10">No raw source records exposed</text>
+<rect x="212" y="551" width="867" height="39" rx="8" fill="#252527" stroke="#414143"/>
+<text x="230" y="575" fill="#C4C4C6" font-size="11.2">Illustrative execution · Only authorized aggregate outputs become available.</text>
+</g>
+
+<!-- Scene 08: gallery, no metrics -->
+<g id="kr78gallery" opacity="0" font-family="Arial,Helvetica,sans-serif">
+<text x="211" y="37" fill="#98989A" font-size="12">Logistics Partner</text>
+<path d="M320 28 L325 32 L320 36" fill="none" stroke="#77777A" stroke-width="1.5"/>
+<text x="340" y="37" fill="#98989A" font-size="12">Analytics</text>
+<path d="M412 28 L417 32 L412 36" fill="none" stroke="#77777A" stroke-width="1.5"/>
+<text x="431" y="37" fill="#E1E1E3" font-size="12">Gallery</text>
+
+<text x="214" y="104" fill="#99A9B4" font-size="10" letter-spacing="1.2">SUPPLY CHAIN COLLABORATION / ANALYTICS</text>
+<text x="214" y="147" fill="#F1F0EB" font-size="30" font-weight="600" letter-spacing="-.65">Your analytics, ready to explore.</text>
+<text x="215" y="175" fill="#A9A9AC" font-size="13">Open an authorized analysis, or run another workflow when needed.</text>
+<rect x="944" y="116" width="135" height="29" rx="14" fill="#30363B" stroke="#536372"/>
+<circle cx="960" cy="130" r="4" fill="#A9C4D5"/>
+<text x="973" y="134" fill="#D9E3E9" font-size="11">1 analysis ready</text>
+
+<rect x="212" y="202" width="867" height="67" rx="10" fill="#2D3338" stroke="#566A79"/>
+<rect x="230" y="216" width="38" height="38" rx="9" fill="#3C4D59"/>
+<path d="M240 235 L246 241 L258 228" stroke="#D1E2ED" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+<text x="282" y="229" fill="#F1F0EB" font-size="14.5" font-weight="600">Supply Chain Risk is ready</text>
+<text x="282" y="248" fill="#B2C2CD" font-size="11.5">Private computation completed · Authorized analysis available</text>
+<rect x="965" y="221" width="96" height="29" rx="8" fill="#384A56" stroke="#5C7789"/>
+<text x="1013" y="240" fill="#D7E8F2" font-size="11" text-anchor="middle">Ready to view</text>
+
+<g id="kr78card1">
+<rect x="212" y="281" width="278" height="246" rx="11" fill="#2B3035" stroke="#7896AA" stroke-width="1.5"/>
+<rect x="230" y="301" width="46" height="46" rx="10" fill="#3B4A55"/>
+<path d="M253 307 L267 313 V322 C267 332 261 338 253 341 C245 338 239 332 239 322 V313 Z" fill="none" stroke="#CBDDE9" stroke-width="1.7" stroke-linejoin="round"/>
+<path d="M247 323 L252 328 L260 318" fill="none" stroke="#CBDDE9" stroke-width="1.7" stroke-linecap="round"/>
+<rect x="411" y="301" width="61" height="23" rx="11" fill="#3C5060"/>
+<text x="441.5" y="316" text-anchor="middle" fill="#D5E6F0" font-size="10">READY</text>
+<text x="230" y="382" fill="#F1F0EB" font-size="18" font-weight="600">Supply Chain Risk</text>
+<text x="230" y="408" fill="#B2BBC3" font-size="11.5">Identify shared operational risks</text>
+<text x="230" y="425" fill="#B2BBC3" font-size="11.5">through protected inputs.</text>
+<path d="M230 460 H472" stroke="#535E66"/>
+<text x="230" y="494" fill="#DCE8F0" font-size="12" font-weight="600">Open dashboard</text>
+<path d="M451 491 H472 M466 485 L472 491 L466 497" stroke="#BED4E2" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+
+<g id="kr78card2">
+<rect x="502" y="281" width="278" height="246" rx="11" fill="#252526" stroke="#464649"/>
+<rect x="520" y="301" width="46" height="46" rx="10" fill="#353639"/>
+<circle cx="543" cy="324" r="12" stroke="#BFC4C9" stroke-width="1.7" fill="none"/>
+<path d="M543 316 V324 L549 329" stroke="#BFC4C9" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+<rect x="699" y="301" width="63" height="23" rx="11" fill="#333437"/>
+<text x="730.5" y="316" text-anchor="middle" fill="#B5B5B9" font-size="10">NOT RUN</text>
+<text x="520" y="382" fill="#E9E9EB" font-size="18" font-weight="600">Delivery Performance</text>
+<text x="520" y="408" fill="#A7A7AA" font-size="11.5">Assess delivery reliability</text>
+<text x="520" y="425" fill="#A7A7AA" font-size="11.5">across partner operations.</text>
+<path d="M520 460 H762" stroke="#454548"/>
+<text x="520" y="494" fill="#ABABAE" font-size="11.5">Awaiting first analysis</text>
+</g>
+
+<g id="kr78card3">
+<rect x="792" y="281" width="287" height="246" rx="11" fill="#252526" stroke="#464649"/>
+<rect x="810" y="301" width="46" height="46" rx="10" fill="#353639"/>
+<circle cx="826" cy="324" r="10" stroke="#BFC4C9" stroke-width="1.7" fill="none"/>
+<circle cx="839" cy="324" r="10" stroke="#BFC4C9" stroke-width="1.7" fill="none"/>
+<rect x="998" y="301" width="63" height="23" rx="11" fill="#333437"/>
+<text x="1029.5" y="316" text-anchor="middle" fill="#B5B5B9" font-size="10">NOT RUN</text>
+<text x="810" y="382" fill="#E9E9EB" font-size="18" font-weight="600">Shared Coverage</text>
+<text x="810" y="408" fill="#A7A7AA" font-size="11.5">Explore areas of common</text>
+<text x="810" y="425" fill="#A7A7AA" font-size="11.5">coverage between partners.</text>
+<path d="M810 460 H1061" stroke="#454548"/>
+<text x="810" y="494" fill="#ABABAE" font-size="11.5">Awaiting first analysis</text>
+</g>
+
+<rect x="212" y="551" width="867" height="39" rx="8" fill="#252527" stroke="#414143"/>
+<g fill="none" stroke="#BFC6CB" stroke-width="1.4">
+<rect x="230" y="566" width="13" height="11" rx="2"/><path d="M233 566 V562 A3.5 3.5 0 0 1 240 562 V566"/>
+</g>
+<text x="255" y="574" fill="#C4C4C6" font-size="11.5">Gallery displays analysis availability only. Protected source datasets remain private.</text>
+</g>
+
+<rect id="kr78navHit" x="11" y="324" width="162" height="39" rx="7" class="navHit" fill="transparent" role="button" tabindex="0" aria-label="Open Analytics"/>
+<g id="kr78cursor" transform="translate(916 493)" opacity="0">
+<path d="M1 1 V24 L7 18 L12 30 L18 27 L13 16 L22 16 Z" fill="#F1F0EB" stroke="#101011" stroke-width="2" stroke-linejoin="round"/>
+</g>
+<g id="kr78click" opacity="0">
+<circle r="12" fill="#C4D8E5" fill-opacity=".10" stroke="#C4D8E5" stroke-width="1.5"/>
+</g>
+</svg>
+</div>
+<div class="transport">
+<button id="kr78play" class="main" type="button">Pause</button>
+<button id="kr78replay" type="button">↺ Replay</button>
+<input id="kr78seek" type="range" min="0" max="8500" step="10" value="0" aria-label="Position de l'animation"/>
+<span id="kr78clock" class="clock">0.0 / 8.5s</span>
+</div>
+<div id="kr78stage" class="stage">07 · Computing aggregate risk indicators</div>
+<script>
+(()=>{
+const root=document.getElementById('kr7801');
+if(!root||root.dataset.ready)return;
+root.dataset.ready='1';
+const $=id=>root.querySelector('#'+id);
+const DUR=8500;
+let t=0,last=null,playing=true;
+const play=$('kr78play'),replay=$('kr78replay'),seek=$('kr78seek'),clock=$('kr78clock'),stage=$('kr78stage');
+const clamp=x=>Math.max(0,Math.min(1,x));
+const bez=(a,b,c,d,u)=>{const v=1-u;return v*v*v*a+3*v*v*u*b+3*v*u*u*c+u*u*u*d};
+function ease(p,x1=.45,y1=0,x2=.23,y2=1){
+ p=clamp(p);let lo=0,hi=1;
+ for(let i=0;i<19;i++){const m=(lo+hi)/2;if(bez(0,x1,x2,1,m)<p)lo=m;else hi=m}
+ return bez(0,y1,y2,1,(lo+hi)/2);
+}
+const motion=(a,b)=>ease((t-a)/(b-a));
+const fade=(a,b)=>ease((t-a)/(b-a),.14,.42,.24,1);
+const route=(a,b,c,d,k)=>({x:bez(a.x,b.x,c.x,d.x,k),y:bez(a.y,b.y,c.y,d.y,k)});
+function point(){
+ if(t<4420)return{x:916,y:493};
+ if(t<5570)return route({x:916,y:493},{x:725,y:471},{x:344,y:315},{x:97,y:344},motion(4420,5570));
+ return{x:97,y:344};
+}
+function op(id,v){$(id).setAttribute('opacity',String(clamp(v)));}
+function render(){
+ const p3=.67+.33*motion(360,2140);
+ const s3done=t>=2150;
+ const s4working=t>=2590&&t<3570;
+ const allDone=t>=3570;
+ $('kr78bar').setAttribute('width',String(438*p3));
+ $('kr78engineBar').setAttribute('width',String(251*p3));
+ $('kr78s3').textContent=s3done?'Complete':'Working';
+ $('kr78s4').textContent=allDone?'Complete':s4working?'Working':'Pending';
+ $('kr78s4').setAttribute('fill',allDone?'#C6DAE7':s4working?'#B7CDDC':'#89898E');
+ $('kr78note4').textContent=allDone?'Aggregate result authorized for viewing':s4working?'Checking authorized output policy':'Awaiting completion and output authorization';
+ $('kr78row3').setAttribute('stroke',s3done?'#444447':'#657F91');
+ $('kr78row3').setAttribute('fill',s3done?'#2E2E30':'#30383E');
+ $('kr78row4').setAttribute('stroke',s4working?'#657F91':allDone?'#566A79':'#404043');
+ $('kr78row4').setAttribute('fill',s4working?'#30383E':'#29292B');
+ $('kr78dot3').setAttribute('fill',s3done?'#3C4C56':'#394B58');
+ $('kr78dot4').setAttribute('fill',allDone?'#3C4C56':s4working?'#394B58':'#303034');
+ op('kr78check3',s3done?1:0);
+ op('kr78check4',allDone?1:0);
+ op('kr78spin3',s3done?0:1);
+ op('kr78spin4',s4working?1:0);
+ $('kr78spin3').setAttribute('transform',`rotate(${(t*.22).toFixed(1)} 249 410)`);
+ $('kr78spin4').setAttribute('transform',`rotate(${(t*.22).toFixed(1)} 249 490)`);
+ $('kr78engineSpin').setAttribute('transform',`rotate(${(t*.18).toFixed(1)} 804 391)`);
+ op('kr78engineSpin',s3done?0:1);
+ op('kr78engineCheck',s3done?1:0);
+ $('kr78engineSub').textContent=s3done?'Aggregate computation complete':'Protected inputs · Secure execution';
+ $('kr78head').textContent=allDone?'Analysis complete':'Computation running';
+ $('kr78pulse').setAttribute('opacity',String(allDone?1:.7+.3*Math.pow(Math.sin(t/260),2)));
+ $('kr78outputText').textContent=allDone?'Authorized aggregate ready':s4working?'Checking output policy':'Not yet available';
+ $('kr78outputStatus').textContent=allDone?'Ready':s4working?'Working':'Pending';
+ $('kr78outputStatus').setAttribute('fill',allDone?'#C5DCEB':'#94969A');
+ $('kr78outputBox').setAttribute('stroke',allDone?'#637F90':'#48494D');
+
+ const changed=fade(5860,6170);
+ op('kr78execution',1-changed);
+ op('kr78gallery',changed);
+ op('kr78compActive',1-changed);
+ op('kr78compIdle',changed);
+ op('kr78analyticsIdle',1-changed);
+ op('kr78analyticsActive',changed);
+ const navhover=t>=5440&&t<5890;
+ op('kr78hover',navhover?fade(5420,5520)*(1-fade(5780,5960)):0);
+ $('kr78navHit').style.pointerEvents=(t>=3610&&t<5860)?'auto':'none';
+
+ // Cards enter gently, without a camera movement.
+ for(const [id,a,b] of [['kr78card1',5950,6280],['kr78card2',6000,6340],['kr78card3',6050,6400]]){
+  const p=fade(a,b);
+  op(id,p);
+  $(id).setAttribute('transform',`translate(0 ${(1-p)*5})`);
+ }
+
+ const c=point();
+ $('kr78cursor').setAttribute('transform',`translate(${c.x.toFixed(2)} ${c.y.toFixed(2)})`);
+ op('kr78cursor',fade(4070,4330)*(1-fade(5980,6250)));
+ if(t>=5750&&t<5950){
+  const p=clamp((t-5750)/200);
+  $('kr78click').setAttribute('transform','translate(97 344)');
+  op('kr78click',(1-p)*.7);
+  $('kr78click').querySelector('circle').setAttribute('r',String(9+17*p));
+ }else op('kr78click',0);
+
+ const steps=[
+ [0,'07 · Computing aggregate risk indicators'],
+ [900,'The private computation is finishing'],
+ [2150,'Aggregate computation completed'],
+ [2590,'Checking the authorized output policy'],
+ [3570,'Authorized aggregate output ready'],
+ [4430,'The cursor moves toward Analytics'],
+ [5520,'Analytics · Hover'],
+ [5750,'Click · Analytics'],
+ [5890,'Opening Analytics Gallery'],
+ [6460,'08 · Supply Chain Risk ready · Two analyses not run']
+ ];
+ let label=steps[0][1];for(const [at,s] of steps)if(t>=at)label=s;
+ stage.textContent=label;
+ seek.value=Math.round(t);
+ clock.textContent=(t/1000).toFixed(1)+' / 8.5s';
+}
+function tick(now){
+ if(last===null)last=now;
+ const dt=Math.min(80,now-last);last=now;
+ if(playing){t=Math.min(DUR,t+dt);if(t>=DUR){playing=false;play.textContent='Play';}}
+ render();requestAnimationFrame(tick);
+}
+function pause(){playing=false;last=null;play.textContent='Play';render()}
+function start(){playing=true;last=null;play.textContent='Pause';render()}
+play.addEventListener('click',()=>{if(playing)pause();else{if(t>=DUR)t=0;start()}});
+replay.addEventListener('click',()=>{t=0;start()});
+seek.addEventListener('input',()=>{t=Number(seek.value);pause()});
+$('kr78navHit').addEventListener('click',()=>{if(t>=3610&&t<5860){t=5750;start()}});
+$('kr78navHit').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&t>=3610&&t<5860){e.preventDefault();t=5750;start()}});
+if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){playing=false;play.textContent='Play'}
+render();requestAnimationFrame(tick);
+})();
+</script>
+</div>
+</body></html>

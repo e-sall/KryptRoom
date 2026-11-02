@@ -1,0 +1,176 @@
+## Prototype 12 · Scène 09 V1 — Analytics Overview
+
+<text color="secondary" size="sm">Après avoir ouvert le dashboard depuis la galerie, Logistics Partner découvre les premiers résultats agrégés de **Supply Chain Risk**. Les indicateurs et graphiques utilisent des données fictives pour cette démo.</text>
+
+<box background="#10100F" theme="dark" radius="xl" padding={2}>
+  <svg viewBox="0 0 1120 620" width="100%">
+    <defs>
+      <linearGradient id="kr9area" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stopColor="#9DB7CB" stopOpacity=".19"/>
+        <stop offset="1" stopColor="#9DB7CB" stopOpacity=".005"/>
+      </linearGradient>
+    </defs>
+    <rect x="1" y="1" width="1118" height="618" rx="13" fill="#181818" stroke="#38383A"/>
+    <rect x="1" y="1" width="184" height="618" rx="13" fill="#1D1D1E"/>
+    <path d="M184 1 V619 M1 61 H1119" stroke="#353537"/>
+
+    <g transform="translate(19 12) scale(1.22)">
+      <path d="M1 6 L7 3 L7 27 L1 24 Z" fill="#F1F0EB"/>
+      <path d="M9 12 L20 3 L16 12 L9 19 Z" fill="#A6A7A1"/>
+      <path d="M9 19 L16 12 L21 26 L14 23 Z" fill="#747671"/>
+    </g>
+
+    <g fontFamily="Arial, Helvetica, sans-serif">
+      <text x="59" y="40" fill="#F1F0EB" fontSize="19" fontWeight="600" letterSpacing="-.5">KryptRoom</text>
+      <text x="211" y="37" fill="#98989A" fontSize="12">Logistics Partner</text>
+      <path d="M314 32 H324 M320 28 L324 32 L320 36" stroke="#7A7A7C" strokeWidth="1.3" fill="none" strokeLinecap="round"/>
+      <text x="338" y="37" fill="#98989A" fontSize="12">Analytics</text>
+      <path d="M409 32 H419 M415 28 L419 32 L415 36" stroke="#7A7A7C" strokeWidth="1.3" fill="none" strokeLinecap="round"/>
+      <text x="433" y="37" fill="#E1E1E3" fontSize="12">Overview</text>
+      <rect x="907" y="15" width="135" height="31" rx="8" fill="#29292A" stroke="#464648"/>
+      <circle cx="925" cy="30" r="4" fill="#A5B7C4"/>
+      <text x="938" y="35" fill="#D6D6D8" fontSize="11">Logistics Partner</text>
+      <circle cx="1081" cy="31" r="16" fill="#34383D"/>
+      <text x="1081" y="36" textAnchor="middle" fill="#F0F0F1" fontSize="12" fontWeight="600">L</text>
+
+      <text x="21" y="101" fill="#858588" fontFamily="monospace" fontSize="10" letterSpacing="1">WORKSPACE</text>
+      <g stroke="#92999C" strokeWidth="1.5" fill="none">
+        <rect x="26" y="135" width="7" height="7" rx="1"/>
+        <rect x="37" y="135" width="7" height="7" rx="1"/>
+        <rect x="26" y="146" width="7" height="7" rx="1"/>
+        <rect x="37" y="146" width="7" height="7" rx="1"/>
+        <rect x="26" y="185" width="19" height="17" rx="3"/>
+        <path d="M26 191 H45"/>
+        <ellipse cx="35" cy="236" rx="9" ry="4"/>
+        <path d="M26 236 V250 C26 256 44 256 44 250 V236 M26 243 C26 249 44 249 44 243"/>
+        <rect x="26" y="286" width="19" height="18" rx="4"/>
+        <path d="M30 295 H41 M36 289 V301"/>
+      </g>
+      <g fill="#A4A4A7" fontSize="13">
+        <text x="58" y="147">Overview</text>
+        <text x="58" y="197">Rooms</text>
+        <text x="58" y="247">Datasets</text>
+        <text x="58" y="299">Computations</text>
+      </g>
+      <rect x="11" y="325" width="162" height="39" rx="7" fill="#303032"/>
+      <rect x="11" y="331" width="3" height="27" rx="1.5" fill="#9DB7CB"/>
+      <g stroke="#CED5DA" strokeWidth="1.5" fill="none" strokeLinecap="round">
+        <rect x="26" y="337" width="19" height="17" rx="3"/>
+        <path d="M30 350 V345 M35.5 350 V341 M41 350 V347"/>
+      </g>
+      <text x="58" y="350" fill="#F1F0EB" fontSize="13" fontWeight="600">Analytics</text>
+      <path d="M21 559 H165" stroke="#414143"/>
+      <circle cx="38" cy="584" r="12" fill="#36383B"/>
+      <text x="38" y="588" textAnchor="middle" fill="#E7E7E9" fontSize="11">L</text>
+      <text x="58" y="581" fill="#E1E1E3" fontSize="12">Logistics</text>
+      <text x="58" y="596" fill="#909092" fontSize="10">Workspace</text>
+
+      <text x="214" y="101" fill="#99A9B4" fontSize="10" letterSpacing="1.2">SUPPLY CHAIN COLLABORATION / ANALYTICS</text>
+      <text x="214" y="145" fill="#F1F0EB" fontSize="30" fontWeight="600" letterSpacing="-.65">Supply chain overview.</text>
+      <text x="215" y="173" fill="#A9A9AC" fontSize="13">An aggregate view of risk signals across two organizations.</text>
+
+      <rect x="927" y="114" width="152" height="29" rx="14" fill="#303032" stroke="#49494C"/>
+      <circle cx="943" cy="128" r="4" fill="#A8BECD"/>
+      <text x="956" y="132" fill="#D5D5D8" fontSize="11">Analysis completed</text>
+    </g>
+
+    <rect x="212" y="200" width="278" height="107" rx="10" fill="#252526" stroke="#454548"/>
+    <rect x="502" y="200" width="278" height="107" rx="10" fill="#252526" stroke="#454548"/>
+    <rect x="792" y="200" width="287" height="107" rx="10" fill="#252526" stroke="#454548"/>
+
+    <g fontFamily="Arial, Helvetica, sans-serif">
+      <text x="230" y="225" fill="#A5A5A9" fontSize="12">Risk signals identified</text>
+      <text x="230" y="273" fill="#F1F0EB" fontSize="39" fontWeight="600" letterSpacing="-1.3">12</text>
+      <rect x="401" y="220" width="70" height="22" rx="11" fill="#34383D"/>
+      <text x="436" y="235" textAnchor="middle" fill="#B5C4CE" fontSize="10">CURRENT</text>
+      <text x="231" y="293" fill="#97979A" fontSize="10">Authorized aggregate count</text>
+
+      <text x="520" y="225" fill="#A5A5A9" fontSize="12">Primary risk driver</text>
+      <text x="520" y="266" fill="#F1F0EB" fontSize="26" fontWeight="600" letterSpacing="-.7">Production</text>
+      <text x="521" y="293" fill="#A7A7AA" fontSize="11">6 of 12 signals · 50%</text>
+      <g stroke="#B8C9D6" fill="none" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M744 245 H761 M753 238 L761 245 L753 252"/>
+      </g>
+
+      <text x="810" y="225" fill="#A5A5A9" fontSize="12">Risk categories</text>
+      <text x="810" y="273" fill="#F1F0EB" fontSize="39" fontWeight="600" letterSpacing="-1.3">3</text>
+      <text x="811" y="293" fill="#97979A" fontSize="10">Production · Transit · Other</text>
+      <rect x="1009" y="218" width="52" height="28" rx="14" fill="#33383D"/>
+      <g stroke="#B7C9D5" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="1022" y="226" width="8" height="11" rx="1.5"/>
+        <rect x="1035" y="222" width="8" height="15" rx="1.5"/>
+        <rect x="1048" y="229" width="5" height="8" rx="1.5"/>
+      </g>
+    </g>
+
+    <rect x="212" y="319" width="540" height="222" rx="11" fill="#252526" stroke="#424244"/>
+    <rect x="764" y="319" width="315" height="222" rx="11" fill="#252526" stroke="#454649"/>
+
+    <g fontFamily="Arial, Helvetica, sans-serif">
+      <text x="230" y="345" fill="#F1F0EB" fontSize="15" fontWeight="600">Risk signals over time</text>
+      <text x="230" y="362" fill="#A5A5A9" fontSize="10.5">Weekly aggregate trend</text>
+      <rect x="639" y="332" width="93" height="26" rx="7" fill="#313133" stroke="#48484A"/>
+      <text x="685" y="349" textAnchor="middle" fill="#D5D5D8" fontSize="10.5">Last 4 weeks</text>
+
+      <path d="M263 395 H723 M263 429 H723 M263 463 H723 M263 497 H723" stroke="#3C3C3E" strokeWidth="1"/>
+      <text x="250" y="399" textAnchor="end" fill="#89898D" fontSize="10">15</text>
+      <text x="250" y="433" textAnchor="end" fill="#89898D" fontSize="10">10</text>
+      <text x="250" y="467" textAnchor="end" fill="#89898D" fontSize="10">5</text>
+      <text x="250" y="501" textAnchor="end" fill="#89898D" fontSize="10">0</text>
+
+      <path d="M292 443 L418 429 L544 436 L690 416 L690 497 L292 497 Z" fill="url(#kr9area)"/>
+      <path d="M292 443 L418 429 L544 436 L690 416" fill="none" stroke="#B0C7D7" strokeWidth="2.4" strokeLinejoin="round" strokeLinecap="round"/>
+      {#each [
+        {x:292,y:443},{x:418,y:429},{x:544,y:436},{x:690,y:416}
+      ] as p}
+        <circle cx={p.x} cy={p.y} r="4.3" fill="#252526" stroke="#C4D9E6" strokeWidth="2"/>
+      {/each}
+      <rect x="669" y="392" width="43" height="20" rx="6" fill="#374752" stroke="#607D91"/>
+      <text x="690" y="405" textAnchor="middle" fill="#DAEAF4" fontSize="10" fontWeight="600">12</text>
+      <text x="292" y="519" textAnchor="middle" fill="#A5A5A9" fontSize="10.5">W1</text>
+      <text x="418" y="519" textAnchor="middle" fill="#A5A5A9" fontSize="10.5">W2</text>
+      <text x="544" y="519" textAnchor="middle" fill="#A5A5A9" fontSize="10.5">W3</text>
+      <text x="690" y="519" textAnchor="middle" fill="#A5A5A9" fontSize="10.5">W4</text>
+
+      <text x="783" y="345" fill="#F1F0EB" fontSize="15" fontWeight="600">Where the risks come from</text>
+      <text x="783" y="362" fill="#A5A5A9" fontSize="10.5">Current aggregate breakdown</text>
+      <path d="M783 377 H1060" stroke="#414144"/>
+
+      <text x="783" y="399" fill="#E9E9EB" fontSize="12">Production</text>
+      <text x="1060" y="399" fill="#DDE3E7" fontSize="11" fontWeight="600" textAnchor="end">6 · 50%</text>
+      <rect x="783" y="408" width="277" height="7" rx="3.5" fill="#353537"/>
+      <rect x="783" y="408" width="139" height="7" rx="3.5" fill="#B4CAD9"/>
+
+      <text x="783" y="443" fill="#E9E9EB" fontSize="12">Transit</text>
+      <text x="1060" y="443" fill="#C6C9CD" fontSize="11" fontWeight="600" textAnchor="end">4 · 33%</text>
+      <rect x="783" y="452" width="277" height="7" rx="3.5" fill="#353537"/>
+      <rect x="783" y="452" width="92" height="7" rx="3.5" fill="#929DA6"/>
+
+      <text x="783" y="487" fill="#E9E9EB" fontSize="12">Other</text>
+      <text x="1060" y="487" fill="#C6C9CD" fontSize="11" fontWeight="600" textAnchor="end">2 · 17%</text>
+      <rect x="783" y="496" width="277" height="7" rx="3.5" fill="#353537"/>
+      <rect x="783" y="496" width="46" height="7" rx="3.5" fill="#737B81"/>
+
+      <rect x="783" y="514" width="277" height="19" rx="5" fill="#303034"/>
+      <text x="922" y="527" fill="#B7BABD" textAnchor="middle" fontSize="10">12 total risk signals</text>
+    </g>
+
+    <rect x="212" y="551" width="867" height="39" rx="8" fill="#252527" stroke="#414143"/>
+    <g stroke="#BFC6CB" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="230" y="566" width="13" height="11" rx="2"/>
+      <path d="M233 566 V562 A3.5 3.5 0 0 1 240 562 V566"/>
+    </g>
+    <g fontFamily="Arial, Helvetica, sans-serif">
+      <text x="255" y="574" fill="#C4C4C6" fontSize="11">Illustrative authorized aggregates · No raw records exposed</text>
+      <rect x="864" y="556" width="198" height="29" rx="7" fill="#F1F0EB"/>
+      <text x="951" y="575" textAnchor="middle" fill="#222223" fontSize="11.5" fontWeight="600">Open Supply Chain Risk</text>
+      <path d="M1036 570 H1051 M1045 564 L1051 570 L1045 576" stroke="#222223" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+    </g>
+  </svg>
+</box>
+
+Ici, on entre pour la première fois dans la valeur métier du produit : **12 signaux de risque**, dont **6 liés à la production, 4 au transit et 2 à d'autres causes**. La tendance hebdomadaire et la répartition restent cohérentes avec ces résultats synthétiques.
+
+Le bouton **Open Supply Chain Risk →** prépare la scène 10 : un dashboard détaillé pleine largeur, plus riche en analyses, sans liste de dashboards sur le côté.
+
+**Scène 09 V1 : tu valides ce cadrage ?**

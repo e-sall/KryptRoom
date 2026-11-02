@@ -62,7 +62,7 @@ export function RoomsPreview({
           No real Rooms, invitations, connections or permissions. Use fictional
           input only.
         </p>
-        <Link href="/app/rooms">Exit to application</Link>
+        <Link prefetch={false} href="/app/rooms">Exit to application</Link>
       </div>
       <div className="page-heading">
         <div>

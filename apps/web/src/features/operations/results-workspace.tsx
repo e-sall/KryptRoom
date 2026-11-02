@@ -13,10 +13,10 @@ import { provenancePath } from "@/features/provenance/presentation";
 function ContextLinks({ roomId, operation }: { roomId: string; operation: OperationId }) {
   const context = resultContext(roomId, operation);
   return <>
-    {context.associated && <Link href={statePath(roomId, context.associated.id)}>Inspect {context.associated.id} · {context.associated.title} in Graph</Link>}
-    {context.associated && <Link href={provenancePath(roomId, "proofs", context.associated.id)}>Provenance of {context.associated.id}</Link>}
-    {context.associated && <Link href={provenancePath(roomId, "activity", context.associated.id)}>Activity for {context.associated.id}</Link>}
-    {context.sources.map((s) => <Link key={s.id} href={statePath(roomId, s.id)}>Source {s.id} · {s.title}</Link>)}
+    {context.associated && <Link prefetch={false} href={statePath(roomId, context.associated.id)}>Inspect {context.associated.id} · {context.associated.title} in Graph</Link>}
+    {context.associated && <Link prefetch={false} href={provenancePath(roomId, "proofs", context.associated.id)}>Provenance of {context.associated.id}</Link>}
+    {context.associated && <Link prefetch={false} href={provenancePath(roomId, "activity", context.associated.id)}>Activity for {context.associated.id}</Link>}
+    {context.sources.map((s) => <Link prefetch={false} key={s.id} href={statePath(roomId, s.id)}>Source {s.id} · {s.title}</Link>)}
   </>;
 }
 function ResultInspector({ roomId, operation, visible }: { roomId: string; operation: OperationId; visible: boolean }) {
@@ -48,7 +48,7 @@ export function ResultsWorkspace({ room, operation = "psi" }: { room: ExampleRoo
     inspector={<ResultInspector roomId={room.id} operation={operation} visible={visible} />}>
     <RoomTrail roomId={room.id} screen="results" selectedStateId={visible ? context.associated?.id : undefined} />
     <p className="operation-boundary">Fixed design examples, not engine outputs. No real computation or authorized disclosure has occurred.</p>
-    <nav className="operation-picker result-picker" aria-label="Result category">{operationIds.map((id) => <Link key={id}
+    <nav className="operation-picker result-picker" aria-label="Result category">{operationIds.map((id) => <Link prefetch={false} key={id}
       aria-current={id === operation ? "page" : undefined} href={`${previewRoomPath(room.id, "results")}/${id}`}>
       <span className="eyebrow">{operations[id].number} · SAMPLE</span><strong>{operations[id].title}</strong>
       <span className="caption">{operations[id].output}</span></Link>)}</nav>

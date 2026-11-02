@@ -1,0 +1,137 @@
+{
+  "audit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 16,
+    "high": 0,
+    "critical": 0,
+    "total": 16
+  },
+  "productionAudit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "advisories": [
+    "https://github.com/advisories/GHSA-g3hv-75wg-m249"
+  ],
+  "uniqueAffectedPackageEntries": 16,
+  "uniqueInstallationPaths": 18,
+  "inventory": [
+    {
+      "name": "@eslint-community/eslint-utils",
+      "version": "4.10.1",
+      "path": "node_modules/@eslint-community/eslint-utils",
+      "dev": true
+    },
+    {
+      "name": "@eslint-community/eslint-utils",
+      "version": "4.9.1",
+      "path": "node_modules/@next/eslint-plugin-next/node_modules/@eslint-community/eslint-utils",
+      "dev": true
+    },
+    {
+      "name": "@eslint/config-array",
+      "version": "0.21.2",
+      "path": "node_modules/@eslint/config-array",
+      "dev": true
+    },
+    {
+      "name": "@eslint/eslintrc",
+      "version": "3.3.7",
+      "path": "node_modules/@eslint/eslintrc",
+      "dev": true
+    },
+    {
+      "name": "@next/eslint-plugin-next",
+      "version": "16.4.2",
+      "path": "node_modules/@next/eslint-plugin-next",
+      "dev": true
+    },
+    {
+      "name": "@typescript-eslint/eslint-plugin",
+      "version": "8.72.0",
+      "path": "node_modules/@typescript-eslint/eslint-plugin",
+      "dev": true
+    },
+    {
+      "name": "@typescript-eslint/parser",
+      "version": "8.72.0",
+      "path": "node_modules/@typescript-eslint/parser",
+      "dev": true
+    },
+    {
+      "name": "@typescript-eslint/type-utils",
+      "version": "8.72.0",
+      "path": "node_modules/@typescript-eslint/type-utils",
+      "dev": true
+    },
+    {
+      "name": "@typescript-eslint/typescript-estree",
+      "version": "8.72.0",
+      "path": "node_modules/@typescript-eslint/typescript-estree",
+      "dev": true
+    },
+    {
+      "name": "@typescript-eslint/utils",
+      "version": "8.72.0",
+      "path": "node_modules/@typescript-eslint/utils",
+      "dev": true
+    },
+    {
+      "name": "eslint",
+      "version": "9.39.5",
+      "path": "node_modules/eslint",
+      "dev": true
+    },
+    {
+      "name": "eslint-config-next",
+      "version": "16.4.2",
+      "path": "node_modules/eslint-config-next",
+      "dev": true
+    },
+    {
+      "name": "eslint-plugin-import",
+      "version": "2.32.0",
+      "path": "node_modules/eslint-plugin-import",
+      "dev": true
+    },
+    {
+      "name": "eslint-plugin-jsx-a11y",
+      "version": "6.10.2",
+      "path": "node_modules/eslint-plugin-jsx-a11y",
+      "dev": true
+    },
+    {
+      "name": "eslint-plugin-react",
+      "version": "7.37.5",
+      "path": "node_modules/eslint-plugin-react",
+      "dev": true
+    },
+    {
+      "name": "minimatch",
+      "version": "10.2.6",
+      "path": "node_modules/@typescript-eslint/typescript-estree/node_modules/minimatch",
+      "dev": true
+    },
+    {
+      "name": "minimatch",
+      "version": "3.1.5",
+      "path": "node_modules/minimatch",
+      "dev": true
+    },
+    {
+      "name": "typescript-eslint",
+      "version": "8.72.0",
+      "path": "node_modules/typescript-eslint",
+      "dev": true
+    }
+  ],
+  "traceCount": 22,
+  "traceMatches": [],
+  "bundleCount": 178,
+  "bundleMatches": []
+}

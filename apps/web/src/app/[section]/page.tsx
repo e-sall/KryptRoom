@@ -1,9 +1,12 @@
+import { solutions } from "@/features/marketing/solutions";
 import { notFound } from "next/navigation";
 import { MarketingShell } from "@/components/marketing-shell";
 import { InteractiveDemo } from "@/features/marketing/interactive-demo";
+import { CinematicShowcase } from "@/features/marketing/cinematic/cinematic-showcase";
 import { MarketingContent } from "@/features/marketing/marketing-pages";
 
 const sections: Record<string, string> = {
+  ...Object.fromEntries(solutions.map(s => [s.slug, s.name])),
   product: "Product",
   technology: "Technology",
   security: "Security",
@@ -32,12 +35,12 @@ export default async function MarketingPage({
   if (!title) notFound();
   return (
     <MarketingShell>
-      <section className="marketing-page-heading">
+      <section className="marketing-page-heading" hidden={["product","technology","security","developers"].includes(section)}>
         <p className="eyebrow">{section === "demo" ? "INTERACTIVE PRODUCT PREVIEW · SYNTHETIC" : "KRYPTROOM · PRIVATE DATA COLLABORATION"}</p>
         <h1>{title}</h1>
-        {section === "demo" && <p className="caption">Explore a preloaded scenario. No computation, proof, authorization or blockchain transaction is executed.</p>}
+        {section === "demo" && <><p className="caption">Explore a preloaded scenario. No computation, proof, authorization or blockchain transaction is executed.</p><a className="signal-walkthrough-link" href="#product-walkthrough">KryptRoom · Product Walkthrough ↓</a></>}
       </section>
-      {section === "demo" ? <InteractiveDemo /> : <MarketingContent section={section} />}
+      {section === "demo" ? <><InteractiveDemo /><CinematicShowcase /></> : <MarketingContent section={section} />}
     </MarketingShell>
   );
 }

@@ -6,6 +6,16 @@ KryptRoom has runtime-verified M1 PSI cardinality, M2 two-container SPU private 
 
 ## Target system boundary
 
+PR7 adds presentation-only freeze QA across the existing M8 screens. Mobile
+modal sheets retire when the viewport enters the tablet/desktop layout; focus
+returns to the visible main region if the original mobile trigger has disappeared.
+Document scroll padding and a keyboard-only visibility guard reserve fixed
+navigation areas without moving pointer/tap targets. Explicit Next Link navigation
+uses documented prefetch=false after WebKit speculative-load errors; no href,
+authorization, security header or service boundary is relaxed.
+No server authority, persistence, proof validation or operational integration is
+added. See `docs/m8/pr7/FREEZE-QA-REPORT.md` for executed coverage and limits.
+
 M8 PR1 adds a disconnected presentation layer in `apps/web`: Next.js App Router,
 shared design tokens/components, responsive navigation and inspector infrastructure.
 It neither reads node storage nor calls any core runtime. All business routes are

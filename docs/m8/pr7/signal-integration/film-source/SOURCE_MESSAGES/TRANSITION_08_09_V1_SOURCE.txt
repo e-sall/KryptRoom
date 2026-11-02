@@ -1,0 +1,407 @@
+**Transition 07 → 08 V1 validée · DESIGN LOCKED.**
+
+## Prototype 12 · Transition 08 → 09 V1 — Analytics Gallery to Risk Overview
+
+On reprend dans la galerie Analytics. Le curseur ouvre **Supply Chain Risk** et le dashboard révèle progressivement les **12 signaux de risque illustratifs**, leur répartition et la tendance hebdomadaire.
+
+Toujours sans zoom artificiel : navigation réelle, accélération et décélération du curseur, courte réponse au clic, puis apparition maîtrisée des indicateurs.
+
+<AppBlock title="KryptRoom · Transition 08 → 09" app_block_id="kr-motion-0809-v1" language="html" variant="inline">
+<div id="kr8901" style="width:100%;color:#f1f0eb;font-family:Arial,Helvetica,sans-serif">
+<style>
+#kr8901 *{box-sizing:border-box}
+#kr8901 .viewport{background:#10100f;border:1px solid #38383a;border-radius:12px;overflow:hidden}
+#kr8901 svg{display:block;width:100%;height:auto;aspect-ratio:1120/620}
+#kr8901 .transport{display:flex;align-items:center;gap:10px;margin-top:12px}
+#kr8901 button{border:1px solid #505054;border-radius:8px;background:#2b2b2d;color:#eee;font:600 12px Arial,sans-serif;padding:9px 15px;cursor:pointer}
+#kr8901 button.primary{background:#f1f0eb;color:#181818;border-color:#f1f0eb;min-width:78px}
+#kr8901 button:hover{filter:brightness(1.12)}
+#kr8901 input[type=range]{flex:1;min-width:40px;accent-color:#a5bfd1;cursor:pointer}
+#kr8901 .clock{font:11px monospace;color:#aaa;white-space:nowrap}
+#kr8901 .stage{font:11px Arial,sans-serif;color:#b7c6d0;margin-top:8px;min-height:20px}
+#kr8901 .hit{cursor:pointer}
+#kr8901 button:focus-visible,#kr8901 input:focus-visible{outline:2px solid #9db7cb;outline-offset:3px}
+</style>
+<div class="viewport">
+<svg viewBox="0 0 1120 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Navigation cinématique de la galerie Analytics vers un aperçu de 12 signaux de risque illustratifs">
+<defs>
+<linearGradient id="kr89chartfill" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0" stop-color="#AFC9DA" stop-opacity=".24"/>
+<stop offset="1" stop-color="#AFC9DA" stop-opacity="0"/>
+</linearGradient>
+</defs>
+
+<!-- Persistent KryptRoom chrome -->
+<rect x="1" y="1" width="1118" height="618" rx="13" fill="#181818" stroke="#38383A"/>
+<rect x="1" y="1" width="184" height="618" rx="13" fill="#1D1D1E"/>
+<path d="M184 1 V619 M1 61 H1119" stroke="#353537"/>
+<g transform="translate(19 12) scale(1.22)">
+<path d="M1 6 L7 3 L7 27 L1 24 Z" fill="#F1F0EB"/>
+<path d="M9 12 L20 3 L16 12 L9 19 Z" fill="#A6A7A1"/>
+<path d="M9 19 L16 12 L21 26 L14 23 Z" fill="#747671"/>
+</g>
+<g font-family="Arial,Helvetica,sans-serif">
+<text x="59" y="40" fill="#F1F0EB" font-size="19" font-weight="600" letter-spacing="-.5">KryptRoom</text>
+<text x="21" y="101" fill="#858588" font-family="monospace" font-size="10" letter-spacing="1">WORKSPACE</text>
+<g stroke="#92999C" stroke-width="1.5" fill="none">
+<rect x="26" y="135" width="7" height="7" rx="1"/>
+<rect x="37" y="135" width="7" height="7" rx="1"/>
+<rect x="26" y="146" width="7" height="7" rx="1"/>
+<rect x="37" y="146" width="7" height="7" rx="1"/>
+<rect x="26" y="185" width="19" height="17" rx="3"/>
+<path d="M26 191 H45"/>
+<ellipse cx="35" cy="236" rx="9" ry="4"/>
+<path d="M26 236 V250 C26 256 44 256 44 250 V236 M26 243 C26 249 44 249 44 243"/>
+<rect x="26" y="285" width="19" height="18" rx="4"/>
+<path d="M30 294 H41 M35.5 289 V300"/>
+<path d="M26 389 H45 V403 H36 L31 408 V403 H26 Z"/>
+</g>
+<g fill="#A4A4A7" font-size="13">
+<text x="58" y="147">Overview</text>
+<text x="58" y="197">Rooms</text>
+<text x="58" y="247">Datasets</text>
+<text x="58" y="299">Computations</text>
+<text x="58" y="402">Ask AI</text>
+</g>
+<rect x="11" y="324" width="162" height="39" rx="7" fill="#303032"/>
+<rect x="11" y="330" width="3" height="27" rx="1.5" fill="#9DB7CB"/>
+<g stroke="#CED5DA" stroke-width="1.5" fill="none">
+<rect x="26" y="337" width="19" height="17" rx="3"/>
+<path d="M30 350 V345 M35.5 350 V341 M41 350 V347"/>
+</g>
+<text x="58" y="350" fill="#F1F0EB" font-size="13" font-weight="600">Analytics</text>
+<path d="M21 559 H165" stroke="#414143"/>
+<circle cx="38" cy="584" r="12" fill="#36383B"/>
+<text x="38" y="588" text-anchor="middle" fill="#E7E7E9" font-size="11">L</text>
+<text x="58" y="581" fill="#E1E1E3" font-size="12">Logistics</text>
+<text x="58" y="596" fill="#909092" font-size="10">Workspace</text>
+<rect x="907" y="15" width="135" height="31" rx="8" fill="#29292A" stroke="#464648"/>
+<circle cx="925" cy="30" r="4" fill="#A5B7C4"/>
+<text x="938" y="35" fill="#D6D6D8" font-size="11">Logistics Partner</text>
+<circle cx="1081" cy="31" r="16" fill="#34383D"/>
+<text x="1081" y="36" text-anchor="middle" fill="#F0F0F1" font-size="12" font-weight="600">L</text>
+</g>
+
+<!-- Scene 08: unchanged gallery composition -->
+<g id="kr89gallery" font-family="Arial,Helvetica,sans-serif">
+<text x="211" y="37" fill="#98989A" font-size="12">Logistics Partner</text>
+<path d="M320 28 L325 32 L320 36" fill="none" stroke="#77777A" stroke-width="1.5"/>
+<text x="340" y="37" fill="#98989A" font-size="12">Analytics</text>
+<path d="M412 28 L417 32 L412 36" fill="none" stroke="#77777A" stroke-width="1.5"/>
+<text x="431" y="37" fill="#E1E1E3" font-size="12">Gallery</text>
+<text x="214" y="104" fill="#99A9B4" font-size="10" letter-spacing="1.2">SUPPLY CHAIN COLLABORATION / ANALYTICS</text>
+<text x="214" y="147" fill="#F1F0EB" font-size="30" font-weight="600" letter-spacing="-.65">Your analytics, ready to explore.</text>
+<text x="215" y="175" fill="#A9A9AC" font-size="13">Open an authorized analysis, or run another workflow when needed.</text>
+<rect x="944" y="116" width="135" height="29" rx="14" fill="#30363B" stroke="#536372"/>
+<circle cx="960" cy="130" r="4" fill="#A9C4D5"/>
+<text x="973" y="134" fill="#D9E3E9" font-size="11">1 analysis ready</text>
+<rect x="212" y="202" width="867" height="67" rx="10" fill="#2D3338" stroke="#566A79"/>
+<rect x="230" y="216" width="38" height="38" rx="9" fill="#3C4D59"/>
+<path d="M240 235 L246 241 L258 228" stroke="#D1E2ED" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+<text x="282" y="229" fill="#F1F0EB" font-size="14.5" font-weight="600">Supply Chain Risk is ready</text>
+<text x="282" y="248" fill="#B2C2CD" font-size="11.5">Private computation completed · Authorized analysis available</text>
+<rect x="965" y="221" width="96" height="29" rx="8" fill="#384A56" stroke="#5C7789"/>
+<text x="1013" y="240" fill="#D7E8F2" font-size="11" text-anchor="middle">Ready to view</text>
+
+<rect id="kr89firstBg" x="212" y="281" width="278" height="246" rx="11" fill="#2B3035" stroke="#7896AA" stroke-width="1.5"/>
+<rect x="230" y="301" width="46" height="46" rx="10" fill="#3B4A55"/>
+<path d="M253 307 L267 313 V322 C267 332 261 338 253 341 C245 338 239 332 239 322 V313 Z" fill="none" stroke="#CBDDE9" stroke-width="1.7" stroke-linejoin="round"/>
+<path d="M247 323 L252 328 L260 318" fill="none" stroke="#CBDDE9" stroke-width="1.7" stroke-linecap="round"/>
+<rect x="411" y="301" width="61" height="23" rx="11" fill="#3C5060"/>
+<text x="441.5" y="316" text-anchor="middle" fill="#D5E6F0" font-size="10">READY</text>
+<text x="230" y="382" fill="#F1F0EB" font-size="18" font-weight="600">Supply Chain Risk</text>
+<text x="230" y="408" fill="#B2BBC3" font-size="11.5">Identify shared operational risks</text>
+<text x="230" y="425" fill="#B2BBC3" font-size="11.5">through protected inputs.</text>
+<path d="M230 460 H472" stroke="#535E66"/>
+<rect id="kr89ctaHover" x="222" y="471" width="260" height="43" rx="7" fill="#3C4A55" opacity="0"/>
+<text x="230" y="494" fill="#DCE8F0" font-size="12" font-weight="600">Open dashboard</text>
+<path d="M451 491 H472 M466 485 L472 491 L466 497" stroke="#BED4E2" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+<rect x="502" y="281" width="278" height="246" rx="11" fill="#252526" stroke="#464649"/>
+<rect x="520" y="301" width="46" height="46" rx="10" fill="#353639"/>
+<circle cx="543" cy="324" r="12" stroke="#BFC4C9" stroke-width="1.7" fill="none"/>
+<path d="M543 316 V324 L549 329" stroke="#BFC4C9" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+<rect x="699" y="301" width="63" height="23" rx="11" fill="#333437"/>
+<text x="730.5" y="316" text-anchor="middle" fill="#B5B5B9" font-size="10">NOT RUN</text>
+<text x="520" y="382" fill="#E9E9EB" font-size="18" font-weight="600">Delivery Performance</text>
+<text x="520" y="408" fill="#A7A7AA" font-size="11.5">Assess delivery reliability</text>
+<text x="520" y="425" fill="#A7A7AA" font-size="11.5">across partner operations.</text>
+<path d="M520 460 H762" stroke="#454548"/>
+<text x="520" y="494" fill="#ABABAE" font-size="11.5">Awaiting first analysis</text>
+
+<rect x="792" y="281" width="287" height="246" rx="11" fill="#252526" stroke="#464649"/>
+<rect x="810" y="301" width="46" height="46" rx="10" fill="#353639"/>
+<circle cx="826" cy="324" r="10" stroke="#BFC4C9" stroke-width="1.7" fill="none"/>
+<circle cx="839" cy="324" r="10" stroke="#BFC4C9" stroke-width="1.7" fill="none"/>
+<rect x="998" y="301" width="63" height="23" rx="11" fill="#333437"/>
+<text x="1029.5" y="316" text-anchor="middle" fill="#B5B5B9" font-size="10">NOT RUN</text>
+<text x="810" y="382" fill="#E9E9EB" font-size="18" font-weight="600">Shared Coverage</text>
+<text x="810" y="408" fill="#A7A7AA" font-size="11.5">Explore areas of common</text>
+<text x="810" y="425" fill="#A7A7AA" font-size="11.5">coverage between partners.</text>
+<path d="M810 460 H1061" stroke="#454548"/>
+<text x="810" y="494" fill="#ABABAE" font-size="11.5">Awaiting first analysis</text>
+
+<rect x="212" y="551" width="867" height="39" rx="8" fill="#252527" stroke="#414143"/>
+<g fill="none" stroke="#BFC6CB" stroke-width="1.4">
+<rect x="230" y="566" width="13" height="11" rx="2"/>
+<path d="M233 566 V562 A3.5 3.5 0 0 1 240 562 V566"/>
+</g>
+<text x="255" y="574" fill="#C4C4C6" font-size="11.5">Gallery displays analysis availability only. Protected source datasets remain private.</text>
+</g>
+
+<!-- Scene 09: overview, with simulated aggregate outputs -->
+<g id="kr89overview" opacity="0" font-family="Arial,Helvetica,sans-serif">
+<text x="211" y="37" fill="#98989A" font-size="12">Logistics Partner</text>
+<path d="M320 28 L325 32 L320 36" fill="none" stroke="#77777A" stroke-width="1.5"/>
+<text x="340" y="37" fill="#98989A" font-size="12">Analytics</text>
+<path d="M412 28 L417 32 L412 36" fill="none" stroke="#77777A" stroke-width="1.5"/>
+<text x="431" y="37" fill="#E1E1E3" font-size="12">Risk overview</text>
+<text x="214" y="104" fill="#99A9B4" font-size="10" letter-spacing="1.2">SUPPLY CHAIN COLLABORATION / ANALYTICS</text>
+<text x="214" y="147" fill="#F1F0EB" font-size="30" font-weight="600" letter-spacing="-.65">Supply Chain Risk</text>
+<text x="215" y="175" fill="#A9A9AC" font-size="13">An authorized overview of shared operational risk signals.</text>
+<rect x="920" y="116" width="159" height="29" rx="14" fill="#30363B" stroke="#536372"/>
+<circle cx="936" cy="130" r="4" fill="#A9C4D5"/>
+<text x="949" y="134" fill="#D9E3E9" font-size="11">Authorized aggregates</text>
+
+<!-- Four executive metrics -->
+<g id="kr89metrics" opacity="0">
+<rect x="212" y="202" width="207" height="104" rx="10" fill="#2B3035" stroke="#637C8D"/>
+<rect x="431" y="202" width="207" height="104" rx="10" fill="#252526" stroke="#48484B"/>
+<rect x="650" y="202" width="207" height="104" rx="10" fill="#252526" stroke="#48484B"/>
+<rect x="869" y="202" width="210" height="104" rx="10" fill="#252526" stroke="#48484B"/>
+<g fill="#A9ABB0" font-size="11">
+<text x="230" y="227">Total risk signals</text>
+<text x="449" y="227">Production risks</text>
+<text x="668" y="227">Transit risks</text>
+<text x="887" y="227">Other risks</text>
+</g>
+<g fill="#F1F0EB" font-size="34" font-weight="600">
+<text id="kr89total" x="230" y="271">0</text>
+<text id="kr89production" x="449" y="271">0</text>
+<text id="kr89transit" x="668" y="271">0</text>
+<text id="kr89other" x="887" y="271">0</text>
+</g>
+<g fill="#9EA3A8" font-size="10.5">
+<text x="230" y="291">Across authorized outputs</text>
+<text x="449" y="291">50% of total</text>
+<text x="668" y="291">33% of total</text>
+<text x="887" y="291">17% of total</text>
+</g>
+</g>
+
+<!-- Trend chart -->
+<rect x="212" y="317" width="563" height="221" rx="11" fill="#252526" stroke="#444447"/>
+<text x="233" y="342" fill="#F1F0EB" font-size="15" font-weight="600">Risk signal trend</text>
+<text x="233" y="360" fill="#9C9DA2" font-size="10.5">Illustrative weekly aggregate counts</text>
+<rect x="695" y="327" width="62" height="23" rx="11" fill="#333638"/>
+<text x="726" y="342" text-anchor="middle" fill="#C5CDD3" font-size="10.5">6 weeks</text>
+<g stroke="#3B3D40" stroke-width="1">
+<path d="M252 389 H747 M252 421 H747 M252 453 H747 M252 485 H747"/>
+</g>
+<g fill="#888D92" font-size="10" font-family="monospace">
+<text x="239" y="393" text-anchor="end">12</text>
+<text x="239" y="425" text-anchor="end">9</text>
+<text x="239" y="457" text-anchor="end">6</text>
+<text x="239" y="489" text-anchor="end">3</text>
+</g>
+<g fill="#A1A2A6" font-size="10">
+<text x="258" y="513" text-anchor="middle">W1</text>
+<text x="352" y="513" text-anchor="middle">W2</text>
+<text x="446" y="513" text-anchor="middle">W3</text>
+<text x="540" y="513" text-anchor="middle">W4</text>
+<text x="634" y="513" text-anchor="middle">W5</text>
+<text x="728" y="513" text-anchor="middle">W6</text>
+</g>
+<path id="kr89area" d="M258 466 L352 452 L446 452 L540 421 L634 408 L728 389 L728 485 L258 485 Z" fill="url(#kr89chartfill)" opacity="0"/>
+<path id="kr89trend" d="M258 466 L352 452 L446 452 L540 421 L634 408 L728 389" fill="none" stroke="#BBD3E3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g id="kr89dots" fill="#D7E8F2" stroke="#435361" stroke-width="2">
+<circle cx="258" cy="466" r="4"/>
+<circle cx="352" cy="452" r="4"/>
+<circle cx="446" cy="452" r="4"/>
+<circle cx="540" cy="421" r="4"/>
+<circle cx="634" cy="408" r="4"/>
+<circle cx="728" cy="389" r="5"/>
+</g>
+
+<!-- Category distribution -->
+<rect x="787" y="317" width="292" height="221" rx="11" fill="#252526" stroke="#444447"/>
+<text x="806" y="342" fill="#F1F0EB" font-size="15" font-weight="600">Signal distribution</text>
+<text x="806" y="360" fill="#9C9DA2" font-size="10.5">Share of 12 aggregate signals</text>
+<g fill="#E0E1E3" font-size="11">
+<text x="806" y="384">Production</text>
+<text x="806" y="427">Transit</text>
+<text x="806" y="470">Other</text>
+</g>
+<g fill="#B6BEC5" font-size="10.5" text-anchor="end">
+<text x="1061" y="384">6 · 50%</text>
+<text x="1061" y="427">4 · 33%</text>
+<text x="1061" y="470">2 · 17%</text>
+</g>
+<g fill="#3D4145">
+<rect x="806" y="391" width="255" height="7" rx="3.5"/>
+<rect x="806" y="434" width="255" height="7" rx="3.5"/>
+<rect x="806" y="477" width="255" height="7" rx="3.5"/>
+</g>
+<rect id="kr89bar1" x="806" y="391" width="0" height="7" rx="3.5" fill="#B8CFE0"/>
+<rect id="kr89bar2" x="806" y="434" width="0" height="7" rx="3.5" fill="#91A9BA"/>
+<rect id="kr89bar3" x="806" y="477" width="0" height="7" rx="3.5" fill="#718795"/>
+
+<rect id="kr89detailBg" x="806" y="496" width="255" height="30" rx="7" fill="#F1F0EB"/>
+<text x="908" y="515" fill="#202021" font-size="11.5" font-weight="600" text-anchor="middle">Open detailed dashboard</text>
+<path d="M1035 511 H1048 M1042 505 L1048 511 L1042 517" stroke="#202021" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<rect id="kr89detailHover" x="804" y="494" width="259" height="34" rx="9" stroke="#BBD3E3" stroke-width="2" fill="none" opacity="0"/>
+
+<rect x="212" y="551" width="867" height="39" rx="8" fill="#252527" stroke="#414143"/>
+<g fill="none" stroke="#BFC6CB" stroke-width="1.4">
+<rect x="230" y="566" width="13" height="11" rx="2"/>
+<path d="M233 566 V562 A3.5 3.5 0 0 1 240 562 V566"/>
+</g>
+<text x="255" y="574" fill="#C4C4C6" font-size="11.2">Illustrative authorized aggregates only · No raw data or individual records displayed.</text>
+</g>
+
+<!-- Dynamic overlay: click and cursor -->
+<g id="kr89busy" opacity="0">
+<rect x="223" y="473" width="260" height="41" rx="7" fill="#303B43"/>
+<circle id="kr89spinner" cx="269" cy="493" r="7" fill="none" stroke="#B7D0DF" stroke-width="2" stroke-dasharray="24 20"/>
+<text x="342" y="498" text-anchor="middle" fill="#DDE9F1" font-size="12" font-family="Arial,Helvetica,sans-serif">Opening overview...</text>
+</g>
+<rect id="kr89hit" class="hit" x="222" y="471" width="260" height="43" rx="7" fill="transparent" role="button" tabindex="0" aria-label="Open Supply Chain Risk dashboard"/>
+<g id="kr89cursor" transform="translate(97 344)">
+<path d="M1 1 V24 L7 18 L12 30 L18 27 L13 16 L22 16 Z" fill="#F1F0EB" stroke="#101011" stroke-width="2" stroke-linejoin="round"/>
+</g>
+<g id="kr89click" opacity="0">
+<circle r="12" fill="#C4D8E5" fill-opacity=".11" stroke="#C4D8E5" stroke-width="1.5"/>
+</g>
+</svg>
+</div>
+<div class="transport">
+<button id="kr89play" type="button" class="primary">Pause</button>
+<button id="kr89replay" type="button">↺ Replay</button>
+<input id="kr89seek" type="range" min="0" max="8600" step="10" value="0" aria-label="Position de l'animation"/>
+<span id="kr89clock" class="clock">0.0 / 8.6s</span>
+</div>
+<div class="stage" id="kr89stage">08 · Supply Chain Risk is ready to open</div>
+<script>
+(()=>{
+const root=document.getElementById('kr8901');
+if(!root||root.dataset.ready)return;
+root.dataset.ready='1';
+const $=id=>root.querySelector('#'+id);
+const D=8600;
+let t=0,last=null,playing=true;
+const play=$('kr89play'),replay=$('kr89replay'),seek=$('kr89seek'),clock=$('kr89clock'),stage=$('kr89stage');
+const clamp=x=>Math.max(0,Math.min(1,x));
+const cubic=(a,b,c,d,u)=>{const v=1-u;return v*v*v*a+3*v*v*u*b+3*v*u*u*c+u*u*u*d};
+function timing(p,x1=.45,y1=0,x2=.23,y2=1){
+p=clamp(p);let lo=0,hi=1;
+for(let i=0;i<19;i++){
+const mid=(lo+hi)/2;
+if(cubic(0,x1,x2,1,mid)<p)lo=mid;else hi=mid;
+}
+return cubic(0,y1,y2,1,(lo+hi)/2);
+}
+const motion=(a,b)=>timing((t-a)/(b-a));
+const fade=(a,b)=>timing((t-a)/(b-a),.15,.45,.24,1);
+const route=(a,b,c,d,p)=>({x:cubic(a.x,b.x,c.x,d.x,p),y:cubic(a.y,b.y,c.y,d.y,p)});
+const op=(id,v)=>$(id).setAttribute('opacity',String(clamp(v)));
+const line=$('kr89trend');
+const lineLen=line.getTotalLength?line.getTotalLength():540;
+line.setAttribute('stroke-dasharray',String(lineLen));
+function pointer(){
+if(t<440)return{x:97,y:344};
+if(t<1570)return route({x:97,y:344},{x:137,y:362},{x:226,y:483},{x:325,y:490},motion(440,1570));
+if(t<6150)return{x:325,y:490};
+if(t<7350)return route({x:325,y:490},{x:480,y:462},{x:755,y:481},{x:930,y:511},motion(6150,7350));
+return{x:930,y:511};
+}
+function render(){
+const screen=fade(2650,2930);
+op('kr89gallery',1-screen);
+op('kr89overview',screen);
+const entering=fade(3000,3310);
+op('kr89metrics',entering);
+$('kr89metrics').setAttribute('transform',`translate(0 ${(1-entering)*5})`);
+
+const count=motion(3190,4290);
+for(const [id,max] of [['kr89total',12],['kr89production',6],['kr89transit',4],['kr89other',2]]){
+$(id).textContent=String(Math.round(max*count));
+}
+const chart=motion(3720,5400);
+line.setAttribute('stroke-dashoffset',String(lineLen*(1-chart)));
+op('kr89area',chart*.85);
+const dots=$('kr89dots').querySelectorAll('circle');
+dots.forEach((dot,i)=>{
+const p=fade(3880+i*205,4070+i*205);
+dot.setAttribute('opacity',String(p));
+dot.setAttribute('transform',`translate(0 ${(1-p)*3})`);
+});
+for(const [id,max,start,end] of [
+['kr89bar1',127.5,3890,4900],
+['kr89bar2',85,4010,5100],
+['kr89bar3',42.5,4130,5290]
+]){
+$(id).setAttribute('width',String(max*motion(start,end)));
+}
+
+const pos=pointer();
+$('kr89cursor').setAttribute('transform',`translate(${pos.x.toFixed(2)} ${pos.y.toFixed(2)})`);
+const visibility=t<2550?1:t<3350?1-fade(2540,2950):fade(5810,6130);
+op('kr89cursor',visibility);
+op('kr89ctaHover',t>=1550&&t<2160?fade(1540,1690)*(1-fade(2020,2200)):0);
+op('kr89busy',fade(2100,2200)*(1-fade(2570,2740)));
+$('kr89spinner').setAttribute('transform',`rotate(${(t*.25).toFixed(1)} 269 493)`);
+op('kr89detailHover',t>=7280?fade(7260,7450):0);
+
+if(t>=2010&&t<2200){
+const p=clamp((t-2010)/190);
+$('kr89click').setAttribute('transform','translate(325 490)');
+op('kr89click',(1-p)*.68);
+$('kr89click').querySelector('circle').setAttribute('r',String(9+17*p));
+}else op('kr89click',0);
+$('kr89hit').style.pointerEvents=t<2190?'auto':'none';
+
+const labels=[
+[0,'08 · Supply Chain Risk ready · Analytics Gallery'],
+[440,'Cursor moves toward Open dashboard'],
+[1580,'Open dashboard · Hover'],
+[2010,'Click · Open dashboard'],
+[2140,'Opening authorized analysis'],
+[2680,'Navigating to Risk Overview'],
+[3160,'09 · Risk overview · Aggregate indicators loading'],
+[3930,'12 illustrative signals · Production 6 · Transit 4 · Other 2'],
+[4530,'Weekly risk trend is appearing'],
+[5500,'Authorized overview ready'],
+[6170,'Cursor moves toward detailed dashboard'],
+[7470,'09 · Open detailed dashboard · Next transition']
+];
+let label=labels[0][1];
+for(const [at,s] of labels)if(t>=at)label=s;
+stage.textContent=label;
+seek.value=Math.round(t);
+clock.textContent=(t/1000).toFixed(1)+' / 8.6s';
+}
+function tick(now){
+if(last===null)last=now;
+const dt=Math.min(80,now-last);last=now;
+if(playing){t=Math.min(D,t+dt);if(t>=D){playing=false;play.textContent='Play';}}
+render();requestAnimationFrame(tick);
+}
+function pause(){playing=false;last=null;play.textContent='Play';render();}
+function start(){playing=true;last=null;play.textContent='Pause';render();}
+play.addEventListener('click',()=>{if(playing)pause();else{if(t>=D)t=0;start();}});
+replay.addEventListener('click',()=>{t=0;start();});
+seek.addEventListener('input',()=>{t=Number(seek.value);pause();});
+$('kr89hit').addEventListener('click',()=>{if(t<2190){t=2010;start();}});
+$('kr89hit').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&t<2190){e.preventDefault();t=2010;start();}});
+if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){playing=false;play.textContent='Play';}
+render();requestAnimationFrame(tick);
+})();
+</script>
+</div>
+</AppBlock>
+
+**Durée : 8,6 secondes.** Le curseur parcourt la galerie, clique sur **Open dashboard**, puis les quatre indicateurs se chiffrent, la courbe se trace et les barres de répartition se remplissent. La navigation reste dans le même cadre, sans effet de caméra.
+
+La séquence se termine sur **Open detailed dashboard →**, prêt pour la transition **09 → 10**. Les valeurs sont fictives et l'animation ne réalise aucun calcul privé réel.
+
+**Transition 08 → 09 V1 : tu valides ?**

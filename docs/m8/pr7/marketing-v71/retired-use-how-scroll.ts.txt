@@ -1,0 +1,77 @@
+"use client";
+import { useEffect, useRef, type RefObject } from "react";
+
+/** Bounded desktop gesture capture. Never changes body overflow or focus.
+ * Native scrolling, anchors and direct selection remain independent escape paths. */
+export function useHowScroll(section: RefObject<HTMLElement | null>, onStep: (step: number) => void) {
+  const controls = useRef<{ select: (step: number) => void; release: () => void }>({ select: onStep, release: () => {} });
+  useEffect(() => {
+    const root = section.current;
+    // Direct step buttons remain usable when browser enhancement APIs are absent.
+    if (!root || typeof matchMedia !== "function" || typeof IntersectionObserver !== "function") return;
+    const motion = matchMedia("(prefers-reduced-motion: reduce)");
+    let active = false, step = 0, released = 0, lastEvent = 0, lastChange = 0, total = 0;
+    let listening = false, burstConsumed = false, lastDirection = 0;
+    const panel = root.querySelector<HTMLElement>(".how-panel")!;
+    const geometry = () => {
+      const nav = document.querySelector(".marketing-navbar")!.getBoundingClientRect();
+      const top = Math.ceil(nav.bottom + 24);
+      const rect = panel.getBoundingClientRect();
+      return { top, rect, pin: scrollY + rect.top - top, fits: innerWidth >= 1200 && rect.height <= innerHeight - top - 20 && !motion.matches && !document.hidden };
+    };
+    function release(direction = 0) { active = false; released = direction; total = 0; root!.dataset.scrollActive = "false"; }
+    function choose(next: number) { step = next; onStep(step); root!.dataset.sequenceState = `STEP_${step + 1}`; lastChange = performance.now(); total = 0; burstConsumed = true; }
+    controls.current = { select: next => { choose(next); }, release: () => release(1) };
+    function advance(delta: number, event: WheelEvent | KeyboardEvent, key = false) {
+      const g = geometry(), direction = Math.sign(delta), now = performance.now();
+      if (!g.fits || !delta) { release(); return; }
+      // A new traversal is possible once the section has actually been left.
+      if (Math.abs(g.rect.top - g.top) > 100) released = 0;
+      if (!active) {
+        if (released === direction || (released === 2)) return;
+        const crosses = direction > 0 ? g.rect.top >= g.top - 2 && g.rect.top - g.top <= delta : g.rect.top <= g.top + 2 && g.rect.top - g.top >= delta;
+        if (!crosses) return;
+        event.preventDefault(); scrollTo({ top: g.pin, behavior: "instant" });
+        active = true; released = 0; root!.dataset.scrollActive = "true";
+        choose(direction > 0 ? 0 : 3); lastEvent = now; return;
+      }
+      if (Math.abs(g.rect.top - g.top) > 3) { release(); return; }
+      const idle = now - lastEvent; lastEvent = now;
+      // A quiet interval re-arms a gesture; dwell never advances an act.
+      if (key || idle >= 180 || direction !== lastDirection) { total = 0; burstConsumed = false; }
+      lastDirection = direction;
+      if (now - lastChange < 600 || burstConsumed) { event.preventDefault(); return; }
+      total += delta;
+      if (key || Math.abs(total) >= 45) {
+        if ((step === 3 && direction > 0) || (step === 0 && direction < 0)) { release(direction); return; }
+        event.preventDefault(); choose(step + direction);
+      } else event.preventDefault();
+    }
+    function wheel(event: WheelEvent) {
+      if (event.ctrlKey || Math.abs(event.deltaX) > Math.abs(event.deltaY) || (event.target instanceof Element && event.target.closest(".solutions-dropdown,textarea,input,select"))) return;
+      advance(event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? innerHeight : 1), event);
+    }
+    function keys(event: KeyboardEvent) {
+      if (["Escape", "Home", "End", "Tab"].includes(event.key)) { release(2); return; }
+      if (!active || event.altKey || event.ctrlKey || event.metaKey || event.target instanceof Element && event.target.closest("input,textarea,select")) return;
+      if (["PageDown", "ArrowDown", " "].includes(event.key)) advance(event.shiftKey ? -100 : 100, event, true);
+      if (["PageUp", "ArrowUp"].includes(event.key)) advance(-100, event, true);
+    }
+    function nativeScroll() { if (active && Math.abs(geometry().rect.top - geometry().top) > 3) release(); }
+    const reset = () => release();
+    function attach(enabled: boolean) {
+      if (enabled === listening) return; listening = enabled;
+      root!.dataset.scrollReady = String(enabled);
+      if (enabled) { window.addEventListener("wheel", wheel, { passive: false }); window.addEventListener("keydown", keys); }
+      else { window.removeEventListener("wheel", wheel); window.removeEventListener("keydown", keys); release(); }
+    }
+    const observer = new IntersectionObserver(([entry]) => attach(entry.isIntersecting), { rootMargin: "100px" });
+    observer.observe(root);
+    window.addEventListener("scroll", nativeScroll, { passive: true });
+    window.addEventListener("resize", reset); window.addEventListener("hashchange", reset);
+    window.addEventListener("popstate", reset); document.addEventListener("visibilitychange", reset);
+    motion.addEventListener("change", reset);
+    return () => { observer.disconnect(); attach(false); window.removeEventListener("scroll", nativeScroll); window.removeEventListener("resize", reset); window.removeEventListener("hashchange", reset); window.removeEventListener("popstate", reset); document.removeEventListener("visibilitychange", reset); motion.removeEventListener("change", reset); };
+  }, [section, onStep]);
+  return controls;
+}

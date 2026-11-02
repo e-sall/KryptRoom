@@ -7,9 +7,9 @@ import { provenancePath, transitionLabel } from "./presentation";
 
 export function StateLinks({ roomId, state }: { roomId: string; state: GraphState }) {
   return <nav className="provenance-links" aria-label="Selected state destinations">
-    <Link href={statePath(roomId, state.id)}>Open {state.id} in Graph</Link>
-    <Link href={provenancePath(roomId, "proofs", state.id)}>Provenance of {state.id}</Link>
-    <Link href={provenancePath(roomId, "activity", state.id)}>Activity for {state.id}</Link>
+    <Link prefetch={false} href={statePath(roomId, state.id)}>Open {state.id} in Graph</Link>
+    <Link prefetch={false} href={provenancePath(roomId, "proofs", state.id)}>Provenance of {state.id}</Link>
+    <Link prefetch={false} href={provenancePath(roomId, "activity", state.id)}>Activity for {state.id}</Link>
   </nav>;
 }
 export function StateRelations({ graph, state, onSelect }: { graph: Graph; state: GraphState; onSelect: (id: string) => void }) {

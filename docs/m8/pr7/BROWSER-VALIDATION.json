@@ -1,0 +1,208 @@
+{
+  "kind": "Unsigned frontend QA observations; not a cryptographic attestation",
+  "date": "2026-10-25",
+  "timezone": "America/Toronto",
+  "base_dev": "8e8d8349db565278a866bd82f743f03fd1ee8c35",
+  "versions": {
+    "node": "24.12.0",
+    "npm_clean_install": "10.9.4",
+    "playwright": "1.64.1",
+    "chromium": "156.0.8078.4",
+    "webkit": "27.2",
+    "next": "16.4.2",
+    "react": "19.3.1"
+  },
+  "checks": {
+    "clean_install": "passed",
+    "lint": "passed",
+    "typecheck": "passed",
+    "build_pages": 68,
+    "unit_passed": 106,
+    "ci_scope_passed": 31,
+    "audit_all_findings": 0,
+    "audit_production_findings": 0
+  },
+  "chromium": {
+    "passed": 133,
+    "skipped": 2,
+    "failed": 0,
+    "duration": "4.8m",
+    "historical_skips": [
+      "desktop: mobile-only inspector trigger",
+      "tablet: mobile-only inspector trigger"
+    ],
+    "earlier_host_interruption": "ERR_NETWORK_IO_SUSPENDED; seven unchanged reruns passed; final full run clean"
+  },
+  "webkit": {
+    "passed": 22,
+    "failed": 0,
+    "duration": "2.3m",
+    "workers": 1,
+    "cases": [
+      {
+        "project": "webkit-desktop",
+        "case": "mobile keyboard focus clears bottom navigation",
+        "duration": "1.4s",
+        "status": "passed"
+      },
+      {
+        "project": "webkit-desktop",
+        "case": "rotation retires modal sheet, preserves state and restores visible focus",
+        "duration": "1.8s",
+        "status": "passed"
+      },
+      {
+        "project": "webkit-desktop",
+        "case": "marketing reverse keyboard focus clears sticky header",
+        "duration": "1.3s",
+        "status": "passed"
+      },
+      {
+        "project": "webkit-desktop",
+        "case": "complete M8 journey preserves context and changes Room without stale events",
+        "duration": "5.7s",
+        "status": "passed"
+      },
+      {
+        "project": "webkit-desktop",
+        "case": "eight-width responsive matrix, P11 layouts and touch targets",
+        "duration": "24.4s",
+        "status": "passed"
+      },
+      {
+        "project": "webkit-desktop",
+        "case": "system states remove stale results, proof and activity context",
+        "duration": "7.4s",
+        "status": "passed"
+      },
+      {
+        "project": "webkit-desktop",
+        "case": "invalid deep links fail closed and keyboard reflow keeps navigation usable",
+        "duration": "5.2s",
+        "status": "passed"
+      },
+      {
+        "project": "webkit-desktop",
+        "case": "rendered local destinations resolve and links never invent external authority",
+        "duration": "9.0s",
+        "status": "passed"
+      },
+      {
+        "project": "webkit-desktop",
+        "case": "autoplay advances seven scenes, loops, pauses, resumes and suspends",
+        "duration": "2.0s",
+        "status": "passed"
+      },
+      {
+        "project": "webkit-desktop",
+        "case": "showcase framing, stable scenes, section evidence and accessible FAQ",
+        "duration": "11.7s",
+        "status": "passed"
+      },
+      {
+        "project": "webkit-desktop",
+        "case": "reduced motion and no-JavaScript keep honest static explanations",
+        "duration": "1.1s",
+        "status": "passed"
+      },
+      {
+        "project": "webkit-mobile",
+        "case": "mobile keyboard focus clears bottom navigation",
+        "duration": "1.2s",
+        "status": "passed"
+      },
+      {
+        "project": "webkit-mobile",
+        "case": "rotation retires modal sheet, preserves state and restores visible focus",
+        "duration": "1.6s",
+        "status": "passed"
+      },
+      {
+        "project": "webkit-mobile",
+        "case": "marketing reverse keyboard focus clears sticky header",
+        "duration": "1.3s",
+        "status": "passed"
+      },
+      {
+        "project": "webkit-mobile",
+        "case": "complete M8 journey preserves context and changes Room without stale events",
+        "duration": "5.0s",
+        "status": "passed"
+      },
+      {
+        "project": "webkit-mobile",
+        "case": "eight-width responsive matrix, P11 layouts and touch targets",
+        "duration": "22.7s",
+        "status": "passed"
+      },
+      {
+        "project": "webkit-mobile",
+        "case": "system states remove stale results, proof and activity context",
+        "duration": "8.1s",
+        "status": "passed"
+      },
+      {
+        "project": "webkit-mobile",
+        "case": "invalid deep links fail closed and keyboard reflow keeps navigation usable",
+        "duration": "5.1s",
+        "status": "passed"
+      },
+      {
+        "project": "webkit-mobile",
+        "case": "rendered local destinations resolve and links never invent external authority",
+        "duration": "8.7s",
+        "status": "passed"
+      },
+      {
+        "project": "webkit-mobile",
+        "case": "autoplay advances seven scenes, loops, pauses, resumes and suspends",
+        "duration": "1.7s",
+        "status": "passed"
+      },
+      {
+        "project": "webkit-mobile",
+        "case": "showcase framing, stable scenes, section evidence and accessible FAQ",
+        "duration": "8.6s",
+        "status": "passed"
+      },
+      {
+        "project": "webkit-mobile",
+        "case": "reduced motion and no-JavaScript keep honest static explanations",
+        "duration": "982ms",
+        "status": "passed"
+      }
+    ]
+  },
+  "firefox": {
+    "status": "blocked before browser launch",
+    "distribution": "157.0 / build 1555",
+    "error": "Windows side-by-side configuration incorrect; Playwright spawn UNKNOWN",
+    "site_validation_claimed": false
+  },
+  "canonical_lf_source_sha256": {
+    "apps/web/tests/browser/freeze.spec.ts": "149ff99d978037d0869ea935e9fd8cc49ead4eeffc6ce4747898c8d7e497878b",
+    "apps/web/tests/browser/home.spec.ts": "c2f30d998fa2fc2cc1fb4628ded5518b0eb038f12a0cfd1214b4270c30a924f0",
+    "apps/web/tests/browser/css-viewport.ts": "4d193cebd2c6d1541b78b26a3b97e6c99a27b301bc840dcdfab2e9ff9c902e0c",
+    "apps/web/playwright.cross-browser.config.ts": "53ce71b1bb977bc90d84ac618638e46a31549225cbfd3c4a2bbc3b50c6db3ee2",
+    "apps/web/src/components/focus-visibility.tsx": "873c2bb86c5cc2dad0d892da16fe9def73b75cacb22bdabf4ace4bb3aba5910e",
+    "apps/web/src/components/dialog.tsx": "b307b91f3ac744d9329f21ad3e4fca2cd2a1aaa9c7e1603f3de7615f3b6ed961",
+    "apps/web/src/features/marketing/home-showcase.tsx": "9528f05c512fef3edd91dfbe2101405c63b38cf0be5f579171ad31339dfe5fb1"
+  },
+  "boundaries": {
+    "core_changed": false,
+    "ci_changed": false,
+    "dependencies_changed": false,
+    "groth16_executed": false,
+    "blockchain_transaction": false,
+    "public_deployment": false,
+    "main_changed": false,
+    "merge_authorized": false
+  },
+  "security_exception": {
+    "id": "M8-SEC-001",
+    "scope": "ESLint 9 EOL only",
+    "owner": "e-sall / founder",
+    "expiration": "2026-11-01T23:59:00-05:00",
+    "reevaluate": "before PR7 merge or expiration, whichever first"
+  }
+}

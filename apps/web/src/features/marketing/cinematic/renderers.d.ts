@@ -1,0 +1,11 @@
+export declare function clip01(root: SVGGElement): (time: number) => void;
+export declare function clip02(root: SVGGElement): (time: number) => void;
+export declare function clip03(root: SVGGElement): (time: number) => void;
+export declare function clip04(root: SVGGElement): (time: number) => void;
+export declare function clip05(root: SVGGElement): (time: number) => void;
+export declare function clip06(root: SVGGElement): (time: number) => void;
+export declare function clip07(root: SVGGElement): (time: number) => void;
+export declare function clip08(root: SVGGElement): (time: number) => void;
+export declare function clip10(root: SVGGElement): (time: number) => void;
+export declare function clip11(root: SVGGElement): (time: number) => void;
+export declare function clip12(root: SVGGElement): (time: number) => void;

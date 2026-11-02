@@ -43,7 +43,21 @@ seven-scene replay explain persistent collaboration using the existing synthetic
 PR3 states. Mode/scene selection does not execute, persist, authorize or reveal
 anything. Booking and production adapters remain unavailable. M1–M7, historical
 evidence, CI, dependencies and M8-SEC-001 remain unchanged. See ADR-021 and
-`docs/m8/pr6/README.md`. PR7 is not started.
+`docs/m8/pr6/README.md`. PR #19 is merged into dev at
+`8e8d8349db565278a866bd82f743f03fd1ee8c35`.
+
+M8 PR7 consolidates responsive, keyboard and final freeze QA on that baseline.
+It adds the founder-approved editorial homepage, an accessible seven-scene autoplay
+showcase sharing the existing catalog, original founder portrait and final FAQ.
+It fixes focus hidden behind fixed navigation, retires mobile sheets on tablet
+transition with a visible focus fallback, and removes obsolete PR5 placeholder
+copy. The application designs, business model and core runtime are preserved;
+the homepage follows the later founder-approved redesign. The founder renewed
+M8-SEC-001 for ESLint 9 EOL only until **2026-11-01 23:59 America/Toronto**, with
+reevaluation before PR7 merge or expiration. The withdrawn GHSA portion is closed.
+See `docs/m8/pr7/README.md`, the security reevaluation and Freeze QA report.
+PR7 must remain open for independent review; M8 is not declared completed and no
+production deployment or M9 work is authorized.
 
 ## Target backend-to-operation mapping (not a capability inventory)
 
@@ -128,3 +142,25 @@ Milestone 2.5 persists the validated M2 handoff as immutable RoomState S1. Each 
 
 The disclosure default remains deny. Cardinality may be released to Lab A, Lab B, and the UI. The synthetic M2.5 aggregate, explicitly opted-in M3 scalars, M4 evaluation MSE, and M6 vector sum are authorized only to their exact named participants. Matched identifiers, plaintext joined rows, model parameters, predictions, gradients, and activations remain forbidden. M7 publishes only one opaque commitment and an ordinary Ethereum sender; that address is not participant identity or approval. ML beyond the fixed M4 network, FHE beyond the bounded M6 addition, threshold/multiparty FHE, proofs beyond M5's bounded metadata relation, ZK proof of FHE arithmetic, blockchain state/compute, frontend, branching/merge behavior, and dynamic membership remain out of scope.
 
+
+### PR20 Marketing V4 review candidate
+
+The founder requested a further marketing pass on 2026-10-29. Local OFL
+Newsreader/DM Sans typography, a left-aligned canonical brand, Product/Technology/
+Solutions navigation and four illustrative industry pages improve presentation.
+The `/book-demo` Coming soon page opens an explicitly authorized founder mailto;
+it does not collect details, reserve slots or provide a booking backend.
+Technology and Security retain the bounded runtime/trust claims, including
+planned-only quantum research. The original portrait is unchanged; local
+quality-92 responsive renditions avoid a second lossy optimization pass.
+The synthetic catalog and ordered parents remain unchanged. M1–M7, fixtures,
+CI, dependency pins and runtime security configuration are unchanged.
+See `docs/m8/pr7/MARKETING-V4-REPORT.md`. Founder acceptance and merge are pending;
+M8-SEC-001 remains ESLint 9 EOL only through 2026-11-01 23:59 Toronto.
+
+### Marketing V5 desktop review candidate
+
+PR20 reduces the desktop marketing scale, condenses How It Works and introduces
+scene-dependent synthetic presentation timing and distinct state context cards.
+The original catalog, core, fixtures, CI and security expiry remain unchanged.
+See `docs/m8/pr7/MARKETING-V5-REPORT.md`; founder desktop acceptance is pending.

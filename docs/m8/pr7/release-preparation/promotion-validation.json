@@ -1,0 +1,22 @@
+{
+  "promotion_commit": "d6a7765b64afdffacf486a5b4bc10ffa156f7a6b",
+  "unit_tests": {
+    "passed": 116
+  },
+  "build": {
+    "status": "passed",
+    "static_pages": 72
+  },
+  "typecheck": "passed",
+  "playwright": {
+    "startTime": "2026-11-02T05:17:30.830Z",
+    "duration": 54717.311,
+    "expected": 15,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "errors": [],
+  "dependency_mode": "Existing dependency bytes copied into the snapshot; no install. Initial outside-root junction build failed; in-root copy resolved it. One browser attempt interrupted to correct artifact output path; final isolated rerun passed.",
+  "lint": "not rerun: M8-SEC-001 expired"
+}

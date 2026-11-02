@@ -1,0 +1,22 @@
+{
+  "engines": {
+    "dev": "d699176856b72622780908f19ec3c51781451432",
+    "candidate": "d699176856b72622780908f19ec3c51781451432"
+  },
+  "packages": {
+    "dev": "b22e3d6d004c7260cf49273b9871e28236e5c798",
+    "candidate": "b22e3d6d004c7260cf49273b9871e28236e5c798"
+  },
+  "tests": {
+    "dev": "fc393da5f67e95ec92bae9311ad0aaf1f50aa3d5",
+    "candidate": "fc393da5f67e95ec92bae9311ad0aaf1f50aa3d5"
+  },
+  "chain": {
+    "dev": "4d09b3b38d2e50cbcf88cb31f64252ea27db1021",
+    "candidate": "4d09b3b38d2e50cbcf88cb31f64252ea27db1021"
+  },
+  ".github": {
+    "dev": "062fa73ae5ba5ea8f19412c5804d7c80508e134e",
+    "candidate": "062fa73ae5ba5ea8f19412c5804d7c80508e134e"
+  }
+}

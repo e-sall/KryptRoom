@@ -1,0 +1,48 @@
+{
+  "checked_on": "2026-10-26",
+  "scope": "PR20 F01-F04 frontend follow-up; no dependency or CI changes",
+  "package_manager": "npm 10.9.4",
+  "full_audit_findings": 0,
+  "production_audit_findings": 0,
+  "production_named_package_selection": {
+    "command": "npm ls --omit=dev braces eslint eslint-config-next --json",
+    "packages": [],
+    "exit_code": 1,
+    "meaning": "Empty selection, not an audit failure"
+  },
+  "advisory": {
+    "id": "GHSA-vfj7-8cjw-p6xm",
+    "source": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+    "withdrawn_on": "2026-10-23",
+    "status": "withdrawn; original exception portion closed"
+  },
+  "supported_lint_probe": {
+    "isolated": true,
+    "eslint": "10.13.0",
+    "eslint_config_next": "16.4.3",
+    "command": "npm install --package-lock-only --ignore-scripts --strict-peer-deps",
+    "exit_code": 1,
+    "error": "ERESOLVE",
+    "blocking_peer": "eslint-plugin-import@2.32.0 accepts ESLint through 9, not 10",
+    "project_dependencies_modified": false,
+    "forced_dependencies_or_audit_suppression": false
+  },
+  "exception": {
+    "id": "M8-SEC-001",
+    "owner": "e-sall",
+    "scope": "ESLint 9 end-of-support risk only; development tooling",
+    "expires": "2026-11-01T23:59:00-05:00",
+    "timezone": "America/Toronto",
+    "reevaluate": "Before PR7 merge or expiration, whichever comes first",
+    "automatic_renewal": false,
+    "production_deployment_authorized": false,
+    "new_material_issue_observed": false
+  },
+  "retained_controls": [
+    "Runtime trace exclusion of lint dependency chain",
+    "Read-only workflow permissions and credential isolation",
+    "Pinned dependencies and unchanged lock",
+    "Browser request, page-error, storage and disclosure guards",
+    "No change to core M1-M7, fixtures, runtime security configuration or CI scope"
+  ]
+}

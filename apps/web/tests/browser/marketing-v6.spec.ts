@@ -31,17 +31,15 @@ test('V7 contained labels, combined positioning, subtle icons and decorative CTA
  await page.goto('/developers');const rects=await page.locator('.marketing-reading>p:last-of-type,.marketing-reading>.button-row').evaluateAll(es=>es.map(e=>e.getBoundingClientRect().toJSON()));expect(rects[1].top-rects[0].bottom).toBeGreaterThanOrEqual(24);
 });
 
-test('V6 business copy and dashboard labels remain inside their panels at narrow widths',async({page})=>{
+test('Signal mobile equivalent stays readable and outside the unchanged vector',async({page})=>{
  await page.emulateMedia({reducedMotion:'reduce'});
- for(const width of [320,375,390]){await setCssViewport(page,{width,height:844});await page.goto('/');await page.evaluate(()=>document.fonts.ready);
- for(let i=0;i<7;i++){
-  await page.locator('.business-controls nav button').nth(i).click();
-  const blocks=await page.locator('.business-story-caption p,.business-story-caption h3,.business-panel[data-visible="true"] p,.business-panel[data-visible="true"] small,.business-panel[data-visible="true"] h3,.business-panel[data-visible="true"] li,.business-panel[data-visible="true"] .business-trend-axis').evaluateAll(es=>es.map(e=>({text:e.textContent,rect:e.getBoundingClientRect().toJSON(),frame:e.closest('.business-panel,.business-story-caption')!.getBoundingClientRect().toJSON(),font:parseFloat(getComputedStyle(e).fontSize)})));
-  for(const b of blocks){expect(b.rect.top,b.text??'').toBeGreaterThanOrEqual(b.frame.top);expect(b.rect.bottom,b.text??'').toBeLessThanOrEqual(b.frame.bottom);expect(b.rect.left,b.text??'').toBeGreaterThanOrEqual(b.frame.left);expect(b.rect.right,b.text??'').toBeLessThanOrEqual(b.frame.right);expect(b.font,b.text??'').toBeGreaterThanOrEqual(12);}
-  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
- }
- }
- for(const width of [834,1366]){await setCssViewport(page,{width,height:900});await page.goto('/');await page.locator('.business-controls nav button').nth(1).click();
- const label=await page.locator('.business-input-mask').boundingBox();for(const card of await page.locator('.business-environments article').all()){const r=await card.boundingBox();expect(label!.y).toBeGreaterThanOrEqual(r!.y+r!.height+8);}
+ for(const width of [320,375,390]){
+  await setCssViewport(page,{width,height:844});await page.goto('/');await page.evaluate(()=>document.fonts.ready);
+  const summary=page.locator('.signal-mobile-summary');await expect(summary).toBeVisible();
+  await expect(summary).toContainText('Production: 6 / 12');await expect(summary).toContainText('Transit: 4 / 12');await expect(summary).toContainText('Other: 2 / 12');
+  const blocks=await summary.locator('p').evaluateAll(es=>es.map(e=>({rect:e.getBoundingClientRect().toJSON(),frame:e.parentElement!.getBoundingClientRect().toJSON(),font:parseFloat(getComputedStyle(e).fontSize)})));
+  for(const b of blocks){expect(b.rect.left).toBeGreaterThanOrEqual(b.frame.left);expect(b.rect.right).toBeLessThanOrEqual(b.frame.right);expect(b.font).toBeGreaterThanOrEqual(14);}
+  const svg=await page.locator('#kr-signal-v4 svg').boundingBox(),text=await summary.boundingBox();expect(text!.y).toBeGreaterThanOrEqual(svg!.y+svg!.height);
+  await expect(page.locator('.risk-fill-group rect')).toHaveCount(3);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
  }
 });

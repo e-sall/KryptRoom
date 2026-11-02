@@ -37,11 +37,14 @@ test("P01 hero, honest booking and four P02 steps", async ({ page }, info) => {
   if (!story) throw new Error("Missing P02 section");
   await page.screenshot({ path: info.outputPath("how-it-works.png"), fullPage: true, clip: story });
   if (info.project.name === "desktop") {
-    // V7.2: document scrolling no longer changes the selected illustration.
-    await page.locator('.how-panel').scrollIntoViewIfNeeded();
-    const before=await page.evaluate(()=>scrollY);await page.mouse.wheel(0,180);
+    // Final compact scrollytelling: the document moves and selects stage 02.
+    await page.locator('#how-it-works').evaluate(e=>{const h=e as HTMLElement;scrollTo(0,scrollY+e.getBoundingClientRect().top-parseFloat(h.style.getPropertyValue('--how-top'))+.2*Number(h.dataset.scrollStep));});
+    await expect(page.locator('.how-visual')).toHaveAttribute('data-step','0');
+    const before=await page.evaluate(()=>scrollY);
+    const interval=await page.locator('#how-it-works').evaluate(e=>Number((e as HTMLElement).dataset.scrollStep));
+    await page.mouse.wheel(0,interval);
     await expect.poll(()=>page.evaluate(()=>scrollY)).toBeGreaterThan(before);
-    await expect(steps.getByRole('button').nth(3)).toHaveAttribute('aria-current','step');
+    await expect(steps.getByRole('button').nth(1)).toHaveAttribute('aria-current','step');
   }
   await page.locator(".hero").getByRole("link", { name: "See how it works", exact: true }).click(); await expect(page).toHaveURL("/#how-it-works");
   await page.goto("/book-demo"); await expect(page.getByText("Unavailable", { exact: true })).toBeVisible();

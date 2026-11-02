@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:16px;background:#10100f">
+<div id="kr111v2" style="width:100%;color:#f1f0eb;font-family:Arial,Helvetica,sans-serif">
+<style>
+#kr111v2 *{box-sizing:border-box}
+#kr111v2 .screen{background:#10100f;border:1px solid #38383a;border-radius:12px;overflow:hidden}
+#kr111v2 svg{display:block;width:100%;height:auto;aspect-ratio:1120/620}
+#kr111v2 .controls{display:flex;gap:10px;align-items:center;margin-top:12px}
+#kr111v2 button{border:1px solid #505054;border-radius:8px;background:#2b2b2d;color:#eee;font:600 12px Arial,sans-serif;padding:9px 15px;cursor:pointer}
+#kr111v2 button.main{background:#f1f0eb;color:#181818;border-color:#f1f0eb;min-width:76px}
+#kr111v2 input{flex:1;min-width:30px;accent-color:#a5bfd1;cursor:pointer}
+#kr111v2 .clock{font:11px monospace;color:#aaa;white-space:nowrap}
+#kr111v2 .status{font-size:11px;color:#b7c6d0;margin-top:8px;min-height:18px}
+#kr111v2 button:focus-visible,#kr111v2 input:focus-visible{outline:2px solid #9db7cb;outline-offset:3px}
+</style>
+<div class="screen">
+<svg viewBox="0 0 1120 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Démonstration : ouverture d'Ask AI, question saisie et envoyée sur une seule ligne, traitement simulé">
+<defs>
+<linearGradient id="kr111grad" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#AFC9DA" stop-opacity=".2"/>
+<stop offset="1" stop-color="#AFC9DA" stop-opacity="0"/>
+</linearGradient>
+</defs>
+<rect x="1" y="1" width="1118" height="618" rx="13" fill="#181818" stroke="#38383a"/>
+<rect x="1" y="1" width="184" height="618" rx="13" fill="#1d1d1e"/>
+<path d="M184 1 V619 M1 61 H1119" stroke="#353537"/>
+<g transform="translate(19 12) scale(1.22)">
+<path d="M1 6 L7 3 L7 27 L1 24 Z" fill="#F1F0EB"/>
+<path d="M9 12 L20 3 L16 12 L9 19 Z" fill="#A6A7A1"/>
+<path d="M9 19 L16 12 L21 26 L14 23 Z" fill="#747671"/>
+</g>
+<g font-family="Arial,Helvetica,sans-serif">
+<text x="59" y="40" fill="#F1F0EB" font-size="19" font-weight="600">KryptRoom</text>
+<text x="21" y="101" fill="#858588" font-size="10" letter-spacing="1">WORKSPACE</text>
+<g stroke="#92999c" stroke-width="1.5" fill="none">
+<rect x="26" y="135" width="7" height="7" rx="1"/><rect x="37" y="135" width="7" height="7" rx="1"/>
+<rect x="26" y="146" width="7" height="7" rx="1"/><rect x="37" y="146" width="7" height="7" rx="1"/>
+<rect x="26" y="185" width="19" height="17" rx="3"/><path d="M26 191 H45"/>
+<ellipse cx="35" cy="236" rx="9" ry="4"/><path d="M26 236 V250 C26 256 44 256 44 250 V236"/>
+<rect x="26" y="285" width="19" height="18" rx="4"/><path d="M30 294 H41 M35 289 V300"/>
+</g>
+<g fill="#a4a4a7" font-size="13">
+<text x="58" y="147">Overview</text><text x="58" y="197">Rooms</text>
+<text x="58" y="247">Datasets</text><text x="58" y="299">Computations</text>
+</g>
+<g id="kr111nav0">
+<rect x="11" y="324" width="162" height="39" rx="7" fill="#303032"/>
+<rect x="11" y="330" width="3" height="27" rx="1.5" fill="#9db7cb"/>
+<rect x="26" y="337" width="19" height="17" rx="3" fill="none" stroke="#ced5da" stroke-width="1.5"/>
+<path d="M30 350 V345 M35 350 V341 M40 350 V347" stroke="#ced5da" stroke-width="1.5"/>
+<text x="58" y="350" fill="#f1f0eb" font-size="13" font-weight="600">Analytics</text>
+<path d="M26 389 H45 V403 H36 L31 408 V403 H26 Z" fill="none" stroke="#92999c" stroke-width="1.5"/>
+<text x="58" y="402" fill="#a4a4a7" font-size="13">Ask AI</text>
+</g>
+<g id="kr111nav1" opacity="0">
+<rect x="26" y="337" width="19" height="17" rx="3" fill="none" stroke="#92999c" stroke-width="1.5"/>
+<path d="M30 350 V345 M35 350 V341 M40 350 V347" stroke="#92999c" stroke-width="1.5"/>
+<text x="58" y="350" fill="#a4a4a7" font-size="13">Analytics</text>
+<rect x="11" y="375" width="162" height="39" rx="7" fill="#303032"/>
+<rect x="11" y="381" width="3" height="27" rx="1.5" fill="#9db7cb"/>
+<path d="M26 389 H45 V403 H36 L31 408 V403 H26 Z" fill="none" stroke="#ced5da" stroke-width="1.5"/>
+<text x="58" y="402" fill="#f1f0eb" font-size="13" font-weight="600">Ask AI</text>
+</g>
+<path d="M21 559 H165" stroke="#414143"/>
+<circle cx="38" cy="584" r="12" fill="#36383b"/>
+<text x="38" y="588" text-anchor="middle" fill="#e7e7e9" font-size="11">L</text>
+<text x="58" y="581" fill="#e1e1e3" font-size="12">Logistics</text>
+<text x="58" y="596" fill="#909092" font-size="10">Workspace</text>
+<rect x="907" y="15" width="135" height="31" rx="8" fill="#29292a" stroke="#464648"/>
+<circle cx="925" cy="30" r="4" fill="#a5b7c4"/>
+<text x="938" y="35" fill="#d6d6d8" font-size="11">Logistics Partner</text>
+<circle cx="1081" cy="31" r="16" fill="#34383d"/>
+<text x="1081" y="36" text-anchor="middle" fill="#f0f0f1" font-size="12">L</text>
+</g>
+
+<!-- Risk dashboard before the click -->
+<g id="kr111dashboard" font-family="Arial,Helvetica,sans-serif">
+<text x="211" y="37" fill="#98989a" font-size="12">Logistics Partner  ›  Analytics  ›  Supply Chain Risk</text>
+<text x="214" y="104" fill="#99a9b4" font-size="10" letter-spacing="1.2">SUPPLY CHAIN COLLABORATION / ANALYTICS</text>
+<text x="214" y="147" fill="#f1f0eb" font-size="30" font-weight="600">Supply Chain Risk</text>
+<text x="215" y="175" fill="#a9a9ac" font-size="13">An authorized overview of shared operational risk signals.</text>
+<rect x="920" y="116" width="159" height="29" rx="14" fill="#30363b" stroke="#536372"/>
+<circle cx="936" cy="130" r="4" fill="#a9c4d5"/>
+<text x="949" y="134" fill="#d9e3e9" font-size="11">Authorized aggregates</text>
+<g>
+<rect x="212" y="202" width="207" height="104" rx="10" fill="#2b3035" stroke="#637c8d"/>
+<rect x="431" y="202" width="207" height="104" rx="10" fill="#252526" stroke="#48484b"/>
+<rect x="650" y="202" width="207" height="104" rx="10" fill="#252526" stroke="#48484b"/>
+<rect x="869" y="202" width="210" height="104" rx="10" fill="#252526" stroke="#48484b"/>
+<g fill="#a9abb0" font-size="11">
+<text x="230" y="227">Total risk signals</text><text x="449" y="227">Production risks</text>
+<text x="668" y="227">Transit risks</text><text x="887" y="227">Other risks</text>
+</g>
+<g fill="#f1f0eb" font-size="34" font-weight="600">
+<text x="230" y="271">12</text><text x="449" y="271">6</text><text x="668" y="271">4</text><text x="887" y="271">2</text>
+</g>
+<g fill="#9ea3a8" font-size="10.5">
+<text x="230" y="291">Across authorized outputs</text><text x="449" y="291">50% of total</text>
+<text x="668" y="291">33% of total</text><text x="887" y="291">17% of total</text>
+</g>
+</g>
+<rect x="212" y="317" width="563" height="221" rx="11" fill="#252526" stroke="#444447"/>
+<text x="233" y="342" fill="#f1f0eb" font-size="15" font-weight="600">Risk signal trend</text>
+<text x="233" y="360" fill="#9c9da2" font-size="10.5">Illustrative weekly aggregate counts</text>
+<path d="M252 389 H747 M252 421 H747 M252 453 H747 M252 485 H747" stroke="#3b3d40"/>
+<path d="M258 466 L352 452 L446 452 L540 421 L634 408 L728 389 L728 485 L258 485 Z" fill="url(#kr111grad)"/>
+<path d="M258 466 L352 452 L446 452 L540 421 L634 408 L728 389" fill="none" stroke="#bbd3e3" stroke-width="2.5"/>
+<g fill="#d7e8f2"><circle cx="258" cy="466" r="4"/><circle cx="352" cy="452" r="4"/><circle cx="446" cy="452" r="4"/><circle cx="540" cy="421" r="4"/><circle cx="634" cy="408" r="4"/><circle cx="728" cy="389" r="4"/></g>
+<g fill="#a1a2a6" font-size="10" text-anchor="middle">
+<text x="258" y="513">W1</text><text x="352" y="513">W2</text><text x="446" y="513">W3</text><text x="540" y="513">W4</text><text x="634" y="513">W5</text><text x="728" y="513">W6</text>
+</g>
+<rect x="787" y="317" width="292" height="221" rx="11" fill="#252526" stroke="#444447"/>
+<text x="806" y="342" fill="#f1f0eb" font-size="15" font-weight="600">Risk details</text>
+<text x="806" y="360" fill="#9c9da2" font-size="10.5">Authorized analysis · Input provenance</text>
+<text x="806" y="385" fill="#e3e7ea" font-size="11.5" font-weight="600">Production</text>
+<text x="1061" y="385" fill="#d4e4ef" font-size="11.5" text-anchor="end">6 of 12 · 50%</text>
+<rect x="806" y="392" width="255" height="6" rx="3" fill="#3d4145"/>
+<rect x="806" y="392" width="127.5" height="6" rx="3" fill="#b8cfe0"/>
+<text x="806" y="415" fill="#a9adb1" font-size="10">PROTECTED INPUT SCOPE · 4 TOTAL</text>
+<rect x="806" y="424" width="255" height="29" rx="6" fill="#303133" stroke="#4c5155"/>
+<text x="819" y="443" fill="#e8eef2" font-size="11">Manufacturer</text>
+<text x="1049" y="443" fill="#b3c7d4" font-size="10" text-anchor="end">2 protected</text>
+<rect x="806" y="460" width="255" height="29" rx="6" fill="#30363b" stroke="#536573"/>
+<text x="819" y="479" fill="#e8eef2" font-size="11">Logistics Partner</text>
+<text x="1049" y="479" fill="#b3c7d4" font-size="10" text-anchor="end">2 protected</text>
+<rect x="806" y="496" width="255" height="30" rx="7" fill="#f1f0eb"/>
+<text x="921" y="515" text-anchor="middle" fill="#202021" font-size="12" font-weight="600">Ask AI about these risks</text>
+<path d="M1035 511 H1048 M1042 505 L1048 511 L1042 517" fill="none" stroke="#202021" stroke-width="1.5"/>
+<rect id="kr111hover1" x="804" y="494" width="259" height="34" rx="9" fill="none" stroke="#bbd3e3" stroke-width="2" opacity="0"/>
+<rect x="212" y="551" width="867" height="39" rx="8" fill="#252527" stroke="#414143"/>
+<text x="230" y="575" fill="#c4c4c6" font-size="11">Illustrative authorized aggregates only · No raw source records displayed.</text>
+</g>
+
+<!-- Ask AI page -->
+<g id="kr111ai" opacity="0" font-family="Arial,Helvetica,sans-serif">
+<text x="211" y="37" fill="#98989a" font-size="12">Logistics Partner  ›  Ask AI  ›  Supply Chain Collaboration</text>
+<text x="214" y="104" fill="#99a9b4" font-size="10" letter-spacing="1.2">SUPPLY CHAIN COLLABORATION / ASK AI</text>
+<text x="214" y="147" fill="#f1f0eb" font-size="30" font-weight="600">Ask about your collaboration.</text>
+<text x="215" y="175" fill="#a9a9ac" font-size="13">Explore authorized insights without revealing protected source records.</text>
+<rect x="925" y="116" width="154" height="29" rx="14" fill="#30363b" stroke="#536372"/>
+<circle cx="941" cy="130" r="4" fill="#a9c4d5"/>
+<text x="954" y="134" fill="#d9e3e9" font-size="11">Authorized context only</text>
+<rect x="212" y="202" width="563" height="337" rx="11" fill="#252526" stroke="#454649"/>
+<text x="230" y="230" fill="#f1f0eb" font-size="15" font-weight="600">Conversation</text>
+<rect x="652" y="215" width="104" height="24" rx="12" fill="#323a40" stroke="#4a5b67"/>
+<circle cx="666" cy="227" r="3" fill="#aec7d7"/>
+<text x="677" y="231" fill="#d4e1e9" font-size="10">Room context</text>
+<path d="M230 250 H757" stroke="#414144"/>
+
+<g id="kr111empty">
+<circle cx="493" cy="330" r="29" fill="#303b44" stroke="#4e6575"/>
+<path d="M480 325 Q480 316 488 316 H506 Q513 316 513 325 V339 Q513 345 505 345 H491 L484 351 V345 Q480 345 480 339 Z" fill="none" stroke="#c4d7e3" stroke-width="1.6"/>
+<path d="M487 331 H506" stroke="#c4d7e3" stroke-width="1.6"/>
+<text x="493" y="389" text-anchor="middle" fill="#e5e8eb" font-size="15" font-weight="600">Ask with authorized context</text>
+<text x="493" y="410" text-anchor="middle" fill="#9fa9b1" font-size="11.5">Supply Chain Risk is available for analysis.</text>
+<text x="493" y="429" text-anchor="middle" fill="#9fa9b1" font-size="11">Underlying organization records remain private.</text>
+</g>
+
+<!-- One-line user message -->
+<g id="kr111message" opacity="0">
+<rect x="245" y="272" width="512" height="63" rx="10" fill="#313c45" stroke="#586b79"/>
+<text x="261" y="293" fill="#b9cfde" font-size="10.5" font-weight="600">You · Logistics Partner</text>
+<text x="261" y="316" fill="#f1f0eb" font-size="13" white-space="nowrap">What's driving our supply chain risks, and what should we do?</text>
+</g>
+<g id="kr111working" opacity="0">
+<rect x="230" y="346" width="527" height="101" rx="9" fill="#2d3236" stroke="#50626f"/>
+<rect x="242" y="359" width="28" height="28" rx="7" fill="#3a4a55"/>
+<g transform="translate(249 362) scale(.52)">
+<path d="M1 6 L7 3 L7 27 L1 24 Z" fill="#f1f0eb"/>
+<path d="M9 12 L20 3 L16 12 L9 19 Z" fill="#a6a7a1"/>
+<path d="M9 19 L16 12 L21 26 L14 23 Z" fill="#747671"/>
+</g>
+<text x="283" y="371" fill="#e8edf0" font-size="12" font-weight="600">KryptRoom AI</text>
+<text id="kr111workingText" x="283" y="391" fill="#bacdd9" font-size="11">Analyzing authorized context...</text>
+<path d="M245 407 H742" stroke="#465158"/>
+<g id="kr111dots" fill="#b8cfdf"><circle cx="253" cy="427" r="3.2"/><circle cx="267" cy="427" r="3.2"/><circle cx="281" cy="427" r="3.2"/></g>
+<text x="303" y="431" fill="#9eaeb9" font-size="10.5">Response in preparation</text>
+<rect x="650" y="360" width="92" height="23" rx="11" fill="#384955"/>
+<text x="696" y="375" text-anchor="middle" fill="#d0e2ed" font-size="10">Working</text>
+</g>
+
+<!-- Single-line composer with measured cursor -->
+<rect x="230" y="458" width="527" height="68" rx="9" fill="#2d2e30" stroke="#53565b"/>
+<g id="kr111compose">
+<text id="kr111placeholder" x="246" y="488" fill="#8f9499" font-size="12">Ask about Supply Chain Risk...</text>
+<text id="kr111typed" x="246" y="487" fill="#f0f0f1" font-size="12.5" font-family="Arial,Helvetica,sans-serif" white-space="nowrap"></text>
+<path id="kr111caret" d="M246 472 V490" stroke="#d3e4ef" stroke-width="1.4" opacity="0"/>
+<text x="246" y="515" fill="#8c9196" font-size="9.5">Authorized results only</text>
+</g>
+<g id="kr111after" opacity="0">
+<text x="246" y="488" fill="#929a9f" font-size="12">Ask a follow-up about these results...</text>
+<text x="246" y="515" fill="#8c9196" font-size="9.5">No raw data access</text>
+</g>
+<rect id="kr111sendBG" x="704" y="473" width="38" height="39" rx="8" fill="#f1f0eb"/>
+<path d="M713 494 L733 484 L727 504 L723 495 Z M723 495 L733 484" stroke="#202021" stroke-width="1.7" fill="none" stroke-linejoin="round"/>
+<rect id="kr111hover2" x="702" y="471" width="42" height="43" rx="10" fill="none" stroke="#b9d2e2" stroke-width="2" opacity="0"/>
+
+<!-- Context inspector -->
+<rect x="787" y="202" width="292" height="337" rx="11" fill="#252526" stroke="#454649"/>
+<text x="805" y="229" fill="#f1f0eb" font-size="14.5" font-weight="600">AI context</text>
+<text x="805" y="248" fill="#a4a9ae" font-size="10.5">Accessible authorized aggregates</text>
+<path d="M805 262 H1061" stroke="#414144"/>
+<rect x="805" y="276" width="256" height="60" rx="8" fill="#303b43" stroke="#52697a"/>
+<rect x="818" y="288" width="30" height="30" rx="7" fill="#40525e"/>
+<path d="M833 293 L843 297 V304 C843 311 839 315 833 318 C827 315 823 311 823 304 V297 Z" fill="none" stroke="#cedfea" stroke-width="1.4"/>
+<text x="860" y="296" fill="#ecf0f2" font-size="12" font-weight="600">Supply Chain Risk</text>
+<text x="860" y="314" fill="#b4c8d5" font-size="10.5">Authorized analysis</text>
+<text x="805" y="361" fill="#a3adb5" font-size="10">AGGREGATE RISK SIGNALS</text>
+<text x="805" y="390" fill="#f1f0eb" font-size="27" font-weight="600">12</text>
+<text x="851" y="388" fill="#b4c2ca" font-size="10.5">signals available</text>
+<path d="M805 400 H1061" stroke="#45494c"/>
+<g fill="#d0d5d9" font-size="11">
+<text x="805" y="420">Production</text><text x="805" y="441">Transit</text><text x="805" y="462">Other</text>
+</g>
+<g fill="#b5c7d4" font-size="11" text-anchor="end">
+<text x="1061" y="420">6 · 50%</text><text x="1061" y="441">4 · 33%</text><text x="1061" y="462">2 · 17%</text>
+</g>
+<path d="M805 475 H1061" stroke="#45494c"/>
+<rect x="805" y="488" width="256" height="33" rx="7" fill="#303133" stroke="#4a4d51"/>
+<rect x="817" y="496" width="13" height="11" rx="2" fill="none" stroke="#b8c8d3" stroke-width="1.3"/>
+<path d="M820 496 V493 A3.5 3.5 0 0 1 827 493 V496" fill="none" stroke="#b8c8d3" stroke-width="1.3"/>
+<text x="841" y="509" fill="#c6c9cc" font-size="10.5">4 protected inputs · Not readable</text>
+<rect x="212" y="551" width="867" height="39" rx="8" fill="#252527" stroke="#414143"/>
+<text x="230" y="575" fill="#c4c4c6" font-size="11">Demo interaction · AI processing is simulated · No private source records accessed.</text>
+</g>
+
+<rect id="kr111hit1" x="806" y="496" width="255" height="30" fill="transparent" style="cursor:pointer" role="button" tabindex="0"/>
+<rect id="kr111hit2" x="704" y="473" width="38" height="39" fill="transparent" style="cursor:pointer;pointer-events:none" role="button" tabindex="0"/>
+<g id="kr111cursor" transform="translate(886 476)">
+<path d="M1 1 V24 L7 18 L12 30 L18 27 L13 16 L22 16 Z" fill="#f1f0eb" stroke="#101011" stroke-width="2" stroke-linejoin="round"/>
+</g>
+<g id="kr111ripple" opacity="0"><circle r="12" fill="#c4d8e5" fill-opacity=".09" stroke="#c4d8e5" stroke-width="1.5"/></g>
+</svg>
+</div>
+<div class="controls">
+<button id="kr111play" class="main" type="button">Pause</button>
+<button id="kr111replay" type="button">↺ Replay</button>
+<input id="kr111seek" type="range" min="0" max="9400" step="10" value="0" aria-label="Position de la transition"/>
+<span id="kr111time" class="clock">0.0 / 9.4s</span>
+</div>
+<div id="kr111status" class="status">10 · Risk dashboard · Ask AI ready</div>
+<script>
+(()=>{
+const root=document.getElementById('kr111v2');
+if(!root||root.dataset.ready)return;
+root.dataset.ready='1';
+const $=id=>root.querySelector('#'+id);
+const D=9400,clamp=x=>Math.max(0,Math.min(1,x));
+const cubic=(a,b,c,d,u)=>{const v=1-u;return v*v*v*a+3*v*v*u*b+3*v*u*u*c+u*u*u*d};
+function ease(p,x1=.45,y1=0,x2=.23,y2=1){
+p=clamp(p);let a=0,b=1;
+for(let i=0;i<18;i++){const m=(a+b)/2;if(cubic(0,x1,x2,1,m)<p)a=m;else b=m}
+return cubic(0,y1,y2,1,(a+b)/2);
+}
+let t=0,last=null,playing=true;
+const fade=(a,b)=>ease((t-a)/(b-a),.14,.4,.24,1);
+const move=(a,b)=>ease((t-a)/(b-a));
+const op=(id,p)=>$(id).setAttribute('opacity',String(clamp(p)));
+const route=(a,b,c,d,p)=>({x:cubic(a.x,b.x,c.x,d.x,p),y:cubic(a.y,b.y,c.y,d.y,p)});
+const question="What's driving our supply chain risks, and what should we do?";
+const play=$('kr111play'),replay=$('kr111replay'),seek=$('kr111seek'),clock=$('kr111time'),status=$('kr111status');
+const typingStart=2300,typingEnd=5500;
+const times=[typingStart];let w=0,weights=[];
+for(let i=0;i<question.length;i++){
+let z=12+(i*17%13)+(question[i]===' '?6:0)+(question[i]===','?30:0);
+weights.push(z);w+=z;
+}
+let running=typingStart;
+for(const weight of weights){running+=(typingEnd-typingStart)*weight/w;times.push(running);}
+function count(){
+let n=0;while(n<question.length&&times[n+1]<=t)n++;return n;
+}
+function pointer(){
+if(t<400)return{x:886,y:476};
+if(t<1000)return route({x:886,y:476},{x:904,y:478},{x:939,y:500},{x:933,y:510},move(400,1000));
+if(t<5650)return{x:933,y:510};
+if(t<6200)return route({x:635,y:485},{x:659,y:475},{x:699,y:476},{x:720,y:490},move(5650,6200));
+return{x:720,y:490};
+}
+function render(){
+const swap=fade(1600,1950);
+op('kr111dashboard',1-swap);op('kr111ai',swap);
+op('kr111nav0',1-swap);op('kr111nav1',swap);
+op('kr111hover1',t<1150?fade(890,1060):0);
+$('kr111hit1').style.pointerEvents=t<1310?'auto':'none';
+const n=count();
+const typed=$('kr111typed');
+typed.textContent=question.slice(0,n);
+op('kr111placeholder',t<typingStart?1:0);
+const width=typed.getComputedTextLength?typed.getComputedTextLength():n*6.1;
+$('kr111caret').setAttribute('d',`M${(246+width+2).toFixed(1)} 471 V490`);
+op('kr111caret',t>=typingStart&&t<6360&&Math.sin(t/175)>-.2?1:0);
+const sent=t>=6560;
+op('kr111compose',1-fade(6530,6710));
+op('kr111after',fade(6530,6710));
+op('kr111empty',1-fade(6500,6750));
+op('kr111message',fade(6570,6850));
+op('kr111working',fade(6990,7300));
+$('kr111sendBG').setAttribute('fill',sent?'#8a8c8f':'#f1f0eb');
+op('kr111hover2',t>=6130&&t<6510?fade(6090,6240):0);
+$('kr111hit2').style.pointerEvents=t>=5500&&t<6490?'auto':'none';
+const dots=$('kr111dots').querySelectorAll('circle');
+dots.forEach((d,i)=>d.setAttribute('opacity',String(.3+.7*Math.pow(Math.sin(t/245-i*.8),2))));
+$('kr111workingText').textContent=t>=8260?'Organizing authorized insights...':t>=7650?'Reviewing aggregate risk context...':'Analyzing authorized context...';
+const p=pointer();
+$('kr111cursor').setAttribute('transform',`translate(${p.x.toFixed(2)} ${p.y.toFixed(2)})`);
+op('kr111cursor',t<1550?1:t<5600?1-fade(1520,1780):t<6740?fade(5600,5820):1-fade(6520,6740));
+let tap=t>=1140&&t<1330?{at:1140,x:933,y:510}:t>=6380&&t<6570?{at:6380,x:720,y:490}:null;
+if(tap){
+const u=clamp((t-tap.at)/190);
+$('kr111ripple').setAttribute('transform',`translate(${tap.x} ${tap.y})`);
+$('kr111ripple').querySelector('circle').setAttribute('r',String(9+17*u));
+op('kr111ripple',(1-u)*.7);
+}else op('kr111ripple',0);
+const states=[[0,'10 · Dashboard · Ask AI ready'],[1140,'Click · Ask AI'],[1700,'11 · AI workspace opened'],[2300,'Typing the question on one line'],[5500,'Question complete'],[6380,'Click · Send'],[6600,'Question submitted on one line'],[7100,'AI analyzing authorized context'],[8250,'Answer still being prepared']];
+let s=states[0][1];for(const [at,label] of states)if(t>=at)s=label;
+status.textContent=s;seek.value=Math.round(t);clock.textContent=(t/1000).toFixed(1)+' / 9.4s';
+}
+function frame(now){
+if(last===null)last=now;
+const dt=Math.min(80,now-last);last=now;
+if(playing){t=Math.min(D,t+dt);if(t===D){playing=false;play.textContent='Play';}}
+render();requestAnimationFrame(frame);
+}
+function pause(){playing=false;last=null;play.textContent='Play';render()}
+function start(){playing=true;last=null;play.textContent='Pause';render()}
+play.addEventListener('click',()=>{if(playing)pause();else{if(t>=D)t=0;start()}});
+replay.addEventListener('click',()=>{t=0;start()});
+seek.addEventListener('input',()=>{t=Number(seek.value);pause()});
+$('kr111hit1').addEventListener('click',()=>{if(t<1310){t=1140;start()}});
+$('kr111hit2').addEventListener('click',()=>{if(t>=5500&&t<6490){t=6380;start()}});
+if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){playing=false;play.textContent='Play'}
+render();requestAnimationFrame(frame);
+})();
+</script>
+</div>
+</body></html>

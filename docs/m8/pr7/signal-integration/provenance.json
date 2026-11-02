@@ -1,0 +1,13 @@
+{
+  "backup": "C:\\Users\\Admin\\Documents\\Codex\\2026-09-29\\https-github-com-e-sall-kryptroom\\work\\before-signal-20261102T042250Z",
+  "how_and_demo_baseline": {
+    "apps/web/src/features/marketing/how-it-works.tsx": "6ea8fdadeefb8d2b384ff9983140e519829e7d3aa2883bc5ef9c0e9f7b1af619",
+    "apps/web/src/features/marketing/refinement.css": "96f3939f3e8150e0a44332cb6312d3f08163d56cdcf4f46165cf38f3af7762c9",
+    "apps/web/src/features/marketing/interactive-demo.tsx": "298e214b97a77407392611c7ffff540406e2caa0cfa092c3d25b86df0db5d000"
+  },
+  "signal_files": {
+    "KryptRoom_The_Signal_V4.html": "31251187ec75e2d41aaa238e3cfa659de401c35ffe7dc64e13f6765ee968292d",
+    "KryptRoom_The_Signal_V4.svg": "347c73a378429689dd40909456f1c2c2d8521514d417192714ec983b52dae612",
+    "KryptRoom_The_Signal_V4_README.txt": "b4aab7c0c2605ebb8132f83ef623b412e04aa1fb874491ce6831fbf56c0a2373"
+  }
+}

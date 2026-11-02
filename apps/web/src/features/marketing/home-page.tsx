@@ -4,7 +4,8 @@ import { Icon } from "@/components/icon";
 import { ButtonLink } from "@/components/ui";
 import { FinalCTA } from "./final-cta";
 import { HowItWorks } from "./how-it-works";
-import { HomeShowcase, ShowcaseLineage } from "./home-showcase";
+import { SignalV4 } from "./signal-v4";
+import { ShowcaseLineage } from "./home-showcase";
 import "./home.css";
 import "./commercial.css";
 
@@ -29,7 +30,7 @@ export function HomePage() {
       <div className="button-row"><ButtonLink href="/book-demo" variant="primary">Book a Demo <Icon name="arrow" /></ButtonLink><ButtonLink href="/#how-it-works">See how it works <Icon name="arrow" /></ButtonLink></div>
 
     </section>
-    <HomeShowcase />
+    <SignalV4 />
     <section className="home-scene why-scene" aria-labelledby="why-title"><div className="section-panel"><div className="home-narrative"><p className="eyebrow section-label">WHY KRYPTROOM?</p><h2 id="why-title">The question is shared.<br />The data doesn’t have to be.</h2>
       <p>Organizations need each other’s insight. That doesn’t always give them permission to exchange the underlying records.</p><p>KryptRoom is being built for a different starting point: independent environments, protected computation, and a precise decision about what may be revealed.</p><Link prefetch={false} href="/product">Explore the approach <span aria-hidden="true">→</span></Link></div>
       <figure className="why-visual"><div className="why-environments"><div><span className="eyebrow">ORGANIZATION A</span><strong>Own data.<br />Own boundary.</strong><span className="why-records" aria-hidden="true">▤ ▤ ▤</span></div><div><span className="eyebrow">ORGANIZATION B</span><strong>Own data.<br />Own boundary.</strong><span className="why-records" aria-hidden="true">▤ ▤ ▤</span></div></div><div className="why-bridge"><span>Protected collaboration</span><strong>A joint answer</strong><small>Only if disclosure is authorized</small></div></figure></div>

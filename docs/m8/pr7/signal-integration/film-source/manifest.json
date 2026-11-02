@@ -1,0 +1,290 @@
+{
+  "title": "KryptRoom Prototype 12 — recovered source messages",
+  "assembled_film_design_locked": false,
+  "autoplay_only_no_public_controls": true,
+  "nominal_duration_ms": 92400,
+  "source_kind": "exact project conversation message snapshots for recovered elements",
+  "scenes": [
+    {
+      "number": 1,
+      "source_message_file": "SOURCE_MESSAGES/SCENE_01_SOURCE.txt",
+      "source_status": "original_chat_snapshot",
+      "format": "DIL (SVG with embedded loops or expressions possible; not guaranteed standalone SVG)",
+      "native_svg_export_verified": false
+    },
+    {
+      "number": 2,
+      "source_message_file": "SOURCE_MESSAGES/SCENE_02_SOURCE.txt",
+      "source_status": "original_chat_snapshot",
+      "format": "DIL (SVG with embedded loops or expressions possible; not guaranteed standalone SVG)",
+      "native_svg_export_verified": false
+    },
+    {
+      "number": 3,
+      "source_message_file": "SOURCE_MESSAGES/SCENE_03_SOURCE.txt",
+      "source_status": "original_chat_snapshot",
+      "format": "DIL (SVG with embedded loops or expressions possible; not guaranteed standalone SVG)",
+      "native_svg_export_verified": false
+    },
+    {
+      "number": 4,
+      "source_message_file": "SOURCE_MESSAGES/SCENE_04_SOURCE.txt",
+      "source_status": "original_chat_snapshot",
+      "format": "DIL (SVG with embedded loops or expressions possible; not guaranteed standalone SVG)",
+      "native_svg_export_verified": false
+    },
+    {
+      "number": 5,
+      "source_message_file": "SOURCE_MESSAGES/SCENE_05_SOURCE.txt",
+      "source_status": "original_chat_snapshot",
+      "format": "DIL (SVG with embedded loops or expressions possible; not guaranteed standalone SVG)",
+      "native_svg_export_verified": false
+    },
+    {
+      "number": 6,
+      "source_message_file": "SOURCE_MESSAGES/SCENE_06_SOURCE.txt",
+      "source_status": "original_chat_snapshot",
+      "format": "DIL (SVG with embedded loops or expressions possible; not guaranteed standalone SVG)",
+      "native_svg_export_verified": false
+    },
+    {
+      "number": 7,
+      "source_message_file": "SOURCE_MESSAGES/SCENE_07_SOURCE.txt",
+      "source_status": "original_chat_snapshot",
+      "format": "DIL (SVG with embedded loops or expressions possible; not guaranteed standalone SVG)",
+      "native_svg_export_verified": false
+    },
+    {
+      "number": 8,
+      "source_message_file": "SOURCE_MESSAGES/SCENE_08_SOURCE.txt",
+      "source_status": "original_chat_snapshot",
+      "format": "DIL (SVG with embedded loops or expressions possible; not guaranteed standalone SVG)",
+      "native_svg_export_verified": false
+    },
+    {
+      "number": 9,
+      "source_message_file": "SOURCE_MESSAGES/SCENE_09_SOURCE.txt",
+      "source_status": "original_chat_snapshot",
+      "format": "DIL (SVG with embedded loops or expressions possible; not guaranteed standalone SVG)",
+      "native_svg_export_verified": false
+    },
+    {
+      "number": 10,
+      "source_message_file": "SOURCE_MESSAGES/SCENE_10_SOURCE.txt",
+      "source_status": "original_chat_snapshot",
+      "format": "DIL (SVG with embedded loops or expressions possible; not guaranteed standalone SVG)",
+      "native_svg_export_verified": false
+    },
+    {
+      "number": 11,
+      "source_message_file": "SOURCE_MESSAGES/SCENE_11_SOURCE.txt",
+      "source_status": "original_chat_snapshot",
+      "format": "DIL (SVG with embedded loops or expressions possible; not guaranteed standalone SVG)",
+      "native_svg_export_verified": false
+    },
+    {
+      "number": 12,
+      "source_message_file": "SOURCE_MESSAGES/SCENE_12_SOURCE.txt",
+      "source_status": "original_chat_snapshot",
+      "format": "DIL (SVG with embedded loops or expressions possible; not guaranteed standalone SVG)",
+      "native_svg_export_verified": false
+    },
+    {
+      "number": 13,
+      "source_message_file": "SOURCE_MESSAGES/SCENE_13_SOURCE.txt",
+      "source_status": "original_chat_snapshot",
+      "format": "DIL (SVG with embedded loops or expressions possible; not guaranteed standalone SVG)",
+      "native_svg_export_verified": false
+    }
+  ],
+  "transitions": [
+    {
+      "transition": "01→02",
+      "version": "V2",
+      "app_block_id": "krmotion0202v2",
+      "start_ms": 0,
+      "duration_ms": 6700,
+      "end_ms": 6700,
+      "source_status": "exact_chat_AppBlock_markup_recovered",
+      "source_message_file": "SOURCE_MESSAGES/TRANSITION_01_02_V2_SOURCE.txt",
+      "animation_html_file": "SOURCE_ANIMATIONS/TRANSITION_01_02_V2.html",
+      "browser_execution_tested": false
+    },
+    {
+      "transition": "02→03",
+      "version": "V1",
+      "app_block_id": "kr-transition-0203-v1",
+      "start_ms": 6700,
+      "duration_ms": 8600,
+      "end_ms": 15300,
+      "source_status": "exact_chat_AppBlock_markup_recovered",
+      "source_message_file": "SOURCE_MESSAGES/TRANSITION_02_03_V1_SOURCE.txt",
+      "animation_html_file": "SOURCE_ANIMATIONS/TRANSITION_02_03_V1.html",
+      "browser_execution_tested": false
+    },
+    {
+      "transition": "03→04",
+      "version": "V1",
+      "app_block_id": "kr-motion-0304-v1",
+      "start_ms": 15300,
+      "duration_ms": 7200,
+      "end_ms": 22500,
+      "source_status": "exact_chat_AppBlock_markup_recovered",
+      "source_message_file": "SOURCE_MESSAGES/TRANSITION_03_04_V1_SOURCE.txt",
+      "animation_html_file": "SOURCE_ANIMATIONS/TRANSITION_03_04_V1.html",
+      "browser_execution_tested": false
+    },
+    {
+      "transition": "04→05",
+      "version": "V1",
+      "app_block_id": "kr-motion-0405-v1",
+      "start_ms": 22500,
+      "duration_ms": 8700,
+      "end_ms": 31200,
+      "source_status": "exact_chat_AppBlock_markup_recovered",
+      "source_message_file": "SOURCE_MESSAGES/TRANSITION_04_05_V1_SOURCE.txt",
+      "animation_html_file": "SOURCE_ANIMATIONS/TRANSITION_04_05_V1.html",
+      "browser_execution_tested": false
+    },
+    {
+      "transition": "05→06",
+      "version": "V1",
+      "app_block_id": "kr-motion-0506-v1",
+      "start_ms": 31200,
+      "duration_ms": 8100,
+      "end_ms": 39300,
+      "source_status": "exact_chat_AppBlock_markup_recovered",
+      "source_message_file": "SOURCE_MESSAGES/TRANSITION_05_06_V1_SOURCE.txt",
+      "animation_html_file": "SOURCE_ANIMATIONS/TRANSITION_05_06_V1.html",
+      "browser_execution_tested": false
+    },
+    {
+      "transition": "06→07",
+      "version": "V1",
+      "app_block_id": "kr-motion-0607-v1",
+      "start_ms": 39300,
+      "duration_ms": 8500,
+      "end_ms": 47800,
+      "source_status": "exact_chat_AppBlock_markup_recovered",
+      "source_message_file": "SOURCE_MESSAGES/TRANSITION_06_07_V1_SOURCE.txt",
+      "animation_html_file": "SOURCE_ANIMATIONS/TRANSITION_06_07_V1.html",
+      "browser_execution_tested": false
+    },
+    {
+      "transition": "07→08",
+      "version": "V1",
+      "app_block_id": "kr-transition-0708-v1",
+      "start_ms": 47800,
+      "duration_ms": 8500,
+      "end_ms": 56300,
+      "source_status": "exact_chat_AppBlock_markup_recovered",
+      "source_message_file": "SOURCE_MESSAGES/TRANSITION_07_08_V1_SOURCE.txt",
+      "animation_html_file": "SOURCE_ANIMATIONS/TRANSITION_07_08_V1.html",
+      "browser_execution_tested": false
+    },
+    {
+      "transition": "08→09",
+      "version": "V1",
+      "app_block_id": "kr-motion-0809-v1",
+      "start_ms": 56300,
+      "duration_ms": 8600,
+      "end_ms": 64900,
+      "source_status": "exact_chat_AppBlock_markup_recovered",
+      "source_message_file": "SOURCE_MESSAGES/TRANSITION_08_09_V1_SOURCE.txt",
+      "animation_html_file": "SOURCE_ANIMATIONS/TRANSITION_08_09_V1.html",
+      "browser_execution_tested": false
+    },
+    {
+      "transition": "09→10",
+      "version": "V2",
+      "app_block_id": "kr-0910-micro-v2",
+      "start_ms": 64900,
+      "duration_ms": 3300,
+      "end_ms": 68200,
+      "source_status": "MISSING_PORTABLE_ORIGINAL",
+      "spec_file": "REFERENCES/TRANSITION_09_10_V2_SPEC_ONLY.md",
+      "animation_html_file": null,
+      "browser_execution_tested": false
+    },
+    {
+      "transition": "10→11",
+      "version": "V2",
+      "app_block_id": "kr-cinematic-1011-v2",
+      "start_ms": 68200,
+      "duration_ms": 9400,
+      "end_ms": 77600,
+      "source_status": "exact_chat_AppBlock_markup_recovered",
+      "source_message_file": "SOURCE_MESSAGES/TRANSITION_10_11_V2_SOURCE.txt",
+      "animation_html_file": "SOURCE_ANIMATIONS/TRANSITION_10_11_V2.html",
+      "browser_execution_tested": false
+    },
+    {
+      "transition": "11→12",
+      "version": "V2",
+      "app_block_id": "kr-motion-1112-v2",
+      "start_ms": 77600,
+      "duration_ms": 7200,
+      "end_ms": 84800,
+      "source_status": "exact_chat_AppBlock_markup_recovered",
+      "source_message_file": "SOURCE_MESSAGES/TRANSITION_11_12_V2_SOURCE.txt",
+      "animation_html_file": "SOURCE_ANIMATIONS/TRANSITION_11_12_V2.html",
+      "browser_execution_tested": false
+    },
+    {
+      "transition": "12→13",
+      "version": "V2",
+      "app_block_id": "kr-motion-1213-v2",
+      "start_ms": 84800,
+      "duration_ms": 7600,
+      "end_ms": 92400,
+      "source_status": "exact_chat_AppBlock_markup_recovered",
+      "source_message_file": "SOURCE_MESSAGES/TRANSITION_12_13_V2_SOURCE.txt",
+      "animation_html_file": "SOURCE_ANIMATIONS/TRANSITION_12_13_V2.html",
+      "browser_execution_tested": false
+    }
+  ],
+  "missing_animation_ids": [
+    "kr-0910-micro-v2"
+  ],
+  "sha256_files": {
+    "README.md": "dcb3bef8bf4a94e48ac1790a99736a25b414643095b924744c9a29438bf36a92",
+    "REFERENCES/KryptRoom_P12_Cinematic_Design_Handoff.md": "589c5fddd13acceb49776d83df964b78591f6814453402d382f2b8af6c01f33c",
+    "REFERENCES/TRANSITION_09_10_V2_SPEC_ONLY.md": "5e72ea0e7e7d351c3e53501cc29f8eb46798766a0a4771c2ac8cf9e6b9ce0321",
+    "SOURCE-INTEGRITY.md": "d7cb16502416acd55e9525c7fc20a4405f0e878e7bc2f709bbaf7a74506af629",
+    "SOURCE_ANIMATIONS/TRANSITION_01_02_V2.html": "df61b18c47d0fff58f7f7ca8749198d249a8894c20b652ac6d294130480b2195",
+    "SOURCE_ANIMATIONS/TRANSITION_02_03_V1.html": "e7de5761a0f80f9dcf27d1e70e0612f9c1455f8e1076f9fb22f3fcdc6bd84c06",
+    "SOURCE_ANIMATIONS/TRANSITION_03_04_V1.html": "825878867122396157f5df8c61fcaa966770058269ded18c027025f6aa557871",
+    "SOURCE_ANIMATIONS/TRANSITION_04_05_V1.html": "0520c923a6285d4e93a0780b52eb3e10b212529dbc15c795f0a51e66f4e5e509",
+    "SOURCE_ANIMATIONS/TRANSITION_05_06_V1.html": "28de7a62674599a70cdb69fcd9e34bfdd6fb8bc1e8dc18be4bfa9d73a8192c13",
+    "SOURCE_ANIMATIONS/TRANSITION_06_07_V1.html": "51eb81dc8ac908d6cb15e7b9b278d66f0efb3ed2b13eaff639e8d41e5e9ceeb5",
+    "SOURCE_ANIMATIONS/TRANSITION_07_08_V1.html": "66ed0bb1d1c5097f5a22b09b996dba64a0b538986e1226b3d5942e15aec4e420",
+    "SOURCE_ANIMATIONS/TRANSITION_08_09_V1.html": "49c332828a76e4411c2509c53dd0e1116fc573e1360ad4cd33d3e55d10cbe9a5",
+    "SOURCE_ANIMATIONS/TRANSITION_10_11_V2.html": "bbb2b2c550e1cd3f755126d2145dfc793e16632c2da1d2408ddf79513b2de1c6",
+    "SOURCE_ANIMATIONS/TRANSITION_11_12_V2.html": "d2fd21098c58fc49644e9a246cb67b7b4e4a583133df8cb831e81442b5cea0bf",
+    "SOURCE_ANIMATIONS/TRANSITION_12_13_V2.html": "d8f0a3750b00a45adbb7d0b2e0cb35611a49fdaf40ef5baa2c94133b7211ca67",
+    "SOURCE_MESSAGES/SCENE_01_SOURCE.txt": "fcf883d33e897de1064a9db589041c1568e6f4bee5f4a4abe72f15f822fd5fe5",
+    "SOURCE_MESSAGES/SCENE_02_SOURCE.txt": "30d125ea526ab8e5c5fda7cb4551c358cb54f82d6ddaef7efdc4e12213c7bc9e",
+    "SOURCE_MESSAGES/SCENE_03_SOURCE.txt": "e6929fccf8c8f13883524afc24a0e6cfa7f5173ea525298aba9904edc6cf6143",
+    "SOURCE_MESSAGES/SCENE_04_SOURCE.txt": "fada010d41275ffe5eaefc785c57e515fa99a9e6b49de91107ed0ab10b510748",
+    "SOURCE_MESSAGES/SCENE_05_SOURCE.txt": "d8cf31d39064928ea7b8507636d3f895a6a8be8caf0ec7adbbe8a6446a22ffd4",
+    "SOURCE_MESSAGES/SCENE_06_SOURCE.txt": "2726d8ca08bfff4cf653d6cc270d85b88d4b31c72ccca35addd2c252738c57e3",
+    "SOURCE_MESSAGES/SCENE_07_SOURCE.txt": "1f19a963c896d4fc6abb06724f6365c3d0c01c5368e19d0ce3007fd354bfa5cf",
+    "SOURCE_MESSAGES/SCENE_08_SOURCE.txt": "4270e1567d3ffdadfd0b77a72849b457cf803f5cb479634899587fd212632a38",
+    "SOURCE_MESSAGES/SCENE_09_SOURCE.txt": "4c497b1c979537c7e9228fbfbd738a8d14e0d9d0e0fba1c9ca94b2f3e2a865c9",
+    "SOURCE_MESSAGES/SCENE_10_SOURCE.txt": "f28307fc91881cc15cf00a9c3f0e1c8e7377ed1bde6d7214dfbef0d0f47f324a",
+    "SOURCE_MESSAGES/SCENE_11_SOURCE.txt": "590f8858393dd3cddfcca6df98ee684fb5af78157476173c4940fb372718333d",
+    "SOURCE_MESSAGES/SCENE_12_SOURCE.txt": "dc555449e0a8d4aaa1311132f3d29503ce939de7de513374c7cc3d171bc8c1c2",
+    "SOURCE_MESSAGES/SCENE_13_SOURCE.txt": "a16e6992f3767809396413d838e25df9addea6a062f4aef8f5c5f1650189b5d2",
+    "SOURCE_MESSAGES/TRANSITION_01_02_V2_SOURCE.txt": "411df4e3daccea18ef630e8b18f292e6ee3b478ed59c377834b8d3e6bf9e53d6",
+    "SOURCE_MESSAGES/TRANSITION_02_03_V1_SOURCE.txt": "588057d802cdf8c09b22d92d9e22113f6d8301fd0ffe0db5395db10e1c97633b",
+    "SOURCE_MESSAGES/TRANSITION_03_04_V1_SOURCE.txt": "61c63504d198295d184f1fae4d80e905b60d52abfd95ffad2ab75cb3e3a4de17",
+    "SOURCE_MESSAGES/TRANSITION_04_05_V1_SOURCE.txt": "adbfc0c42108d72feefaf3734c2c2539aada718235ace599857b547086df4b99",
+    "SOURCE_MESSAGES/TRANSITION_05_06_V1_SOURCE.txt": "488c368ed3f5ac92e8869751fea2f6a027f11724a7460f8644b1e78e5923c893",
+    "SOURCE_MESSAGES/TRANSITION_06_07_V1_SOURCE.txt": "1bbda1b7b3f19c0aaa44b56706a436094a0f5c310116ffbb1ebf311c8e91e53b",
+    "SOURCE_MESSAGES/TRANSITION_07_08_V1_SOURCE.txt": "21a17ae43ab24fbffacfcf7341c2979131ee5090ce8c3d24644b8092fb1ecc4e",
+    "SOURCE_MESSAGES/TRANSITION_08_09_V1_SOURCE.txt": "a0e1e39ceb4cc33b1198bd0c530d62bc9c56a91daec576168dab7ec469e68a17",
+    "SOURCE_MESSAGES/TRANSITION_10_11_V2_SOURCE.txt": "71069c4995e60e2e02cdd853d96b55f899f306830cccb2c4422e0ce0c333c5aa",
+    "SOURCE_MESSAGES/TRANSITION_11_12_V2_SOURCE.txt": "102951e8335d75ed5c4157191f1ae12f399a80c7886fef23b14bf590eddd3e86",
+    "SOURCE_MESSAGES/TRANSITION_12_13_V2_SOURCE.txt": "d3bb7144e4f282f92bed1b970e779f9c7f1b47796872f44b101155670d951c40"
+  }
+}

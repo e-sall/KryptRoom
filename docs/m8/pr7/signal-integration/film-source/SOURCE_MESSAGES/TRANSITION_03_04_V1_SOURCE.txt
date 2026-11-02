@@ -1,0 +1,378 @@
+## Prototype 12 · Transition 03 → 04 V1 — Invitation Acceptance
+
+<text color="secondary" size="sm">La transition reprend sur l'invitation reçue par Logistics Partner. Le curseur accepte l'invitation, la Room s'ouvre et les deux organisations apparaissent comme membres actifs. Aucune donnée n'est encore connectée.</text>
+
+<AppBlock title="KryptRoom · Transition 03 → 04" app_block_id="kr-motion-0304-v1" language="html" variant="inline">
+<div id="kr3401" style="font-family:Arial,Helvetica,sans-serif;width:100%;color:#f1f0eb">
+<style>
+#kr3401 *{box-sizing:border-box}
+#kr3401 .viewport{background:#10100f;border:1px solid #373739;border-radius:12px;overflow:hidden}
+#kr3401 svg{display:block;width:100%;height:auto;aspect-ratio:1120/620}
+#kr3401 .transport{display:flex;gap:10px;align-items:center;margin-top:12px}
+#kr3401 button{background:#2b2b2d;color:#eee;border:1px solid #505054;border-radius:8px;padding:9px 15px;font:600 12px Arial,sans-serif;cursor:pointer}
+#kr3401 button.primary{background:#f1f0eb;color:#181818;border-color:#f1f0eb;min-width:77px}
+#kr3401 button:hover{filter:brightness(1.12)}
+#kr3401 input[type=range]{flex:1;min-width:40px;accent-color:#a5bfd1;cursor:pointer}
+#kr3401 .clock{font:11px monospace;color:#aaa;white-space:nowrap}
+#kr3401 .step{font:11px Arial,sans-serif;color:#b7c6d0;margin-top:8px;min-height:20px}
+#kr3401 .hit{cursor:pointer}
+#kr3401 button:focus-visible,#kr3401 input:focus-visible{outline:2px solid #9db7cb;outline-offset:3px}
+</style>
+<div class="viewport">
+<svg viewBox="0 0 1120 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animation de l'acceptation de l'invitation par Logistics Partner et de l'ouverture de la Room partagée">
+<rect x="1" y="1" width="1118" height="618" rx="13" fill="#181818" stroke="#38383A"/>
+<rect x="1" y="1" width="184" height="618" rx="13" fill="#1D1D1E"/>
+<path d="M184 1 V619 M1 61 H1119" stroke="#353537"/>
+<g transform="translate(19 12) scale(1.22)">
+<path d="M1 6 L7 3 L7 27 L1 24 Z" fill="#F1F0EB"/>
+<path d="M9 12 L20 3 L16 12 L9 19 Z" fill="#A6A7A1"/>
+<path d="M9 19 L16 12 L21 26 L14 23 Z" fill="#747671"/>
+</g>
+<g font-family="Arial,Helvetica,sans-serif">
+<text x="59" y="40" fill="#F1F0EB" font-size="19" font-weight="600" letter-spacing="-.5">KryptRoom</text>
+<text x="21" y="101" fill="#858588" font-family="monospace" font-size="10" letter-spacing="1">WORKSPACE</text>
+<g stroke="#92999C" stroke-width="1.5" fill="none">
+<rect x="26" y="135" width="7" height="7" rx="1"/>
+<rect x="37" y="135" width="7" height="7" rx="1"/>
+<rect x="26" y="146" width="7" height="7" rx="1"/>
+<rect x="37" y="146" width="7" height="7" rx="1"/>
+</g>
+<text x="58" y="147" fill="#A4A4A7" font-size="13">Overview</text>
+<rect x="11" y="173" width="162" height="39" rx="7" fill="#303032"/>
+<rect x="11" y="179" width="3" height="27" rx="1.5" fill="#9DB7CB"/>
+<rect x="26" y="185" width="19" height="17" rx="3" stroke="#CED5DA" stroke-width="1.5" fill="none"/>
+<path d="M26 191 H45" stroke="#CED5DA" stroke-width="1.5"/>
+<text x="58" y="197" fill="#F1F0EB" font-size="13" font-weight="600">Rooms</text>
+
+<g id="kr34datasetsNav" opacity="0">
+<g stroke="#92999C" stroke-width="1.5" fill="none">
+<ellipse cx="35" cy="236" rx="9" ry="4"/>
+<path d="M26 236 V250 C26 256 44 256 44 250 V236 M26 243 C26 249 44 249 44 243"/>
+</g>
+<text x="58" y="247" fill="#A4A4A7" font-size="13">Datasets</text>
+</g>
+<path d="M21 559 H165" stroke="#414143"/>
+<circle cx="38" cy="584" r="12" fill="#36383B"/>
+<text x="38" y="588" text-anchor="middle" fill="#E7E7E9" font-size="11">L</text>
+<text x="58" y="581" fill="#E1E1E3" font-size="12">Logistics</text>
+<text x="58" y="596" fill="#909092" font-size="10">Workspace</text>
+<rect x="907" y="15" width="135" height="31" rx="8" fill="#29292A" stroke="#464648"/>
+<circle cx="925" cy="30" r="4" fill="#A5B7C4"/>
+<text x="938" y="35" fill="#D6D6D8" font-size="11">Logistics Partner</text>
+<circle cx="1081" cy="31" r="16" fill="#34383D"/>
+<text x="1081" y="36" text-anchor="middle" fill="#F0F0F1" font-size="12" font-weight="600">L</text>
+</g>
+
+<!-- The invitation -->
+<g id="kr34inv">
+<g font-family="Arial,Helvetica,sans-serif">
+<text x="211" y="37" fill="#98989A" font-size="12">Logistics Partner</text>
+<path d="M320 28 L325 32 L320 36" fill="none" stroke="#77777A" stroke-width="1.5"/>
+<text x="340" y="37" fill="#98989A" font-size="12">Rooms</text>
+<path d="M386 28 L391 32 L386 36" fill="none" stroke="#77777A" stroke-width="1.5"/>
+<text x="405" y="37" fill="#E1E1E3" font-size="12">Invitation</text>
+
+<text x="214" y="104" fill="#99A9B4" font-size="10" letter-spacing="1.2">LOGISTICS PARTNER / ROOM INVITATIONS</text>
+<text x="214" y="147" fill="#F1F0EB" font-size="30" font-weight="600" letter-spacing="-.65">A new collaboration invitation.</text>
+<text x="215" y="175" fill="#A9A9AC" font-size="13">Manufacturer wants to collaborate securely with your organization.</text>
+<rect x="952" y="116" width="127" height="29" rx="14" fill="#30363B" stroke="#536372"/>
+<circle cx="969" cy="130" r="4" fill="#A9C4D5"/>
+<text x="982" y="134" fill="#D9E3E9" font-size="11">New invitation</text>
+</g>
+
+<rect x="212" y="208" width="867" height="73" rx="10" fill="#2D3338" stroke="#576775"/>
+<rect x="230" y="224" width="39" height="39" rx="9" fill="#3B4750"/>
+<g transform="translate(237 232)" fill="none" stroke="#CADBE6" stroke-width="1.7" stroke-linejoin="round">
+<rect x="0" y="3" width="25" height="18" rx="3"/>
+<path d="M0 6 L12.5 15 L25 6"/>
+</g>
+<g font-family="Arial,Helvetica,sans-serif">
+<text x="283" y="237" fill="#F1F0EB" font-size="15" font-weight="600">You're invited to a private Room</text>
+<text x="283" y="256" fill="#AFBDC7" font-size="11.5">Sent by Manufacturer · Awaiting your decision</text>
+<rect x="955" y="226" width="106" height="33" rx="8" fill="#35444F" stroke="#5B7080"/>
+<text x="1008" y="247" text-anchor="middle" fill="#D6E6F0" font-size="11">Pending</text>
+</g>
+
+<rect x="212" y="295" width="535" height="244" rx="11" fill="#252526" stroke="#424244"/>
+<rect x="759" y="295" width="320" height="244" rx="11" fill="#252526" stroke="#454649"/>
+<g font-family="Arial,Helvetica,sans-serif">
+<text x="232" y="324" fill="#F1F0EB" font-size="17" font-weight="600">Supply Chain Collaboration</text>
+<text x="232" y="343" fill="#A4A4A8" font-size="11.5">Invitation from Manufacturer</text>
+<path d="M232 356 H727" stroke="#444447"/>
+
+<rect x="232" y="370" width="218" height="59" rx="8" fill="#303033" stroke="#49494D"/>
+<circle cx="252" cy="390" r="12" fill="#414347"/>
+<text x="252" y="394" fill="#E5E5E7" text-anchor="middle" font-size="11">M</text>
+<text x="273" y="390" fill="#EDEDEF" font-size="12.5" font-weight="600">Manufacturer</text>
+<text x="273" y="407" fill="#9F9FA3" font-size="10.5">Room creator</text>
+<rect x="463" y="370" width="264" height="59" rx="8" fill="#30383F" stroke="#586774"/>
+<circle cx="483" cy="390" r="12" fill="#43505C"/>
+<text x="483" y="394" fill="#E5E5E7" text-anchor="middle" font-size="11">L</text>
+<text x="504" y="390" fill="#EDEDEF" font-size="12.5" font-weight="600">Logistics Partner</text>
+<text x="504" y="407" fill="#B0C4D2" font-size="10.5">Invited · Your organization</text>
+
+<text x="232" y="454" fill="#AFAFB3" font-size="11.5">Review the invitation and join when you're ready.</text>
+<rect id="kr34btnHover" x="516" y="477" width="213" height="46" rx="9" fill="none" stroke="#BBD2E1" stroke-width="2" opacity="0"/>
+<rect id="kr34btnBackground" x="518" y="479" width="209" height="42" rx="8" fill="#F1F0EB"/>
+<g id="kr34btnNormal">
+<text x="603" y="505" fill="#202021" font-size="12.5" font-weight="600" text-anchor="middle">Accept &amp; open Room</text>
+<path d="M688 500 H713 M707 494 L713 500 L707 506" fill="none" stroke="#202021" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g id="kr34btnBusy" opacity="0">
+<circle id="kr34spinner" cx="564" cy="500" r="7" stroke="#68727A" stroke-width="2" fill="none" stroke-dasharray="24 20"/>
+<text x="638" y="505" fill="#202021" font-size="12.5" font-weight="600" text-anchor="middle">Joining Room...</text>
+</g>
+
+<text x="779" y="324" fill="#F1F0EB" font-size="15" font-weight="600">Privacy by design</text>
+<text x="779" y="343" fill="#A6A6A9" font-size="11">What joining this Room means</text>
+<path d="M779 356 H1060" stroke="#444447"/>
+
+<circle cx="792" cy="378" r="10" fill="#38434B"/>
+<path d="M788 378 L791 381 L797 375" stroke="#CFDEE8" stroke-width="1.5" fill="none"/>
+<text x="811" y="382" fill="#E6E6E8" font-size="11.5">Your raw datasets stay private</text>
+<circle cx="792" cy="415" r="10" fill="#38434B"/>
+<path d="M788 415 L791 418 L797 412" stroke="#CFDEE8" stroke-width="1.5" fill="none"/>
+<text x="811" y="419" fill="#E6E6E8" font-size="11.5">Both parties control their inputs</text>
+<circle cx="792" cy="452" r="10" fill="#38434B"/>
+<path d="M788 452 L791 455 L797 449" stroke="#CFDEE8" stroke-width="1.5" fill="none"/>
+<text x="811" y="456" fill="#E6E6E8" font-size="11.5">No raw records transferred</text>
+<path d="M779 478 H1060" stroke="#444447"/>
+<g fill="none" stroke="#BFC6CB" stroke-width="1.3">
+<rect x="781" y="492" width="12" height="10" rx="2"/>
+<path d="M784 492 V489 A3 3 0 0 1 790 489 V492"/>
+</g>
+<text x="802" y="501" fill="#B4B4B7" font-size="10.5">Invitation only · No access granted yet</text>
+</g>
+<rect x="212" y="551" width="867" height="39" rx="8" fill="#252527" stroke="#414143"/>
+<text x="230" y="575" fill="#C4C4C6" font-family="Arial,Helvetica,sans-serif" font-size="11.5">No data is shared by receiving an invitation. Acceptance is a separate action.</text>
+</g>
+
+<!-- The active Room -->
+<g id="kr34room" opacity="0">
+<g font-family="Arial,Helvetica,sans-serif">
+<text x="211" y="37" fill="#98989A" font-size="12">Logistics Partner</text>
+<path d="M320 28 L325 32 L320 36" fill="none" stroke="#77777A" stroke-width="1.5"/>
+<text x="340" y="37" fill="#98989A" font-size="12">Rooms</text>
+<path d="M386 28 L391 32 L386 36" fill="none" stroke="#77777A" stroke-width="1.5"/>
+<text x="405" y="37" fill="#E1E1E3" font-size="12">Supply Chain Collaboration</text>
+
+<text x="214" y="104" fill="#99A9B4" font-size="10" letter-spacing="1.2">LOGISTICS PARTNER / ACTIVE ROOM</text>
+<text x="214" y="147" fill="#F1F0EB" font-size="30" font-weight="600" letter-spacing="-.65">Supply Chain Collaboration</text>
+<text x="215" y="175" fill="#A9A9AC" font-size="13">Both organizations have joined. Local datasets can now be connected.</text>
+<rect x="967" y="116" width="112" height="29" rx="14" fill="#30363B" stroke="#536372"/>
+<circle cx="984" cy="130" r="4" fill="#A9C4D5"/>
+<text x="997" y="134" fill="#D9E3E9" font-size="11">Room active</text>
+</g>
+
+<rect x="212" y="207" width="867" height="61" rx="10" fill="#2D3338" stroke="#576775"/>
+<rect x="230" y="221" width="33" height="33" rx="9" fill="#40515E"/>
+<g stroke="#D0E1EC" stroke-width="1.9" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M239 237 L244 242 L255 230"/>
+</g>
+<g font-family="Arial,Helvetica,sans-serif">
+<text x="279" y="231" fill="#F1F0EB" font-size="14.5" font-weight="600">Invitation accepted. Your Room is ready.</text>
+<text x="279" y="250" fill="#AEC0CC" font-size="11">Both organizations joined · No datasets connected yet</text>
+<rect x="928" y="223" width="134" height="31" rx="8" fill="#38444D" stroke="#5A6C78"/>
+<text x="995" y="243" fill="#DCE9F0" font-size="11" text-anchor="middle">2 members joined</text>
+</g>
+
+<rect x="212" y="279" width="427" height="260" rx="11" fill="#252526" stroke="#424244"/>
+<rect x="651" y="279" width="428" height="260" rx="11" fill="#252526" stroke="#4D5861"/>
+<g font-family="Arial,Helvetica,sans-serif">
+<!-- Manufacturer panel -->
+<rect x="230" y="296" width="39" height="39" rx="9" fill="#35373A"/>
+<text x="249" y="321" text-anchor="middle" fill="#DCE2E6" font-size="15" font-weight="600">M</text>
+<text x="281" y="312" fill="#F1F0EB" font-size="15.5" font-weight="600">Manufacturer</text>
+<text x="281" y="331" fill="#A7A7AA" font-size="11">Room creator</text>
+<rect x="548" y="303" width="73" height="24" rx="12" fill="#383D40"/>
+<text x="584" y="319" text-anchor="middle" fill="#D8DFE3" font-size="10.5">Joined</text>
+<path d="M230 348 H621" stroke="#444447"/>
+<text x="230" y="364" fill="#9B9DA1" font-size="10" letter-spacing=".6">LOCAL DATASETS</text>
+
+<!-- Logistics panel -->
+<rect x="669" y="296" width="39" height="39" rx="9" fill="#3A4853"/>
+<text x="688" y="321" text-anchor="middle" fill="#E2EBF0" font-size="15" font-weight="600">L</text>
+<text x="720" y="312" fill="#F1F0EB" font-size="15.5" font-weight="600">Logistics Partner</text>
+<text x="720" y="331" fill="#B2C2CC" font-size="11">Your organization</text>
+<rect x="987" y="303" width="74" height="24" rx="12" fill="#3A4A55" stroke="#596E7D"/>
+<text x="1024" y="319" text-anchor="middle" fill="#D7E7F0" font-size="10.5">Joined</text>
+<path d="M669 348 H1061" stroke="#444447"/>
+<text x="669" y="364" fill="#9B9DA1" font-size="10" letter-spacing=".6">LOCAL DATASETS</text>
+</g>
+
+<g id="kr34rows1" opacity="0" font-family="Arial,Helvetica,sans-serif">
+<rect x="230" y="373" width="391" height="41" rx="7" fill="#2E2E30" stroke="#49494C"/>
+<g stroke="#B6C3CB" stroke-width="1.3" fill="none">
+<ellipse cx="249" cy="388" rx="6.5" ry="3"/>
+<path d="M242.5 388 V399 C242.5 403 255.5 403 255.5 399 V388 M242.5 393 C242.5 397 255.5 397 255.5 393"/>
+</g>
+<text x="267" y="391" fill="#E8E8EA" font-size="12">Production planning</text>
+<text x="603" y="397" fill="#99999D" font-size="10.5" text-anchor="end">Not linked</text>
+
+<rect x="669" y="373" width="392" height="41" rx="7" fill="#2E3033" stroke="#4D545A"/>
+<g stroke="#B7C9D6" stroke-width="1.3" fill="none">
+<ellipse cx="688" cy="388" rx="6.5" ry="3"/>
+<path d="M681.5 388 V399 C681.5 403 694.5 403 694.5 399 V388 M681.5 393 C681.5 397 694.5 397 694.5 393"/>
+</g>
+<text x="706" y="391" fill="#E8E8EA" font-size="12">Shipment records</text>
+<text x="1043" y="397" fill="#A1AAB1" font-size="10.5" text-anchor="end">Not linked</text>
+</g>
+
+<g id="kr34rows2" opacity="0" font-family="Arial,Helvetica,sans-serif">
+<rect x="230" y="420" width="391" height="41" rx="7" fill="#2E2E30" stroke="#49494C"/>
+<g stroke="#B6C3CB" stroke-width="1.3" fill="none">
+<ellipse cx="249" cy="435" rx="6.5" ry="3"/>
+<path d="M242.5 435 V446 C242.5 450 255.5 450 255.5 446 V435 M242.5 440 C242.5 444 255.5 444 255.5 440"/>
+</g>
+<text x="267" y="438" fill="#E8E8EA" font-size="12">Supplier references</text>
+<text x="603" y="444" fill="#99999D" font-size="10.5" text-anchor="end">Not linked</text>
+
+<rect x="669" y="420" width="392" height="41" rx="7" fill="#2E3033" stroke="#4D545A"/>
+<g stroke="#B7C9D6" stroke-width="1.3" fill="none">
+<ellipse cx="688" cy="435" rx="6.5" ry="3"/>
+<path d="M681.5 435 V446 C681.5 450 694.5 450 694.5 446 V435 M681.5 440 C681.5 444 694.5 444 694.5 440"/>
+</g>
+<text x="706" y="438" fill="#E8E8EA" font-size="12">Arrival schedules</text>
+<text x="1043" y="444" fill="#A1AAB1" font-size="10.5" text-anchor="end">Not linked</text>
+</g>
+
+<g id="kr34roomActions" opacity="0" font-family="Arial,Helvetica,sans-serif">
+<path d="M230 474 H621 M669 474 H1061" stroke="#434346"/>
+<rect x="230" y="484" width="391" height="37" rx="8" fill="#333437" stroke="#505054"/>
+<text x="425" y="507" fill="#CDCDD0" text-anchor="middle" font-size="12" font-weight="600">Connect local datasets</text>
+
+<rect id="kr34connectBG" x="669" y="484" width="392" height="37" rx="8" fill="#F1F0EB"/>
+<text x="857" y="507" fill="#202021" text-anchor="middle" font-size="12" font-weight="600">Connect local datasets</text>
+<path d="M1028 502 H1046 M1040 496 L1046 502 L1040 508" stroke="#202021" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<rect id="kr34connectHover" x="667" y="482" width="396" height="41" rx="9" stroke="#9DB7CB" stroke-width="2" fill="none" opacity="0"/>
+</g>
+
+<rect x="212" y="551" width="867" height="39" rx="8" fill="#252527" stroke="#414143"/>
+<g fill="none" stroke="#BFC6CB" stroke-width="1.4">
+<rect x="230" y="566" width="13" height="11" rx="2"/>
+<path d="M233 566 V562 A3.5 3.5 0 0 1 240 562 V566"/>
+</g>
+<text x="255" y="574" fill="#C4C4C6" font-family="Arial,Helvetica,sans-serif" font-size="11.5">Room membership is active. All datasets remain local, private and unlinked.</text>
+</g>
+
+<!-- Cursor and click -->
+<rect id="kr34acceptHit" x="518" y="479" width="209" height="42" fill="transparent" class="hit" role="button" tabindex="0" aria-label="Accept and open Room"/>
+<g id="kr34cursor" transform="translate(953 439)">
+<path d="M1 1 V24 L7 18 L12 30 L18 27 L13 16 L22 16 Z" fill="#F1F0EB" stroke="#101011" stroke-width="2" stroke-linejoin="round"/>
+</g>
+<g id="kr34click" opacity="0">
+<circle r="12" stroke="#C4D8E5" stroke-width="1.5" fill="#C4D8E5" fill-opacity=".10"/>
+</g>
+</svg>
+</div>
+<div class="transport">
+<button id="kr34play" class="primary" type="button">Pause</button>
+<button id="kr34replay" type="button">↺ Replay</button>
+<input id="kr34seek" type="range" min="0" max="7200" step="10" value="0" aria-label="Position de la transition"/>
+<span id="kr34clock" class="clock">0.0 / 7.2s</span>
+</div>
+<div class="step" id="kr34stage">03 · Invitation awaiting acceptance</div>
+<script>
+(()=>{
+const root=document.getElementById('kr3401');
+if(!root||root.dataset.ready)return;
+root.dataset.ready='1';
+const $=id=>root.querySelector('#'+id);
+const inv=$('kr34inv'),room=$('kr34room'),datasets=$('kr34datasetsNav');
+const rows1=$('kr34rows1'),rows2=$('kr34rows2'),actions=$('kr34roomActions');
+const hover=$('kr34btnHover'),normal=$('kr34btnNormal'),busy=$('kr34btnBusy'),spinner=$('kr34spinner');
+const connectHover=$('kr34connectHover'),cursor=$('kr34cursor'),ripple=$('kr34click');
+const play=$('kr34play'),replay=$('kr34replay'),seek=$('kr34seek'),clock=$('kr34clock'),stage=$('kr34stage');
+const D=7200;
+let t=0,last=null,playing=true;
+const clamp=x=>Math.max(0,Math.min(1,x));
+const cubic=(a,b,c,d,u)=>{let v=1-u;return v*v*v*a+3*v*v*u*b+3*v*u*u*c+u*u*u*d};
+function bezierEase(p,x1=.45,y1=0,x2=.23,y2=1){
+p=clamp(p);let low=0,high=1;
+for(let i=0;i<20;i++){let m=(low+high)/2;if(cubic(0,x1,x2,1,m)<p)low=m;else high=m}
+return cubic(0,y1,y2,1,(low+high)/2);
+}
+const ease=(a,b)=>bezierEase((t-a)/(b-a));
+const fade=(a,b)=>bezierEase((t-a)/(b-a),.15,.25,.23,1);
+function curve(a,b,c,d,p){
+return {x:cubic(a.x,b.x,c.x,d.x,p),y:cubic(a.y,b.y,c.y,d.y,p)};
+}
+function pointer(){
+if(t<480)return {x:953,y:439};
+if(t<1460)return curve({x:953,y:439},{x:854,y:438},{x:735,y:500},{x:627,y:500},ease(480,1460));
+if(t<4060)return {x:627,y:500};
+if(t<5290)return curve({x:627,y:500},{x:705,y:479},{x:842,y:475},{x:949,y:500},ease(4060,5290));
+return {x:949,y:500};
+}
+function render(){
+const switching=fade(2700,3030);
+inv.setAttribute('opacity',String(1-switching));
+room.setAttribute('opacity',String(switching));
+datasets.setAttribute('opacity',String(fade(3090,3410)));
+rows1.setAttribute('opacity',String(fade(3150,3420)));
+rows2.setAttribute('opacity',String(fade(3340,3610)));
+actions.setAttribute('opacity',String(fade(3490,3760)));
+
+hover.setAttribute('opacity',String(t>=1440&&t<2050?fade(1380,1570):0));
+const loading=fade(2040,2150);
+normal.setAttribute('opacity',String(1-loading));
+busy.setAttribute('opacity',String(loading));
+spinner.setAttribute('transform',`rotate(${(t*0.22).toFixed(1)} 564 500)`);
+connectHover.setAttribute('opacity',String(t>5340?fade(5330,5510):0));
+
+let pos=pointer();
+const mouseOpacity=t<2800?1: t<3850?1-fade(2780,3040):fade(3750,3990);
+cursor.setAttribute('opacity',String(mouseOpacity));
+cursor.setAttribute('transform',`translate(${pos.x.toFixed(2)} ${pos.y.toFixed(2)})`);
+
+if(t>=1960&&t<2150){
+const p=clamp((t-1960)/190);
+ripple.setAttribute('opacity',String((1-p)*.65));
+ripple.setAttribute('transform','translate(627 500)');
+ripple.querySelector('circle').setAttribute('r',String(9+p*17));
+}else ripple.setAttribute('opacity','0');
+
+const labels=[
+[0,'03 · Invitation awaiting acceptance'],
+[480,'Move to Accept & open Room'],
+[1500,'Button in focus · Micro-pause'],
+[1960,'Click · Accept & open Room'],
+[2040,'Validating membership'],
+[2700,'Opening Supply Chain Collaboration'],
+[3140,'04 · Both organizations joined'],
+[3350,'Four local datasets · Not linked'],
+[4140,'Logistics Partner can now connect its datasets'],
+[5530,'04 · Room ready · Next action available']
+];
+let current=labels[0][1];
+for(const [at,label] of labels)if(t>=at)current=label;
+stage.textContent=current;
+seek.value=Math.round(t);
+clock.textContent=(t/1000).toFixed(1)+' / 7.2s';
+$('kr34acceptHit').style.pointerEvents=t<2110?'auto':'none';
+}
+function tick(now){
+if(last===null)last=now;
+const dt=Math.min(80,now-last);last=now;
+if(playing){t=Math.min(D,t+dt);if(t>=D){playing=false;play.textContent='Play'}}
+render();requestAnimationFrame(tick);
+}
+function pause(){playing=false;last=null;play.textContent='Play';render()}
+function start(){playing=true;last=null;play.textContent='Pause';render()}
+play.addEventListener('click',()=>{if(playing)pause();else{if(t>=D)t=0;start()}});
+replay.addEventListener('click',()=>{t=0;start()});
+seek.addEventListener('input',()=>{t=Number(seek.value);pause()});
+$('kr34acceptHit').addEventListener('click',()=>{if(t<2100){t=1960;start()}});
+$('kr34acceptHit').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&t<2100){e.preventDefault();t=1960;start()}});
+if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){playing=false;play.textContent='Play'}
+render();requestAnimationFrame(tick);
+})();
+</script>
+</div>
+</AppBlock>
+
+La transition dure **7,2 secondes**, en conservant la logique de mouvement de la V2 précédente. Le clic provoque un état *Joining Room...*, puis l'interface s'actualise sans déplacement de caméra. Les cartes de datasets apparaissent légèrement en décalé, uniquement pour révéler le contenu de la Room.
+
+**Point important :** côté Manufacturer, le bouton reste secondaire et sans flèche. Côté Logistics Partner, **Connect local datasets →** est l'action principale. Les quatre datasets sont toujours `Not linked`, conformément à la scène 04 validée.
+
+**Transition 03 → 04 V1 : tu valides ?**

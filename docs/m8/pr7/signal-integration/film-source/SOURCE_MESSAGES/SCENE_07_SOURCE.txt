@@ -1,0 +1,178 @@
+## Prototype 12 · Scène 07 V1 — Private Computation
+
+<text color="secondary" size="sm">Après le clic sur **Run private analysis**, KryptRoom affiche le traitement en cours. À gauche, les étapes d'exécution avec leurs durées. À droite, le workflow protégé entre les deux organisations.</text>
+
+<box background="#10100F" theme="dark" padding={2} radius="xl">
+  <svg viewBox="0 0 1120 620" width="100%">
+    <rect x="1" y="1" width="1118" height="618" rx="13" fill="#181818" stroke="#38383A"/>
+    <rect x="1" y="1" width="184" height="618" rx="13" fill="#1D1D1E"/>
+    <path d="M184 1 V619 M1 61 H1119" stroke="#353537"/>
+
+    <g transform="translate(19 12) scale(1.22)">
+      <path d="M1 6 L7 3 L7 27 L1 24 Z" fill="#F1F0EB"/>
+      <path d="M9 12 L20 3 L16 12 L9 19 Z" fill="#A6A7A1"/>
+      <path d="M9 19 L16 12 L21 26 L14 23 Z" fill="#747671"/>
+    </g>
+
+    <g fontFamily="Arial, Helvetica, sans-serif">
+      <text x="59" y="40" fill="#F1F0EB" fontSize="19" fontWeight="600" letterSpacing="-.5">KryptRoom</text>
+      <text x="211" y="37" fill="#98989A" fontSize="12">Logistics Partner</text>
+      <path d="M314 32 H324 M320 28 L324 32 L320 36" stroke="#7A7A7C" strokeWidth="1.3" fill="none" strokeLinecap="round"/>
+      <text x="338" y="37" fill="#98989A" fontSize="12">Rooms</text>
+      <path d="M382 32 H392 M388 28 L392 32 L388 36" stroke="#7A7A7C" strokeWidth="1.3" fill="none" strokeLinecap="round"/>
+      <text x="406" y="37" fill="#E1E1E3" fontSize="12">Supply Chain Collaboration</text>
+
+      <rect x="907" y="15" width="135" height="31" rx="8" fill="#29292A" stroke="#464648"/>
+      <circle cx="925" cy="30" r="4" fill="#A5B7C4"/>
+      <text x="938" y="35" fill="#D6D6D8" fontSize="11">Logistics Partner</text>
+      <circle cx="1081" cy="31" r="16" fill="#34383D"/>
+      <text x="1081" y="36" textAnchor="middle" fill="#F0F0F1" fontSize="12" fontWeight="600">L</text>
+
+      <text x="21" y="101" fill="#858588" fontFamily="monospace" fontSize="10" letterSpacing="1">WORKSPACE</text>
+      <g stroke="#92999C" strokeWidth="1.5" fill="none">
+        <rect x="26" y="135" width="7" height="7" rx="1"/>
+        <rect x="37" y="135" width="7" height="7" rx="1"/>
+        <rect x="26" y="146" width="7" height="7" rx="1"/>
+        <rect x="37" y="146" width="7" height="7" rx="1"/>
+        <rect x="26" y="185" width="19" height="17" rx="3"/>
+        <path d="M26 191 H45"/>
+        <ellipse cx="35" cy="236" rx="9" ry="4"/>
+        <path d="M26 236 V250 C26 256 44 256 44 250 V236 M26 243 C26 249 44 249 44 243"/>
+      </g>
+      <text x="58" y="147" fill="#A4A4A7" fontSize="13">Overview</text>
+      <text x="58" y="197" fill="#A4A4A7" fontSize="13">Rooms</text>
+      <text x="58" y="247" fill="#A4A4A7" fontSize="13">Datasets</text>
+
+      <rect x="11" y="274" width="162" height="39" rx="7" fill="#303032"/>
+      <rect x="11" y="280" width="3" height="27" rx="1.5" fill="#9DB7CB"/>
+      <rect x="26" y="286" width="19" height="18" rx="4" stroke="#CED5DA" strokeWidth="1.5" fill="none"/>
+      <path d="M30 295 H41 M36 289 V301" stroke="#CED5DA" strokeWidth="1.5" strokeLinecap="round"/>
+      <text x="58" y="299" fill="#F1F0EB" fontSize="13" fontWeight="600">Computations</text>
+
+      <path d="M21 559 H165" stroke="#414143"/>
+      <circle cx="38" cy="584" r="12" fill="#36383B"/>
+      <text x="38" y="588" textAnchor="middle" fill="#E7E7E9" fontSize="11">L</text>
+      <text x="58" y="581" fill="#E1E1E3" fontSize="12">Logistics</text>
+      <text x="58" y="596" fill="#909092" fontSize="10">Workspace</text>
+
+      <text x="214" y="104" fill="#99A9B4" fontSize="10" letterSpacing="1.2">SUPPLY CHAIN COLLABORATION / COMPUTATION</text>
+      <text x="214" y="147" fill="#F1F0EB" fontSize="30" fontWeight="600" letterSpacing="-.65">Running a private analysis.</text>
+      <text x="215" y="175" fill="#A9A9AC" fontSize="13">Protected inputs are being processed without revealing underlying records.</text>
+
+      <rect x="947" y="116" width="132" height="29" rx="14" fill="#30363B" stroke="#536372"/>
+      <circle cx="964" cy="130" r="4.5" fill="#A9C4D5"/>
+      <text x="978" y="134" fill="#D9E3E9" fontSize="11">Computing</text>
+    </g>
+
+    <rect x="212" y="207" width="867" height="68" rx="10" fill="#252526" stroke="#454548"/>
+    <rect x="228" y="222" width="38" height="38" rx="9" fill="#343A40"/>
+    <g stroke="#B7CAD8" strokeWidth="1.7" fill="none" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M238 248 V236 H255 V248 Z"/>
+      <path d="M243 242 L246 245 L251 239"/>
+    </g>
+    <g fontFamily="Arial, Helvetica, sans-serif">
+      <text x="279" y="238" fill="#F1F0EB" fontSize="15" fontWeight="600">Supply Chain Risk</text>
+      <text x="279" y="256" fill="#A6A6AA" fontSize="11">Private analysis · Manufacturer + Logistics Partner</text>
+
+      <path d="M822 222 V260" stroke="#414144"/>
+      <text x="842" y="237" fill="#96969A" fontSize="10">ELAPSED TIME</text>
+      <text x="842" y="257" fill="#E9E9EA" fontSize="17" fontFamily="monospace">00:12</text>
+      <rect x="969" y="225" width="93" height="31" rx="7" fill="#303236" stroke="#51565C"/>
+      <text x="1015" y="244" fill="#D2DDE4" fontSize="11" textAnchor="middle">In progress</text>
+    </g>
+
+    <rect x="212" y="287" width="520" height="251" rx="11" fill="#252526" stroke="#424244"/>
+    <g fontFamily="Arial, Helvetica, sans-serif">
+      <text x="232" y="316" fill="#F1F0EB" fontSize="16" fontWeight="600">Working</text>
+      <text x="232" y="336" fill="#A3A3A6" fontSize="11">Private computation workflow</text>
+      <path d="M232 349 H711" stroke="#414144"/>
+    </g>
+
+    <path d="M248 372 V496" stroke="#484B50" strokeWidth="1.5" strokeDasharray="3 5"/>
+
+    <g fontFamily="Arial, Helvetica, sans-serif">
+      <circle cx="248" cy="375" r="10" fill="#3B4145"/>
+      <path d="M244 375 L247 378 L252 372" fill="none" stroke="#CFDAE1" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+      <text x="269" y="372" fill="#E8E8EA" fontSize="13" fontWeight="600">Validate protected inputs</text>
+      <text x="269" y="387" fill="#94979B" fontSize="10.5">4 inputs available under local control</text>
+      <text x="703" y="380" fill="#A7A9AD" fontFamily="monospace" fontSize="11" textAnchor="end">0.8s</text>
+
+      <circle cx="248" cy="415" r="10" fill="#3B4145"/>
+      <path d="M244 415 L247 418 L252 412" fill="none" stroke="#CFDAE1" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+      <text x="269" y="412" fill="#E8E8EA" fontSize="13" fontWeight="600">Establish private execution</text>
+      <text x="269" y="427" fill="#94979B" fontSize="10.5">Both organizations ready</text>
+      <text x="703" y="420" fill="#A7A9AD" fontFamily="monospace" fontSize="11" textAnchor="end">2.1s</text>
+
+      <circle cx="248" cy="456" r="11" fill="#394954" stroke="#7495AA" strokeWidth="1.5"/>
+      <path d="M243 456 H253 M248 451 V461" stroke="#B9D4E5" strokeWidth="1.6" strokeLinecap="round"/>
+      <text x="269" y="453" fill="#F1F0EB" fontSize="13" fontWeight="600">Compute aggregate risk indicators</text>
+      <text x="269" y="468" fill="#B2C5D2" fontSize="10.5">Private operation running</text>
+      <rect x="626" y="444" width="77" height="23" rx="11" fill="#34424C" stroke="#4F6676"/>
+      <text x="664" y="459" fill="#CCE1EE" fontSize="10" textAnchor="middle">Working</text>
+
+      <circle cx="248" cy="497" r="10" fill="#303033" stroke="#545457" strokeWidth="1.3"/>
+      <circle cx="248" cy="497" r="2.5" fill="#77777B"/>
+      <text x="269" y="494" fill="#ABABAE" fontSize="13">Authorize aggregate output</text>
+      <text x="269" y="509" fill="#828286" fontSize="10.5">Waiting for computation</text>
+      <text x="703" y="501" fill="#88888D" fontSize="11" textAnchor="end">Pending</text>
+    </g>
+
+    <rect x="744" y="287" width="335" height="251" rx="11" fill="#252526" stroke="#424244"/>
+    <g fontFamily="Arial, Helvetica, sans-serif">
+      <text x="762" y="316" fill="#F1F0EB" fontSize="16" fontWeight="600">Private workflow</text>
+      <text x="762" y="336" fill="#A3A3A6" fontSize="11">Protected inputs → authorized result</text>
+      <path d="M762 349 H1060" stroke="#414144"/>
+    </g>
+
+    <rect x="761" y="362" width="141" height="47" rx="7" fill="#303134" stroke="#505156"/>
+    <rect x="915" y="362" width="147" height="47" rx="7" fill="#30353A" stroke="#52606C"/>
+    <g fontFamily="Arial, Helvetica, sans-serif">
+      <circle cx="774" cy="376" r="4.5" fill="#BAC5CC"/>
+      <text x="785" y="379" fill="#E8E8EA" fontSize="11" fontWeight="600">Manufacturer</text>
+      <text x="774" y="397" fill="#9C9DA0" fontSize="10">Protected inputs</text>
+      <circle cx="928" cy="376" r="4.5" fill="#9DBCD0"/>
+      <text x="939" y="379" fill="#E8E8EA" fontSize="11" fontWeight="600">Logistics</text>
+      <text x="928" y="397" fill="#9EB1BE" fontSize="10">Protected inputs</text>
+    </g>
+
+    <g stroke="#8396A5" fill="none" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M831 410 V424 H911 M989 410 V424 H911 M911 424 V437"/>
+      <path d="M906 432 L911 437 L916 432"/>
+    </g>
+
+    <rect x="780" y="441" width="261" height="44" rx="8" fill="#303B44" stroke="#667F91"/>
+    <g fontFamily="Arial, Helvetica, sans-serif">
+      <circle cx="800" cy="463" r="11" fill="#425563"/>
+      <path d="M796 458 L803 463 L796 468 M805 458 L812 463 L805 468" fill="none" stroke="#C5DFEE" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+      <text x="821" y="460" fill="#F0F2F4" fontSize="12" fontWeight="600">Private computation</text>
+      <text x="821" y="475" fill="#ADBFCC" fontSize="10">Processing protected inputs</text>
+    </g>
+
+    <g stroke="#8396A5" strokeWidth="1.5" fill="none" strokeLinecap="round">
+      <path d="M911 485 V498"/>
+      <path d="M906 493 L911 498 L916 493"/>
+    </g>
+
+    <rect x="780" y="501" width="261" height="25" rx="7" fill="#2B2B2D" stroke="#505054" strokeDasharray="4 3"/>
+    <g fontFamily="Arial, Helvetica, sans-serif">
+      <rect x="792" y="507" width="11" height="12" rx="2" fill="none" stroke="#8F9397" strokeWidth="1.2"/>
+      <path d="M795 507 V504 A2.5 2.5 0 0 1 800 504 V507" fill="none" stroke="#8F9397" strokeWidth="1.2"/>
+      <text x="815" y="518" fill="#A7A7AB" fontSize="11">Authorized output · Pending</text>
+    </g>
+
+    <rect x="212" y="551" width="867" height="39" rx="8" fill="#252527" stroke="#414143"/>
+    <g stroke="#BFC6CB" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="230" y="567" width="13" height="11" rx="2"/>
+      <path d="M233 567 V563 A3.5 3.5 0 0 1 240 563 V567"/>
+    </g>
+    <text x="255" y="574" fontFamily="Arial, Helvetica, sans-serif" fill="#C4C4C6" fontSize="12">Only authorized outputs may be revealed. No raw records are shown in this workflow.</text>
+    <rect x="948" y="559" width="114" height="23" rx="6" fill="#303032" stroke="#4A4A4C"/>
+    <text x="1005" y="574" textAnchor="middle" fontFamily="Arial, sans-serif" fill="#C7C7C9" fontSize="10">Private execution</text>
+  </svg>
+</box>
+
+La scène reste celle d'un **vrai produit SaaS**, avec un seul élément en progression : *Compute aggregate risk indicators*. Les durées sont illustratives ; l'output est encore en attente, pas présenté comme vérifié ou disponible.
+
+La prochaine scène sera **Analytics Gallery**, avec les trois dashboards minimalistes validés dans le storyboard.
+
+**Scène 07 V1 : tu valides ce rendu ?**

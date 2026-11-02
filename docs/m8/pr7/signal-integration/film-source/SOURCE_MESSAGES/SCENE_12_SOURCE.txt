@@ -1,0 +1,188 @@
+## Prototype 12 · Scène 12 V1 — AI Insights & Recommendations
+
+<text color="secondary" size="sm">KryptRoom AI a terminé. La conversation affiche une explication des risques, trois recommandations concrètes et les références aux résultats autorisés. Le panneau droit devient un espace de visualisation des insights.</text>
+
+<box background="#10100F" theme="dark" padding={2} radius="xl">
+  <svg viewBox="0 0 1120 620" width="100%">
+    <defs>
+      <linearGradient id="kr12spark" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stopColor="#9DB7CB" stopOpacity=".17"/>
+        <stop offset="1" stopColor="#9DB7CB" stopOpacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect x="1" y="1" width="1118" height="618" rx="13" fill="#181818" stroke="#38383A"/>
+    <rect x="1" y="1" width="184" height="618" rx="13" fill="#1D1D1E"/>
+    <path d="M184 1 V619 M1 61 H1119" stroke="#353537"/>
+
+    <g transform="translate(19 12) scale(1.22)">
+      <path d="M1 6 L7 3 L7 27 L1 24 Z" fill="#F1F0EB"/>
+      <path d="M9 12 L20 3 L16 12 L9 19 Z" fill="#A6A7A1"/>
+      <path d="M9 19 L16 12 L21 26 L14 23 Z" fill="#747671"/>
+    </g>
+
+    <g fontFamily="Arial, Helvetica, sans-serif">
+      <text x="59" y="40" fill="#F1F0EB" fontSize="19" fontWeight="600" letterSpacing="-.5">KryptRoom</text>
+      <text x="211" y="37" fill="#98989A" fontSize="12">Logistics Partner</text>
+      <path d="M314 32 H324 M320 28 L324 32 L320 36" fill="none" stroke="#7A7A7C" strokeWidth="1.3" strokeLinecap="round"/>
+      <text x="338" y="37" fill="#98989A" fontSize="12">Analytics</text>
+      <path d="M409 32 H419 M415 28 L419 32 L415 36" fill="none" stroke="#7A7A7C" strokeWidth="1.3" strokeLinecap="round"/>
+      <text x="433" y="37" fill="#E1E1E3" fontSize="12">Ask AI</text>
+      <rect x="907" y="15" width="135" height="31" rx="8" fill="#29292A" stroke="#464648"/>
+      <circle cx="925" cy="30" r="4" fill="#A5B7C4"/>
+      <text x="938" y="35" fill="#D6D6D8" fontSize="11">Logistics Partner</text>
+      <circle cx="1081" cy="31" r="16" fill="#34383D"/>
+      <text x="1081" y="36" textAnchor="middle" fill="#F0F0F1" fontSize="12" fontWeight="600">L</text>
+
+      <text x="21" y="101" fill="#858588" fontFamily="monospace" fontSize="10" letterSpacing="1">WORKSPACE</text>
+      <g stroke="#92999C" strokeWidth="1.5" fill="none">
+        <rect x="26" y="135" width="7" height="7" rx="1"/>
+        <rect x="37" y="135" width="7" height="7" rx="1"/>
+        <rect x="26" y="146" width="7" height="7" rx="1"/>
+        <rect x="37" y="146" width="7" height="7" rx="1"/>
+        <rect x="26" y="185" width="19" height="17" rx="3"/>
+        <path d="M26 191 H45"/>
+        <ellipse cx="35" cy="236" rx="9" ry="4"/>
+        <path d="M26 236 V250 C26 256 44 256 44 250 V236 M26 243 C26 249 44 249 44 243"/>
+        <rect x="26" y="286" width="19" height="18" rx="4"/>
+        <path d="M30 295 H41 M36 289 V301"/>
+        <rect x="26" y="337" width="19" height="17" rx="3"/>
+        <path d="M30 350 V345 M35.5 350 V341 M41 350 V347"/>
+      </g>
+      <g fill="#A4A4A7" fontSize="13">
+        <text x="58" y="147">Overview</text>
+        <text x="58" y="197">Rooms</text>
+        <text x="58" y="247">Datasets</text>
+        <text x="58" y="299">Computations</text>
+        <text x="58" y="350">Analytics</text>
+      </g>
+      <rect x="11" y="376" width="162" height="39" rx="7" fill="#303032"/>
+      <rect x="11" y="382" width="3" height="27" rx="1.5" fill="#9DB7CB"/>
+      <g stroke="#CED5DA" strokeWidth="1.5" fill="none" strokeLinejoin="round" strokeLinecap="round">
+        <path d="M26 389 H45 V403 H36 L31 408 V403 H26 Z"/>
+        <path d="M35 392 L37 395 L40 392 M42 387 V392 M39.5 389.5 H44.5"/>
+      </g>
+      <text x="58" y="402" fill="#F1F0EB" fontSize="13" fontWeight="600">Ask AI</text>
+
+      <path d="M21 559 H165" stroke="#414143"/>
+      <circle cx="38" cy="584" r="12" fill="#36383B"/>
+      <text x="38" y="588" textAnchor="middle" fill="#E7E7E9" fontSize="11">L</text>
+      <text x="58" y="581" fill="#E1E1E3" fontSize="12">Logistics</text>
+      <text x="58" y="596" fill="#909092" fontSize="10">Workspace</text>
+
+      <text x="214" y="103" fill="#99A9B4" fontSize="10" letterSpacing="1.2">SUPPLY CHAIN COLLABORATION / KRYPTROOM AI</text>
+      <text x="214" y="145" fill="#F1F0EB" fontSize="30" fontWeight="600" letterSpacing="-.65">Ask your data. Privately.</text>
+      <text x="215" y="173" fill="#A9A9AC" fontSize="13">Turn authorized analytics into answers you can act on.</text>
+      <rect x="939" y="113" width="140" height="29" rx="14" fill="#303032" stroke="#49494C"/>
+      <circle cx="956" cy="127" r="4" fill="#A8BECD"/>
+      <text x="969" y="131" fill="#D5D5D8" fontSize="11">Answer ready</text>
+    </g>
+
+    <rect x="212" y="195" width="540" height="345" rx="11" fill="#252526" stroke="#424244"/>
+    <rect x="764" y="195" width="315" height="345" rx="11" fill="#252526" stroke="#454649"/>
+
+    <g fontFamily="Arial, Helvetica, sans-serif">
+      <text x="231" y="222" fill="#F1F0EB" fontSize="14" fontWeight="600">Supply Chain Risk · Conversation</text>
+      <text x="231" y="241" fill="#98989C" fontSize="10.5">Analysis completed · 9s</text>
+      <path d="M231 253 H733" stroke="#414144"/>
+
+      <rect x="343" y="264" width="391" height="52" rx="11" fill="#353639" stroke="#545459"/>
+      <text x="359" y="285" fill="#F0F0F1" fontSize="12">What's driving our supply chain risks,</text>
+      <text x="359" y="302" fill="#F0F0F1" fontSize="12">and what should we do?</text>
+
+      <rect x="231" y="326" width="26" height="26" rx="7" fill="#34383D"/>
+      <g transform="translate(236 331) scale(.62)">
+        <path d="M1 6 L7 3 L7 27 L1 24 Z" fill="#F1F0EB"/>
+        <path d="M9 12 L20 3 L16 12 L9 19 Z" fill="#A6A7A1"/>
+        <path d="M9 19 L16 12 L21 26 L14 23 Z" fill="#747671"/>
+      </g>
+      <text x="267" y="338" fill="#F0F0F1" fontSize="13" fontWeight="600">KryptRoom AI</text>
+      <text x="267" y="351" fill="#A1B8C7" fontSize="10">Completed · Based on authorized analytics</text>
+
+      <text x="232" y="374" fill="#E9E9EB" fontSize="11.6">Production is your largest exposure, representing</text>
+      <text x="232" y="390" fill="#E9E9EB" fontSize="11.6">6 of 12 risk signals (50%). Transit contributes</text>
+      <text x="232" y="406" fill="#E9E9EB" fontSize="11.6">4 (33%), while other risks account for 2 (17%).</text>
+      <text x="616" y="406" fill="#B2CEDF" fontSize="10.7" fontWeight="600">[1]</text>
+
+      <text x="232" y="427" fill="#D6D6D9" fontSize="11.2">The latest weekly aggregate is 12 signals.</text>
+      <text x="486" y="427" fill="#B2CEDF" fontSize="10.7" fontWeight="600">[2]</text>
+
+      <text x="232" y="448" fill="#F1F0EB" fontSize="11.7" fontWeight="600">Recommended next steps</text>
+      <text x="232" y="466" fill="#AFC7D7" fontSize="11" fontWeight="600">01</text>
+      <text x="257" y="466" fill="#E4E4E6" fontSize="11">Investigate production bottlenecks first.</text>
+      <text x="232" y="482" fill="#AFC7D7" fontSize="11" fontWeight="600">02</text>
+      <text x="257" y="482" fill="#E4E4E6" fontSize="11">Review transit handoffs and exceptions.</text>
+      <text x="232" y="498" fill="#AFC7D7" fontSize="11" fontWeight="600">03</text>
+      <text x="257" y="498" fill="#E4E4E6" fontSize="11">Monitor shared risk trends every week.</text>
+
+      <rect x="231" y="507" width="502" height="24" rx="7" fill="#2D2D2F" stroke="#47474A"/>
+      <text x="245" y="523" fill="#858589" fontSize="10.8">Ask a follow-up question...</text>
+      <rect x="701" y="510" width="23" height="18" rx="5" fill="#414246"/>
+      <path d="M713 524 V514 M708 519 L713 514 L718 519" stroke="#ADADB1" strokeWidth="1.3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+    </g>
+
+    <g fontFamily="Arial, Helvetica, sans-serif">
+      <text x="782" y="222" fill="#F1F0EB" fontSize="14" fontWeight="600">Visual analysis</text>
+      <text x="782" y="241" fill="#A3A3A6" fontSize="10.5">Authorized aggregates · Read-only</text>
+      <path d="M782 253 H1061" stroke="#414144"/>
+
+      <rect x="782" y="265" width="279" height="92" rx="8" fill="#2E2E30" stroke="#4B4B4E"/>
+      <text x="796" y="284" fill="#9DA1A5" fontSize="9.5" letterSpacing=".65">TOTAL RISK SIGNALS</text>
+      <text x="796" y="326" fill="#F1F0EB" fontSize="34" fontWeight="600">12</text>
+      <text x="797" y="345" fill="#A8A8AB" fontSize="10">Latest weekly aggregate</text>
+
+      <path d="M913 326 H1045 M913 309 H1045 M913 292 H1045" fill="none" stroke="#44464A" strokeWidth="1"/>
+      <path d="M916 317 L955 306 L994 312 L1037 291 L1037 327 L916 327 Z" fill="url(#kr12spark)"/>
+      <path d="M916 317 L955 306 L994 312 L1037 291" fill="none" stroke="#B9D0E0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      {#each [
+        {x:916,y:317},{x:955,y:306},{x:994,y:312},{x:1037,y:291}
+      ] as p}
+        <circle cx={p.x} cy={p.y} r="3" fill="#2E2E30" stroke="#C6DDEB" strokeWidth="1.6"/>
+      {/each}
+      <text x="916" y="345" textAnchor="middle" fill="#97979B" fontSize="9">W1</text>
+      <text x="955" y="345" textAnchor="middle" fill="#97979B" fontSize="9">W2</text>
+      <text x="994" y="345" textAnchor="middle" fill="#97979B" fontSize="9">W3</text>
+      <text x="1037" y="345" textAnchor="middle" fill="#97979B" fontSize="9">W4</text>
+
+      <text x="782" y="380" fill="#E8E8E9" fontSize="12" fontWeight="600">Risk distribution</text>
+      <text x="1061" y="380" textAnchor="end" fill="#91A8B8" fontSize="10">[1]</text>
+
+      <text x="782" y="400" fill="#DADADD" fontSize="11">Production</text>
+      <text x="1060" y="400" textAnchor="end" fill="#DADADD" fontSize="11">6 · 50%</text>
+      <rect x="782" y="405" width="279" height="6" rx="3" fill="#373739"/>
+      <rect x="782" y="405" width="139" height="6" rx="3" fill="#B7CDDB"/>
+
+      <text x="782" y="426" fill="#DADADD" fontSize="11">Transit</text>
+      <text x="1060" y="426" textAnchor="end" fill="#DADADD" fontSize="11">4 · 33%</text>
+      <rect x="782" y="431" width="279" height="6" rx="3" fill="#373739"/>
+      <rect x="782" y="431" width="93" height="6" rx="3" fill="#929DA6"/>
+
+      <text x="782" y="452" fill="#DADADD" fontSize="11">Other</text>
+      <text x="1060" y="452" textAnchor="end" fill="#DADADD" fontSize="11">2 · 17%</text>
+      <rect x="782" y="457" width="279" height="6" rx="3" fill="#373739"/>
+      <rect x="782" y="457" width="46" height="6" rx="3" fill="#737B81"/>
+
+      <path d="M782 476 H1061" stroke="#414144"/>
+      <text x="782" y="491" fill="#A4A4A7" fontSize="9.8" letterSpacing=".6">SUGGESTED ACTIONS</text>
+      <rect x="782" y="498" width="132" height="25" rx="6" fill="#343A3F" stroke="#566570"/>
+      <text x="848" y="514" textAnchor="middle" fill="#E2E8ED" fontSize="10.4">Production review</text>
+      <rect x="921" y="498" width="140" height="25" rx="6" fill="#303033" stroke="#4F4F52"/>
+      <text x="991" y="514" textAnchor="middle" fill="#D9D9DB" fontSize="10.4">Transit checkpoint</text>
+      <text x="783" y="535" fill="#929EA7" fontSize="9">[1] Risk breakdown    [2] Weekly trend</text>
+    </g>
+
+    <rect x="212" y="551" width="867" height="39" rx="8" fill="#252527" stroke="#414143"/>
+    <g stroke="#BFC6CB" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="230" y="566" width="13" height="11" rx="2"/>
+      <path d="M233 566 V562 A3.5 3.5 0 0 1 240 562 V566"/>
+    </g>
+    <text x="255" y="574" fill="#C4C4C6" fontFamily="Arial, Helvetica, sans-serif" fontSize="11">KryptRoom AI references authorized aggregates only. Recommendations are suggested actions.</text>
+    <rect x="951" y="559" width="111" height="23" rx="6" fill="#303032" stroke="#4A4A4C"/>
+    <text x="1006" y="574" textAnchor="middle" fill="#C7C7C9" fontFamily="Arial, sans-serif" fontSize="10">AI insights</text>
+  </svg>
+</box>
+
+La distinction essentielle est conservée : **les données chiffrées proviennent des résultats agrégés autorisés**, tandis que les actions proposées sont des recommandations de l'IA, et non des faits cryptographiquement prouvés. Tout est illustratif à ce stade.
+
+La prochaine scène sera **Actions & Outcomes**, avec la *timeline* simple retenue pendant la conception, trois actions, un responsable, une échéance et le bouton **Review action**.
+
+**Scène 12 V1 : tu valides ?**

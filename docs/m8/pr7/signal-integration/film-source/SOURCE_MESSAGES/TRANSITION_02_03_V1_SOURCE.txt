@@ -1,0 +1,516 @@
+## Prototype 12 · Transition 02 → 03 V1 — Room Creation & Invitation
+
+On conserve exactement la logique de montage validée : **déplacements naturels du curseur, micro-pauses, clics lisibles et navigation réelle dans KryptRoom**, sans zoom artificiel.
+
+<AppBlock title="KryptRoom · Transition 02 → 03" app_block_id="kr-transition-0203-v1" language="html" variant="inline">
+<div id="kr2301" style="font-family:Arial,Helvetica,sans-serif;width:100%;color:#f1f0eb">
+<style>
+#kr2301 *{box-sizing:border-box}
+#kr2301 .viewport{border-radius:12px;border:1px solid #373739;background:#10100f;overflow:hidden}
+#kr2301 svg{display:block;width:100%;height:auto;aspect-ratio:1120/620}
+#kr2301 .controls{display:flex;align-items:center;gap:10px;margin-top:12px}
+#kr2301 button{border:1px solid #505054;border-radius:8px;background:#2b2b2d;color:#eee;font:600 12px Arial,sans-serif;padding:9px 15px;cursor:pointer}
+#kr2301 button.main{background:#f1f0eb;color:#181818;border-color:#f1f0eb;min-width:77px}
+#kr2301 button:hover{filter:brightness(1.12)}
+#kr2301 input[type=range]{flex:1;min-width:35px;accent-color:#a5bfd1;cursor:pointer}
+#kr2301 .time{font:11px monospace;color:#aaa;white-space:nowrap}
+#kr2301 .step{font:11px Arial,sans-serif;color:#b7c6d0;margin-top:8px;min-height:20px}
+#kr2301 .target{cursor:pointer}
+#kr2301 button:focus-visible,#kr2301 input:focus-visible{outline:2px solid #9db7cb;outline-offset:3px}
+</style>
+<div class="viewport">
+<svg viewBox="0 0 1120 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animation interactive de création d'une Room puis réception d'une invitation par Logistics Partner">
+<defs>
+<filter id="kr23shadow" x="-30%" y="-30%" width="180%" height="190%"><feGaussianBlur stdDeviation="8"/></filter>
+</defs>
+<rect x="1" y="1" width="1118" height="618" rx="13" fill="#181818" stroke="#38383A"/>
+<rect x="1" y="1" width="184" height="618" rx="13" fill="#1D1D1E"/>
+<path d="M184 1 V619 M1 61 H1119" stroke="#353537"/>
+<g transform="translate(19 12) scale(1.22)">
+<path d="M1 6 L7 3 L7 27 L1 24 Z" fill="#F1F0EB"/>
+<path d="M9 12 L20 3 L16 12 L9 19 Z" fill="#A6A7A1"/>
+<path d="M9 19 L16 12 L21 26 L14 23 Z" fill="#747671"/>
+</g>
+<g font-family="Arial,Helvetica,sans-serif">
+<text x="59" y="40" fill="#F1F0EB" font-size="19" font-weight="600" letter-spacing="-.5">KryptRoom</text>
+<text x="21" y="101" fill="#858588" font-family="monospace" font-size="10" letter-spacing="1">WORKSPACE</text>
+<path d="M21 559 H165" stroke="#414143"/>
+</g>
+
+<!-- Scene 02: prepared form -->
+<g id="kr23draft">
+<g font-family="Arial,Helvetica,sans-serif">
+<text x="211" y="37" fill="#98989A" font-size="12">Manufacturer</text>
+<path d="M299 28 L304 32 L299 36" fill="none" stroke="#77777A" stroke-width="1.5"/>
+<text x="319" y="37" fill="#98989A" font-size="12">Rooms</text>
+<path d="M365 28 L370 32 L365 36" fill="none" stroke="#77777A" stroke-width="1.5"/>
+<text x="385" y="37" fill="#E1E1E3" font-size="12">Create Room</text>
+<rect x="907" y="15" width="135" height="31" rx="8" fill="#29292A" stroke="#464648"/>
+<circle cx="925" cy="30" r="4" fill="#A5B7C4"/>
+<text x="938" y="35" fill="#D6D6D8" font-size="11">Manufacturer</text>
+<circle cx="1081" cy="31" r="16" fill="#34383D"/>
+<text x="1081" y="36" text-anchor="middle" fill="#F0F0F1" font-size="12" font-weight="600">M</text>
+
+<g fill="none" stroke="#92999C" stroke-width="1.5">
+<rect x="26" y="135" width="7" height="7" rx="1"/>
+<rect x="37" y="135" width="7" height="7" rx="1"/>
+<rect x="26" y="146" width="7" height="7" rx="1"/>
+<rect x="37" y="146" width="7" height="7" rx="1"/>
+</g>
+<text x="58" y="147" fill="#A4A4A7" font-size="13">Overview</text>
+<rect x="11" y="173" width="162" height="39" rx="7" fill="#303032"/>
+<rect x="11" y="179" width="3" height="27" rx="1.5" fill="#9DB7CB"/>
+<rect x="26" y="185" width="19" height="17" rx="3" stroke="#CED5DA" stroke-width="1.5" fill="none"/>
+<path d="M26 191 H45" stroke="#CED5DA" stroke-width="1.5"/>
+<text x="58" y="197" fill="#F1F0EB" font-size="13" font-weight="600">Rooms</text>
+
+<text x="214" y="104" fill="#99A9B4" font-size="10" letter-spacing="1.2">MANUFACTURER / ROOM SETUP</text>
+<text x="214" y="147" fill="#F1F0EB" font-size="30" font-weight="600" letter-spacing="-.65">Create a private Room.</text>
+<text x="215" y="175" fill="#A9A9AC" font-size="13">Invite a partner to collaborate without sharing raw datasets.</text>
+<rect x="933" y="116" width="146" height="29" rx="14" fill="#303032" stroke="#4C4C50"/>
+<circle cx="950" cy="130" r="4" fill="#A5A5A9"/>
+<text x="963" y="134" fill="#D2D2D5" font-size="11">Draft · Not created</text>
+</g>
+
+<rect x="212" y="208" width="556" height="331" rx="11" fill="#252526" stroke="#424244"/>
+<rect x="780" y="208" width="299" height="331" rx="11" fill="#252526" stroke="#454649"/>
+<g font-family="Arial,Helvetica,sans-serif">
+<text x="233" y="241" fill="#F1F0EB" font-size="16" font-weight="600">Room details</text>
+<text x="233" y="263" fill="#A9A9AC" font-size="11">Define the collaboration and invite your partner.</text>
+<path d="M233 278 H747" stroke="#444447"/>
+<text x="234" y="303" fill="#BDBDC0" font-size="12">Room name</text>
+<rect x="233" y="314" width="514" height="43" rx="7" fill="#2E2E30" stroke="#5A5A5D"/>
+<text x="247" y="341" fill="#F1F0EB" font-size="14">Supply Chain Collaboration</text>
+<text x="234" y="383" fill="#BDBDC0" font-size="12">Invite organization</text>
+<rect x="233" y="394" width="514" height="49" rx="7" fill="#2E2E30" stroke="#5A5A5D"/>
+<rect x="246" y="404" width="30" height="30" rx="7" fill="#353A3F"/>
+<g transform="translate(251 411)" stroke="#B5CAD8" stroke-width="1.6" fill="none">
+<path d="M1 1 H12 V13 H1 Z M12 5 H17 L21 9 V13 H12 Z"/>
+<circle cx="5" cy="14" r="2.4" fill="#353A3F"/>
+<circle cx="17" cy="14" r="2.4" fill="#353A3F"/>
+</g>
+<text x="287" y="414" fill="#EFEFF0" font-size="13" font-weight="600">Logistics Partner</text>
+<text x="287" y="431" fill="#A7A7AA" font-size="11">Organization B</text>
+<circle cx="723" cy="419" r="10" fill="#3A3D40"/>
+<path d="M718 419 L722 423 L729 414" stroke="#C6D5DF" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+<g stroke="#BFC6CB" stroke-width="1.4" fill="none">
+<rect x="234" y="472" width="13" height="11" rx="2"/>
+<path d="M237 472 V468 A3.5 3.5 0 0 1 244 468 V472"/>
+</g>
+<text x="258" y="482" fill="#B6B6B9" font-size="11">Each organization retains control of its own inputs.</text>
+
+<rect id="kr23buttonHover" x="577" y="491" width="172" height="38" rx="9" fill="none" stroke="#BBD3E3" stroke-width="2" opacity="0"/>
+<rect x="579" y="493" width="168" height="34" rx="8" fill="#F1F0EB"/>
+<g id="kr23buttonNormal">
+<text x="654" y="515" text-anchor="middle" fill="#202021" font-size="12" font-weight="600">Create Room</text>
+<path d="M718 510 H733 M727 504 L733 510 L727 516" stroke="#202021" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g id="kr23buttonBusy" opacity="0">
+<circle cx="627" cy="510" r="6" stroke="#52565A" stroke-width="2" fill="none" stroke-dasharray="23 14"/>
+<text x="675" y="515" text-anchor="middle" fill="#202021" font-size="12" font-weight="600">Creating...</text>
+</g>
+
+<text x="798" y="241" fill="#F1F0EB" font-size="16" font-weight="600">Room participants</text>
+<text x="798" y="262" fill="#A5A5A8" font-size="11">Private collaboration preview</text>
+<path d="M798 278 H1061" stroke="#444447"/>
+<rect x="798" y="293" width="263" height="60" rx="8" fill="#2E2E30" stroke="#48484B"/>
+<rect x="810" y="306" width="34" height="34" rx="8" fill="#33363A"/>
+<text x="827" y="328" text-anchor="middle" fill="#E4E6E8" font-size="13" font-weight="600">M</text>
+<text x="854" y="316" fill="#F1F0EB" font-size="13" font-weight="600">Manufacturer</text>
+<text x="854" y="334" fill="#A5A5A8" font-size="11">Room creator</text>
+<rect x="798" y="364" width="263" height="60" rx="8" fill="#2E2E30" stroke="#48484B"/>
+<rect x="810" y="377" width="34" height="34" rx="8" fill="#333940"/>
+<text x="827" y="399" text-anchor="middle" fill="#E4E6E8" font-size="13" font-weight="600">L</text>
+<text x="854" y="387" fill="#F1F0EB" font-size="13" font-weight="600">Logistics Partner</text>
+<text x="854" y="405" fill="#A5A5A8" font-size="11">Invitation to be sent</text>
+<path d="M798 448 H1061" stroke="#444447"/>
+<g stroke="#BFC6CB" stroke-width="1.4" fill="none">
+<rect x="802" y="472" width="13" height="11" rx="2"/>
+<path d="M805 472 V468 A3.5 3.5 0 0 1 812 468 V472"/>
+</g>
+<text x="825" y="482" fill="#C7C7C9" font-size="12">No datasets shared</text>
+<text x="802" y="512" fill="#9D9DA1" font-size="11">Partner approval required to join.</text>
+</g>
+<rect x="212" y="551" width="867" height="39" rx="8" fill="#252527" stroke="#414143"/>
+<text x="230" y="575" fill="#C4C4C6" font-family="Arial,Helvetica,sans-serif" font-size="11.5">Private data remains under each organization's control.</text>
+</g>
+
+<!-- Manufacturer: created Room and pending invitation -->
+<g id="kr23created" opacity="0">
+<g font-family="Arial,Helvetica,sans-serif">
+<text x="211" y="37" fill="#98989A" font-size="12">Manufacturer</text>
+<path d="M299 28 L304 32 L299 36" fill="none" stroke="#77777A" stroke-width="1.5"/>
+<text x="319" y="37" fill="#98989A" font-size="12">Rooms</text>
+<path d="M365 28 L370 32 L365 36" fill="none" stroke="#77777A" stroke-width="1.5"/>
+<text x="385" y="37" fill="#E1E1E3" font-size="12">Supply Chain Collaboration</text>
+<rect x="907" y="15" width="135" height="31" rx="8" fill="#29292A" stroke="#464648"/>
+<circle cx="925" cy="30" r="4" fill="#A5B7C4"/>
+<text x="938" y="35" fill="#D6D6D8" font-size="11">Manufacturer</text>
+<circle cx="1081" cy="31" r="16" fill="#34383D"/>
+<text x="1081" y="36" text-anchor="middle" fill="#F0F0F1" font-size="12" font-weight="600">M</text>
+
+<g fill="none" stroke="#92999C" stroke-width="1.5">
+<rect x="26" y="135" width="7" height="7" rx="1"/>
+<rect x="37" y="135" width="7" height="7" rx="1"/>
+<rect x="26" y="146" width="7" height="7" rx="1"/>
+<rect x="37" y="146" width="7" height="7" rx="1"/>
+</g>
+<text x="58" y="147" fill="#A4A4A7" font-size="13">Overview</text>
+<rect x="11" y="173" width="162" height="39" rx="7" fill="#303032"/>
+<rect x="11" y="179" width="3" height="27" rx="1.5" fill="#9DB7CB"/>
+<rect x="26" y="185" width="19" height="17" rx="3" stroke="#CED5DA" stroke-width="1.5" fill="none"/>
+<path d="M26 191 H45" stroke="#CED5DA" stroke-width="1.5"/>
+<text x="58" y="197" fill="#F1F0EB" font-size="13" font-weight="600">Rooms</text>
+
+<text x="214" y="104" fill="#99A9B4" font-size="10" letter-spacing="1.2">MANUFACTURER / ROOMS</text>
+<text x="214" y="147" fill="#F1F0EB" font-size="30" font-weight="600" letter-spacing="-.65">Supply Chain Collaboration</text>
+<text x="215" y="175" fill="#A9A9AC" font-size="13">Your Room is ready. Waiting for your partner to accept the invitation.</text>
+<rect x="934" y="116" width="145" height="29" rx="14" fill="#30363B" stroke="#536372"/>
+<circle cx="950" cy="130" r="4" fill="#A9C4D5"/>
+<text x="963" y="134" fill="#D9E3E9" font-size="11">Invitation pending</text>
+</g>
+
+<rect x="212" y="207" width="867" height="74" rx="10" fill="#2D3338" stroke="#576775"/>
+<rect x="229" y="224" width="38" height="38" rx="9" fill="#3C4B56"/>
+<path d="M240 244 L246 250 L257 237" fill="none" stroke="#C7D8E3" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<g font-family="Arial,Helvetica,sans-serif">
+<text x="282" y="237" fill="#F1F0EB" font-size="15" font-weight="600">Room created. Invitation sent.</text>
+<text x="282" y="256" fill="#B2BFC8" font-size="11.5">Logistics Partner has been invited to collaborate.</text>
+<rect x="939" y="224" width="122" height="36" rx="8" fill="#343E47" stroke="#586A78"/>
+<text x="1000" y="246" text-anchor="middle" fill="#D6E4EC" font-size="11.5">Awaiting reply</text>
+</g>
+
+<rect x="212" y="293" width="428" height="245" rx="11" fill="#252526" stroke="#424244"/>
+<rect x="651" y="293" width="428" height="245" rx="11" fill="#252526" stroke="#454649"/>
+<g font-family="Arial,Helvetica,sans-serif">
+<rect x="230" y="312" width="42" height="42" rx="9" fill="#34373A"/>
+<text x="251" y="338" fill="#DCE3E8" font-size="16" font-weight="600" text-anchor="middle">M</text>
+<text x="286" y="329" fill="#F1F0EB" font-size="16" font-weight="600">Manufacturer</text>
+<text x="286" y="348" fill="#A4A4A8" font-size="11">Room creator</text>
+<rect x="532" y="317" width="90" height="23" rx="11" fill="#373C40"/>
+<text x="577" y="332" text-anchor="middle" fill="#D6DFE4" font-size="10.5">Joined</text>
+<path d="M230 368 H622" stroke="#444447"/>
+<text x="230" y="396" fill="#99999D" font-size="11">Workspace status</text>
+<text x="230" y="425" fill="#E8E8EA" font-size="14">Room initialized</text>
+<text x="230" y="448" fill="#A3A3A7" font-size="11.5">Local datasets not connected yet</text>
+<rect x="230" y="481" width="392" height="37" rx="8" fill="#303032" stroke="#48484B"/>
+<text x="249" y="504" fill="#C7C7CA" font-size="11.5">No private data has been exchanged</text>
+
+<rect x="669" y="312" width="42" height="42" rx="9" fill="#343A40"/>
+<text x="690" y="338" fill="#DCE3E8" font-size="16" font-weight="600" text-anchor="middle">L</text>
+<text x="725" y="329" fill="#F1F0EB" font-size="16" font-weight="600">Logistics Partner</text>
+<text x="725" y="348" fill="#A4A4A8" font-size="11">Invited organization</text>
+<rect x="968" y="317" width="92" height="23" rx="11" fill="#353C43" stroke="#52616D"/>
+<text x="1014" y="332" text-anchor="middle" fill="#C9D8E3" font-size="10.5">Invited</text>
+<path d="M669 368 H1061" stroke="#444447"/>
+<text x="669" y="396" fill="#99999D" font-size="11">Invitation status</text>
+<text x="669" y="425" fill="#E8E8EA" font-size="14">Awaiting acceptance</text>
+<text x="669" y="448" fill="#A3A3A7" font-size="11.5">Partner has not joined this Room</text>
+<rect x="669" y="481" width="392" height="37" rx="8" fill="#303032" stroke="#48484B"/>
+<text x="688" y="504" fill="#C7C7CA" font-size="11.5">Collaboration begins after acceptance</text>
+</g>
+<rect x="212" y="551" width="867" height="39" rx="8" fill="#252527" stroke="#414143"/>
+<text x="230" y="575" fill="#C4C4C6" font-family="Arial,Helvetica,sans-serif" font-size="11.5">Invitation sent · No raw datasets shared · Partner approval required.</text>
+</g>
+
+<!-- Scene 03: invitation in Logistics Partner workspace -->
+<g id="kr23invite" opacity="0">
+<g font-family="Arial,Helvetica,sans-serif">
+<text x="211" y="37" fill="#98989A" font-size="12">Logistics Partner</text>
+<path d="M320 28 L325 32 L320 36" fill="none" stroke="#77777A" stroke-width="1.5"/>
+<text x="340" y="37" fill="#98989A" font-size="12">Rooms</text>
+<path d="M386 28 L391 32 L386 36" fill="none" stroke="#77777A" stroke-width="1.5"/>
+<text x="405" y="37" fill="#E1E1E3" font-size="12">Invitation</text>
+<rect x="907" y="15" width="135" height="31" rx="8" fill="#29292A" stroke="#464648"/>
+<circle cx="925" cy="30" r="4" fill="#A5B7C4"/>
+<text x="938" y="35" fill="#D6D6D8" font-size="11">Logistics Partner</text>
+<circle cx="1081" cy="31" r="16" fill="#34383D"/>
+<text x="1081" y="36" text-anchor="middle" fill="#F0F0F1" font-size="12" font-weight="600">L</text>
+
+<g fill="none" stroke="#92999C" stroke-width="1.5">
+<rect x="26" y="135" width="7" height="7" rx="1"/>
+<rect x="37" y="135" width="7" height="7" rx="1"/>
+<rect x="26" y="146" width="7" height="7" rx="1"/>
+<rect x="37" y="146" width="7" height="7" rx="1"/>
+</g>
+<text x="58" y="147" fill="#A4A4A7" font-size="13">Overview</text>
+<rect x="11" y="173" width="162" height="39" rx="7" fill="#303032"/>
+<rect x="11" y="179" width="3" height="27" rx="1.5" fill="#9DB7CB"/>
+<rect x="26" y="185" width="19" height="17" rx="3" stroke="#CED5DA" stroke-width="1.5" fill="none"/>
+<path d="M26 191 H45" stroke="#CED5DA" stroke-width="1.5"/>
+<text x="58" y="197" fill="#F1F0EB" font-size="13" font-weight="600">Rooms</text>
+
+<text x="214" y="104" fill="#99A9B4" font-size="10" letter-spacing="1.2">LOGISTICS PARTNER / ROOM INVITATIONS</text>
+<text x="214" y="147" fill="#F1F0EB" font-size="30" font-weight="600" letter-spacing="-.65">A new collaboration invitation.</text>
+<text x="215" y="175" fill="#A9A9AC" font-size="13">Manufacturer wants to collaborate securely with your organization.</text>
+<rect x="952" y="116" width="127" height="29" rx="14" fill="#30363B" stroke="#536372"/>
+<circle cx="969" cy="130" r="4" fill="#A9C4D5"/>
+<text x="982" y="134" fill="#D9E3E9" font-size="11">New invitation</text>
+</g>
+
+<rect x="212" y="208" width="867" height="73" rx="10" fill="#2D3338" stroke="#576775"/>
+<rect x="230" y="224" width="39" height="39" rx="9" fill="#3B4750"/>
+<g transform="translate(237 232)" fill="none" stroke="#CADBE6" stroke-width="1.7" stroke-linejoin="round">
+<rect x="0" y="3" width="25" height="18" rx="3"/>
+<path d="M0 6 L12.5 15 L25 6"/>
+</g>
+<g font-family="Arial,Helvetica,sans-serif">
+<text x="283" y="237" fill="#F1F0EB" font-size="15" font-weight="600">You're invited to a private Room</text>
+<text x="283" y="256" fill="#AFBDC7" font-size="11.5">Sent by Manufacturer · Awaiting your decision</text>
+<rect x="955" y="226" width="106" height="33" rx="8" fill="#35444F" stroke="#5B7080"/>
+<text x="1008" y="247" text-anchor="middle" fill="#D6E6F0" font-size="11">Pending</text>
+</g>
+
+<rect x="212" y="295" width="535" height="244" rx="11" fill="#252526" stroke="#424244"/>
+<rect x="759" y="295" width="320" height="244" rx="11" fill="#252526" stroke="#454649"/>
+<g font-family="Arial,Helvetica,sans-serif">
+<text x="232" y="324" fill="#F1F0EB" font-size="17" font-weight="600">Supply Chain Collaboration</text>
+<text x="232" y="343" fill="#A4A4A8" font-size="11.5">Invitation from Manufacturer</text>
+<path d="M232 356 H727" stroke="#444447"/>
+
+<rect x="232" y="370" width="218" height="59" rx="8" fill="#303033" stroke="#49494D"/>
+<circle cx="252" cy="390" r="12" fill="#414347"/>
+<text x="252" y="394" fill="#E5E5E7" text-anchor="middle" font-size="11">M</text>
+<text x="273" y="390" fill="#EDEDEF" font-size="12.5" font-weight="600">Manufacturer</text>
+<text x="273" y="407" fill="#9F9FA3" font-size="10.5">Room creator</text>
+
+<rect x="463" y="370" width="264" height="59" rx="8" fill="#30383F" stroke="#586774"/>
+<circle cx="483" cy="390" r="12" fill="#43505C"/>
+<text x="483" y="394" fill="#E5E5E7" text-anchor="middle" font-size="11">L</text>
+<text x="504" y="390" fill="#EDEDEF" font-size="12.5" font-weight="600">Logistics Partner</text>
+<text x="504" y="407" fill="#B0C4D2" font-size="10.5">Invited · Your organization</text>
+
+<text x="232" y="454" fill="#AFAFB3" font-size="11.5">Review the invitation and join when you're ready.</text>
+<rect x="518" y="479" width="209" height="42" rx="8" fill="#F1F0EB"/>
+<text x="603" y="505" fill="#202021" font-size="12.5" font-weight="600" text-anchor="middle">Accept &amp; open Room</text>
+<path d="M688 500 H713 M707 494 L713 500 L707 506" fill="none" stroke="#202021" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+<text x="779" y="324" fill="#F1F0EB" font-size="15" font-weight="600">Privacy by design</text>
+<text x="779" y="343" fill="#A6A6A9" font-size="11">What joining this Room means</text>
+<path d="M779 356 H1060" stroke="#444447"/>
+
+<circle cx="792" cy="378" r="10" fill="#38434B"/>
+<path d="M788 378 L791 381 L797 375" stroke="#CFDEE8" stroke-width="1.5" fill="none"/>
+<text x="811" y="382" fill="#E6E6E8" font-size="11.5">Your raw datasets stay private</text>
+
+<circle cx="792" cy="415" r="10" fill="#38434B"/>
+<path d="M788 415 L791 418 L797 412" stroke="#CFDEE8" stroke-width="1.5" fill="none"/>
+<text x="811" y="419" fill="#E6E6E8" font-size="11.5">Both parties control their inputs</text>
+
+<circle cx="792" cy="452" r="10" fill="#38434B"/>
+<path d="M788 452 L791 455 L797 449" stroke="#CFDEE8" stroke-width="1.5" fill="none"/>
+<text x="811" y="456" fill="#E6E6E8" font-size="11.5">No raw records transferred</text>
+
+<path d="M779 478 H1060" stroke="#444447"/>
+<g fill="none" stroke="#BFC6CB" stroke-width="1.3">
+<rect x="781" y="492" width="12" height="10" rx="2"/>
+<path d="M784 492 V489 A3 3 0 0 1 790 489 V492"/>
+</g>
+<text x="802" y="501" fill="#B4B4B7" font-size="10.5">Invitation only · No access granted yet</text>
+</g>
+<rect x="212" y="551" width="867" height="39" rx="8" fill="#252527" stroke="#414143"/>
+<text x="230" y="575" fill="#C4C4C6" font-family="Arial,Helvetica,sans-serif" font-size="11.5">No data is shared by receiving an invitation. Acceptance is a separate action.</text>
+</g>
+
+<!-- Persistent bottom-left account -->
+<rect id="kr23profileHover" x="11" y="565" width="162" height="43" rx="8" fill="#323335" opacity="0"/>
+<g id="kr23profileM" font-family="Arial,Helvetica,sans-serif">
+<circle cx="38" cy="585" r="13" fill="#36383B"/>
+<text x="38" y="589" text-anchor="middle" fill="#E7E7E9" font-size="11">M</text>
+<text x="58" y="582" fill="#E1E1E3" font-size="12">Manufacturer</text>
+<text x="58" y="597" fill="#909092" font-size="10">Workspace</text>
+<path d="M155 579 L160 584 L155 589" fill="none" stroke="#888B90" stroke-width="1.3"/>
+</g>
+<g id="kr23profileL" opacity="0" font-family="Arial,Helvetica,sans-serif">
+<circle cx="38" cy="585" r="13" fill="#36383B"/>
+<text x="38" y="589" text-anchor="middle" fill="#E7E7E9" font-size="11">L</text>
+<text x="58" y="582" fill="#E1E1E3" font-size="12">Logistics</text>
+<text x="58" y="597" fill="#909092" font-size="10">Workspace</text>
+<path d="M155 579 L160 584 L155 589" fill="none" stroke="#888B90" stroke-width="1.3"/>
+</g>
+
+<!-- Switcher popup -->
+<g id="kr23popup" opacity="0">
+<rect x="17" y="365" width="274" height="191" rx="14" fill="#000" opacity=".25" filter="url(#kr23shadow)"/>
+<rect x="14" y="359" width="274" height="195" rx="13" fill="#29292B" stroke="#525256"/>
+<g font-family="Arial,Helvetica,sans-serif">
+<text x="30" y="382" fill="#A3A3A7" font-size="10" font-weight="600" letter-spacing=".8">SWITCH WORKSPACE</text>
+<path d="M28 394 H273" stroke="#454548"/>
+
+<rect x="22" y="402" width="258" height="42" rx="7" fill="#303032"/>
+<circle cx="43" cy="422" r="11" fill="#404348"/>
+<text x="43" y="426" fill="#E8E8E9" text-anchor="middle" font-size="10">M</text>
+<text x="63" y="419" fill="#E8E8EA" font-size="12" font-weight="600">Manufacturer</text>
+<text x="63" y="433" fill="#9D9DA1" font-size="10">Current workspace</text>
+<path d="M255 421 L259 425 L265 417" fill="none" stroke="#B7CCDA" stroke-width="1.6"/>
+
+<rect id="kr23logHover" x="22" y="451" width="258" height="43" rx="7" fill="#3A3E42" opacity="0"/>
+<circle cx="43" cy="472" r="11" fill="#40454A"/>
+<text x="43" y="476" fill="#E8E8E9" text-anchor="middle" font-size="10">L</text>
+<text x="63" y="468" fill="#F1F0EB" font-size="12" font-weight="600">Logistics Partner</text>
+<text x="63" y="482" fill="#A9A9AD" font-size="10">Open workspace</text>
+<path d="M259 466 L265 472 L259 478" fill="none" stroke="#AABBC6" stroke-width="1.4"/>
+
+<rect x="22" y="501" width="258" height="39" rx="7" fill="#29292B"/>
+<circle cx="43" cy="520" r="11" fill="#3A3B3E"/>
+<text x="43" y="524" fill="#E8E8E9" text-anchor="middle" font-size="10">D</text>
+<text x="63" y="518" fill="#D6D6D8" font-size="12">Demo</text>
+<text x="63" y="532" fill="#96969A" font-size="10">Another workspace</text>
+</g>
+<rect class="target" id="kr23logHit" x="22" y="451" width="258" height="43" fill="transparent" role="button" tabindex="0" aria-label="Ouvrir Logistics Partner"/>
+</g>
+
+<rect class="target" id="kr23profileHit" x="11" y="565" width="162" height="43" fill="transparent" role="button" tabindex="0" aria-label="Ouvrir le sélecteur de workspace"/>
+
+<!-- Cursor on top of everything -->
+<g id="kr23cursor" transform="translate(862 464)">
+<path d="M1 1 V24 L7 18 L12 30 L18 27 L13 16 L22 16 Z" fill="#F1F0EB" stroke="#101011" stroke-width="2" stroke-linejoin="round"/>
+</g>
+<g id="kr23click" opacity="0">
+<circle cx="0" cy="0" r="12" fill="#C4D8E5" fill-opacity=".09" stroke="#C4D8E5" stroke-width="1.5"/>
+</g>
+</svg>
+</div>
+<div class="controls">
+<button id="kr23play" type="button" class="main">Pause</button>
+<button id="kr23replay" type="button">↺ Replay</button>
+<input id="kr23seek" type="range" min="0" max="8600" step="10" value="0" aria-label="Position dans la transition"/>
+<span id="kr23clock" class="time">0.0 / 8.6s</span>
+</div>
+<div class="step" id="kr23stage">02 · Room ready to create</div>
+<script>
+(()=>{
+const root=document.getElementById('kr2301');
+if(!root||root.dataset.ready)return;
+root.dataset.ready='1';
+const $=id=>root.querySelector('#'+id);
+const draft=$('kr23draft'),created=$('kr23created'),invite=$('kr23invite');
+const popup=$('kr23popup'),hover=$('kr23logHover'),profileHover=$('kr23profileHover');
+const pm=$('kr23profileM'),pl=$('kr23profileL');
+const buttonHover=$('kr23buttonHover'),buttonNormal=$('kr23buttonNormal'),buttonBusy=$('kr23buttonBusy');
+const cursor=$('kr23cursor'),ripple=$('kr23click');
+const play=$('kr23play'),replay=$('kr23replay'),seek=$('kr23seek'),clock=$('kr23clock'),stage=$('kr23stage');
+const DUR=8600;
+let t=0,last=null,playing=true,menuManual=false;
+const clamp=x=>Math.max(0,Math.min(1,x));
+const lerp=(a,b,p)=>a+(b-a)*p;
+const cubic=(a,b,c,d,u)=>{const v=1-u;return v*v*v*a+3*v*v*u*b+3*v*u*u*c+u*u*u*d};
+function easing(p,x1=.45,y1=0,x2=.23,y2=1){
+  p=clamp(p);let a=0,b=1;
+  for(let i=0;i<18;i++){let m=(a+b)/2;if(cubic(0,x1,x2,1,m)<p)a=m;else b=m}
+  return cubic(0,y1,y2,1,(a+b)/2);
+}
+const motion=(a,b)=>easing((t-a)/(b-a));
+const fade=(a,b)=>easing((t-a)/(b-a),.15,.3,.25,1);
+function curve(a,b,c,d,p){
+  return{x:cubic(a.x,b.x,c.x,d.x,p),y:cubic(a.y,b.y,c.y,d.y,p)};
+}
+function pointer(){
+  if(t<640)return{x:862,y:464};
+  if(t<1580)return curve({x:862,y:464},{x:814,y:469},{x:725,y:496},{x:651,y:506},motion(640,1580));
+  if(t<3390)return{x:651,y:506};
+  if(t<4300)return curve({x:651,y:506},{x:501,y:541},{x:267,y:602},{x:81,y:585},motion(3390,4300));
+  if(t<5080)return{x:81,y:585};
+  if(t<5590)return curve({x:81,y:585},{x:79,y:540},{x:125,y:490},{x:127,y:471},motion(5080,5590));
+  return{x:127,y:471};
+}
+function render(){
+  const a=fade(2370,2640);
+  const b=fade(6060,6350);
+  draft.setAttribute('opacity',String(1-a));
+  created.setAttribute('opacity',String(a*(1-b)));
+  invite.setAttribute('opacity',String(b));
+  const pc=fade(6110,6380);
+  pm.setAttribute('opacity',String(1-pc));
+  pl.setAttribute('opacity',String(pc));
+
+  const busy=fade(2040,2140);
+  buttonNormal.setAttribute('opacity',String(1-busy));
+  buttonBusy.setAttribute('opacity',String(busy));
+  buttonHover.setAttribute('opacity',String(t>=1550&&t<2040?fade(1510,1690):0));
+  const profileHighlight=t>=4250&&t<4660;
+  profileHover.setAttribute('opacity',String(profileHighlight?fade(4170,4300):0));
+  let menuVisible=fade(4690,4900)*(1-fade(5890,6090));
+  popup.setAttribute('opacity',String(menuVisible));
+  popup.setAttribute('transform','translate(0 '+(7*(1-fade(4690,4900))).toFixed(2)+')');
+  const menuHover=(t>5520&&t<5950);
+  hover.setAttribute('opacity',String(menuManual||menuHover?fade(5440,5610):0));
+  popup.style.pointerEvents=(t>=4760&&t<5950)?'auto':'none';
+
+  const pos=pointer();
+  let visibility=t<6210?1:1-fade(6190,6440);
+  cursor.setAttribute('opacity',String(visibility));
+  cursor.setAttribute('transform',`translate(${pos.x.toFixed(2)} ${pos.y.toFixed(2)})`);
+  const taps=[
+    {a:1900,b:2040,x:651,y:506},
+    {a:4540,b:4660,x:81,y:585},
+    {a:5800,b:5940,x:127,y:471}
+  ];
+  let active=taps.find(k=>t>=k.a&&t<k.b);
+  if(active){
+    let p=clamp((t-active.a)/(active.b-active.a));
+    ripple.setAttribute('opacity',String((1-p)*.65));
+    ripple.setAttribute('transform',`translate(${active.x} ${active.y})`);
+    ripple.querySelector('circle').setAttribute('r',String(9+p*16));
+  }else ripple.setAttribute('opacity','0');
+
+  const labels=[
+    [0,'02 · Room ready to create'],
+    [640,'Cursor → Create Room'],
+    [1900,'Click · Create Room'],
+    [2040,'Creating the Room and invitation'],
+    [2500,'Room created · Invitation sent'],
+    [3390,'Switching workspace'],
+    [4540,'Click · Manufacturer profile'],
+    [4690,'Workspace switcher opened'],
+    [5080,'Select Logistics Partner'],
+    [5800,'Click · Logistics Partner'],
+    [6060,'Opening the invited organization'],
+    [6390,'03 · Invitation received · Awaiting acceptance']
+  ];
+  let label=labels[0][1];for(let i=0;i<labels.length;i++)if(t>=labels[i][0])label=labels[i][1];
+  stage.textContent=label;
+  seek.value=Math.round(t);
+  clock.textContent=(t/1000).toFixed(1)+' / 8.6s';
+}
+function tick(now){
+  if(last===null)last=now;
+  const delta=Math.min(80,now-last);last=now;
+  if(playing){t=Math.min(DUR,t+delta);if(t===DUR){playing=false;play.textContent='Play';}}
+  render();requestAnimationFrame(tick);
+}
+function pause(){playing=false;last=null;play.textContent='Play';render()}
+function start(){playing=true;last=null;play.textContent='Pause';render()}
+play.addEventListener('click',()=>{if(playing)pause();else{if(t>=DUR)t=0;start()}});
+replay.addEventListener('click',()=>{t=0;menuManual=false;start()});
+seek.addEventListener('input',()=>{t=Number(seek.value);pause()});
+$('kr23profileHit').addEventListener('click',()=>{t=4960;menuManual=false;pause()});
+$('kr23logHit').addEventListener('click',()=>{if(t>4650&&t<6000){t=5820;menuManual=false;start()}});
+$('kr23logHit').addEventListener('mouseenter',()=>{menuManual=true;render()});
+$('kr23logHit').addEventListener('mouseleave',()=>{menuManual=false;render()});
+for(const [id,act] of [
+  ['kr23profileHit',()=>{t=4960;pause()}],
+  ['kr23logHit',()=>{t=5820;start()}]
+]){
+  $(id).addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();act()}});
+}
+if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){playing=false;play.textContent='Play'}
+render();requestAnimationFrame(tick);
+})();
+</script>
+</div>
+</AppBlock>
+
+### Ce que montre la transition
+
+<text color="secondary" size="sm">Durée : 8,6 secondes · SVG vectoriel · Lecture, pause, replay et timeline.</text>
+
+- **02 → 02.5 :** clic sur Create Room, court état *Creating*, puis confirmation de création et d'envoi de l'invitation.
+- **02.5 → 03 :** déplacement vers le profil Manufacturer, ouverture du menu et sélection de Logistics Partner.
+- **03 :** arrivée dans le workspace invité, avec la Room et **Accept & open Room** visible, mais pas encore activé.
+
+La structure du produit demeure fixe pendant les changements de contexte. Les clics sont sobres, les mouvements du curseur utilisent des courbes avec accélération et décélération, et la navigation se termine sur un état produit cohérent.
+
+**La prochaine transition, 03 → 04, commencera précisément au clic sur Accept & open Room.**
+
+**Transition 02 → 03 V1 : tu valides le rythme et le passage entre les deux workspaces ?**

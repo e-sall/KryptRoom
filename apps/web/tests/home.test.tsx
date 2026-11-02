@@ -9,8 +9,8 @@ import { demoGraph } from "../src/features/marketing/demo-model";
 describe("founder-approved homepage", () => {
   it("preserves the locked order, original portrait and honest technical boundaries", () => {
     const { container } = render(<Home />);
-    const order = [...container.querySelectorAll(".home-page > section")].map(s => s.getAttribute("aria-labelledby"));
-    expect(order).toEqual(["home-title", "showcase-title", "why-title", "how-title", "persistent-title", "founder-title", "final-title", "faq-title"]);
+    const order = [...container.querySelectorAll(".home-page > section")].map(s => s.getAttribute("aria-labelledby") ?? s.getAttribute("aria-label"));
+    expect(order).toEqual(["home-title", "KryptRoom · The Signal V4", "why-title", "how-title", "persistent-title", "founder-title", "final-title", "faq-title"]);
     const portrait = screen.getByAltText("Elimane Sall, founder of KryptRoom");
     expect(portrait).toHaveAttribute("src", "/images/elimane-sall-768.webp");
     expect(portrait.closest("picture")?.querySelector("source")).toHaveAttribute("srcset", expect.stringContaining("1200w"));

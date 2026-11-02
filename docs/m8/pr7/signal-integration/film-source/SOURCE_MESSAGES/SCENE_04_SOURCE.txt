@@ -1,0 +1,117 @@
+Exact, puisque nous sommes dans le compte de **Logistics Partner**, son bouton doit rester l'action principale.
+
+**Scène 04 · V1.2 :**
+- **Manufacturer :** bouton secondaire, sans flèche.
+- **Logistics Partner :** bouton blanc avec flèche horizontale →.
+- Tout le reste reste identique.
+
+<box background="#10100F" theme="dark" radius="xl" padding={2}>
+  <svg viewBox="0 0 1120 620" width="100%">
+    <rect x="1" y="1" width="1118" height="618" rx="13" fill="#181818" stroke="#38383A"/>
+    <rect x="1" y="1" width="184" height="618" rx="13" fill="#1D1D1E"/>
+    <path d="M184 1 V619 M1 61 H1119" stroke="#353537"/>
+    <g transform="translate(19 12) scale(1.22)">
+      <path d="M1 6 L7 3 L7 27 L1 24 Z" fill="#F1F0EB"/>
+      <path d="M9 12 L20 3 L16 12 L9 19 Z" fill="#A6A7A1"/>
+      <path d="M9 19 L16 12 L21 26 L14 23 Z" fill="#747671"/>
+    </g>
+    <g fontFamily="Arial, Helvetica, sans-serif">
+      <text x="59" y="40" fill="#F1F0EB" fontSize="19" fontWeight="600" letterSpacing="-.5">KryptRoom</text>
+      <text x="211" y="37" fill="#98989A" fontSize="12">Logistics Partner</text>
+      <path d="M314 32 H324 M320 28 L324 32 L320 36" stroke="#7A7A7C" strokeWidth="1.3" fill="none" strokeLinecap="round"/>
+      <text x="338" y="37" fill="#98989A" fontSize="12">Rooms</text>
+      <path d="M382 32 H392 M388 28 L392 32 L388 36" stroke="#7A7A7C" strokeWidth="1.3" fill="none" strokeLinecap="round"/>
+      <text x="406" y="37" fill="#E1E1E3" fontSize="12">Supply Chain Collaboration</text>
+      <rect x="907" y="15" width="135" height="31" rx="8" fill="#29292A" stroke="#464648"/>
+      <circle cx="925" cy="30" r="4" fill="#A5B7C4"/>
+      <text x="938" y="35" fill="#D6D6D8" fontSize="11">Logistics Partner</text>
+      <circle cx="1081" cy="31" r="16" fill="#34383D"/>
+      <text x="1081" y="36" textAnchor="middle" fill="#F0F0F1" fontSize="12" fontWeight="600">L</text>
+      <text x="21" y="101" fill="#858588" fontFamily="monospace" fontSize="10" letterSpacing="1">WORKSPACE</text>
+      <g stroke="#92999C" strokeWidth="1.5" fill="none">
+        <rect x="26" y="135" width="7" height="7" rx="1"/>
+        <rect x="37" y="135" width="7" height="7" rx="1"/>
+        <rect x="26" y="146" width="7" height="7" rx="1"/>
+        <rect x="37" y="146" width="7" height="7" rx="1"/>
+      </g>
+      <text x="58" y="147" fill="#A4A4A7" fontSize="13">Overview</text>
+      <rect x="11" y="173" width="162" height="39" rx="7" fill="#303032"/>
+      <rect x="11" y="179" width="3" height="27" rx="1.5" fill="#9DB7CB"/>
+      <rect x="26" y="185" width="19" height="17" rx="3" fill="none" stroke="#CED5DA" strokeWidth="1.5"/>
+      <path d="M26 191 H45" stroke="#CED5DA" strokeWidth="1.5"/>
+      <text x="58" y="197" fill="#F1F0EB" fontSize="13" fontWeight="600">Rooms</text>
+      <path d="M21 559 H165" stroke="#414143"/>
+      <circle cx="38" cy="584" r="12" fill="#36383B"/>
+      <text x="38" y="588" textAnchor="middle" fill="#E7E7E9" fontSize="11">L</text>
+      <text x="58" y="581" fill="#E1E1E3" fontSize="12">Logistics</text>
+      <text x="58" y="596" fill="#909092" fontSize="10">Workspace</text>
+      <text x="214" y="104" fill="#99A9B4" fontSize="10" letterSpacing="1.2">ROOMS / SUPPLY CHAIN COLLABORATION</text>
+      <text x="214" y="147" fill="#F1F0EB" fontSize="30" fontWeight="600" letterSpacing="-.65">Your Room is ready.</text>
+      <text x="215" y="175" fill="#A9A9AC" fontSize="13">Two organizations connected. Each retains control of its own data.</text>
+      <rect x="924" y="116" width="155" height="29" rx="14" fill="#303032" stroke="#49494C"/>
+      <circle cx="941" cy="130" r="4" fill="#A7BBC9"/>
+      <text x="954" y="134" fill="#D4D7DA" fontSize="11">2 members joined</text>
+    </g>
+    <rect x="212" y="208" width="428" height="331" rx="11" fill="#252526" stroke="#424244"/>
+    <rect x="651" y="208" width="428" height="331" rx="11" fill="#252526" stroke="#454649"/>
+    <rect x="229" y="225" width="47" height="47" rx="10" fill="#303236"/>
+    <g transform="translate(239 236)" stroke="#AFBFCA" strokeWidth="1.9" fill="none" strokeLinejoin="round" strokeLinecap="round">
+      <path d="M0 25 V11 L9 17 V11 L18 17 V1 H26 V25 Z"/>
+      <path d="M5 21 H8 M13 21 H16 M21 21 H23"/>
+    </g>
+    <rect x="668" y="225" width="47" height="47" rx="10" fill="#333940"/>
+    <g transform="translate(675 238)" stroke="#B5CAD8" strokeWidth="1.9" fill="none" strokeLinejoin="round" strokeLinecap="round">
+      <path d="M1 1 H22 V20 H1 Z M22 7 H29 L34 13 V20 H22 Z"/>
+      <circle cx="9" cy="21" r="3.3" fill="#333940"/>
+      <circle cx="28" cy="21" r="3.3" fill="#333940"/>
+    </g>
+    <g fontFamily="Arial, Helvetica, sans-serif">
+      <text x="288" y="245" fill="#F1F0EB" fontSize="17" fontWeight="600">Manufacturer</text>
+      <text x="289" y="265" fill="#ACACAF" fontSize="12">Organization A</text>
+      <rect x="525" y="237" width="100" height="25" rx="12" fill="#303032" stroke="#4B4B4D"/>
+      <circle cx="539" cy="249" r="3.7" fill="#A8C1D1"/>
+      <text x="550" y="253" fill="#D6D6D8" fontSize="11">Joined</text>
+      <text x="727" y="245" fill="#F1F0EB" fontSize="17" fontWeight="600">Logistics Partner</text>
+      <text x="728" y="265" fill="#ACACAF" fontSize="12">Organization B</text>
+      <rect x="964" y="237" width="100" height="25" rx="12" fill="#303032" stroke="#4B4B4D"/>
+      <circle cx="978" cy="249" r="3.7" fill="#A8C1D1"/>
+      <text x="989" y="253" fill="#D6D6D8" fontSize="11">Joined</text>
+      <path d="M230 289 H622 M669 289 H1061" stroke="#444447"/>
+      <text x="230" y="312" fill="#99999B" fontSize="10" letterSpacing="1.1">PRIVATE WORKSPACE</text>
+      <text x="669" y="312" fill="#99999B" fontSize="10" letterSpacing="1.1">PRIVATE WORKSPACE</text>
+    </g>
+    {#each [
+      {x:230,y:327,name:"Production planning"},
+      {x:230,y:399,name:"Supplier references"},
+      {x:669,y:327,name:"Shipment records"},
+      {x:669,y:399,name:"Arrival schedules"}
+    ] as item}
+      <rect x={item.x} y={item.y} width="392" height="62" rx="8" fill="#2E2E30" stroke="#474749"/>
+      <rect x={item.x+13} y={item.y+12} width="36" height="38" rx="7" fill="#37383B"/>
+      <g stroke="#BAC2C9" strokeWidth="1.5" fill="none">
+        <ellipse cx={item.x+31} cy={item.y+22} rx="9" ry="4"/>
+        <path d={`M${item.x+22} ${item.y+22} V${item.y+39} C${item.x+22} ${item.y+44} ${item.x+40} ${item.y+44} ${item.x+40} ${item.y+39} V${item.y+22}`}/>
+        <path d={`M${item.x+22} ${item.y+30} C${item.x+22} ${item.y+35} ${item.x+40} ${item.y+35} ${item.x+40} ${item.y+30}`}/>
+      </g>
+      <text x={item.x+62} y={item.y+26} fontFamily="Arial, sans-serif" fontSize="13" fontWeight="600" fill="#EBEBED">{item.name}</text>
+      <text x={item.x+62} y={item.y+45} fontFamily="Arial, sans-serif" fontSize="11" fill="#9E9EA2">Available locally</text>
+      <rect x={item.x+297} y={item.y+22} width="82" height="20" rx="10" fill="#363638"/>
+      <text x={item.x+338} y={item.y+35} textAnchor="middle" fontFamily="Arial, sans-serif" fontSize="10" fill="#C4C4C7">Not linked</text>
+    {/each}
+    <rect x="230" y="476" width="392" height="42" rx="8" fill="#333437" stroke="#55565A"/>
+    <text x="426" y="502" textAnchor="middle" fontFamily="Arial, sans-serif" fontSize="13" fontWeight="600" fill="#E4E4E6">Connect local datasets</text>
+    <rect x="669" y="476" width="392" height="42" rx="8" fill="#F1F0EB"/>
+    <text x="852" y="502" textAnchor="middle" fontFamily="Arial, sans-serif" fontSize="13" fontWeight="600" fill="#222223">Connect local datasets</text>
+    <path d="M1009 497 H1039 M1032 490 L1039 497 L1032 504" stroke="#222223" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+    <rect x="212" y="550" width="867" height="40" rx="8" fill="#252527" stroke="#414143"/>
+    <g stroke="#BFC6CB" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="230" y="568" width="13" height="11" rx="2"/>
+      <path d="M233 568 V564 A3.5 3.5 0 0 1 240 564 V568"/>
+    </g>
+    <text x="255" y="575" fill="#C4C4C6" fontFamily="Arial, sans-serif" fontSize="12">Both organizations joined. No datasets connected or disclosed.</text>
+    <rect x="940" y="559" width="122" height="23" rx="6" fill="#303032" stroke="#4A4A4C"/>
+    <text x="1001" y="574" textAnchor="middle" fill="#C7C7C9" fontFamily="Arial, sans-serif" fontSize="10">Before input setup</text>
+  </svg>
+</box>
+
+**Scène 04 V1.2 :** la flèche indique désormais uniquement l'action disponible dans le compte actif de Logistics Partner.

@@ -1,10 +1,10 @@
 import {setCssViewport} from './css-viewport';
 import {test,expect} from '@playwright/test';
 import path from 'node:path';
-import {fileURLToPath} from 'node:url';
 
-const gallery=path.join(fileURLToPath(new URL('../../../../docs/m8/pr7/marketing-v72/',import.meta.url)),process.env.QA_BROWSER==='webkit'?'webkit':'.');
+
 test('V7.1 actual desktop rectangles, subtle links, labels and pointer reveal',async({page})=>{
+ const gallery=process.env.QA_EVIDENCE_DIR || test.info().outputDir;
  test.setTimeout(90000);
  for(const [width,height] of [[1366,768],[1440,900],[1536,864]]){
   await setCssViewport(page,{width,height});await page.goto('/');await page.evaluate(()=>document.fonts.ready);

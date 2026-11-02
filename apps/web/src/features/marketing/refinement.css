@@ -19,12 +19,12 @@ html .marketing-shell .solutions-menu { width:330px; background:var(--kr-surface
 html .marketing-shell .marketing-navbar .solutions-menu > a { min-height:56px; padding:8px; gap:10px; }
 html .marketing-shell .solutions-menu svg { width:20px; height:20px; color:var(--kr-text-secondary); }
 html .marketing-shell .developer-page .marketing-reading > .button-row { margin-top:40px; gap:12px; justify-content:flex-start; }
-html .marketing-shell .how-it-works[data-enhanced] { padding-bottom:0; position:relative; scroll-margin-top:100px; }
-html .marketing-shell .how-it-works[data-enhanced] > .how-panel { position:static; }
+html .marketing-shell .how-it-works { scroll-margin-top:100px; }
 html .marketing-shell .how-panel > .section-label { grid-column:1; margin:0 0 16px; }
-html .marketing-shell .how-visual-sticky { grid-row:1/6; }
+html .marketing-shell .how-visual-sticky { grid-row:1/6; position:static; align-self:center; }
+html .marketing-shell .how-layout li { min-height:0; padding-block:6px; }
 html .marketing-shell .how-visual { background:var(--kr-background); border:0; border-radius:14px; }
-.how-visual svg g { transition:opacity .55s ease; }
+.how-visual svg g { transition:opacity .18s ease; }
 .how-exit { grid-column:1; font-size:12px; color:var(--kr-text-secondary); display:inline-flex; align-items:center; min-height:44px; width:fit-content; margin-top:8px; }
 .how-exit:hover { color:var(--kr-text-primary); }
 html .marketing-shell .home-final-cta { background:var(--kr-surface); border-color:var(--kr-border); }
@@ -46,11 +46,16 @@ html .marketing-shell .interactive-demo .demo-center { background:var(--kr-backg
 html .marketing-shell .interactive-demo .demo-inspector { background:var(--kr-surface); border:0; }
 html .marketing-shell .interactive-demo .demo-sequence { border:0; }
 @media(min-width:1200px) {
- html .marketing-shell .how-panel { padding:28px; gap:0 32px; }
+ html .marketing-shell .how-it-works[data-enhanced='true'] { height:calc(var(--how-height,600px) + var(--how-travel,420px)); }
+ html .marketing-shell .how-panel { padding:24px; gap:0 32px; grid-template-rows:auto auto auto 1fr auto; }
+ html .marketing-shell .how-it-works[data-enhanced='true'] > .how-panel { position:sticky; top:var(--how-top,88px); height:var(--how-height,600px); box-sizing:border-box; }
+ html .marketing-shell .how-layout > ol { align-self:center; }
+ html .marketing-shell .how-visual { margin:0; }
+ html .marketing-shell .how-visual svg { min-height:0; max-height:250px; width:100%; }
+ html .marketing-shell .how-visual figcaption { min-height:190px; }
+ html .marketing-shell .how-visual figcaption > .caption { font-size:12px; line-height:1.5; margin-bottom:0; }
  html .marketing-shell .how-panel > h2 { font-size:38px; }
  html .marketing-shell .how-layout button strong { font-size:21px; }
- html .marketing-shell .how-layout li { padding-block:6px; }
- html .marketing-shell .how-visual figcaption { min-height:118px; }
  html .marketing-shell .interactive-demo[data-mode='presentation'] .demo-columns { grid-template-columns:minmax(0,1fr) 260px; }
  .interactive-demo[data-mode='presentation'] .demo-sequence { grid-column:1/-1; padding:10px 0; }
  .interactive-demo[data-mode='presentation'] .demo-sequence > p,
@@ -61,6 +66,15 @@ html .marketing-shell .interactive-demo .demo-sequence { border:0; }
  .interactive-demo[data-mode='presentation'] .demo-center { padding:24px; }
  .interactive-demo[data-mode='presentation'] .demo-context-block { border:0; }
  .interactive-demo[data-mode='presentation'] .demo-context-block:first-of-type { display:none; }
+}
+@media(min-width:1200px) and (max-height:760px) {
+ html .marketing-shell .how-panel { padding:16px 24px; }
+ html .marketing-shell .how-panel > h2 { font-size:30px; margin-bottom:8px; }
+ html .marketing-shell .how-panel > .section-label { margin-bottom:8px; }
+ html .marketing-shell .how-layout button strong { font-size:18px; }
+ html .marketing-shell .how-layout li { padding-block:2px; }
+ html .marketing-shell .how-visual svg { max-height:190px; }
+ html .marketing-shell .how-visual figcaption { min-height:180px; }
 }
 @media(max-width:1199px) {
  html .marketing-shell .how-panel { display:block; }

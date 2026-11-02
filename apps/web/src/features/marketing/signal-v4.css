@@ -1,0 +1,11 @@
+.signal-showcase { width:min(100% - 48px,1000px); margin:0 auto; scroll-margin-top:90px; }
+.signal-followup { width:min(100% - 48px,1000px); margin:0 auto 24px; display:grid; grid-template-columns:5% minmax(0,1fr); }
+.signal-art { width:100%; }
+.signal-mobile-summary { display:none; }
+.signal-walkthrough-link { display:inline-flex; align-items:center; min-height:44px; margin-top:12px; color:var(--kr-text-secondary); font-size:13px; }
+.signal-followup > .signal-walkthrough-link { grid-column:2; justify-self:start; align-items:flex-start; margin-top:0; }
+@media(max-width:700px) {
+ .signal-showcase,.signal-followup { width:calc(100% - 32px); }
+ .signal-mobile-summary { display:block; font-size:14px; line-height:1.7; color:var(--kr-text-secondary); }
+ .signal-mobile-summary strong { font-size:24px; color:var(--kr-text-primary); }
+}

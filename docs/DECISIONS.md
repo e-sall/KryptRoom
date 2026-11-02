@@ -1,5 +1,47 @@
 # Architectural decisions
 
+## 2026-11-01 — exact Signal V4 homepage and preserved /demo walkthrough
+
+The founder locks The Signal V4 for the homepage and authorizes reuse of the
+preserved film as a complementary `/demo` section. Preserve source SVG attributes,
+text and CSS keyframes through mechanical JSX transcription, rather than HTML
+injection; retain the existing injection guard. A single bar group uses the
+original eight-second CSS timeline. The film retains its clock, scenes and
+trajectories; only its pointer path scales by .5 about the original (1,1) tip.
+Hold the ending because no loop was approved. Keep locked How and technical demo
+source byte-identical. Mobile readability uses external text, not a redesigned
+SVG. Local evidence and publication/security boundaries are recorded in
+`m8/pr7/FINAL-HERO-DEMO-INTEGRATION-REPORT.md`.
+
+## 2026-11-01 — one viewport-fitted card, exterior progression only
+
+Supersede the founder-rejected tall How rows. Keep navigation compact and only
+the active description/detail visible. A single fixed-height card sticks beneath
+the measured navbar; short exterior travel drives stages by document geometry.
+Subtract navbar bounds and safety margins from actual innerHeight. Never enlarge
+the card to create progress, intercept native scrolling or reveal an empty spacer.
+Mobile retains normal flow/manual selection. See `m8/pr7/HOW-VIEWPORT-REPORT.md`
+for executed Chromium/WebKit geometry and wheel evidence. No publication approval.
+
+## 2026-11-01 — founder requires real scene progression during native scroll
+
+Supersede V7.2's manual-only How selection with deterministic geometry selection:
+the last of four real step rows above a 40% viewport line is active. Give each
+existing explanation a readable content block and constrain sticky behavior to
+the desktop right visual. Native scroll remains unmodified; button/keyboard
+selection aligns the corresponding row. No timers, wheel/touch interception or
+empty section spacer. The rejected film stays isolated. See
+`m8/pr7/HOW-SCROLL-PROGRESSION-REPORT.md` for executed wheel-only acceptance/video.
+
+## 2026-11-01 — rejected cinematic integration and natural How review
+
+Preserve the rejected film and source provenance in a verified archive outside
+the checkout, then omit its homepage mount. No improvised replacement. Remove
+obsolete sticky/500 px rules and redundant neutralizers at source, retaining
+native scrolling and the four selectable steps. Disclose that stabilized local
+pre-fix behavior did not reproduce a persistent trap. No publication or new
+security approval. See `m8/pr7/HOW-REVIEW-REPORT.md`.
+
 ## ADR-022 — Freeze QA preserves the presentation/core boundary
 
 PR20 independent review follow-up (2026-10-26): reserve stable space while

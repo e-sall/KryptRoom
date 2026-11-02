@@ -1,5 +1,43 @@
 # TODO
 
+## M8 final publication preparation — 2026-11-02
+
+- [x] Preserve the approved Signal V4, walkthrough, aligned CTA and locked How.
+- [x] Inspect actual PR20 and dev/main ancestry without changing remote branches.
+- [ ] Resolve expired M8-SEC-001 before push or a fresh lint run.
+- [ ] Obtain exact-head hosted checks after an authorized push.
+- [ ] Formally disposition the minimatch exception for merge, then obtain
+  explicit PR20-to-dev approval; M8-SEC-002 currently excludes merge/production.
+- [ ] Regenerate the provisional main promotion from actual approved dev, run
+  applicable checks and request separate main merge/tag/deployment decisions.
+
+Current report: `KRYPTROOM-M8-MAIN-RELEASE-READINESS.md`.
+
+## Final homepage / demo integration
+
+- [x] Verify canonical V4 source and transcribe its SVG mechanically, preserving
+  source CSS and the existing anti-injection guard.
+- [x] Restore the preserved film to `/demo`, keeping technical exploration and
+  reducing only the pointer around its hotspot to 50%.
+- [x] Validate source fidelity, responsive, production behavior, audits and
+  non-regression of byte-identical locked How; preserve actual captures/video.
+- [x] Local designs retained as founder-approved input to release preparation.
+- [ ] Explicit disposition of publication scope and security expiration gates.
+- [ ] Separate merge authorization. No M8 completion or deployment approval.
+
+Evidence: `docs/m8/pr7/FINAL-HERO-DEMO-INTEGRATION-REPORT.md`.
+
+## Local How founder review
+
+- [x] Replace rejected tall layout with a viewport-fitted compact sticky card.
+- [x] Verify complete-card bounds and actual scroll states in Chromium/WebKit at
+  all four desktop sizes; preserve screenshots, metrics and actual video.
+- [x] Founder locked viewport design: `docs/m8/pr7/HOW-VIEWPORT-REPORT.md`.
+
+Earlier rejected How layouts and complete videos are preserved in the local
+release backup, not included as current release evidence. See
+`docs/m8/pr7/RELEASE-ARTIFACTS.md` for provenance and selected captures.
+
 - M8 Marketing V6: commercial synthetic manufacturing/logistics film, separate
   technical demo refinement, noncolliding state cards, natural sticky How story,
   exterior section labels and targeted typography/CTA refinements. See

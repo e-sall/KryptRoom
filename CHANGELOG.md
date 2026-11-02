@@ -1,5 +1,30 @@
 # Changelog
 
+- M8 final release preparation: preserve the validated local designs, curate
+  source/evidence commits, update obsolete browser expectations to the approved
+  scroll and Signal contracts, and analyze main/dev ancestry. Publication and
+  merge remain blocked by applicable security gates and explicit approval.
+
+- Local final marketing integration: founder-supplied The Signal V4 SVG/CSS on
+  the homepage; restore the preserved 92.4s film as a complementary `/demo`
+  walkthrough with a hotspot-preserving 50% pointer. Locked How implementation
+  remains byte-identical. See `docs/m8/pr7/FINAL-HERO-DEMO-INTEGRATION-REPORT.md`.
+  Local founder review only; security publication scope remains to disposition.
+
+- Local How viewport correction: replace rejected tall step blocks with one
+  constant-height compact card, section-bounded sticky progression and a short
+  exterior runway. Full-card geometry, bidirectional wheel progression and video:
+  `docs/m8/pr7/HOW-VIEWPORT-REPORT.md`. Founder viewport approval pending.
+
+- Local How functional correction: automatically select the scene from actual
+  document row positions in both directions. Keep native scrolling, selectable
+  buttons, meaningful step explanations and a section-bound desktop visual.
+  Wheel-only acceptance and video: `docs/m8/pr7/HOW-SCROLL-PROGRESSION-REPORT.md`.
+
+- Local PR20 How review: isolate the rejected cinematic integration in a verified
+  backup, temporarily omit the film, remove obsolete sticky/500 px rules and
+  their neutralizers. See `docs/m8/pr7/HOW-REVIEW-REPORT.md`. No publication.
+
 - M8 Marketing V6: commercial synthetic manufacturing/logistics film, separate
   technical demo refinement, noncolliding state cards, natural sticky How story,
   exterior section labels and targeted typography/CTA refinements. See

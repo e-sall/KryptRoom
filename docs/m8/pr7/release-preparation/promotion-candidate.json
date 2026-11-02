@@ -1,0 +1,11 @@
+{
+  "commit": "d6a7765b64afdffacf486a5b4bc10ffa156f7a6b",
+  "branch": "release/m8-main-candidate-20261102",
+  "feature_head": "afd1eeda06cc3147fffc145dd0f81c21c7234e4d",
+  "main": "1715b504e2041127056127ab5236a3248195a234",
+  "tree": "ceb41f62aa395ba434686fe1e864d6b2876a8576",
+  "feature_tree": "ceb41f62aa395ba434686fe1e864d6b2876a8576",
+  "snapshot": "C:\\Users\\Admin\\Documents\\Codex\\2026-09-29\\https-github-com-e-sall-kryptroom\\work\\m8-promotion-d6a7765b64af",
+  "core_diff_vs_dev": [],
+  "promotion_diff_vs_feature": []
+}

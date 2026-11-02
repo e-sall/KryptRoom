@@ -1,6 +1,6 @@
 # Product Walkthrough — representative release captures
 
-Thirteen scenes, five sensitive transitions, tablet and mobile fallback. Complete seam sampling and videos remain in the verified local release archive; see ../.. /RELEASE-ARTIFACTS.md (no new cryptographic claim).
+Thirteen scenes, five sensitive transitions, tablet and mobile fallback. Complete seam sampling and videos remain in the verified local release archive; see [release artifact policy](../../RELEASE-ARTIFACTS.md) (no new cryptographic claim).
 
 - [adaptation-click](adaptation-click.png)
 - [adaptation-panel](adaptation-panel.png)

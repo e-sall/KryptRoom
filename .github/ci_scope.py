@@ -49,6 +49,14 @@ def workflow_execution(text):
     return text.replace(GATE, "").replace(CONDITION, "")
 
 
+def same_events_and_execution(before, after):
+    def events(text):
+        found = re.search(r"^on:\n(?:[ \t].*\n|\n|#.*\n)*", text.replace("\r\n", "\n"), re.M)
+        return found.group(0) if found else None
+    return (before and after and events(before) == events(after) and
+            workflow_execution(before) == workflow_execution(after))
+
+
 # One owner-authorized migration, NOT a fixtures-directory exemption.
 # These are SHA-256 of exact Git file bytes (no JSON normalization).
 MIGRATION_PREFIX = "tests/state_proof/fixtures/"
@@ -146,6 +154,8 @@ def requires_core(paths, read_before, read_after):
     for path in paths:
         if migration and path in MIGRATION_FILES:
             continue
+        if migration and path == MIGRATION_WORKFLOW:
+            continue  # exact old/new hashes were already verified with the complete migration
         if m7_migration and path in M7_MIGRATION_FILES:
             continue
         if path.startswith(("apps/web/", "docs/m8/")) or path in DOCS:
@@ -156,7 +166,7 @@ def requires_core(paths, read_before, read_after):
             return True  # no generic trigger-only exemption for an unrecognized M9 recipe
         if path.startswith(".github/workflows/") and path.endswith((".yml", ".yaml")):
             before, after = read_before(path), read_after(path)
-            if before and after and workflow_execution(before) == workflow_execution(after):
+            if same_events_and_execution(before, after):
                 continue
         return True
     return False
@@ -202,7 +212,7 @@ def classify_paths(paths, read_before, read_after):
             continue
         elif path.startswith(".github/workflows/") and path.endswith((".yml", ".yaml")):
             before, after = read_before(path), read_after(path)
-            if not (before and after and workflow_execution(before) == workflow_execution(after)):
+            if not same_events_and_execution(before, after):
                 web = m9 = True
         else:
             web = m9 = True  # shared contracts/security/CI/unknown: all relevant consumers

@@ -58,11 +58,11 @@ workflow. Foundation and the proposed M9 context always report a real job result
 
 ## Local validation and publication order
 
-44 policy tests pass: all 31 prior fixture/contract/gating regressions unchanged,
-plus 13 M9/negative/consumer/context tests. Actionlint 1.7.12 reports zero errors for
+45 policy tests pass: all 31 prior fixture/contract/gating regressions unchanged,
+plus 14 M9/negative/consumer/context tests. Actionlint 1.7.12 reports zero errors for
 the policy workflow, web workflow and proposed M9 workflow. A read-only source
 projection with the original M9 implementation, root fix and this routing passes
-the 44 policy tests plus all 20 M9 unit/static tests. No database/crypto suite was
+the 45 policy tests plus all 20 M9 unit/static tests. No database/crypto suite was
 needlessly rerun. Original M9's real PostgreSQL/restart evidence remains bound to
 its unchanged backend/locks. Exact-head hosted checks are still required later.
 

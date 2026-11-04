@@ -71,6 +71,15 @@ class M9ScopeTests(unittest.TestCase):
         for path in ["package.json", "package-lock.json"]:
             self.assertTrue(self.flags([path])["core"])
 
+    def test_removing_manual_or_changing_generic_workflow_events_requires_core(self):
+        path = ".github/workflows/private-nn.yml"
+        old = "name: Test\non:\n  workflow_dispatch:\n  push:\n    branches: [dev]\njobs:\n  test:\n    steps:\n      - run: preserved-command\n"
+        for new in [old.replace("  workflow_dispatch:\n", ""),
+                    old.replace("branches: [dev]", "branches: [other]"),
+                    old.replace("  push:\n", "  pull_request:\n")]:
+            self.assertEqual(self.flags([path], {path: old}, {path: new}),
+                             {"core": True, "web": True, "m9": True})
+
     def test_m8_only_mixed_m8_m9_and_core_m8(self):
         self.assertEqual(self.flags(["apps/web/src/app/page.tsx", "docs/m8/README.md"]),
                          {"core": False, "web": True, "m9": False})

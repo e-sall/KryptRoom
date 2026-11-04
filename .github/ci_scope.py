@@ -12,10 +12,26 @@ DOCS = {
     "ARCHITECTURE.md", "PROJECT_CONTEXT.md", "CHANGELOG.md", "TODO.md",
     "docs/DECISIONS.md",
 }
-FILTER_FILES = {
-    ".github/ci_scope.py", ".github/test_ci_scope.py",
-    ".github/workflows/web-foundation.yml",
+# Policy/classifier changes are shared and fail closed. They are not documentation.
+M9_WORKFLOW = ".github/workflows/control-api-foundation.yml"
+M9_WORKFLOW_HASHES = {
+    # Exact c99d8f5 PR1 recipe, and the separately reviewed explicit-scope follow-up.
+    "9588eac2e7b840c09a3c6500df51369fb18694e98ca3050143182277eea6deef",
+    "88e12beb2ddcdce0fd56de63f00c46b8f8644e4080a698efea7f4f6ec86d267d",
 }
+M9_FILES = {
+    "services/control-api/.gitkeep", "services/control-api/.dockerignore",
+    "services/control-api/.gitattributes", "services/control-api/.gitignore",
+    "services/control-api/.python-version", "services/control-api/Dockerfile",
+    "services/control-api/README.md", "services/control-api/alembic.ini",
+    "services/control-api/compose.yml", "services/control-api/pyproject.toml",
+    "services/control-api/uv.lock", "services/control-api/requirements.lock",
+    "services/control-api/requirements-dev.lock",
+}
+M9_PREFIXES = (
+    "services/control-api/src/kryptroom_control/", "services/control-api/migrations/",
+    "services/control-api/scripts/", "services/control-api/tests/", "docs/m9/",
+)
 GATE = "  change-scope:\n    runs-on: ubuntu-latest\n    timeout-minutes: 5\n    outputs:\n      core: ${{ steps.scope.outputs.core }}\n    steps:\n      - uses: actions/checkout@v7\n        with:\n          fetch-depth: 0\n          persist-credentials: false\n      - id: scope\n        run: python3 .github/ci_scope.py\n\n"
 CONDITION = "    needs: change-scope\n    if: ${{ needs.change-scope.outputs.core == 'true' }}\n"
 
@@ -132,8 +148,12 @@ def requires_core(paths, read_before, read_after):
             continue
         if m7_migration and path in M7_MIGRATION_FILES:
             continue
-        if path.startswith(("apps/web/", "docs/m8/")) or path in DOCS | FILTER_FILES:
+        if path.startswith(("apps/web/", "docs/m8/")) or path in DOCS:
             continue
+        if m9_path(path) or exact_m9_workflow(path, read_before, read_after):
+            continue
+        if path == M9_WORKFLOW:
+            return True  # no generic trigger-only exemption for an unrecognized M9 recipe
         if path.startswith(".github/workflows/") and path.endswith((".yml", ".yaml")):
             before, after = read_before(path), read_after(path)
             if before and after and workflow_execution(before) == workflow_execution(after):
@@ -142,9 +162,56 @@ def requires_core(paths, read_before, read_after):
     return False
 
 
-def classify_event(event_name, event, read_git=git):
+def m9_path(path):
+    return path in M9_FILES or path.startswith(M9_PREFIXES)
+
+
+def exact_m9_workflow(path, read_before, read_after):
+    if path != M9_WORKFLOW:
+        return False
+    before, after = read_before(path), read_after(path)
+    return (content_hash(after) in M9_WORKFLOW_HASHES and
+            (before is None or content_hash(before) in M9_WORKFLOW_HASHES))
+
+
+def core_only_path(path):
+    # Shared manifests, CI/security policy and unknown paths intentionally are NOT here.
+    return (path.startswith(("engines/", "nodes/", "tests/", "chain/")) or
+            path in {"package.json", "package-lock.json"} or path.startswith("compose."))
+
+
+def classify_paths(paths, read_before, read_after):
+    if not paths:
+        return {"core": True, "web": True, "m9": True}
+    core = requires_core(paths, read_before, read_after)
+    web = m9 = False
+    metadata_only = all(path in DOCS for path in paths)
+    migration = exact_fixture_migration(paths, read_before, read_after)
+    m7_migration = exact_m7_fixture_migration(paths, read_before, read_after)
+    for path in paths:
+        if path in DOCS:
+            continue  # contextual changelog entries do not turn M9 into a frontend change
+        if path.startswith(("apps/web/", "docs/m8/")):
+            web = True
+        elif m9_path(path) or exact_m9_workflow(path, read_before, read_after):
+            m9 = True
+        elif path == M9_WORKFLOW:
+            web = m9 = True
+        elif ((migration and path in MIGRATION_FILES) or
+              (m7_migration and path in M7_MIGRATION_FILES) or core_only_path(path)):
+            continue
+        elif path.startswith(".github/workflows/") and path.endswith((".yml", ".yaml")):
+            before, after = read_before(path), read_after(path)
+            if not (before and after and workflow_execution(before) == workflow_execution(after)):
+                web = m9 = True
+        else:
+            web = m9 = True  # shared contracts/security/CI/unknown: all relevant consumers
+    return {"core": core, "web": web or metadata_only, "m9": m9 or metadata_only}
+
+
+def event_diff(event_name, event, read_git=git):
     if event_name not in ("pull_request", "push"):
-        return True  # workflow_dispatch and any future event retain full execution
+        return None  # workflow_dispatch and any future event retain full execution
     if event_name == "pull_request":
         base = event["pull_request"]["base"]["sha"]
         head = event["pull_request"]["head"]["sha"]
@@ -169,13 +236,26 @@ def classify_event(event_name, event, read_git=git):
         except subprocess.CalledProcessError:
             return None
 
-    return requires_core(paths, lambda p: at(base, p), lambda p: at(head, p))
+    return paths, lambda p: at(base, p), lambda p: at(head, p)
+
+
+def classify_event(event_name, event, read_git=git):
+    diff = event_diff(event_name, event, read_git)
+    return True if diff is None else requires_core(*diff)
+
+
+def classify_scopes_event(event_name, event, read_git=git):
+    diff = event_diff(event_name, event, read_git)
+    return {"core": True, "web": True, "m9": True} if diff is None else classify_paths(*diff)
 
 
 if __name__ == "__main__":
-    event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text())
-    core = classify_event(os.environ["GITHUB_EVENT_NAME"], event)
-    value = str(core).lower()
-    print(f"Core integration required: {value}")
+    event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text(encoding="utf-8"))
+    scopes = classify_scopes_event(os.environ["GITHUB_EVENT_NAME"], event)
+    print(json.dumps(scopes, sort_keys=True))
     with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
-        output.write(f"core={value}\n")
+        for name, enabled in scopes.items():
+            output.write(f"{name}={str(enabled).lower()}\n")
+    if os.environ.get("GITHUB_STEP_SUMMARY"):
+        with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as summary:
+            summary.write("CI applicability: " + json.dumps(scopes, sort_keys=True) + "\n")

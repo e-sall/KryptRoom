@@ -1,5 +1,30 @@
 # Architectural decisions
 
+## 2026-11-03 — M9 PR1 Control API foundation
+
+Follow the founder-restored D1–D10 architecture (chat 01, November 3): modular
+FastAPI/Pydantic monolith, PostgreSQL 17, SQLAlchemy 2 and Alembic. Keep external
+OIDC/Keycloak and controlled organizational enrollment for PR2; no business routes
+in PR1. Keep M8 previews isolated. Business governance and cryptographic authority
+are separate; there is no GovernancePolicy-to-StatePolicy adapter in M9.
+
+Use synchronous psycopg sessions in synchronous FastAPI endpoints, explicit
+transaction units, one application engine and no startup DDL. A separately
+credentialed migration actor owns only the control schema. PR1 application SQL is
+SELECT-only. The first revision stores only a technical singleton/version marker.
+UUIDv4 is the initial server-generated ID convention permitted by the architecture;
+UUIDv7 can be considered later without changing Core identifiers. Timestamp columns
+are timezone-aware UTC. Audit/outbox ports are transaction-shaped but not implemented.
+
+Pin current compatible Python packages, image digests and the Hatchling build
+backend; keep M9's audit independent of M8 exceptions. Hatchling also avoids the
+observed setuptools editable-build failure on a Windows temporary path containing
+braces. No forced dependency override or audit suppression. Database isolation is
+an internal network; only the API also joins a bridge for loopback publishing.
+No existing workflow, Core code/fixture or M8 design is changed. Legacy scope
+classification remains conservative; review its extra workflow effects before
+publishing. See `docs/m9/pr1/IMPLEMENTATION-REPORT.md`.
+
 ## 2026-11-01 — exact Signal V4 homepage and preserved /demo walkthrough
 
 The founder locks The Signal V4 for the homepage and authorizes reuse of the

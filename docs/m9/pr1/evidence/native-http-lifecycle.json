@@ -1,0 +1,78 @@
+{
+  "initial_persisted_schema": {
+    "/health/live": {
+      "status": 200,
+      "body": {
+        "status": "alive"
+      }
+    },
+    "/health/ready": {
+      "status": 200,
+      "body": {
+        "status": "ready"
+      }
+    }
+  },
+  "postgres_tests": 5,
+  "database_stopped": {
+    "/health/live": {
+      "status": 200,
+      "body": {
+        "status": "alive"
+      }
+    },
+    "/health/ready": {
+      "status": 503,
+      "body": {
+        "error": {
+          "code": "not_ready",
+          "message": "Service is not ready"
+        },
+        "correlation_id": "f790e5c8-a959-426b-802d-465278df0484"
+      }
+    }
+  },
+  "database_restart": {
+    "/health/live": {
+      "status": 200,
+      "body": {
+        "status": "alive"
+      }
+    },
+    "/health/ready": {
+      "status": 200,
+      "body": {
+        "status": "ready"
+      }
+    }
+  },
+  "api_restart": {
+    "/health/live": {
+      "status": 200,
+      "body": {
+        "status": "alive"
+      }
+    },
+    "/health/ready": {
+      "status": 200,
+      "body": {
+        "status": "ready"
+      }
+    }
+  },
+  "migration_repeat_after_restart": {
+    "/health/live": {
+      "status": 200,
+      "body": {
+        "status": "alive"
+      }
+    },
+    "/health/ready": {
+      "status": 200,
+      "body": {
+        "status": "ready"
+      }
+    }
+  },
+  "credential_log_scan": "passed"
+}

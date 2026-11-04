@@ -1,0 +1,83 @@
+name: kryptroom-m9-local
+services:
+  postgres:
+    image: postgres:17.11-bookworm@sha256:839fbb5a4942a7758dd93e18b42ea5649807491a0545b5eeeb8f0b8bb11857a5
+    command: [postgres, -c, log_statement=none, -c, log_min_error_statement=panic, -c, log_parameter_max_length_on_error=0]
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: kryptroom
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256 --auth-local=trust
+    secrets: [postgres_password, migrator_password, app_password]
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./scripts/init-db.sh:/docker-entrypoint-initdb.d/10-control.sh:ro
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U postgres -d kryptroom']
+      interval: 2s
+      timeout: 2s
+      retries: 30
+    networks: [database]
+  migrate:
+    build: {context: ., target: runtime}
+    command: [alembic, upgrade, head]
+    environment: &database_environment
+      CONTROL_DATABASE_HOST: postgres
+      CONTROL_DATABASE_NAME: kryptroom
+      CONTROL_DATABASE_USER: kryptroom_migrator
+      CONTROL_DATABASE_PASSWORD_FILE: /run/secrets/migrator_password
+      CONTROL_DATABASE_SSLMODE: disable
+    secrets: [migrator_password]
+    depends_on:
+      postgres: {condition: service_healthy}
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    networks: [database]
+  api:
+    build: {context: ., target: runtime}
+    environment:
+      <<: *database_environment
+      CONTROL_DATABASE_USER: kryptroom_app
+      CONTROL_DATABASE_PASSWORD_FILE: /run/secrets/app_password
+      CONTROL_DOCS_ENABLED: '${CONTROL_DOCS_ENABLED:-false}'
+    secrets: [app_password]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+    ports: [127.0.0.1:8001:8000]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready', timeout=3)"]
+      interval: 5s
+      timeout: 4s
+      retries: 10
+    networks: [database, ingress]
+  tests:
+    profiles: [test]
+    build: {context: ., target: test}
+    environment:
+      <<: *database_environment
+      CONTROL_DATABASE_NAME: kryptroom_test
+      CONTROL_ENVIRONMENT: test
+      CONTROL_TEST_POSTGRES: '1'
+      CONTROL_TEST_APP_PASSWORD_FILE: /run/secrets/app_password
+    secrets: [migrator_password, app_password]
+    depends_on:
+      postgres: {condition: service_healthy}
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    networks: [database]
+networks:
+  database: {internal: true}
+  ingress:
+    driver: bridge
+volumes:
+  pgdata:
+secrets:
+  postgres_password: {file: ./.runtime/secrets/postgres_password}
+  migrator_password: {file: ./.runtime/secrets/migrator_password}
+  app_password: {file: ./.runtime/secrets/app_password}

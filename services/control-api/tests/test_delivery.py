@@ -33,11 +33,26 @@ def test_new_ci_is_scoped_readonly_and_has_no_crypto_command() -> None:
     assert config["permissions"] == {"contents": "read"}
     assert config["on"]["pull_request"]["branches"] == ["dev"]
     assert "workflow_dispatch" in config["on"]
+    assert "paths" not in config["on"]["pull_request"]
+    policy_spec = importlib.util.spec_from_file_location("m9_policy", REPO / ".github/ci_scope.py")
+    assert policy_spec is not None and policy_spec.loader is not None
+    policy = importlib.util.module_from_spec(policy_spec)
+    policy_spec.loader.exec_module(policy)
+    assert policy.classify_paths(["apps/web/src/app/page.tsx"], lambda _: None, lambda _: None) == {
+        "core": False,
+        "web": True,
+        "m9": False,
+    }
+    assert policy.classify_paths(["engines/zk/example.rs"], lambda _: None, lambda _: None) == {
+        "core": True,
+        "web": False,
+        "m9": False,
+    }
     assert matches_paths(
         config, "pull_request", ["services/control-api/src/kryptroom_control/app.py"]
     )
-    assert not matches_paths(config, "pull_request", ["apps/web/src/app/page.tsx"])
-    assert not matches_paths(config, "pull_request", ["engines/zk/example.rs"])
+    assert matches_paths(config, "pull_request", ["apps/web/src/app/page.tsx"])
+    assert matches_paths(config, "pull_request", ["engines/zk/example.rs"])
     commands = "\n".join(
         step.get("run", "") for step in config["jobs"]["m9-control-foundation"]["steps"]
     )
@@ -71,8 +86,13 @@ def test_existing_proof_and_chain_routes_are_not_silently_exempted() -> None:
     assert spec is not None and spec.loader is not None
     scope = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(scope)
-    # M9 is conservatively core under the current baseline: publication needs review.
+    # An unknown/missing workflow recipe must still fail closed.
     assert scope.requires_core(m9_paths, lambda _: None, lambda _: None)
+    assert scope.classify_paths(
+        m9_paths,
+        lambda _: None,
+        lambda p: (REPO / p).read_text(encoding="utf-8") if (REPO / p).is_file() else None,
+    ) == {"core": False, "web": False, "m9": True}
 
 
 def test_local_compose_is_isolated_and_pinned() -> None:

@@ -1,0 +1,14 @@
+*
+!src/
+!src/**
+!migrations/
+!migrations/**
+!tests/
+!tests/**
+!scripts/
+!scripts/**
+!alembic.ini
+!pyproject.toml
+!requirements.lock
+!requirements-dev.lock
+**/__pycache__

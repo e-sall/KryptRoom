@@ -1,0 +1,30 @@
+Python 3.12.16
+Using CPython 3.12.16 interpreter at: /usr/local/bin/python3.12
+Resolved 74 packages in 19ms
+Both committed hash exports match uv.lock
+All checks passed!
+25 files already formatted
+Success: no issues found in 14 source files
+============================= test session starts ==============================
+platform linux -- Python 3.12.16, pytest-9.2.0, pluggy-1.7.0
+cachedir: /tmp/pytest-cache
+rootdir: /workspace/services/control-api
+configfile: pyproject.toml
+testpaths: tests
+plugins: platformdirs-4.14.3, cov-7.1.0, anyio-4.16.0
+collected 25 items / 5 deselected / 20 selected
+
+tests/test_delivery.py ...                                               [ 15%]
+tests/test_foundation.py ................                                [ 95%]
+tests/test_packaging.py .                                                [100%]
+
+======================= 20 passed, 5 deselected in 1.78s =======================
+* Getting build dependencies for sdist...
+* Building sdist...
+* Building wheel from sdist
+* Getting build dependencies for wheel...
+* Building wheel...
+Successfully built kryptroom_control_api-0.1.0.tar.gz and kryptroom_control_api-0.1.0-py3-none-any.whl
+No broken requirements found.
+No known vulnerabilities found
+No known vulnerabilities found

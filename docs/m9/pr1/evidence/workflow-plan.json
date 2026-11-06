@@ -1,0 +1,241 @@
+{
+  "baseline": "7fde54f86b8df11d162eb317414dc1d2f932b70a",
+  "paths": [
+    ".github/workflows/control-api-foundation.yml",
+    "CHANGELOG.md",
+    "TODO.md",
+    "docs/DECISIONS.md",
+    "docs/m9/pr1/ACCEPTANCE-RESULTS.md",
+    "docs/m9/pr1/IMPLEMENTATION-REPORT.md",
+    "docs/m9/pr1/PR-DRAFT.md",
+    "docs/m9/pr1/SECURITY-REVIEW.md",
+    "docs/m9/pr1/evidence/audit-dev.json",
+    "docs/m9/pr1/evidence/audit-runtime.json",
+    "docs/m9/pr1/evidence/compose-acceptance.txt",
+    "docs/m9/pr1/evidence/linux-qa.txt",
+    "docs/m9/pr1/evidence/native-http-lifecycle.json",
+    "docs/m9/pr1/evidence/packaging-regression.json",
+    "docs/m9/pr1/evidence/reproducibility.json",
+    "docs/m9/pr1/evidence/validation.json",
+    "docs/m9/pr1/evidence/workflow-plan.json",
+    "services/control-api/.dockerignore",
+    "services/control-api/.gitattributes",
+    "services/control-api/.gitignore",
+    "services/control-api/.python-version",
+    "services/control-api/Dockerfile",
+    "services/control-api/README.md",
+    "services/control-api/alembic.ini",
+    "services/control-api/compose.yml",
+    "services/control-api/migrations/env.py",
+    "services/control-api/migrations/script.py.mako",
+    "services/control-api/migrations/versions/0001_foundation.py",
+    "services/control-api/pyproject.toml",
+    "services/control-api/requirements-dev.lock",
+    "services/control-api/requirements.lock",
+    "services/control-api/scripts/check-locks.py",
+    "services/control-api/scripts/compose-acceptance.py",
+    "services/control-api/scripts/init-db.sh",
+    "services/control-api/scripts/local-secrets.py",
+    "services/control-api/src/kryptroom_control/__init__.py",
+    "services/control-api/src/kryptroom_control/app.py",
+    "services/control-api/src/kryptroom_control/config.py",
+    "services/control-api/src/kryptroom_control/contracts.py",
+    "services/control-api/src/kryptroom_control/db.py",
+    "services/control-api/src/kryptroom_control/modules/__init__.py",
+    "services/control-api/src/kryptroom_control/modules/audit.py",
+    "services/control-api/src/kryptroom_control/modules/authorization.py",
+    "services/control-api/src/kryptroom_control/modules/governance.py",
+    "services/control-api/src/kryptroom_control/modules/identity.py",
+    "services/control-api/src/kryptroom_control/modules/invitations.py",
+    "services/control-api/src/kryptroom_control/modules/organizations.py",
+    "services/control-api/src/kryptroom_control/modules/rooms.py",
+    "services/control-api/src/kryptroom_control/observability.py",
+    "services/control-api/tests/conftest.py",
+    "services/control-api/tests/test_delivery.py",
+    "services/control-api/tests/test_foundation.py",
+    "services/control-api/tests/test_packaging.py",
+    "services/control-api/tests/test_postgres.py",
+    "services/control-api/uv.lock"
+  ],
+  "scope_classifier": "core=true (unchanged)",
+  "events": {
+    "pull_request:dev": [
+      {
+        "workflow": "control-api-foundation.yml",
+        "name": "M9 Control API Foundation",
+        "jobs": [
+          "m9-control-foundation"
+        ]
+      },
+      {
+        "workflow": "fhe-state-transition.yml",
+        "name": "Persistent FHE State Transition",
+        "jobs": [
+          "change-scope",
+          "contract-and-privacy",
+          "real-openfhe-bgv"
+        ]
+      },
+      {
+        "workflow": "persistent-state.yml",
+        "name": "Persistent RoomState",
+        "jobs": [
+          "change-scope",
+          "policy",
+          "cryptographic-integration"
+        ]
+      },
+      {
+        "workflow": "private-analytics.yml",
+        "name": "Persistent Private Analytics",
+        "jobs": [
+          "change-scope",
+          "contract-and-privacy",
+          "cryptographic-integration"
+        ]
+      },
+      {
+        "workflow": "private-join.yml",
+        "name": "Private join",
+        "jobs": [
+          "change-scope",
+          "policy",
+          "cryptographic-integration"
+        ]
+      },
+      {
+        "workflow": "private-nn.yml",
+        "name": "Persistent Private Neural Network",
+        "jobs": [
+          "change-scope",
+          "contract-and-privacy",
+          "cryptographic-integration"
+        ]
+      },
+      {
+        "workflow": "public-chain-anchor.yml",
+        "name": "Public Chain Anchor",
+        "jobs": [
+          "foundry-contract",
+          "python-contract-and-privacy"
+        ]
+      },
+      {
+        "workflow": "state-proof.yml",
+        "name": "Committed State Transition Proof",
+        "jobs": [
+          "contract-canonicalization-and-privacy"
+        ]
+      },
+      {
+        "workflow": "web-foundation.yml",
+        "name": "M8 Web Foundation",
+        "jobs": [
+          "foundation"
+        ]
+      }
+    ],
+    "push:feat/m9-control-api-foundation": [
+      {
+        "workflow": "control-api-foundation.yml",
+        "name": "M9 Control API Foundation",
+        "jobs": [
+          "m9-control-foundation"
+        ]
+      },
+      {
+        "workflow": "private-join.yml",
+        "name": "Private join",
+        "jobs": [
+          "change-scope",
+          "policy",
+          "cryptographic-integration"
+        ]
+      }
+    ],
+    "push:dev": [
+      {
+        "workflow": "control-api-foundation.yml",
+        "name": "M9 Control API Foundation",
+        "jobs": [
+          "m9-control-foundation"
+        ]
+      },
+      {
+        "workflow": "fhe-state-transition.yml",
+        "name": "Persistent FHE State Transition",
+        "jobs": [
+          "change-scope",
+          "contract-and-privacy",
+          "real-openfhe-bgv"
+        ]
+      },
+      {
+        "workflow": "persistent-state.yml",
+        "name": "Persistent RoomState",
+        "jobs": [
+          "change-scope",
+          "policy",
+          "cryptographic-integration"
+        ]
+      },
+      {
+        "workflow": "private-analytics.yml",
+        "name": "Persistent Private Analytics",
+        "jobs": [
+          "change-scope",
+          "contract-and-privacy",
+          "cryptographic-integration"
+        ]
+      },
+      {
+        "workflow": "private-join.yml",
+        "name": "Private join",
+        "jobs": [
+          "change-scope",
+          "policy",
+          "cryptographic-integration"
+        ]
+      },
+      {
+        "workflow": "private-nn.yml",
+        "name": "Persistent Private Neural Network",
+        "jobs": [
+          "change-scope",
+          "contract-and-privacy",
+          "cryptographic-integration"
+        ]
+      },
+      {
+        "workflow": "psi.yml",
+        "name": "PSI",
+        "jobs": [
+          "test"
+        ]
+      },
+      {
+        "workflow": "public-chain-anchor.yml",
+        "name": "Public Chain Anchor",
+        "jobs": [
+          "foundry-contract",
+          "python-contract-and-privacy"
+        ]
+      },
+      {
+        "workflow": "state-proof.yml",
+        "name": "Committed State Transition Proof",
+        "jobs": [
+          "contract-canonicalization-and-privacy"
+        ]
+      },
+      {
+        "workflow": "web-foundation.yml",
+        "name": "M8 Web Foundation",
+        "jobs": [
+          "foundation"
+        ]
+      }
+    ]
+  },
+  "groth16_or_live_chain_selected": false
+}

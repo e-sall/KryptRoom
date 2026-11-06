@@ -1,5 +1,16 @@
 # TODO
 
+## M9 PR1 — Control API foundation
+
+- [x] Verify exact dev baseline and isolate M9 from the M8 promotion workspace.
+- [x] Implement typed health/configuration, safe HTTP conventions and module ports.
+- [x] Implement versioned metadata-only schema, transactions and separate SQL roles.
+- [x] Run local unit, PostgreSQL, lifecycle, hash-lock and dependency checks.
+- [ ] Complete exact-head hosted CI after publication routing/security review.
+- [ ] Obtain independent PR1 review before merge; do not begin PR2 here.
+
+Evidence and limitations: `docs/m9/pr1/ACCEPTANCE-RESULTS.md`.
+
 ## M8 final publication preparation — 2026-11-02
 
 - [x] Preserve the approved Signal V4, walkthrough, aligned CTA and locked How.

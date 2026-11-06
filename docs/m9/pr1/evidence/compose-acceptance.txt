@@ -1,0 +1,28 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.16, pytest-9.2.0, pluggy-1.7.0 -- /usr/local/bin/python
+cachedir: /tmp/pytest-cache
+rootdir: /app
+configfile: pyproject.toml
+testpaths: tests
+plugins: platformdirs-4.14.3, cov-7.1.0, anyio-4.16.0
+collecting ... collected 25 items / 20 deselected / 5 selected
+
+tests/test_postgres.py::test_schema_version_constraints_and_metadata_only PASSED [ 20%]
+tests/test_postgres.py::test_transaction_commit_and_rollback PASSED      [ 40%]
+tests/test_postgres.py::test_runtime_role_readiness_and_least_privilege PASSED [ 60%]
+tests/test_postgres.py::test_missing_and_wrong_revision_fail_closed PASSED [ 80%]
+tests/test_postgres.py::test_authentication_failure_redacts_real_driver_errors PASSED [100%]
+
+======================= 5 passed, 20 deselected in 0.74s =======================
+ Container kryptroom-m9-local-postgres-1 Stopping
+ Container kryptroom-m9-local-postgres-1 Stopped
+ Container kryptroom-m9-local-postgres-1 Starting
+ Container kryptroom-m9-local-postgres-1 Started
+ Container kryptroom-m9-local-api-1 Restarting
+ Container kryptroom-m9-local-api-1 Started
+ Container kryptroom-m9-local-postgres-1 Running
+ Container kryptroom-m9-local-postgres-1 Waiting
+ Container kryptroom-m9-local-postgres-1 Healthy
+ Container kryptroom-m9-local-migrate-run-b2d38b5aff3b Creating
+ Container kryptroom-m9-local-migrate-run-b2d38b5aff3b Created
+{"ready": 200, "database_stopped_ready": 503, "live_during_outage": 200, "database_restart": 200, "api_restart": 200, "migration_repeat": 200, "credential_log_scan": "passed"}

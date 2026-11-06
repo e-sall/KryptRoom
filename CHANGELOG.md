@@ -1,5 +1,10 @@
 # Changelog
 
+- M9 PR1: isolated typed FastAPI health API, PostgreSQL 17/Alembic foundation,
+  transaction and safe-error conventions, deny-by-default internal module ports,
+  hash-locked dependencies and local container/CI acceptance. No business or
+  cryptographic endpoint, M8 adapter, merge or deployment. See `docs/m9/pr1`.
+
 - M8 final release preparation: preserve the validated local designs, curate
   source/evidence commits, update obsolete browser expectations to the approved
   scroll and Signal contracts, and analyze main/dev ancestry. Publication and

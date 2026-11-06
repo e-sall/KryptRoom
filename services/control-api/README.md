@@ -17,8 +17,24 @@ curl http://127.0.0.1:8001/health/live
 curl http://127.0.0.1:8001/health/ready
 ```
 
-The operator-generated passwords live only in ignored `.runtime/secrets`. Existing
-files are never overwritten. Restrict their filesystem permissions/Windows ACLs.
+Compose requires native Linux/POSIX storage (including a WSL Linux filesystem,
+not a Windows `/mnt/c` checkout). The generator rejects non-private directories,
+invalid existing credentials and unsupported permission semantics. Canonical
+passwords remain in ignored `.runtime/secrets`, directories `0700` and files
+`0600`, owned by the operator. Existing values are never overwritten.
+
+A one-shot `prepare-secrets` container projects those credentials into separate
+consumer volumes: directories `0700`, files `0400`, UID/GID 999 for PostgreSQL and
+10001 for migrate/API/tests. Each consumer mounts only its own volume read-only;
+the API receives only its application credential. No world-readable mode is used.
+The preparer runs no API, has no network, a read-only root filesystem, and only
+CHOWN/DAC_OVERRIDE capabilities needed to read private operator files and assign
+consumer ownership. It exits before PostgreSQL can start. Values or metadata
+mismatches in an existing projection fail instead of silently rotating credentials.
+
+The preparer is a local/CI bootstrap helper, not a new business service. Docker
+operators are trusted; this is not protection against host root or daemon owners.
+Native Windows API development remains separate from this POSIX Compose profile.
 The database has no host port. The API is bound to loopback; do not expose it as a
 production service. Local database transport is explicitly non-TLS on an internal
 Docker network. Typed configuration otherwise defaults to requiring database TLS.
@@ -43,6 +59,8 @@ non-superuser roles once, on a fresh volume. It creates `control_api`, grants on
 schema usage/table SELECT to the application role, and leaves public-schema CREATE
 revoked. Application startup never runs migrations or `create_all`.
 
+The PostgreSQL initializer validates all credentials before any role SQL and stops
+on absent, unreadable, empty, malformed or incorrectly owned/permitted files.
 The separate `migrate` service applies `alembic upgrade head` before the API starts.
 Readiness requires PostgreSQL major 17, the exact Alembic revision
 `0001_foundation`, and the technical marker `m9-control-foundation-v1`. Liveness

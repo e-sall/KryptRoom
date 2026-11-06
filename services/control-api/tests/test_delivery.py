@@ -98,12 +98,22 @@ def test_existing_proof_and_chain_routes_are_not_silently_exempted() -> None:
 def test_local_compose_is_isolated_and_pinned() -> None:
     compose = yaml.safe_load((SERVICE / "compose.yml").read_text())
     services = compose["services"]
-    assert set(services) == {"postgres", "api", "migrate", "tests"}
+    assert set(services) == {"prepare-secrets", "postgres", "api", "migrate", "tests"}
     assert "@sha256:" in services["postgres"]["image"]
     assert "ports" not in services["postgres"]
     assert services["api"]["ports"] == ["127.0.0.1:8001:8000"]
-    assert services["api"]["secrets"] == ["app_password"]
-    assert services["migrate"]["secrets"] == ["migrator_password"]
+    assert services["api"]["volumes"] == ["api-secrets:/run/secrets:ro"]
+    assert services["migrate"]["volumes"] == ["migrator-secrets:/run/secrets:ro"]
+    assert services["tests"]["volumes"] == ["test-secrets:/run/secrets:ro"]
+    assert all("secrets" not in services[name] for name in ("api", "migrate", "tests", "postgres"))
+    preparation = services["prepare-secrets"]
+    assert preparation["network_mode"] == "none"
+    assert preparation["read_only"] is True
+    assert preparation["cap_drop"] == ["ALL"]
+    assert preparation["cap_add"] == ["CHOWN", "DAC_OVERRIDE"]
+    assert services["postgres"]["depends_on"]["prepare-secrets"] == {
+        "condition": "service_completed_successfully"
+    }
     assert compose["networks"]["database"]["internal"] is True
     assert services["api"]["networks"] == ["database", "ingress"]
     assert services["postgres"]["networks"] == ["database"]

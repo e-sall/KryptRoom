@@ -13,6 +13,7 @@ dependencies = [
   "uvicorn==0.54.0",
   "PyJWT[crypto]==2.15.1",
   "cryptography==50.0.2",
+  "uuid6==2025.0.1",
 ]
 
 [dependency-groups]

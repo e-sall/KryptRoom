@@ -6,12 +6,29 @@ import stat
 import sys
 from pathlib import Path
 
-NAMES = ("postgres_password", "migrator_password", "app_password")
+NAMES = (
+    "postgres_password",
+    "migrator_password",
+    "app_password",
+    "operator_password",
+    "bff_password",
+    "keycloak_password",
+)
 SCOPES = {
-    "postgres": (999, ("postgres_password", "migrator_password", "app_password")),
+    "postgres": (
+        999,
+        (
+            "postgres_password",
+            "migrator_password",
+            "app_password",
+            "operator_password",
+            "bff_password",
+            "keycloak_password",
+        ),
+    ),
     "migrate": (10001, ("migrator_password",)),
     "api": (10001, ("app_password",)),
-    "tests": (10001, ("migrator_password", "app_password")),
+    "tests": (10001, ("migrator_password", "app_password", "operator_password", "bff_password")),
 }
 
 

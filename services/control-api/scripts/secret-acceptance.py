@@ -60,7 +60,7 @@ print('UID 10001, scoped owner-only credentials, read-only mount: PASS')
 for service, names in (
     ("migrate", ["migrator_password"]),
     ("api", ["app_password"]),
-    ("tests", ["migrator_password", "app_password"]),
+    ("tests", ["migrator_password", "app_password", "operator_password", "bff_password"]),
 ):
     run(
         "compose",
@@ -110,10 +110,11 @@ scram = run(
     "-d",
     "postgres",
     "-Atc",
-    "SELECT count(*) FROM pg_authid WHERE rolname IN ('kryptroom_app','kryptroom_migrator') "
+    "SELECT count(*) FROM pg_authid WHERE rolname IN ('kryptroom_app','kryptroom_migrator',"
+    "'kryptroom_operator','kryptroom_bff','kryptroom_keycloak') "
     "AND rolpassword LIKE 'SCRAM-SHA-256$%'",
 ).stdout.strip()
-require(scram == "2", "Application roles must have SCRAM credentials")
+require(scram == "5", "Application roles must have SCRAM credentials")
 
 container = run("compose", "ps", "-a", "-q", "prepare-secrets").stdout.strip()
 image = run("inspect", container, "--format", "{{.Image}}").stdout.strip()
@@ -121,7 +122,14 @@ source_results = []
 for case in ("missing", "unreadable", "empty", "invalid", "permissions"):
     with tempfile.TemporaryDirectory(prefix="kryptroom-source-negative-") as temporary:
         source = Path(temporary)
-        for name in ("postgres_password", "migrator_password", "app_password"):
+        for name in (
+            "postgres_password",
+            "migrator_password",
+            "app_password",
+            "operator_password",
+            "bff_password",
+            "keycloak_password",
+        ):
             p = source / name
             p.write_text(secrets.token_urlsafe(36), encoding="utf-8")
             p.chmod(0o600)
@@ -173,7 +181,14 @@ for case in ("missing", "unreadable", "empty", "invalid", "permissions", "owner"
         source = Path(temporary)
         values = {
             name: secrets.token_urlsafe(36)
-            for name in ("postgres_password", "migrator_password", "app_password")
+            for name in (
+                "postgres_password",
+                "migrator_password",
+                "app_password",
+                "operator_password",
+                "bff_password",
+                "keycloak_password",
+            )
         }
         for name, value in values.items():
             p = source / name
@@ -311,7 +326,8 @@ if case != 'missing':
                 "postgres",
                 "-Atc",
                 "SELECT count(*) FROM pg_roles "
-                "WHERE rolname IN ('kryptroom_app','kryptroom_migrator')",
+                "WHERE rolname IN ('kryptroom_app','kryptroom_migrator',"
+                "'kryptroom_operator','kryptroom_bff','kryptroom_keycloak')",
             ).stdout.strip()
             require(count == "0", "A role was created despite invalid bootstrap credentials")
             results.append({"case": case, "bootstrap_refused": True, "application_roles": 0})
@@ -325,7 +341,7 @@ print(
         {
             "consumer_uid_isolation": ["migrate", "api", "tests"],
             "foreign_uid_refused": True,
-            "scram_roles": 2,
+            "scram_roles": 5,
             "source_negatives": source_results,
             "native_postgres_negatives": results,
         }

@@ -5,6 +5,7 @@ from typing import Any
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+from pydantic import SecretStr
 from sqlalchemy.exc import SQLAlchemyError
 from starlette.exceptions import HTTPException
 
@@ -12,6 +13,8 @@ from kryptroom_control.config import Settings, load_settings
 from kryptroom_control.contracts import BusinessError, ErrorDetail, ErrorResponse, HealthResponse
 from kryptroom_control.db import Database
 from kryptroom_control.observability import CorrelationMiddleware, configure_request_logging
+from kryptroom_control.oidc import OIDCConfiguration, OIDCVerifier
+from kryptroom_control.organization_service import AccessError
 
 
 def error_response(request: Request, status: int, code: str, message: str) -> JSONResponse:
@@ -24,11 +27,28 @@ def error_response(request: Request, status: int, code: str, message: str) -> JS
 
 def create_app(settings: Settings | None = None) -> FastAPI:
     configuration = settings if settings is not None else load_settings()
+    verifier = None
+    if configuration.oidc_issuer is not None:
+        try:
+            if configuration.oidc_client_secret_file is None:
+                raise ValueError("Missing OIDC credential")
+            verifier = OIDCVerifier(
+                OIDCConfiguration(
+                    configuration.oidc_issuer,
+                    "kryptroom-control-api",
+                    SecretStr(configuration.oidc_client_secret_file.read_text(encoding="utf-8")),
+                    local_http=configuration.oidc_local_http,
+                    transport_origin=configuration.oidc_transport_origin,
+                )
+            )
+        except (OSError, ValueError):
+            raise RuntimeError("Invalid OIDC server configuration") from None
 
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         configure_request_logging()
         app.state.database = Database(configuration)
+        app.state.oidc = verifier
         try:
             yield
         finally:
@@ -48,6 +68,19 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         openapi_url="/openapi.json" if configuration.docs_enabled else None,
     )
     app.add_middleware(CorrelationMiddleware)
+
+    if verifier is not None:
+        from kryptroom_control.identity_api import router
+
+        app.include_router(router)
+        app.title = "KryptRoom Control API — Identity & Organizations"
+        app.description = (
+            "Controlled organization metadata only; no cryptographic execution authority."
+        )
+
+    @app.exception_handler(AccessError)
+    async def access_error(request: Request, exc: AccessError) -> JSONResponse:
+        return error_response(request, exc.status, exc.code, "Request could not be completed")
 
     @app.exception_handler(HTTPException)
     async def http_error(request: Request, exc: HTTPException) -> JSONResponse:

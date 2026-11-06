@@ -44,7 +44,16 @@ def test_schema_version_constraints_and_metadata_only(migrated: Database) -> Non
                 "SELECT table_name FROM information_schema.tables "
                 "WHERE table_schema='control_api' ORDER BY table_name"
             )
-        ).all() == ["alembic_version", "foundation_metadata"]
+        ).all() == [
+            "alembic_version",
+            "foundation_metadata",
+            "idempotency_records",
+            "identity_links",
+            "organization_access_events",
+            "organization_memberships",
+            "organizations",
+            "users",
+        ]
         count = session.scalar(text("SELECT count(*) FROM control_api.foundation_metadata"))
         assert count == 1
         constraints = session.scalars(

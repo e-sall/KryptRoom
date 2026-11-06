@@ -20,7 +20,14 @@ for directory in (root / ".runtime", root / ".runtime" / "secrets"):
     ):
         raise SystemExit("Refusing non-private local credential directory")
 
-for name in ("postgres_password", "migrator_password", "app_password"):
+for name in (
+    "postgres_password",
+    "migrator_password",
+    "app_password",
+    "operator_password",
+    "bff_password",
+    "keycloak_password",
+):
     path = directory / name
     try:
         descriptor = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)

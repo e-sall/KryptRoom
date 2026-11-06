@@ -2,7 +2,7 @@ name: kryptroom-m9-local
 services:
   prepare-secrets:
     build: {context: ., target: secret-bootstrap}
-    secrets: [postgres_password, migrator_password, app_password]
+    secrets: [postgres_password, migrator_password, app_password, operator_password, bff_password, keycloak_password]
     volumes:
       - postgres-secrets:/output/postgres
       - migrator-secrets:/output/migrate
@@ -79,6 +79,8 @@ services:
       CONTROL_ENVIRONMENT: test
       CONTROL_TEST_POSTGRES: '1'
       CONTROL_TEST_APP_PASSWORD_FILE: /run/secrets/app_password
+      CONTROL_TEST_OPERATOR_PASSWORD_FILE: /run/secrets/operator_password
+      CONTROL_TEST_BFF_PASSWORD_FILE: /run/secrets/bff_password
     volumes: [test-secrets:/run/secrets:ro]
     depends_on:
       postgres: {condition: service_healthy}
@@ -102,3 +104,6 @@ secrets:
   postgres_password: {file: ./.runtime/secrets/postgres_password}
   migrator_password: {file: ./.runtime/secrets/migrator_password}
   app_password: {file: ./.runtime/secrets/app_password}
+  operator_password: {file: ./.runtime/secrets/operator_password}
+  bff_password: {file: ./.runtime/secrets/bff_password}
+  keycloak_password: {file: ./.runtime/secrets/keycloak_password}

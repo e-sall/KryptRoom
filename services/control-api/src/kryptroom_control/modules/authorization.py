@@ -8,7 +8,12 @@ from kryptroom_control.modules.identity import Principal
 
 
 class BusinessAction(StrEnum):
+    ORGANIZATION_REGISTER = "organization.register"
     ORGANIZATION_READ = "organization.read"
+    ORGANIZATION_UPDATE = "organization.update"
+    MEMBERS_READ = "organization.members.read"
+    MEMBERS_ROLE_CHANGE = "organization.members.role.change"
+    MEMBERS_REVOKE = "organization.members.revoke"
     ROOM_READ = "room.read"
 
 

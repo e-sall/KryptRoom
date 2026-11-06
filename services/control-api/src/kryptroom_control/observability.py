@@ -41,9 +41,21 @@ class CorrelationMiddleware:
                 message.setdefault("headers", []).extend(
                     [
                         (b"x-correlation-id", correlation_id.encode("ascii")),
-                        (b"cache-control", b"no-store"),
                         (b"x-content-type-options", b"nosniff"),
                     ]
+                )
+                message["headers"] = [
+                    (key, value)
+                    for key, value in message["headers"]
+                    if key.lower() != b"cache-control"
+                ]
+                message["headers"].append(
+                    (
+                        b"cache-control",
+                        b"private, no-store"
+                        if scope.get("path", "").startswith("/api/v1/")
+                        else b"no-store",
+                    )
                 )
             await send(message)
 

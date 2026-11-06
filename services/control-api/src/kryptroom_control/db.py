@@ -18,7 +18,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sess
 from kryptroom_control.config import Settings
 
 SCHEMA = "control_api"
-SCHEMA_REVISION = "0001_foundation"
+SCHEMA_REVISION = "0002_identity_organizations"
 SCHEMA_CONTRACT = "m9-control-foundation-v1"
 
 

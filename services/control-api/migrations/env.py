@@ -1,6 +1,7 @@
 from alembic import context
 from sqlalchemy import create_engine, pool
 
+from kryptroom_control import identity_schema  # noqa: F401 — register PR2 metadata
 from kryptroom_control.config import load_settings
 from kryptroom_control.db import SCHEMA, Base
 
@@ -9,7 +10,9 @@ options = {
     "target_metadata": Base.metadata,
     "version_table_schema": SCHEMA,
     "include_schemas": True,
-    "include_name": lambda name, type_, parent: name == SCHEMA if type_ == "schema" else True,
+    "include_name": lambda name, type_, parent: (
+        name in (SCHEMA, "bff_auth") if type_ == "schema" else True
+    ),
 }
 
 if context.is_offline_mode():

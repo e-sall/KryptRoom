@@ -24,6 +24,10 @@ class Settings(BaseSettings):
     database_statement_timeout_ms: int = Field(default=2000, ge=100, le=10000)
     database_pool_size: int = Field(default=5, ge=1, le=20)
     docs_enabled: bool = False
+    oidc_issuer: str | None = None
+    oidc_client_secret_file: Path | None = Field(default=None, exclude=True)
+    oidc_local_http: bool = False
+    oidc_transport_origin: str | None = None
 
     @model_validator(mode="after")
     def load_password(self) -> "Settings":

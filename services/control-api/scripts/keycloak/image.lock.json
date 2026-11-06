@@ -1,0 +1,6 @@
+{
+  "image": "quay.io/keycloak/keycloak:26.8.2@sha256:3879c623248408de29a5303178b5816c77e8dfef3890c361f8c0bbeaa979ba3b",
+  "uid": 1000,
+  "release": "https://github.com/keycloak/keycloak/releases/tag/26.8.2",
+  "scope": "local/CI synthetic identity provider only; no production deployment"
+}

@@ -1,0 +1,128 @@
+{
+  "realm": "kryptroom-dev",
+  "enabled": true,
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": false,
+  "duplicateEmailsAllowed": true,
+  "resetPasswordAllowed": false,
+  "editUsernameAllowed": false,
+  "accessTokenLifespan": 300,
+  "ssoSessionIdleTimeout": 1800,
+  "ssoSessionMaxLifespan": 28800,
+  "sslRequired": "none",
+  "clients": [
+    {
+      "clientId": "kryptroom-web-bff",
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "secret": "${KR_BFF_CLIENT_SECRET}",
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "implicitFlowEnabled": false,
+      "serviceAccountsEnabled": false,
+      "redirectUris": [
+        "http://127.0.0.1:3004/auth/callback"
+      ],
+      "webOrigins": [
+        "http://127.0.0.1:3004"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "backchannel.logout.url": "http://bff:3000/auth/backchannel-logout",
+        "backchannel.logout.session.required": "true",
+        "post.logout.redirect.uris": "http://127.0.0.1:3004/"
+      },
+      "protocolMappers": [
+        {
+          "name": "api-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "kryptroom-control-api",
+            "id.token.claim": "false",
+            "access.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "clientId": "kryptroom-control-api",
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "secret": "${KR_API_CLIENT_SECRET}",
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "implicitFlowEnabled": false,
+      "serviceAccountsEnabled": false,
+      "redirectUris": [],
+      "webOrigins": []
+    }
+  ],
+  "users": [
+    {
+      "username": "alice",
+      "enabled": true,
+      "firstName": "alice",
+      "lastName": "Synthetic",
+      "email": "shared@example.test",
+      "emailVerified": true,
+      "requiredActions": [],
+      "credentials": [
+        {
+          "type": "password",
+          "value": "${KR_ALICE_PASSWORD}",
+          "temporary": false
+        }
+      ]
+    },
+    {
+      "username": "bob",
+      "enabled": true,
+      "firstName": "bob",
+      "lastName": "Synthetic",
+      "email": "shared@example.test",
+      "emailVerified": true,
+      "requiredActions": [],
+      "credentials": [
+        {
+          "type": "password",
+          "value": "${KR_BOB_PASSWORD}",
+          "temporary": false
+        }
+      ]
+    },
+    {
+      "username": "charlie",
+      "enabled": true,
+      "firstName": "charlie",
+      "lastName": "Synthetic",
+      "email": "shared@example.test",
+      "emailVerified": true,
+      "requiredActions": [],
+      "credentials": [
+        {
+          "type": "password",
+          "value": "${KR_CHARLIE_PASSWORD}",
+          "temporary": false
+        }
+      ]
+    },
+    {
+      "username": "dora",
+      "enabled": true,
+      "firstName": "dora",
+      "lastName": "Synthetic",
+      "email": "shared@example.test",
+      "emailVerified": true,
+      "requiredActions": [],
+      "credentials": [
+        {
+          "type": "password",
+          "value": "${KR_DORA_PASSWORD}",
+          "temporary": false
+        }
+      ]
+    }
+  ]
+}

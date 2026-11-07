@@ -30,6 +30,20 @@ class Operator:
         )
 
     def approve(self, oid: UUID) -> None:
+        applicant_id = self.session.scalar(
+            sa.select(organizations.c.requested_by_user_id).where(organizations.c.id == oid)
+        )
+        if applicant_id is None:
+            raise AccessError(409, "registration_not_pending")
+        applicant = (
+            self.session.execute(
+                sa.select(users).where(users.c.id == applicant_id).with_for_update(read=True)
+            )
+            .mappings()
+            .one()
+        )
+        if applicant["status"] != "ACTIVE":
+            raise AccessError(409, "applicant_inactive")
         org = (
             self.session.execute(
                 sa.select(organizations).where(organizations.c.id == oid).with_for_update()
@@ -55,15 +69,6 @@ class Operator:
         )
         if owner is None:
             raise AccessError(409, "registration_inconsistent")
-        applicant = (
-            self.session.execute(
-                sa.select(users).where(users.c.id == owner["user_id"]).with_for_update()
-            )
-            .mappings()
-            .one()
-        )
-        if applicant["status"] != "ACTIVE":
-            raise AccessError(409, "applicant_inactive")
         self.session.execute(
             organizations.update()
             .where(organizations.c.id == oid)
@@ -91,15 +96,17 @@ class Operator:
     def provision(self, oid: UUID, uid: UUID, role: str = "ORG_MEMBER") -> UUID:
         if role not in {"ORG_OWNER", "ORG_ADMIN", "ORG_MEMBER"}:
             raise ValueError("Invalid membership role")
-        org = (
+        user = (
             self.session.execute(
-                sa.select(organizations).where(organizations.c.id == oid).with_for_update()
+                sa.select(users).where(users.c.id == uid).with_for_update(read=True)
             )
             .mappings()
             .one_or_none()
         )
-        user = (
-            self.session.execute(sa.select(users).where(users.c.id == uid).with_for_update())
+        org = (
+            self.session.execute(
+                sa.select(organizations).where(organizations.c.id == oid).with_for_update()
+            )
             .mappings()
             .one_or_none()
         )
@@ -138,6 +145,8 @@ class Operator:
         allowed = {("ACTIVE", "SUSPENDED"), ("SUSPENDED", "ACTIVE"), ("PENDING_REVIEW", "REJECTED")}
         if org is None or (org["status"], status) not in allowed:
             raise AccessError(409, "invalid_status_transition")
+        if status == "ACTIVE" and not self.active_owners(oid):
+            raise AccessError(409, "active_owner_required")
         self.session.execute(
             organizations.update()
             .where(organizations.c.id == oid)
@@ -153,9 +162,52 @@ class Operator:
         )
         if row is None:
             raise AccessError(404, "resource_not_found")
+        owned = self.session.scalars(
+            sa.select(organizations.c.id)
+            .where(
+                organizations.c.status == "ACTIVE",
+                sa.exists(
+                    sa.select(memberships.c.id).where(
+                        memberships.c.organization_id == organizations.c.id,
+                        memberships.c.user_id == uid,
+                        memberships.c.role == "ORG_OWNER",
+                        memberships.c.status == "ACTIVE",
+                    )
+                ),
+            )
+            .order_by(organizations.c.id)
+            .with_for_update()
+        ).all()
         self.session.execute(
             users.update()
             .where(users.c.id == uid)
             .values(status="SUSPENDED", version=users.c.version + 1, updated_at=sa.func.now())
         )
+        for oid in owned:
+            if not self.active_owners(oid):
+                self.session.execute(
+                    organizations.update()
+                    .where(organizations.c.id == oid)
+                    .values(
+                        status="SUSPENDED",
+                        updated_at=sa.func.now(),
+                        version=organizations.c.version + 1,
+                    )
+                )
+                self.event(oid, "organization_suspended_last_owner")
         self.event(None, "user_suspended")
+
+    def active_owners(self, oid: UUID) -> int:
+        return int(
+            self.session.scalar(
+                sa.select(sa.func.count())
+                .select_from(memberships.join(users, users.c.id == memberships.c.user_id))
+                .where(
+                    memberships.c.organization_id == oid,
+                    memberships.c.role == "ORG_OWNER",
+                    memberships.c.status == "ACTIVE",
+                    users.c.status == "ACTIVE",
+                )
+            )
+            or 0
+        )

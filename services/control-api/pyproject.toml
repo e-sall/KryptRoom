@@ -38,7 +38,7 @@ exclude = ["**/__pycache__/**", "**/*.py[cod]", "**/*.egg-info/**", ".runtime/**
 only-include = [
   "src/kryptroom_control", "migrations", "tests", "scripts", "README.md",
   "pyproject.toml", "alembic.ini", "Dockerfile", ".dockerignore", ".gitattributes",
-  ".gitignore", ".python-version", "compose.yml", "requirements.lock",
+  ".gitignore", ".python-version", "compose.yml", "compose.identity.yml", "requirements.lock",
   "requirements-dev.lock", "uv.lock",
 ]
 

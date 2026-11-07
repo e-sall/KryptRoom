@@ -24,6 +24,7 @@ def downgrade() -> None:
         DROP FUNCTION control_api.resolve_identity(uuid,uuid,text,text,text,text);
         DROP FUNCTION control_api.lookup_identity(text,text);
         DROP FUNCTION control_api.lock_current_user();
+        DROP FUNCTION control_api.active_owner_count(uuid,uuid);
         DROP TABLE bff_auth.logout_replays, bff_auth.oidc_transactions, bff_auth.sessions;
         DROP TABLE control_api.idempotency_records, control_api.organization_access_events,
             control_api.organization_memberships, control_api.organizations,

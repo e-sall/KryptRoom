@@ -141,3 +141,6 @@ CREATE TABLE control_api.organization_memberships (
 
 ;
 CREATE INDEX ix_memberships_user_status ON control_api.organization_memberships (user_id, status);
+-- Add after all tables exist; BFF still receives no SELECT on identity tables.
+ALTER TABLE bff_auth.sessions ADD CONSTRAINT fk_sessions_user_id_users
+    FOREIGN KEY (user_id) REFERENCES control_api.users(id);

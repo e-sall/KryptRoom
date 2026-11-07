@@ -123,7 +123,7 @@ sessions = sa.Table(
     "sessions",
     m,
     sa.Column("id_hash", sa.String(64), primary_key=True),
-    sa.Column("user_id", sa.Uuid(), nullable=False),
+    fk("user_id", "users.id"),
     sa.Column("issuer", sa.String(512), nullable=False),
     sa.Column("subject", sa.String(255), nullable=False),
     sa.Column("provider_sid", sa.String(255)),

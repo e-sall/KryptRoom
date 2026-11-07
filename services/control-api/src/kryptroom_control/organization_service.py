@@ -248,15 +248,10 @@ class OrganizationService:
         ).one()
         if target["role"] == "ORG_OWNER" and role != "ORG_OWNER":
             owners = self.session.scalar(
-                sa.select(sa.func.count())
-                .select_from(memberships)
-                .where(
-                    memberships.c.organization_id == oid,
-                    memberships.c.status == "ACTIVE",
-                    memberships.c.role == "ORG_OWNER",
-                )
+                sa.text("SELECT control_api.active_owner_count(:oid,:excluded)"),
+                {"oid": oid, "excluded": target["user_id"]},
             )
-            if owners is None or owners <= 1:
+            if owners is None or owners < 1:
                 raise AccessError(409, "last_owner")
         values: dict[str, Any] = {"version": memberships.c.version + 1, "updated_at": sa.func.now()}
         if role:

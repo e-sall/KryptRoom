@@ -1,4 +1,5 @@
 -- Application role is never owner, superuser or BYPASSRLS. No public functions.
+GRANT CREATE ON SCHEMA control_api TO kryptroom_auth_guard;
 REVOKE ALL ON ALL TABLES IN SCHEMA control_api FROM kryptroom_app;
 GRANT SELECT ON control_api.alembic_version, control_api.foundation_metadata TO kryptroom_app;
 REVOKE ALL ON SCHEMA bff_auth FROM PUBLIC;
@@ -31,6 +32,17 @@ $$;
 ALTER FUNCTION control_api.active_role(uuid) OWNER TO kryptroom_auth_guard;
 REVOKE ALL ON FUNCTION control_api.active_role(uuid) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION control_api.active_role(uuid) TO kryptroom_app;
+CREATE FUNCTION control_api.active_owner_count(target uuid, excluded uuid) RETURNS bigint
+LANGUAGE sql STABLE SECURITY DEFINER SET search_path = pg_catalog AS $$
+    SELECT count(*) FROM control_api.organization_memberships m
+    JOIN control_api.users u ON u.id=m.user_id
+    WHERE m.organization_id=target AND m.role='ORG_OWNER' AND m.status='ACTIVE'
+      AND m.user_id<>excluded
+      AND u.status='ACTIVE' AND control_api.active_role(target)='ORG_OWNER'
+$$;
+ALTER FUNCTION control_api.active_owner_count(uuid,uuid) OWNER TO kryptroom_auth_guard;
+REVOKE ALL ON FUNCTION control_api.active_owner_count(uuid,uuid) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION control_api.active_owner_count(uuid,uuid) TO kryptroom_app;
 
 CREATE FUNCTION control_api.resolve_identity(uid uuid, lid uuid, iss text, sub text,
     label text, email text) RETURNS uuid
@@ -107,7 +119,9 @@ CREATE POLICY org_update ON control_api.organizations FOR UPDATE TO kryptroom_ap
 CREATE POLICY operator_org ON control_api.organizations TO kryptroom_operator USING (true) WITH CHECK (true);
 GRANT SELECT, INSERT ON control_api.organizations TO kryptroom_app;
 GRANT UPDATE(display_name,updated_at,version) ON control_api.organizations TO kryptroom_app;
-GRANT SELECT, UPDATE ON control_api.organizations TO kryptroom_operator;
+GRANT SELECT ON control_api.organizations TO kryptroom_operator;
+GRANT UPDATE(status,verification_status,review_reference,reviewed_at,updated_at,version)
+    ON control_api.organizations TO kryptroom_operator;
 
 ALTER TABLE control_api.organization_memberships ENABLE ROW LEVEL SECURITY;
 ALTER TABLE control_api.organization_memberships FORCE ROW LEVEL SECURITY;
@@ -127,7 +141,9 @@ CREATE POLICY operator_member ON control_api.organization_memberships TO kryptro
     USING (true) WITH CHECK (true);
 GRANT SELECT, INSERT ON control_api.organization_memberships TO kryptroom_app;
 GRANT UPDATE(role,status,revoked_at,updated_at,version) ON control_api.organization_memberships TO kryptroom_app;
-GRANT SELECT, INSERT, UPDATE ON control_api.organization_memberships TO kryptroom_operator;
+GRANT SELECT, INSERT ON control_api.organization_memberships TO kryptroom_operator;
+GRANT UPDATE(status,activated_at,updated_at,version)
+    ON control_api.organization_memberships TO kryptroom_operator;
 
 ALTER TABLE control_api.idempotency_records ENABLE ROW LEVEL SECURITY;
 ALTER TABLE control_api.idempotency_records FORCE ROW LEVEL SECURITY;
@@ -143,3 +159,4 @@ CREATE POLICY operator_event ON control_api.organization_access_events FOR INSER
     WITH CHECK (length(operator_reference)>0 AND length(case_reference)>0);
 GRANT INSERT ON control_api.organization_access_events TO kryptroom_app, kryptroom_operator;
 -- No UPDATE or DELETE grants on security events. Not cryptographic evidence.
+REVOKE CREATE ON SCHEMA control_api FROM kryptroom_auth_guard;

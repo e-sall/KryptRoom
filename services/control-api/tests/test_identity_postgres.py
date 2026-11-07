@@ -10,11 +10,11 @@ import sqlalchemy as sa
 from alembic import command
 from alembic.config import Config
 from pydantic import SecretStr
-from sqlalchemy.exc import DBAPIError
+from sqlalchemy.exc import DBAPIError, IntegrityError
 from uuid6 import uuid7
 
 from kryptroom_control.db import Database
-from kryptroom_control.identity_schema import memberships, organizations
+from kryptroom_control.identity_schema import logout_replays, memberships, organizations, sessions
 from kryptroom_control.modules.authorization import BusinessAction
 from kryptroom_control.modules.identity import Principal
 from kryptroom_control.operator import Operator
@@ -283,3 +283,108 @@ def test_org_and_user_suspension(stores, cohort):
         op.suspend_user(charlie)
     with pytest.raises(AccessError, match="identity_inactive"), app.transaction() as s:
         active_user(s, charlie)
+
+
+def test_suspending_last_effective_owner_suspends_org_fail_closed(stores, cohort):
+    alice, _, charlie, _, aid, _, *_ = cohort
+    with stores["operator"].transaction() as s:
+        op = Operator(s, "synthetic-test-operator", "CASE-LAST-OWNER")
+        op.suspend_user(alice)
+        assert (
+            s.scalar(sa.select(organizations.c.status).where(organizations.c.id == aid))
+            == "SUSPENDED"
+        )
+        with pytest.raises(AccessError, match="active_owner_required"):
+            op.set_organization_status(aid, "ACTIVE")
+    with stores["app"].transaction() as s:
+        active_user(s, charlie)
+        with pytest.raises(AccessError, match="resource_not_found"):
+            OrganizationService(s, Principal(charlie)).authorized(
+                aid, BusinessAction.ORGANIZATION_READ
+            )
+
+
+def test_suspended_owner_cannot_count_as_a_remaining_owner(stores, cohort):
+    alice, _, charlie, _, aid, _, am, cm, _ = cohort
+    with stores["app"].transaction() as s:
+        active_user(s, alice)
+        OrganizationService(s, Principal(alice)).change_member(aid, cm, "ORG_OWNER", '"1"')
+    with stores["operator"].transaction() as s:
+        Operator(s, "synthetic-test-operator", "CASE-OWNER").suspend_user(charlie)
+    with stores["app"].transaction() as s:
+        active_user(s, alice)
+        service = OrganizationService(s, Principal(alice))
+        with pytest.raises(AccessError, match="last_owner"):
+            service.change_member(aid, am, None, '"2"')
+        # Removing an already ineffective owner does not remove the effective owner.
+        service.change_member(aid, cm, None, '"2"')
+
+
+def test_rls_helpers_are_nonlogin_scoped_and_runtime_cannot_disable_filtering(stores, cohort):
+    alice, _, _, _, aid, bid, *_ = cohort
+    with stores["app"].transaction() as s:
+        active_user(s, alice)
+        assert (
+            s.scalar(
+                sa.text("SELECT control_api.active_owner_count(:oid,:excluded)"),
+                {"oid": bid, "excluded": alice},
+            )
+            == 0
+        )
+        assert (
+            s.scalar(
+                sa.text("SELECT rolcanlogin FROM pg_roles WHERE rolname='kryptroom_auth_guard'")
+            )
+            is False
+        )
+        assert (
+            s.scalar(
+                sa.text(
+                    "SELECT has_schema_privilege('kryptroom_auth_guard','control_api','CREATE')"
+                )
+            )
+            is False
+        )
+        assert (
+            s.scalar(
+                sa.text(
+                    "SELECT has_table_privilege('kryptroom_auth_guard', "
+                    "(SELECT c.oid FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace "
+                    "WHERE n.nspname='bff_auth' AND c.relname='sessions'),'SELECT')"
+                )
+            )
+            is False
+        )
+        assert (
+            s.scalar(
+                sa.text(
+                    "SELECT count(*) FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace "
+                    "WHERE n.nspname='control_api' AND p.prosecdef "
+                    "AND NOT coalesce('search_path=pg_catalog'=ANY(p.proconfig),false)"
+                )
+            )
+            == 0
+        )
+    with pytest.raises(DBAPIError), stores["app"].transaction() as s:
+        active_user(s, alice)
+        s.execute(sa.text("SET LOCAL row_security=off"))
+        s.execute(sa.select(organizations).where(organizations.c.id == aid))
+
+
+def test_bff_user_reference_and_logout_replay_constraints(stores):
+    with pytest.raises(IntegrityError), stores["bff"].transaction() as s:
+        s.execute(
+            sessions.insert().values(
+                id_hash=uuid7().hex + uuid7().hex,
+                user_id=uuid7(),
+                issuer="https://synthetic.example.test/realm",
+                subject="missing-user",
+                encrypted_access_token=uuid7().hex,
+                encryption_key_id="test",
+            )
+        )
+    jti = str(uuid7())
+    with stores["bff"].transaction() as s:
+        s.execute(logout_replays.insert().values(issuer="https://synthetic.example.test", jti=jti))
+    with pytest.raises(IntegrityError), stores["bff"].transaction() as s:
+        s.execute(logout_replays.insert().values(issuer="https://synthetic.example.test", jti=jti))

@@ -601,3 +601,16 @@ fixture controller performs fixed lifecycle steps; its non-root browser receives
 neither Docker authority nor SQL/operator/server keys. Retain the strict hosted
 moderate-audit gate: the new local-only exception cannot authorize hosted CI.
 See `docs/m9/pr2` for measured evidence and remaining deployment decisions.
+
+## 2026-11-06 — PR2 targeted independent QA follow-up
+
+Requester-based SQL visibility is restricted to PENDING_REVIEW/REJECTED, matching
+the existing registration contract; active organization access requires an active
+role even for its original applicant. Tests coordinate distinct real PostgreSQL
+connections and verify pg_blocking_pids before commit, rather than assuming thread
+overlap. Existing post-lock business authorization passes without modification.
+The direct inactive-token acceptance probe stays in the trusted test controller;
+it never gives a token or SQL credential to the browser. All dependencies,
+runtime authorization contracts, Core and workflow controls remain unchanged.
+The new explicit local-only M9-PR2-SEC-002 expires 2026-11-08T02:51:16Z and grants
+no hosted CI or publication authority. See the targeted QA report and decision.

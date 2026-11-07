@@ -1,8 +1,12 @@
 """Real PostgreSQL policy, enrollment, revocation and concurrency acceptance."""
 
+import json
 import os
+import time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from queue import Queue
+from threading import Event
 from uuid import UUID
 
 import pytest
@@ -227,6 +231,122 @@ def test_roles_preconditions_and_immediate_revocation(stores, cohort):
             )
 
 
+def test_revoked_requester_cannot_read_active_org_but_can_read_own_requests(stores, cohort):
+    alice, bob, charlie, _, aid, _, am, cm, _ = cohort
+    app, operator = stores["app"], stores["operator"]
+    pending = register(app, alice, "Own pending request")
+    rejected = register(app, alice, "Own rejected request")
+    foreign = register(app, bob, "Foreign pending request")
+    with operator.transaction() as s:
+        Operator(s, "synthetic-test-operator", "CASE-REQUESTER").set_organization_status(
+            UUID(rejected["id"]), "REJECTED"
+        )
+    with app.transaction() as s:
+        active_user(s, alice)
+        OrganizationService(s, Principal(alice)).change_member(aid, cm, "ORG_OWNER", '"1"')
+    with app.transaction() as s:
+        active_user(s, charlie)
+        OrganizationService(s, Principal(charlie)).change_member(aid, am, None, '"2"')
+    with app.transaction() as s:
+        active_user(s, alice)
+        # Direct SQL under kryptroom_app: no service membership predicate can hide an RLS bug.
+        visible = set(s.scalars(sa.select(organizations.c.id)).all())
+        assert aid not in visible
+        assert {UUID(pending["id"]), UUID(rejected["id"])} <= visible
+        assert UUID(foreign["id"]) not in visible
+        service = OrganizationService(s, Principal(alice))
+        assert all(row["id"] != str(aid) for row in service.listing()["items"])
+        requests = {row["id"] for row in service.listing(registrations=True)["items"]}
+        assert {pending["id"], rejected["id"]} <= requests
+        with pytest.raises(AccessError, match="resource_not_found"):
+            service.authorized(aid, BusinessAction.ORGANIZATION_READ)
+
+
+def blocked_worker(app, uid, oid, action, mutate, ready, attempting):
+    """A real second connection signals only after its initial authorization succeeds."""
+    try:
+        with app.transaction() as s:
+            s.execute(sa.text("SET LOCAL statement_timeout='8s'"))
+            active_user(s, uid)
+            service = OrganizationService(s, Principal(uid))
+            service.authorized(oid, action)
+            connection = s.connection()
+            ready.put(s.scalar(sa.text("SELECT pg_backend_pid()")))
+
+            def before_execute(conn, cursor, statement, parameters, context, many):
+                if "control_api.organizations" in statement and "FOR UPDATE" in statement:
+                    attempting.set()
+
+            sa.event.listen(connection, "before_cursor_execute", before_execute)
+            try:
+                mutate(service)
+            finally:
+                sa.event.remove(connection, "before_cursor_execute", before_execute)
+        return {"outcome": "committed"}
+    except AccessError as error:
+        return {"outcome": "denied", "status": error.status, "code": error.code}
+
+
+def assert_database_blocker(session, ready, attempting):
+    worker_pid = ready.get(timeout=3)
+    blocker_pid = session.scalar(sa.text("SELECT pg_backend_pid()"))
+    assert worker_pid != blocker_pid
+    assert attempting.wait(timeout=3), "Worker never attempted the authorized locking statement"
+    deadline = time.monotonic() + 3
+    while time.monotonic() < deadline:
+        blockers = session.scalar(sa.text("SELECT pg_blocking_pids(:pid)"), {"pid": worker_pid})
+        if blocker_pid in blockers:
+            print(
+                json.dumps(
+                    {
+                        "initial_authorization": "passed",
+                        "distinct_connections": True,
+                        "worker_pid": worker_pid,
+                        "blocker_pid": blocker_pid,
+                        "postgres_lock_wait_observed": True,
+                    }
+                )
+            )
+            return
+        # Bounded polling observes an actual PostgreSQL wait; time alone never passes the test.
+        time.sleep(0.01)
+    pytest.fail("The expected real PostgreSQL lock overlap was not observed")
+
+
+def test_mutation_rechecks_authorization_after_blocked_revocation(stores, cohort):
+    alice, _, _, dora, aid, _, _, _, dm = cohort
+    app = stores["app"]
+    ready, attempting = Queue(), Event()
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        with app.transaction() as s:
+            active_user(s, alice)
+            service = OrganizationService(s, Principal(alice))
+            original, _ = service.authorized(aid, BusinessAction.MEMBERS_REVOKE, lock=True)
+            name, version = original["display_name"], original["version"]
+            future = pool.submit(
+                blocked_worker,
+                app,
+                dora,
+                aid,
+                BusinessAction.ORGANIZATION_UPDATE,
+                lambda worker: worker.rename(
+                    aid, "Forbidden after committed revocation", f'"{version}"'
+                ),
+                ready,
+                attempting,
+            )
+            assert_database_blocker(s, ready, attempting)
+            service.change_member(aid, dm, None, '"1"')
+        # Commit and release the controlled lock before joining the second connection.
+        print(json.dumps({"revocation": "committed_before_worker_resume"}))
+        result = future.result(timeout=5)
+    assert result == {"outcome": "denied", "status": 404, "code": "resource_not_found"}
+    with stores["operator"].transaction() as s:
+        row = s.execute(sa.select(organizations).where(organizations.c.id == aid)).mappings().one()
+        assert row["display_name"] == name and row["version"] == version
+    print(json.dumps({"resumed_mutation": result, "forbidden_change_persisted": False}))
+
+
 def test_last_owner_and_concurrent_removals(stores, cohort):
     alice, _, charlie, _, aid, _, am, cm, _ = cohort
     app = stores["app"]
@@ -237,18 +357,27 @@ def test_last_owner_and_concurrent_removals(stores, cohort):
             svc.change_member(aid, am, None, '"2"')
         svc.change_member(aid, cm, "ORG_OWNER", '"1"')
 
-    def remove(target, version):
-        try:
-            with app.transaction() as s:
-                active_user(s, alice)
-                OrganizationService(s, Principal(alice)).change_member(aid, target, None, version)
-            return "committed"
-        except AccessError:
-            return "denied"
-
-    with ThreadPoolExecutor(max_workers=2) as pool:
-        outcomes = list(pool.map(lambda x: remove(*x), [(am, '"2"'), (cm, '"2"')]))
-    assert outcomes.count("committed") == 1
+    ready, attempting = Queue(), Event()
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        with app.transaction() as s:
+            active_user(s, alice)
+            service = OrganizationService(s, Principal(alice))
+            service.authorized(aid, BusinessAction.MEMBERS_REVOKE, lock=True)
+            future = pool.submit(
+                blocked_worker,
+                app,
+                alice,
+                aid,
+                BusinessAction.MEMBERS_REVOKE,
+                lambda worker: worker.change_member(aid, am, None, '"2"'),
+                ready,
+                attempting,
+            )
+            assert_database_blocker(s, ready, attempting)
+            service.change_member(aid, cm, None, '"2"')
+        result = future.result(timeout=5)
+    assert result == {"outcome": "denied", "status": 409, "code": "last_owner"}
+    print(json.dumps({"first_owner_removal": "committed", "overlapping_second_removal": result}))
     with stores["operator"].transaction() as s:
         assert (
             s.scalar(

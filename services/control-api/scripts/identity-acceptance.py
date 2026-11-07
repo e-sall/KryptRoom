@@ -8,12 +8,15 @@ import os
 import re
 import secrets
 import shutil
+import ssl
 import stat
 import subprocess
 import time
 from pathlib import Path
 from uuid import UUID
 
+import httpx2
+import jwt
 import psycopg
 from cryptography import x509
 from cryptography.hazmat.primitives import serialization
@@ -170,6 +173,7 @@ def checkpoint(channel: Path, name: str) -> dict[str, str] | None:
         "08-idle-expiry": {"dora"},
         "09-absolute-expiry": {"dora"},
         "10-backchannel-check": {"bob"},
+        "11-direct-token-before": {"bob"},
     }
     if name in expected:
         if set(value) != expected[name]:
@@ -275,6 +279,77 @@ def session_probe(name: str, metadata: dict[str, str], baseline: dict[str, int])
                 )
 
 
+def direct_token_probe(uid: str, previous: str | None = None) -> str:
+    """Real API/introspection probe in the trusted controller, never in browser memory."""
+    if previous is None:
+        with bff_probe() as connection, connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT id_hash,encryption_key_id,encrypted_access_token FROM bff_auth.sessions "
+                "WHERE user_id=%s AND revoked_at IS NULL",
+                (UUID(uid),),
+            )
+            rows = cursor.fetchall()
+            if len(rows) != 1:
+                raise RuntimeError("Expected one active synthetic token record")
+            sid, key_id, envelope = rows[0]
+            parts = envelope.split(".")
+            if len(parts) != 4 or parts[0] != key_id:
+                raise RuntimeError("Invalid synthetic token envelope")
+
+            def b64(value: str) -> bytes:
+                return base64.urlsafe_b64decode(value + "=" * (-len(value) % 4))
+
+            key = b64((SERVICE / ".runtime/secrets/bff_encryption_key").read_text())
+            token = (
+                AESGCM(key)
+                .decrypt(
+                    b64(parts[1]), b64(parts[2]) + b64(parts[3]), f"{key_id}:access:{sid}".encode()
+                )
+                .decode()
+            )
+    else:
+        token = previous
+    # This claim is only a negative-test freshness guard, never authentication.
+    # The API independently checks the actual signature/claims and live provider state.
+    expiry = jwt.decode(token, options={"verify_signature": False})["exp"]
+    if expiry <= time.time() + 30:
+        raise RuntimeError("Direct revocation probe requires the same still-unexpired token")
+    ca = ssl.create_default_context(cafile=str(SERVICE / ".runtime/identity/tls/ca.crt"))
+    with httpx2.Client(verify=ca, trust_env=False, timeout=3) as client:
+        active = client.post(
+            "https://127.0.0.1:8444/realms/kryptroom-dev/protocol/openid-connect/token/introspect",
+            auth=(
+                "kryptroom-control-api",
+                (SERVICE / ".runtime/secrets/oidc_api_secret").read_text(),
+            ),
+            data={"token": token},
+        )
+        if active.status_code != 200 or active.json().get("active") is not (previous is None):
+            raise RuntimeError("Real provider token state did not match the expected lifecycle")
+        # Fresh client without a cookie jar: neither BFF nor its cookie can reject this call.
+        response = client.get(
+            "http://127.0.0.1:8001/api/v1/me", headers={"Authorization": "Bearer " + token}
+        )
+        expected_status = 200 if previous is None else 401
+        if response.status_code != expected_status:
+            raise RuntimeError("Direct Control API revocation probe failed")
+        if previous is not None and response.json()["error"]["code"] != "authentication_failed":
+            raise RuntimeError("Expected the direct API authentication rejection")
+    print(
+        json.dumps(
+            {
+                "qa": "QA-PR2-03",
+                "direct_api_status": expected_status,
+                "provider_active": previous is None,
+                "bff_cookie_used": False,
+                "token_still_unexpired": True,
+                "token_printed": False,
+            }
+        )
+    )
+    return token
+
+
 def browser_acceptance() -> None:
     if os.name != "posix" or os.geteuid() != 0:
         raise RuntimeError(
@@ -344,8 +419,10 @@ def browser_acceptance() -> None:
             "02-restart",
             "03-idp-stop",
             "04-idp-start",
+            "11-direct-token-before",
             "10-backchannel-check",
         ]
+        direct_token: str | None = None
         refresh_versions: dict[str, int] = {}
         completed = []
         deadline = time.monotonic() + 600
@@ -376,8 +453,14 @@ def browser_acceptance() -> None:
                                 "--role",
                                 "ORG_ADMIN",
                             )
+                        elif name == "11-direct-token-before":
+                            direct_token = direct_token_probe(metadata["bob"])
                         elif name.startswith(("05-", "06-", "07-", "08-", "09-", "10-")):
                             session_probe(name, metadata, refresh_versions)
+                            if name == "10-backchannel-check":
+                                if direct_token is None:
+                                    raise RuntimeError("Missing real pre-logout token evidence")
+                                direct_token_probe(metadata["bob"], direct_token)
                         elif name == "02-restart":
                             compose("restart", "postgres", "api", "keycloak", "bff")
                         elif name == "03-idp-stop":

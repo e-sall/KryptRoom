@@ -9,7 +9,7 @@ function password(user: string) {
 }
 async function checkpoint(name: "01-enrollment" | "02-restart" | "03-idp-stop" | "04-idp-start" |
   "05-refresh" | "06-refresh-check" | "07-invalid-refresh" | "08-idle-expiry" | "09-absolute-expiry" |
-  "10-backchannel-check", metadata = {}) {
+  "10-backchannel-check" | "11-direct-token-before", metadata = {}) {
   if (process.env.KR_TEST_QA_CHANNEL !== "/run/qa") throw new Error("Explicit synthetic QA channel required");
   writeFileSync(`/run/qa/${name}.json`,JSON.stringify(metadata),{mode:0o600,flag:"wx"});
   await expect.poll(() => existsSync(`/run/qa/${name}.ack`),{timeout:90000}).toBe(true);
@@ -75,9 +75,40 @@ test("real login, controlled tenants, RBAC, revocation, restart and IdP outage",
   expect((await bob.context.request.get(site+"/bff/api/v1/organizations/"+a.id)).status()).toBe(404);
   const list = await alice.context.request.get(site+`/bff/api/v1/organizations/${a.id}/members`);
   expect(list.status()).toBe(200); const members = (await list.json()).data.items;
-  const cm = members.find((m: {userId:string}) => m.userId === charlie.id);
+  let cm = members.find((m: {userId:string}) => m.userId === charlie.id);
   const am = members.find((m: {userId:string}) => m.userId === alice.id);
+  // QA-PR2-03: exercise role mutations through the real BFF/API, not SQL-only coverage.
+  const promoted = await write(alice.context,"PATCH",`/bff/api/v1/organizations/${a.id}/members/${cm.id}`,
+    {role:"ORG_ADMIN"},{"If-Match":`"${cm.version}"`});
+  expect(promoted.status()).toBe(200); const previousVersion = cm.version;
+  cm = (await promoted.json()).data;
+  expect(cm).toMatchObject({role:"ORG_ADMIN",status:"ACTIVE",version:previousVersion+1});
+  const memberRead = await alice.context.request.get(site+`/bff/api/v1/organizations/${a.id}/members`);
+  expect((await memberRead.json()).data.items.find((m: {id:string}) => m.id === cm.id)).toEqual(cm);
+  const beforeA = (await (await alice.context.request.get(site+`/bff/api/v1/organizations/${a.id}`)).json()).data;
+  const beforeB = (await (await bob.context.request.get(site+`/bff/api/v1/organizations/${b.id}`)).json()).data;
+  const beforeMembersA = (await (await alice.context.request.get(site+`/bff/api/v1/organizations/${a.id}/members`)).json()).data;
+  const beforeMembersB = (await (await bob.context.request.get(site+`/bff/api/v1/organizations/${b.id}/members`)).json()).data;
+  const bm = beforeMembersB.items.find((m: {userId:string}) => m.userId === bob.id);
+  const foreignWrites = [
+    await write(bob.context,"PATCH",`/bff/api/v1/organizations/${a.id}/members/${cm.id}`,{role:"ORG_OWNER"},{"If-Match":`"${cm.version}"`}),
+    await write(bob.context,"DELETE",`/bff/api/v1/organizations/${a.id}/members/${cm.id}`,{},{"If-Match":`"${cm.version}"`}),
+    await write(bob.context,"PATCH",`/bff/api/v1/organizations/${a.id}`,{displayName:"Unauthorized foreign A"},{"If-Match":`"${beforeA.version}"`}),
+    await write(alice.context,"PATCH",`/bff/api/v1/organizations/${b.id}`,{displayName:"Unauthorized foreign B"},{"If-Match":`"${beforeB.version}"`}),
+    await write(alice.context,"PATCH",`/bff/api/v1/organizations/${b.id}/members/${bm.id}`,{role:"ORG_MEMBER"},{"If-Match":`"${bm.version}"`}),
+    await write(alice.context,"DELETE",`/bff/api/v1/organizations/${b.id}/members/${bm.id}`,{},{"If-Match":`"${bm.version}"`}),
+  ];
+  expect(foreignWrites.map(response => response.status())).toEqual([404,404,404,404,404,404]);
+  expect((await (await alice.context.request.get(site+`/bff/api/v1/organizations/${a.id}`)).json()).data).toEqual(beforeA);
+  expect((await (await bob.context.request.get(site+`/bff/api/v1/organizations/${b.id}`)).json()).data).toEqual(beforeB);
+  expect((await (await alice.context.request.get(site+`/bff/api/v1/organizations/${a.id}/members`)).json()).data).toEqual(beforeMembersA);
+  expect((await (await bob.context.request.get(site+`/bff/api/v1/organizations/${b.id}/members`)).json()).data).toEqual(beforeMembersB);
+  console.log(JSON.stringify({qa:"QA-PR2-03",authorizedRoleChange:promoted.status(),foreignMutationStatuses:foreignWrites.map(r=>r.status()),foreignChangesPersisted:false}));
   expect((await write(charlie.context,"PATCH",`/bff/api/v1/organizations/${a.id}/members/${cm.id}`,{role:"ORG_OWNER"},{"If-Match":'"1"'})).status()).toBe(403);
+  const demoted = await write(alice.context,"PATCH",`/bff/api/v1/organizations/${a.id}/members/${cm.id}`,
+    {role:"ORG_MEMBER"},{"If-Match":`"${cm.version}"`});
+  expect(demoted.status()).toBe(200); cm = (await demoted.json()).data;
+  expect(cm.role).toBe("ORG_MEMBER");
   expect((await charlie.context.request.get(site+`/bff/api/v1/organizations/${a.id}`)).status()).toBe(200);
   expect((await alice.context.request.post(site+"/bff/api/v1/organizations",{data:{displayName:"No CSRF"}})).status()).toBe(403);
   expect((await write(alice.context,"DELETE",`/bff/api/v1/organizations/${a.id}/members/${am.id}`,{}, {"If-Match":`"${am.version}"`})).status()).toBe(409);
@@ -109,6 +140,18 @@ test("real login, controlled tenants, RBAC, revocation, restart and IdP outage",
   expect((await alice.context.request.get("http://127.0.0.1:8001/health/ready")).status()).toBe(200);
   await checkpoint("04-idp-start");
   await expect.poll(async () => (await alice.context.request.get(site+"/bff/api/v1/me")).status(),{timeout:90000}).toBe(200);
+  // QA-PR2-01: revoking the initial applicant also denies its actual HTTP access.
+  const lateDora = await authenticated(browser,"dora",false);
+  const lateMembers = (await (await alice.context.request.get(site+`/bff/api/v1/organizations/${a.id}/members`)).json()).data.items;
+  const dm = lateMembers.find((m: {userId:string}) => m.userId === dora.id);
+  const secondOwner = await write(alice.context,"PATCH",`/bff/api/v1/organizations/${a.id}/members/${dm.id}`,{role:"ORG_OWNER"},{"If-Match":`"${dm.version}"`});
+  expect(secondOwner.status()).toBe(200);
+  const revokedApplicant = await write(lateDora.context,"DELETE",`/bff/api/v1/organizations/${a.id}/members/${am.id}`,{},{"If-Match":`"${am.version}"`});
+  expect(revokedApplicant.status()).toBe(200);
+  expect((await alice.context.request.get(site+`/bff/api/v1/organizations/${a.id}`)).status()).toBe(404);
+  expect((await (await alice.context.request.get(site+"/bff/api/v1/organizations")).json()).data.items).toEqual([]);
+  expect((await (await alice.context.request.get(site+"/bff/api/v1/me")).json()).data.memberships).toEqual([]);
+  await lateDora.context.close();
   const oldCookies = await alice.context.cookies(site);
   expect((await write(alice.context,"POST","/auth/logout")).status()).toBe(200);
   await alice.context.addCookies(oldCookies);
@@ -116,6 +159,9 @@ test("real login, controlled tenants, RBAC, revocation, restart and IdP outage",
   // Provider-originated signed backchannel logout, distinct from local logout.
   expect((await bob.context.request.post(site+"/auth/backchannel-logout",{form:{logout_token:"forged.invalid.token"}})).status()).toBe(400);
   expect((await bob.context.request.get(site+"/bff/api/v1/me")).status()).toBe(200);
+  // Only the trusted controller reads/decrypts Bob's token. No token reaches this browser.
+  // It first calls the API directly without a cookie, then reuses the exact token after logout.
+  await checkpoint("11-direct-token-before",{bob:bob.id});
   await bob.page.goto("https://127.0.0.1:8444/realms/kryptroom-dev/protocol/openid-connect/logout?client_id=kryptroom-web-bff&post_logout_redirect_uri="+encodeURIComponent(site+"/"));
   await bob.page.locator("#kc-logout").click();
   await checkpoint("10-backchannel-check",{bob:bob.id});

@@ -109,7 +109,9 @@ GRANT SELECT ON control_api.identity_links TO kryptroom_app, kryptroom_operator;
 ALTER TABLE control_api.organizations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE control_api.organizations FORCE ROW LEVEL SECURITY;
 CREATE POLICY org_select ON control_api.organizations FOR SELECT TO kryptroom_app
-    USING (control_api.active_role(id) IS NOT NULL OR requested_by_user_id=control_api.current_actor());
+    USING (control_api.active_role(id) IS NOT NULL
+        OR (requested_by_user_id=control_api.current_actor()
+            AND status IN ('PENDING_REVIEW','REJECTED')));
 CREATE POLICY org_register ON control_api.organizations FOR INSERT TO kryptroom_app
     WITH CHECK (requested_by_user_id=control_api.current_actor() AND status='PENDING_REVIEW'
         AND verification_status='UNVERIFIED' AND review_reference IS NULL AND reviewed_at IS NULL);

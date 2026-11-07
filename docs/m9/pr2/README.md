@@ -25,6 +25,11 @@ See [implementation](IMPLEMENTATION-REPORT.md), [security](SECURITY-REVIEW.md),
 [acceptance](ACCEPTANCE-RESULTS.md), [architecture compliance](D1-D10-COMPLIANCE.md)
 and [migration procedure](MIGRATIONS.md).
 
+The original candidate's three QA findings are addressed in the separately
+scoped [targeted remediation report](QA-REMEDIATION-REPORT.md). Its new local
+security disposition does not authorize hosted CI or publication; the original
+five commits and their bounded evidence remain historical references.
+
 ## Local reproduction
 
 Use a disposable native Linux checkout, not a DrvFS directory. Docker Engine and

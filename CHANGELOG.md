@@ -1,5 +1,11 @@
 # Changelog
 
+- M9 PR2 targeted QA: narrow requester RLS to pending/rejected registration,
+  prove blocked authorization/revocation and owner-removal overlap in PostgreSQL,
+  and expand real BFF/API mutation and inactive-provider-token acceptance.
+  No dependency, other business contract, workflow, M8 design or Core change.
+  New exact-SHA targeted reviews and publication gates remain separate.
+
 - M9 PR2 local candidate: real Keycloak OIDC/PKCE, controlled organization
   enrollment, transactional role/revocation rules, PostgreSQL RLS and encrypted
   server-only BFF sessions. Migration 0002 preserves the PR1 foundation. Real

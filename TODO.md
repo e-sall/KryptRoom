@@ -2,6 +2,10 @@
 
 ## M9 PR2 — local Identity & Organizations candidate
 
+- [x] Address QA-PR2-01/02/03 with direct SQL, observed lock waits and real HTTP/IdP evidence.
+- [ ] Obtain targeted 04 revalidation and 01 attestation of the new correction SHA.
+- [ ] Resolve hosted security scope before a distinct publication authorization.
+
 - [x] Start from verified PR1 dev `d8a5c0aa7ed845c31bd2ff40c1b3491246c6cf83`.
 - [x] Verify all four parts of the exact Architect specification.
 - [x] Implement real OIDC, controlled enrollment, RBAC/RLS and BFF sessions.

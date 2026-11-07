@@ -1,6 +1,7 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { expect, it } from "vitest";
+import { m9ServerFile } from "./m9-server-boundary";
 
 it("preserves the approved palette and responsive/motion contracts", () => {
   const tokens = readFileSync("src/styles/tokens.css", "utf8");
@@ -49,7 +50,7 @@ it("keeps the temporarily excepted lint dependency chain development-only", () =
   }
 });
 
-it("keeps PR1 free of application I/O and stored participant data", () => {
+it("keeps the M8 presentation free of application I/O and stored participant data", () => {
   const forbiddenIO =
     /\bfetch\s*\(|\b(XMLHttpRequest|WebSocket|localStorage|sessionStorage|indexedDB|document\.cookie|dangerouslySetInnerHTML)\b/;
   // Check the guard itself, including punctuation immediately after fetch(.
@@ -65,6 +66,8 @@ it("keeps PR1 free of application I/O and stored participant data", () => {
     withFileTypes: true,
   }).filter((entry) => entry.isFile() && /\.(tsx?|css)$/.test(entry.name));
   for (const entry of files) {
+    // PR2's exact server entrypoints are tested separately; no general auth-path exemption.
+    if (m9ServerFile(entry.parentPath, entry.name)) continue;
     const source = readFileSync(resolve(entry.parentPath, entry.name), "utf8");
     expect(source, entry.name).not.toMatch(forbiddenIO);
   }

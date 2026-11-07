@@ -3,6 +3,8 @@ import { fileURLToPath } from "node:url";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  logging: { incomingRequests: false },
+  output: "standalone",
   reactStrictMode: true,
   turbopack: { root: fileURLToPath(new URL(".", import.meta.url)) },
   async headers() {

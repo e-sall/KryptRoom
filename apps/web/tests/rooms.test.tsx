@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
+import { m9ServerFile } from "./m9-server-boundary";
 import {
   emptyDraft,
   exampleRooms,
@@ -158,6 +159,7 @@ describe("isolated Rooms presentation", () => {
       withFileTypes: true,
     }).filter((e) => e.isFile() && /\.tsx?$/.test(e.name));
     for (const entry of entries) {
+      if (m9ServerFile(entry.parentPath, entry.name)) continue;
       const code = readFileSync(resolve(entry.parentPath, entry.name), "utf8");
       expect(code).not.toMatch(
         /\b(sendBeacon|fetch|WebSocket|Worker)\s*\(|\b(localStorage|sessionStorage|indexedDB)\b|type=["']file["']|["']use server["']/,

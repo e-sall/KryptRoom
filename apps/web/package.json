@@ -17,9 +17,13 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "jose": "6.2.15",
     "next": "16.4.2",
+    "openid-client": "6.8.9",
+    "pg": "8.23.1",
     "react": "19.3.1",
-    "react-dom": "19.3.1"
+    "react-dom": "19.3.1",
+    "server-only": "0.0.1"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.11.1",
@@ -29,6 +33,7 @@
     "@testing-library/react": "16.3.0",
     "@testing-library/user-event": "14.6.1",
     "@types/node": "22.18.6",
+    "@types/pg": "8.23.1",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
     "eslint": "9.39.5",

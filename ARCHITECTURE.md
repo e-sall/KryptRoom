@@ -1,5 +1,18 @@
 # Architecture
 
+## M9 PR2 local operational boundary
+
+PR1 baseline: `d8a5c0aa7ed845c31bd2ff40c1b3491246c6cf83`. The local PR2
+candidate implements the approved external OIDC/Keycloak development identity,
+controlled organizations and current-database authorization foundation. FastAPI
+checks signatures, claims, live introspection and active local authority; a
+confidential Next BFF holds encrypted OAuth tokens in its separate PostgreSQL
+schema and gives browsers opaque sessions only. Business roles never confer
+cryptographic permission. No Room or cryptographic initialization is implemented.
+See `docs/m9/pr2/IMPLEMENTATION-REPORT.md`, `CONTRACTS.md` and `SECURITY-REVIEW.md`
+for migration, SQL privilege, endpoint and local-only acceptance boundaries.
+This candidate has not been published, independently approved or deployed.
+
 ## Current implemented state
 
 KryptRoom has runtime-verified M1 PSI cardinality, M2 two-container SPU private join, M2.5 persistent encrypted RoomState paths, M3 persistent private analytics, bounded M4 persistent private NN training/evaluation, the bounded M5 SP1 committed state-transition proof, and bounded M6 persistent OpenFHE BGV ciphertext addition. M7 public-chain anchoring is verified for one finalized Base Sepolia state-only inclusion and its authoritative public evidence package.

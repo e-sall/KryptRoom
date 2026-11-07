@@ -1,5 +1,12 @@
 # Changelog
 
+- M9 PR2 local candidate: real Keycloak OIDC/PKCE, controlled organization
+  enrollment, transactional role/revocation rules, PostgreSQL RLS and encrypted
+  server-only BFF sessions. Migration 0002 preserves the PR1 foundation. Real
+  lifecycle/security tests and portable evidence are in `docs/m9/pr2`. Independent
+  review, hosted CI and separate publication approval remain required. No Room,
+  Core operation, M8 redesign, merge or deployment is introduced.
+
 - M9 PR1: isolated typed FastAPI health API, PostgreSQL 17/Alembic foundation,
   transaction and safe-error conventions, deny-by-default internal module ports,
   hash-locked dependencies and local container/CI acceptance. No business or

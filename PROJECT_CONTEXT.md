@@ -1,5 +1,17 @@
 # Project context
 
+## Current operational checkpoint — M9 PR2 local candidate (2026-11-06)
+
+M9 PR1 is integrated in dev at `d8a5c0aa7ed845c31bd2ff40c1b3491246c6cf83`.
+The separately authorized PR2 candidate adds actual OIDC identity, controlled
+organization enrollment, PostgreSQL RBAC/RLS and a server-only Next BFF. It is
+local and requires new independent 01/04 review and separate publication approval.
+See `docs/m9/pr2` for exact acceptance evidence and security limits. No Room,
+RoomState initialization, cryptographic operation or production service is added.
+M8 previews remain synthetic; M8 main promotion is a separate blocked workstream.
+The older milestone entries below are retained as historical checkpoints; they
+do not supersede this current M9 authorization or authorize deployment.
+
 ## Product
 
 KryptRoom is a persistent encrypted state machine for collaboration between mutually distrustful organizations. Private computations evolve immutable `RoomState` objects whose artifacts remain secret-shared and locally encrypted at participant-owned KryptNodes or remain committed FHE ciphertexts across authorized homomorphic transitions. M7 may publish one opaque commitment for public audit, but the blockchain is not the state machine or source of truth. KryptRoom is not a central encrypted-storage service, a blockchain application, a biotech company, or a machine-learning wrapper.

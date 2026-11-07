@@ -25,6 +25,7 @@ M9_FILES = {
     "services/control-api/.python-version", "services/control-api/Dockerfile",
     "services/control-api/README.md", "services/control-api/alembic.ini",
     "services/control-api/compose.yml", "services/control-api/pyproject.toml",
+    "services/control-api/compose.identity.yml",
     "services/control-api/uv.lock", "services/control-api/requirements.lock",
     "services/control-api/requirements-dev.lock",
 }
@@ -32,6 +33,13 @@ M9_PREFIXES = (
     "services/control-api/src/kryptroom_control/", "services/control-api/migrations/",
     "services/control-api/scripts/", "services/control-api/tests/", "docs/m9/",
 )
+M9_WEB_PREFIXES = ("apps/web/src/server/auth/", "apps/web/src/app/auth/",
+                   "apps/web/src/app/bff/", "apps/web/tests-identity/")
+M9_WEB_FILES = {"apps/web/Dockerfile.identity", "apps/web/playwright.identity.config.ts",
+                "apps/web/playwright.identity-regression.config.ts",
+                "apps/web/package.json", "apps/web/package-lock.json", "apps/web/next.config.ts",
+                "apps/web/tests/auth-security.test.ts", "apps/web/tests/auth-boundary.test.ts",
+                "apps/web/tests/m9-server-boundary.ts"}
 GATE = "  change-scope:\n    runs-on: ubuntu-latest\n    timeout-minutes: 5\n    outputs:\n      core: ${{ steps.scope.outputs.core }}\n    steps:\n      - uses: actions/checkout@v7\n        with:\n          fetch-depth: 0\n          persist-credentials: false\n      - id: scope\n        run: python3 .github/ci_scope.py\n\n"
 CONDITION = "    needs: change-scope\n    if: ${{ needs.change-scope.outputs.core == 'true' }}\n"
 
@@ -203,6 +211,8 @@ def classify_paths(paths, read_before, read_after):
             continue  # contextual changelog entries do not turn M9 into a frontend change
         if path.startswith(("apps/web/", "docs/m8/")):
             web = True
+            if path in M9_WEB_FILES or path.startswith(M9_WEB_PREFIXES):
+                m9 = True
         elif m9_path(path) or exact_m9_workflow(path, read_before, read_after):
             m9 = True
         elif path == M9_WORKFLOW:

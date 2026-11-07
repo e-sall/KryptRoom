@@ -1,0 +1,63 @@
+name: M9 Identity & Organizations
+
+on:
+  pull_request:
+    branches: [dev]
+  push:
+    branches: [dev, 'feat/m9-identity-organizations']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: m9-identity-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  m9-identity-organizations:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: services/control-api
+    steps:
+      - name: Reject foreign unreviewed build sources
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
+        working-directory: ${{ github.workspace }}
+        run: exit 1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Classify applicability explicitly
+        id: scope
+        run: python3 ../../.github/ci_scope.py
+      - name: Explicit identity non-applicability
+        if: steps.scope.outputs.m9 != 'true'
+        run: echo "M9 identity checks not applicable; classification succeeded"
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        if: steps.scope.outputs.m9 == 'true'
+        with:
+          python-version: '3.12.16'
+      - name: Install the hash-locked controller
+        if: steps.scope.outputs.m9 == 'true'
+        run: python -m pip install --require-hashes -r requirements-dev.lock
+      - name: Audit controller without exceptions
+        if: steps.scope.outputs.m9 == 'true'
+        run: python -m pip_audit -r requirements-dev.lock --require-hashes --disable-pip
+      - name: Strict frontend audit gate before any identity build
+        if: steps.scope.outputs.m9 == 'true'
+        run: |
+          docker run --rm --user 10001:10001 --read-only --tmpfs /tmp --env npm_config_cache=/tmp/npm-cache --mount type=bind,source=${{ github.workspace }}/apps/web,target=/audit,readonly --workdir /audit node:22.23.4-bookworm-slim@sha256:5ec23b7c622b00547753bc6ffd78085dd868a68aeb41c8e0a1418f033e13d96d npm audit --json --audit-level=moderate
+      - name: Existing PR1 database upgrade preserves the marker
+        if: steps.scope.outputs.m9 == 'true'
+        run: |
+          sudo "$(command -v python)" scripts/local-secrets.py
+          sudo --preserve-env=DOCKER_CONFIG "$(command -v python)" scripts/pr1-upgrade-acceptance.py --disposable
+      - name: Real Keycloak PostgreSQL FastAPI and Next BFF acceptance
+        if: steps.scope.outputs.m9 == 'true'
+        run: sudo --preserve-env=DOCKER_CONFIG "$(command -v python)" scripts/identity-stack-acceptance.py --disposable
+      - name: Remove disposable identity resources
+        if: always() && steps.scope.outputs.m9 == 'true'
+        run: docker compose -p kr-m9-pr2-real -f compose.identity.yml --profile operator down --volumes --remove-orphans

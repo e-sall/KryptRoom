@@ -130,6 +130,13 @@ silently skipping. They downgrade/reset only the disposable PR1 test schema.
 
 ## Contracts and boundaries
 
+PR2 local candidate now implements the identity/organization contracts described
+in `../../docs/m9/pr2/README.md`. That document supersedes the future-tense PR1
+identity statements below, while preserving the PR1 defaults and Core boundary.
+Migration 0002 uses UUIDv7 for new business IDs without changing historical IDs.
+An existing PR1 database requires the explicit administrator role prerequisite
+in `../../docs/m9/pr2/MIGRATIONS.md`; do not recreate an existing database.
+
 The seven `modules` files are internal typed ports, not registered business routes.
 PR2 will implement OIDC identity and controlled organizational enrollment. No email
 domain, browser header or external claim is accepted as membership authority.

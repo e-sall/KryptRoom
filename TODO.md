@@ -1,5 +1,21 @@
 # TODO
 
+## M9 PR2 — local Identity & Organizations candidate
+
+- [x] Start from verified PR1 dev `d8a5c0aa7ed845c31bd2ff40c1b3491246c6cf83`.
+- [x] Verify all four parts of the exact Architect specification.
+- [x] Implement real OIDC, controlled enrollment, RBAC/RLS and BFF sessions.
+- [x] Verify real PostgreSQL/Keycloak/BFF, negative cases, concurrency and restart.
+- [x] Keep Core runtimes, M8 design sources and the separate homepage patch intact.
+- [ ] Obtain independent PR2 reviews of the exact portable candidate from 01/04.
+- [ ] Resolve the hosted frontend security gate with a compatible fix or a new
+  explicit bounded disposition; the local exception does not authorize hosted CI.
+- [ ] Obtain distinct push/PR authorization, then exact-head hosted checks.
+- [ ] Obtain separate merge authorization. Do not begin PR3 or deploy.
+
+PR1 below is a historical checklist: Founder has since confirmed its merge and
+post-merge gate at the exact baseline above. PR2 is separately authorized locally.
+
 ## M9 PR1 — Control API foundation
 
 - [x] Verify exact dev baseline and isolate M9 from the M8 promotion workspace.

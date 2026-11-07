@@ -582,3 +582,22 @@ No dependency, CI, runtime security or M1–M7 change. See V6 report and evidenc
 ## 2026-11-01 — V7.2 publication under a separate bounded exception
 
 The founder explicitly approved M8-SEC-002 for GHSA-g3hv-75wg-m249 in trusted development/build validation and publication to existing PR20. Receipt 2026-11-01T07:00:41Z; expiry 2026-11-04T07:00:41Z. This is risk acceptance for that scope, not a fix or production/merge authorization. M8-SEC-001 remains ESLint 9 EOL only and expires 2026-11-01 23:59 Toronto. Preserve source trust checks, CI restrictions and visible audits; stop on scope/control failure. See docs/m8/pr7/M8-SEC-002.md and V72-PUBLICATION-REPORT.md.
+
+## 2026-11-06 — M9 PR2 implementation choices within the approved contract
+
+Preserve the modular monolith and PR1 migration. Use a separate NOLOGIN guard
+with narrowly granted fixed-search-path functions to avoid recursive RLS; never
+give its bypass privilege to runtime logins. Serialize membership mutations on
+the organization and current-user locks, with strong versions and a last-effective
+owner check. An operator suspension that removes the last effective owner also
+suspends the organization; reactivation without an effective owner fails closed.
+
+Use mature PyJWT, openid-client, jose and cryptography/Node AES-GCM. Store only
+keyed opaque session digests and authenticated encrypted tokens server-side. Keep
+operator provisioning separate from the API and cryptographic authorization.
+Use verified local TLS for the IdP; loopback HTTP BFF cookies are explicitly a
+development profile, not production cookie evidence. A private native Linux
+fixture controller performs fixed lifecycle steps; its non-root browser receives
+neither Docker authority nor SQL/operator/server keys. Retain the strict hosted
+moderate-audit gate: the new local-only exception cannot authorize hosted CI.
+See `docs/m9/pr2` for measured evidence and remaining deployment decisions.

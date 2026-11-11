@@ -1,5 +1,9 @@
 # Changelog
 
+- Local Rooms UI/BFF integration: organization list, idempotent creation, detail
+  reopening and ETag metadata editing using authenticated PR3 endpoints. Reuse M8
+  presentation and keep synthetic previews separate; no crypto or publication.
+
 - M9 PR3 local: persistent draft Room metadata, restricted organization access,
   idempotent creation, If-Match updates and migration 0003 with RLS/grants.
   Real PostgreSQL/Keycloak/API acceptance is separate from hosted validation.

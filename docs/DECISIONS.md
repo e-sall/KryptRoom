@@ -1,5 +1,16 @@
 # Architectural decisions
 
+## 2026-11-10 — Rooms UI/BFF local integration
+
+Reuse the existing server-only session/CSRF proxy, extending only its exact route
+allowlist for PR3. The browser uses same-origin BFF requests and the intended
+session-bound CSRF value, never OAuth tokens. Backend authority remains decisive;
+UI roles only govern affordances. Keep an idempotency key across uncertain create
+retries and use the actual ETag for edits. A conflict requires an explicit reload,
+not automatic overwrite. Clear displayed records on denied/revoked requests.
+Only the exact operational Rooms component may fetch through the BFF; synthetic
+preview I/O/storage guards remain in place. No new endpoint or capability is added.
+
 ## 2026-11-10 — M9 PR3 draft Room metadata
 
 A Room created by OWNER/ADMIN belongs to its founding active organization and

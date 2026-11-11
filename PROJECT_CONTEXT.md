@@ -1,5 +1,13 @@
 # Project context
 
+## Local Rooms UI/BFF track — 2026-11-10
+
+Founder authorizes an isolated integration on approved PR3 `646a8f5`.
+Production /app/rooms routes use the session BFF and real PR3 endpoints; previews
+remain synthetic and isolated. No backend, PR3 migration, dependency or CI change.
+Creation/metadata editing does not initialize a RoomState or enable computation.
+PR2 publication gates remain NO-GO; no hosted CI, merge or deployment is authorized.
+
 ## Local development checkpoint — M9 PR3 (2026-11-10)
 
 Founder authorizes isolated local Persistent Rooms on PR2 commit `75eb1ed`.

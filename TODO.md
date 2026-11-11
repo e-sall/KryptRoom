@@ -1,5 +1,12 @@
 # TODO
 
+## Authorized local Rooms UI/BFF track
+
+- [x] Connect list/create/details/edit to existing session BFF and PR3 contracts.
+- [x] Test real Keycloak/BFF/API persistence, conflict, cross-tenant and revocation.
+- [ ] Obtain targeted QA04 review of this delta independently of frozen PR3.
+- [ ] Resolve inherited publication gates before any separately authorized push.
+
 ## M9 PR3 — isolated local Persistent Rooms
 
 - [x] Implement draft metadata persistence, organization authorization and RLS.

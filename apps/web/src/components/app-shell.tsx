@@ -16,6 +16,8 @@ import {
 
 function Inspector({ moduleId }: { moduleId: string }) {
   const current = findModule(moduleId);
+  const pathname = usePathname();
+  const persistentRooms = pathname === "/app/rooms" || pathname.startsWith("/app/rooms/");
   return (
     <div className="inspector-content">
       <p className="eyebrow">CONTEXT</p>
@@ -30,22 +32,22 @@ function Inspector({ moduleId }: { moduleId: string }) {
         </div>
         <div>
           <dt>Room</dt>
-          <dd>No room selected</dd>
+          <dd>{persistentRooms ? "See the authorized Rooms panel" : "No room selected"}</dd>
         </div>
         <div>
           <dt>Connection</dt>
           <dd>
-            <Badge status="unavailable" />
+            <Badge status={persistentRooms ? "unknown" : "unavailable"} />
           </dd>
         </div>
         <div>
           <dt>Implementation</dt>
-          <dd>{current?.milestone ?? "PR 1 · Foundation"}</dd>
+          <dd>{persistentRooms ? "Persistent Room metadata" : current?.milestone ?? "PR 1 · Foundation"}</dd>
         </div>
       </dl>
       <div className="inspector-note">
         <Icon name="info" />
-        <p>{workspaceConnection.reason}</p>
+        <p>{persistentRooms ? "Room access is checked in the main panel. RoomStates and computations remain unavailable." : workspaceConnection.reason}</p>
       </div>
       <p className="caption">
         Access and disclosure decisions will come from the authenticated

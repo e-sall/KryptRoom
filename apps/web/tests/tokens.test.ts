@@ -69,6 +69,8 @@ it("keeps the M8 presentation free of application I/O and stored participant dat
     // PR2's exact server entrypoints are tested separately; no general auth-path exemption.
     if (m9ServerFile(entry.parentPath, entry.name)) continue;
     const source = readFileSync(resolve(entry.parentPath, entry.name), "utf8");
-    expect(source, entry.name).not.toMatch(forbiddenIO);
+    // Exact operational Rooms client may fetch only through its separately tested BFF boundary.
+    const presentation = resolve(entry.parentPath,entry.name) === resolve("src/features/rooms/persistent-rooms.tsx") ? source.replace(/\bfetch\s*\(/g,"(") : source;
+    expect(presentation, entry.name).not.toMatch(forbiddenIO);
   }
 });

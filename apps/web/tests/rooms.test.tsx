@@ -161,7 +161,9 @@ describe("isolated Rooms presentation", () => {
     for (const entry of entries) {
       if (m9ServerFile(entry.parentPath, entry.name)) continue;
       const code = readFileSync(resolve(entry.parentPath, entry.name), "utf8");
-      expect(code).not.toMatch(
+    // Exact operational Rooms client may fetch only through its separately tested BFF boundary.
+    const presentation = resolve(entry.parentPath,entry.name) === resolve("src/features/rooms/persistent-rooms.tsx") ? code.replace(/\bfetch\s*\(/g,"(") : code;
+      expect(presentation).not.toMatch(
         /\b(sendBeacon|fetch|WebSocket|Worker)\s*\(|\b(localStorage|sessionStorage|indexedDB)\b|type=["']file["']|["']use server["']/,
       );
       expect(code).not.toMatch(

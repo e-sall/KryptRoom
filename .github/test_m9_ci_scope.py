@@ -144,7 +144,13 @@ class M9ScopeTests(unittest.TestCase):
             ("run", "python3 -m unittest discover -s .github -p 'test_*ci_scope.py' -v"),
             ("run", "python3 .github/ci_scope.py"),
             ("run", 'echo "Frontend checks not applicable; classification succeeded"'),
+            ("run", "python3 .github/frontend_security_gate.py"),
+            ("run", "python3 -m unittest discover -s .github -p 'test_frontend_security_gate.py' -v"),
+            ("uses", "actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6"),
         }
+        # Recognize only these exact new security operations; every historical
+        # frontend validation must still appear in its original order.
+        self.assertEqual(operations(new_web).count(("run", "python3 .github/frontend_security_gate.py")), 1)
         self.assertEqual([op for op in operations(new_web) if op not in added_web], operations(old_web))
         scoped = (ROOT / ".github/fixtures/control-api-foundation.scoped.yml").read_text(encoding="utf-8")
         added_m9 = {("run", "python3 ../../.github/ci_scope.py"),

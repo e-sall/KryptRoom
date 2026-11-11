@@ -39,6 +39,25 @@ jobs:
       - name: Explicit frontend non-applicability
         if: steps.scope.outputs.web != 'true'
         run: echo "Frontend checks not applicable; classification succeeded"
+      - name: Test frontend gate refusals without frontend dependencies
+        if: steps.scope.outputs.web == 'true'
+        working-directory: ${{ github.workspace }}
+        run: python3 -m unittest discover -s .github -p 'test_frontend_security_gate.py' -v
+      - name: Common frontend security validation (external enforcement still required)
+        if: steps.scope.outputs.web == 'true'
+        working-directory: ${{ github.workspace }}
+        env:
+          REVIEW_SOURCE_SHA: ${{ github.sha }}
+          REVIEW_BASELINE_SHA: ${{ github.event.pull_request.base.sha || github.event.before || vars.FRONTEND_REVIEW_BASELINE_SHA }}
+          FRONTEND_SECURITY_EVIDENCE_JSON: ${{ vars.FRONTEND_SECURITY_EVIDENCE_JSON }}
+        run: python3 .github/frontend_security_gate.py
+      - name: Preserve frontend gate evidence
+        if: always() && steps.scope.outputs.web == 'true'
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: frontend-security-web
+          path: frontend-security-evidence/
+          if-no-files-found: error
       - uses: actions/setup-node@v7
         if: steps.scope.outputs.web == 'true'
         with:

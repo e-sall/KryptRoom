@@ -1,5 +1,15 @@
 # Project context
 
+## Local development checkpoint — M9 PR3 (2026-11-10)
+
+Founder authorizes isolated local Persistent Rooms on PR2 commit `75eb1ed`.
+PR2 code QA is approved; its publication remains NO-GO. PR3 adds only draft
+business Room metadata, current organization authority, RLS and migration 0003.
+No RoomState is initialized (`headStateId` stays null), no invitations or second
+participant are implemented, and no cryptographic execution is introduced.
+See `docs/m9/pr3/IMPLEMENTATION-REPORT.md`; local QA is distinct from hosted CI.
+No push, merge, deployment or PR4 is authorized by this checkpoint.
+
 ## Current operational checkpoint — M9 PR2 local candidate (2026-11-06)
 
 M9 PR1 is integrated in dev at `d8a5c0aa7ed845c31bd2ff40c1b3491246c6cf83`.

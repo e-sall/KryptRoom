@@ -35,6 +35,8 @@ def test_configured_openapi_has_exact_metadata_scope_and_bearer(settings, tmp_pa
         "/api/v1/organizations/{organizationId}",
         "/api/v1/organizations/{organizationId}/members",
         "/api/v1/organizations/{organizationId}/members/{membershipId}",
+        "/api/v1/organizations/{organizationId}/rooms",
+        "/api/v1/rooms/{roomId}",
     }
     assert schema["components"]["securitySchemes"]["HTTPBearer"]["scheme"] == "bearer"
     assert set(paths["/api/v1/organizations/{organizationId}/members"]) == {"get"}

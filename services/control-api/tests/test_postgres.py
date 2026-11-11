@@ -52,6 +52,8 @@ def test_schema_version_constraints_and_metadata_only(migrated: Database) -> Non
             "organization_access_events",
             "organization_memberships",
             "organizations",
+            "room_creation_requests",
+            "rooms",
             "users",
         ]
         count = session.scalar(text("SELECT count(*) FROM control_api.foundation_metadata"))

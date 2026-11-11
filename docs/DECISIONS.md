@@ -1,5 +1,19 @@
 # Architectural decisions
 
+## 2026-11-10 — M9 PR3 draft Room metadata
+
+A Room created by OWNER/ADMIN belongs to its founding active organization and
+remains DRAFT. This is not an active two-party collaboration; the second party
+and Room memberships are reserved for PR4. Active organization members may read;
+OWNER/ADMIN may change bounded display metadata. Reuse the PR2 identity and
+organization-row lock, so role/revocation changes serialize with Room mutations.
+Idempotency is scoped by actor/organization/key and returns the original creation
+snapshot, with conflicting payloads refused. Updates require the current strong
+version ETag. Head-state mutation has no API or SQL application grant and is
+constrained to NULL. These are business permissions, never StatePolicy authority.
+Downgrade 0003 removes only the new metadata tables and loses their contents;
+exercise it only on disposable fixtures or with an explicit migration/backup plan.
+
 ## 2026-11-03 — M9 PR1 Control API foundation
 
 Follow the founder-restored D1–D10 architecture (chat 01, November 3): modular

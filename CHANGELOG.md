@@ -1,5 +1,10 @@
 # Changelog
 
+- M9 PR3 local: persistent draft Room metadata, restricted organization access,
+  idempotent creation, If-Match updates and migration 0003 with RLS/grants.
+  Real PostgreSQL/Keycloak/API acceptance is separate from hosted validation.
+  No RoomState, invitation, crypto, frontend or publication is added.
+
 - M9 PR2 targeted QA: narrow requester RLS to pending/rejected registration,
   prove blocked authorization/revocation and owner-removal overlap in PostgreSQL,
   and expand real BFF/API mutation and inactive-provider-token acceptance.

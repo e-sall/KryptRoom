@@ -1,7 +1,10 @@
 from alembic import context
 from sqlalchemy import create_engine, pool
 
-from kryptroom_control import identity_schema  # noqa: F401 — register PR2 metadata
+from kryptroom_control import (
+    identity_schema,  # noqa: F401 — register PR2 metadata
+    room_schema,  # noqa: F401 — register PR3 metadata
+)
 from kryptroom_control.config import load_settings
 from kryptroom_control.db import SCHEMA, Base
 

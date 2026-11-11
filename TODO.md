@@ -1,5 +1,13 @@
 # TODO
 
+## M9 PR3 — isolated local Persistent Rooms
+
+- [x] Implement draft metadata persistence, organization authorization and RLS.
+- [x] Add real PostgreSQL idempotence/concurrency/revocation and HTTP/IdP tests.
+- [ ] Obtain targeted independent 04 QA of the final PR3 delta.
+- [ ] Resolve stacked PR2 publication gates before separate publication approval.
+- No invitation/membership PR4 work, RoomState or cryptographic initialization.
+
 ## M9 PR2 — local Identity & Organizations candidate
 
 - [x] Address QA-PR2-01/02/03 with direct SQL, observed lock waits and real HTTP/IdP evidence.

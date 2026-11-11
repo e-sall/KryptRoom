@@ -1,5 +1,10 @@
 # Changelog
 
+- M9 PR4 local: pre-registered partner invitations, accept/reject/leave/revoke,
+  read-only shared metadata, scoped SQL functions/RLS and transactional events.
+  Real BFF/UI, PostgreSQL/concurrency/restart tests. No RoomState, cryptographic
+  execution, dependency/CI change or publication.
+
 - Local Rooms UI/BFF integration: organization list, idempotent creation, detail
   reopening and ETag metadata editing using authenticated PR3 endpoints. Reuse M8
   presentation and keep synthetic previews separate; no crypto or publication.

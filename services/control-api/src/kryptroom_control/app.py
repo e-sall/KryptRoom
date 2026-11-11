@@ -76,6 +76,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         from kryptroom_control.room_api import router as room_router
 
         app.include_router(room_router)
+        from kryptroom_control.collaboration_api import router as collaboration_router
+
+        app.include_router(collaboration_router)
         app.title = "KryptRoom Control API — Identity, Organizations & Rooms"
         app.description = (
             "Controlled organization metadata only; no cryptographic execution authority."

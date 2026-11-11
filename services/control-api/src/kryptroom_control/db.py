@@ -18,7 +18,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sess
 from kryptroom_control.config import Settings
 
 SCHEMA = "control_api"
-SCHEMA_REVISION = "0003_persistent_rooms"
+SCHEMA_REVISION = "0004_collaboration"
 SCHEMA_CONTRACT = "m9-control-foundation-v1"
 
 

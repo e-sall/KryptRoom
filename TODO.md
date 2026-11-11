@@ -1,5 +1,16 @@
 # TODO
 
+## Authorized isolated M9 PR4 collaboration
+
+- [x] Implement owner/partner authority, lifecycle, RLS and migration 0004.
+- [x] Connect BFF/session and M8 components; preserve previews and homepage.
+- [x] Test PostgreSQL, observed lock waits and real Edge/Keycloak/BFF lifecycle.
+- [ ] Obtain consolidated independent QA04 of the exact local PR4 commit.
+- [ ] Resolve inherited publication/security/enforcement gates before any push.
+- No hosted CI, merge, deployment or private computation authorized.
+
+Older checklists below retain their historical authorization boundaries.
+
 ## Authorized local Rooms UI/BFF track
 
 - [x] Connect list/create/details/edit to existing session BFF and PR3 contracts.

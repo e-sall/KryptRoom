@@ -83,7 +83,12 @@ class RoomService:
 
     def listing(self, oid: UUID, limit: int, cursor: UUID | None) -> dict[str, Any]:
         self.authority.authorized(oid, BusinessAction.ORGANIZATION_READ)
-        query = sa.select(rooms).where(rooms.c.organization_id == oid)
+        query = sa.select(rooms).where(
+            sa.or_(
+                rooms.c.organization_id == oid,
+                rooms.c.id.in_(sa.select(sa.func.control_api.shared_room_ids(oid))),
+            )
+        )
         if cursor:
             query = query.where(rooms.c.id > cursor)
         rows = self.session.execute(query.order_by(rooms.c.id).limit(limit + 1)).mappings().all()
@@ -103,7 +108,6 @@ class RoomService:
 
     def read(self, rid: UUID) -> dict[str, Any]:
         row = self._room(rid)
-        self.authority.authorized(row["organization_id"], BusinessAction.ORGANIZATION_READ)
         return room_wire(row)
 
     def update(self, rid: UUID, changes: dict[str, str], etag: str | None) -> dict[str, Any]:

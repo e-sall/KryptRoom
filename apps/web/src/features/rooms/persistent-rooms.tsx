@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Button, ButtonLink, Card, StatusView, TextField } from "@/components/ui";
+import { CollaborationPanel } from "./collaboration-panel";
 
 type Room = {id:string;organizationId:string;displayName:string;description:string;status:"DRAFT";headStateId:null;version:number};
 type Organization = {id:string;displayName:string};
@@ -10,7 +11,7 @@ type Membership = {organizationId:string;role:string;status:string};
 type View = "loading"|"ready"|"empty"|"forbidden"|"conflict"|"error"|"login";
 const root="/bff/api/v1";
 class RequestError extends Error { constructor(readonly status:number){super("Request could not be completed");} }
-async function api(path:string, init:RequestInit={}) {
+export async function api(path:string, init:RequestInit={}) {
   const response=await fetch(root+path,{...init,credentials:"same-origin",cache:"no-store",redirect:"error"});
   if(!response.ok) throw new RequestError(response.status);
   return {data:(await response.json()).data,etag:response.headers.get("ETag"),csrf:response.headers.get("X-CSRF-Token")};
@@ -102,6 +103,7 @@ export function PersistentRooms({create=false,roomId}:{create?:boolean;roomId?:s
   const showForm=(create&&!saved)||!!roomId;
   return <>
     <header className="page-header"><h1>{create?"Create a Room":roomId?"Room details":"Rooms"}</h1><p>Persistent organization workspace · metadata only</p></header>
+    <ButtonLink href="/app/rooms/invitations">Organization invitations</ButtonLink>
     {!roomId&&organizations.length>0&&<label className="field">Organization <select aria-label="Organization" style={{maxWidth:"100%",minHeight:44,background:"var(--kr-surface)",color:"var(--kr-text-primary)",border:"1px solid var(--kr-border)",borderRadius:"var(--kr-radius-control)"}} value={organization} disabled={busy} onChange={e=>{setOrganization(e.target.value);setRooms([]);setRoom(null);setCursor(null);setState("loading");key.current=null;}}>
       {organizations.map(o=><option value={o.id} key={o.id}>{o.displayName}</option>)}</select></label>}
     <Notice state={state} retry={()=>{setState("loading");setRoom(null);setRooms([]);setSaved(false);setRevision(r=>r+1);}}/>
@@ -114,6 +116,7 @@ export function PersistentRooms({create=false,roomId}:{create?:boolean;roomId?:s
         <Button type="submit" variant="primary" loading={busy} disabled={!canWrite||!csrf||state==="conflict"||(!create&&!etag)}>{create?"Create Room":"Save changes"}</Button>
       </form></Card>}
       {saved&&room&&<p role="status">{create?"Room created.":"Changes saved."} <Link href={`/app/rooms/${room.id}`}>Open Room</Link></p>}
+      {roomId&&room&&state==="ready"&&<CollaborationPanel roomId={roomId} ownerId={room.organizationId} canInvite={canWrite}/>}
       {!create&&!roomId&&rooms.map(value=><Card key={value.id}><h2><Link href={`/app/rooms/${value.id}`}>{value.displayName}</Link></h2><p>{value.description}</p><p>Draft · No RoomState associated</p></Card>)}
       {!create&&!roomId&&cursor&&<Button onClick={more} loading={busy}>Load more</Button>}
       {!create&&!roomId&&canWrite&&<ButtonLink href="/app/rooms/new">Create Room</ButtonLink>}

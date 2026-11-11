@@ -1,5 +1,18 @@
 # Project context
 
+## Local M9 PR4 collaboration — 2026-11-11
+
+Founder authorizes isolated development from approved Rooms UI `b2cf2b5`.
+PR4 adds a pre-registered partner invitation lifecycle and shared Room metadata
+through existing OIDC identity, BFF sessions, SQL policies and M8 components.
+One owner and at most one pending/accepted partner organization are supported.
+Owner OWNER/ADMIN edits metadata and invites/revokes; target OWNER/ADMIN accepts,
+rejects or leaves. Active partner members read shared metadata only.
+Business participation grants no cryptographic authority; `headStateId` stays null.
+M1–M7, previews, homepage, dependencies and CI are preserved. Prior QA does not
+approve this new delta. See `docs/m9/pr4/IMPLEMENTATION-REPORT.md`.
+Publication remains NO-GO: no push, hosted CI, merge, deployment or crypto run.
+
 ## Local Rooms UI/BFF track — 2026-11-10
 
 Founder authorizes an isolated integration on approved PR3 `646a8f5`.

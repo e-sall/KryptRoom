@@ -1,5 +1,25 @@
 # Architectural decisions
 
+## 2026-11-11 — PR4 bounded business collaboration
+
+One owning organization and at most one pending/accepted pre-registered partner
+per Room. Owner OWNER/ADMIN manages metadata and invitations; partner OWNER/ADMIN
+accepts, rejects or leaves, and active partner members read shared metadata only.
+No ownership transfer, invitation email, private-data sharing or cryptographic
+membership/consent is implied. These reversible pilot policies need targeted QA.
+
+Reuse current membership authorization and organization locks. Serialize lifecycle
+mutations on the Room row and recheck live authority after waiting. Use UUIDv4
+invitation IDs, scoped SQL authority, If-Match and actor/Room/key idempotence.
+Terminal retries return current state without duplicate events. Keep RLS bypass
+inside fixed-search-path functions owned by a NOLOGIN guard, never runtime logins.
+Shared participant projections expose organization IDs, not private org records.
+
+Migration 0004 preserves frozen 0001–0003. Downgrade restores owner-only Room
+visibility and deletes PR4 invitation/event history: export it before rollback
+outside a disposable database. This is not cryptographic evidence or an undo of
+business events. No publication or expired exception is authorized by local QA.
+
 ## 2026-11-10 — Rooms UI/BFF local integration
 
 Reuse the existing server-only session/CSRF proxy, extending only its exact route

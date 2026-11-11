@@ -258,3 +258,78 @@ def test_authority_revoked_while_invitation_mutation_waits(stores, cohort):
         assert future.result(timeout=5) == "resource_not_found"
     with app.transaction() as s:
         assert Collaboration(svc(s, a)).listing(aid, 25, None)["items"] == []
+
+
+@pytest.mark.parametrize("action", [None, "unknown_action"], ids=["null", "outside_allowlist"])
+def test_direct_invalid_action_cannot_disclose_revoked_foreign_invitation(
+    stores, invitation, postgres_settings, action
+):
+    a, _, aid, _, rid, iid = invitation
+    app = stores["app"]
+    with app.transaction() as s:
+        c = Collaboration(svc(s, a))
+        revoked = c.mutate(aid, rid, "revoke", iid=iid, etag='"1"')
+        assert revoked["status"] == "REVOKED"
+        assert c.mutate(aid, rid, "revoke", iid=iid, etag='"1"') == revoked
+
+    outsider = resolve(app, str(uuid4()))
+    cid = UUID(register(app, outsider)["id"])
+    approve(stores["operator"], cid)
+
+    def snapshot():
+        db = Database(postgres_settings)
+        try:
+            with db.transaction() as s:
+                s.execute(sa.text("SET LOCAL ROLE kryptroom_auth_guard"))
+                row = s.scalar(
+                    sa.text("SELECT to_jsonb(i) FROM control_api.room_invitations i WHERE id=:iid"),
+                    {"iid": iid},
+                )
+                events = s.execute(
+                    sa.text(
+                        "SELECT id,actor_id,actor_org,kind,created_at "
+                        "FROM control_api.room_collaboration_events "
+                        "WHERE invitation_id=:iid ORDER BY id"
+                    ),
+                    {"iid": iid},
+                ).all()
+                return row, events
+        finally:
+            db.close()
+
+    before = snapshot()
+    assert before[0]["status"] == "REVOKED" and len(before[1]) == 2
+    with app.transaction() as s:
+        authority = svc(s, outsider)
+        authority.authorized(cid, BusinessAction.ORGANIZATION_UPDATE)
+        assert s.scalar(sa.text("SELECT current_user")) == "kryptroom_app"
+        assert (
+            s.scalar(sa.text("SELECT control_api.active_role(:oid)"), {"oid": cid}) == "ORG_OWNER"
+        )
+        assert (
+            s.scalar(
+                sa.text("SELECT count(*) FROM control_api.room_invitations WHERE id=:iid"),
+                {"iid": iid},
+            )
+            == 0
+        )
+        returned = None
+        with pytest.raises(DBAPIError) as error, s.begin_nested():
+            returned = s.scalar(
+                sa.text(
+                    "SELECT control_api.room_collaboration(:rid,:scope,:iid,:action,2,NULL,NULL)"
+                ),
+                {"rid": rid, "scope": cid, "iid": iid, "action": action},
+            )
+        assert returned is None
+        assert error.value.orig.sqlstate == "22023"
+        assert error.value.orig.diag.message_primary == "invalid_action"
+        assert (
+            s.scalar(
+                sa.text("SELECT count(*) FROM control_api.room_invitations WHERE id=:iid"),
+                {"iid": iid},
+            )
+            == 0
+        )
+    assert snapshot() == before
+    print("PASS direct invalid action refused; no foreign result, invitation change or new event")

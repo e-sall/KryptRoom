@@ -66,6 +66,9 @@ CREATE FUNCTION control_api.room_collaboration(rid uuid,scope uuid,iid uuid,acti
 LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog AS $$
 DECLARE owner uuid; item control_api.room_invitations; desired text;
 BEGIN
+ IF action IS NULL OR action NOT IN ('invite','accept','reject','leave','revoke') THEN
+   RAISE EXCEPTION 'invalid_action' USING ERRCODE='22023';
+ END IF;
  IF control_api.active_role(scope) NOT IN ('ORG_OWNER','ORG_ADMIN')
     OR control_api.active_role(scope) IS NULL THEN RAISE EXCEPTION 'permission_denied' USING ERRCODE='42501'; END IF;
  SELECT organization_id INTO owner FROM control_api.rooms WHERE id=rid FOR UPDATE;

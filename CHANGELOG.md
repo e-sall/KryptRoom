@@ -1,5 +1,11 @@
 # Changelog
 
+- M9 release closure local: patched digest-pinned Alpine API/BFF runtimes,
+  separately installed glibc browser-test dependencies, actual-image secret tests,
+  guarded restore fixture extension and PostgreSQL 17.12 release minimum.
+  Uncached reconstructions, upgrade preservation and real authenticated Rooms
+  regressions pass locally; residual release gates block. No product/Core change.
+
 - M9 PR6 local: pinned Node security patch, runtime installer removal, apt patch,
   protected history downgrade, real logical restore, fail-closed release CI and
   manual enforcement plan. Unresolved findings remain blocking; no publication.

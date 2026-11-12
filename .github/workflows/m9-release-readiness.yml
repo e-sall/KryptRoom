@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
-  NODE_IMAGE: node:22.23.5-bookworm-slim@sha256:e9f565d32859f0cbfb52125eafe8be39390f24dac302dc3cdf566e8ba3ab21ee
+  NODE_IMAGE: node:22.23.5-alpine3.23@sha256:6868d4695b947ee120bffaa463fecd68cde370d7bfec92955e7c8ac576b4f475
   SCANNER_IMAGE: aquasec/trivy:0.76.2@sha256:6fa071ef8daa2e58b90cbf1710bedca91adbb3bf98693533226f442035b836a6
   POSTGRES_IMAGE: postgres:17.11-bookworm@sha256:839fbb5a4942a7758dd93e18b42ea5649807491a0545b5eeeb8f0b8bb11857a5
   KEYCLOAK_IMAGE: quay.io/keycloak/keycloak:26.8.2@sha256:3879c623248408de29a5303178b5816c77e8dfef3890c361f8c0bbeaa979ba3b
@@ -72,6 +72,12 @@ jobs:
           python scripts/compose-acceptance.py
           docker compose --profile test run --rm tests python -m pytest tests/test_release_postgres.py -vs
           python scripts/backup-restore-acceptance.py --disposable --container kr-m9-release-backend-postgres-1
+      - name: Require supported patched PostgreSQL 17 before release
+        run: |
+          pg_version="$(docker compose exec -T postgres psql -XAt -U postgres -d postgres -c 'SHOW server_version_num')"
+          case "$pg_version" in ''|*[!0-9]*) exit 1 ;; esac
+          test "$pg_version" -ge 170012
+          test "$pg_version" -lt 180000
       - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: release-python-distributions

@@ -120,6 +120,6 @@ def test_local_compose_is_isolated_and_pinned() -> None:
     assert services["api"]["read_only"] is True
     assert services["api"]["cap_drop"] == ["ALL"]
     dockerfile = (SERVICE / "Dockerfile").read_text()
-    assert "python:3.12.16-slim-bookworm@sha256:" in dockerfile
+    assert "python:3.12.16-alpine3.23@sha256:" in dockerfile
     assert "USER 10001:10001" in dockerfile
     assert "--no-access-log" in dockerfile and "--no-proxy-headers" in dockerfile

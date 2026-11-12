@@ -60,7 +60,7 @@ def test_identity_fixture_remains_loopback_only_and_exactly_pinned():
     dockerfile = (REPO / "apps/web/Dockerfile.identity").read_text()
     assert "HOSTNAME=127.0.0.1 PORT=3004" in dockerfile
     assert "playwright:v1.64.1-noble@sha256:" in dockerfile
-    assert "node:22.23.5-bookworm-slim@sha256:" in dockerfile
+    assert "node:22.23.5-alpine3.23@sha256:" in dockerfile
     assert "USER 10001:10001" in dockerfile
 
 

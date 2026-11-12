@@ -72,6 +72,49 @@ class ReleaseEvidenceTests(unittest.TestCase):
             self.assertEqual(measured['image_id'], manifest_id)
             self.assertEqual(measured['config_id'], config_id)
 
+    def index_archive(self, directory, mutation=None):
+        config = b'{"architecture":"amd64","os":"linux"}'
+        config_id = 'sha256:' + hashlib.sha256(config).hexdigest()
+        child = json.dumps({'schemaVersion': 2, 'config': {'digest': config_id}}).encode()
+        child_id = 'sha256:' + hashlib.sha256(child).hexdigest()
+        descriptor = {'platform': {'os': 'linux', 'architecture': 'amd64'}, 'digest': child_id, 'size': len(child)}
+        index = {'mediaType': 'application/vnd.oci.image.index.v1+json', 'manifests': [descriptor]}
+        if mutation == 'wrong-config':
+            child = b'{"config":{"digest":"wrong"}}'
+            descriptor.update(digest='sha256:' + hashlib.sha256(child).hexdigest(), size=len(child))
+            child_id = descriptor['digest']
+        elif mutation == 'ambiguous':
+            index['manifests'].append(descriptor.copy())
+        elif mutation == 'wrong-platform':
+            descriptor['platform']['architecture'] = 'arm64'
+        elif mutation == 'wrong-size':
+            descriptor['size'] += 1
+        raw = json.dumps(index).encode()
+        image_id = 'sha256:' + hashlib.sha256(raw).hexdigest()
+        path = Path(directory) / 'index.tar'
+        files = [('manifest.json', json.dumps([{'Config': 'config.json'}]).encode()),
+                 ('config.json', config), ('blobs/sha256/' + image_id[7:], raw)]
+        if mutation != 'missing-child':
+            files.append(('blobs/sha256/' + child_id[7:], b'tampered' if mutation == 'tampered-child' else child))
+        with tarfile.open(path, 'w') as tar:
+            for name, data in files:
+                info = tarfile.TarInfo(name)
+                info.size = len(data)
+                tar.addfile(info, io.BytesIO(data))
+        return path, image_id, config_id
+
+    def test_index_binds_exact_platform_manifest_and_config(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path, image_id, config_id = self.index_archive(directory)
+            self.assertEqual(checks.measure(path, image_id)['config_id'], config_id)
+
+    def test_index_refuses_missing_ambiguous_or_tampered_binding(self):
+        for case in ('missing-child', 'wrong-platform', 'ambiguous', 'wrong-config', 'wrong-size', 'tampered-child'):
+            with self.subTest(case=case), tempfile.TemporaryDirectory() as directory:
+                path, image_id, _ = self.index_archive(directory, case)
+                with self.assertRaises((ValueError, KeyError)):
+                    checks.measure(path, image_id)
+
 
 if __name__ == '__main__':
     unittest.main()

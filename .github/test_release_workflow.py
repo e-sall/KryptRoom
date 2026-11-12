@@ -29,6 +29,11 @@ class ReleaseWorkflowTests(unittest.TestCase):
             self.assertIn(f'test "${key}" = success', ready)
         self.assertIn('test "$M9" = false\n            test "$WEB" = false', ready)
 
+    def test_vendor_postgres_security_floor_is_not_replaced_by_a_clean_scan(self):
+        self.assertIn("SHOW server_version_num", self.text)
+        self.assertIn('test "$pg_version" -ge 170012', self.text)
+        self.assertIn('test "$pg_version" -lt 180000', self.text)
+
 
 if __name__ == '__main__':
     unittest.main()

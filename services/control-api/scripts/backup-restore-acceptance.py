@@ -19,7 +19,9 @@ def main() -> None:
     args = parser.parse_args()
     if not 1 <= args.port <= 65535:
         raise ValueError("Invalid fixture port")
-    if not re.fullmatch(r"kr-m9-(?:pr6-local|release-backend)-[a-zA-Z0-9_-]+", args.container):
+    if not re.fullmatch(
+        r"kr-m9-(?:pr6-local|release-backend|closure)-[a-zA-Z0-9_-]+", args.container
+    ):
         raise ValueError("Only the dedicated disposable release fixture is allowed")
     source = "kryptroom_test"
     restored = "kryptroom_release_restore_test"

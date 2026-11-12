@@ -1,5 +1,18 @@
 # Project context
 
+## Local M9 release closure — 2026-11-12
+
+Isolated from approved PR6 `66ac0df`. API/Python and BFF/Node move to official
+digest-pinned Alpine 3.23 bases with exact stable krb5/zlib fixes. Both served
+images scan clean with the recorded database; this is not security certification.
+Application code, locks, migrations, Core and marketing are unchanged.
+Two uncached local reconstructions and real identity/Rooms/collaboration recovery
+are exercised. PostgreSQL 17.12 is a LOCAL candidate only; approved default image
+pins remain unchanged and release now refuses PostgreSQL <17.12. Residual PG/IdP
+findings, npm eight moderate findings, ESLint EOL, independent enforcement and
+hosted validation still block publication. See docs/m9/release-closure.
+No exception, push, merge, hosted execution or deployment is authorized.
+
 ## Local M9 PR6 release gates — 2026-11-11
 
 Isolated from approved PR5 51e885c; no product feature. Pins Node security patch,

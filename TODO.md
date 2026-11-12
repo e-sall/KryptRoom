@@ -1,5 +1,18 @@
 # TODO
 
+## Authorized local M9 release closure
+
+- [x] API/BFF measured image findings zero without scan exclusions.
+- [x] Two uncached local builds; real Compose and data/RLS/roles preservation.
+- [x] Test local PostgreSQL 17.12 candidate; refuse older release versions.
+- [ ] QA04 of closure delta/evidence, including Debian-to-musl compatibility.
+- [ ] Adopt reviewed immutable PostgreSQL >=17.12; resolve remaining 131 HIGH +
+  4 CRITICAL occurrences (65 unique H/C CVEs) and Keycloak six HIGH.
+- [ ] Resolve npm eight moderate findings and supported ESLint peer chain.
+- [ ] Independent reviewer/validator, GitHub enforcement and hosted exact-SHA CI.
+- [ ] Founder publication approval; production secrets/restore/PITR validation.
+- No automatic acceptance, renewed exception, publication or deployment.
+
 ## Authorized isolated M9 PR6
 
 - [x] Compatible runtime hardening, exact-image scans and restore/downgrade tests.

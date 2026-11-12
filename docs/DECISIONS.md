@@ -1,5 +1,23 @@
 # Architectural decisions
 
+## 2026-11-12 — Local release closure runtime choices
+
+Use official digest-pinned Python 3.12/Node 22 Alpine 3.23 runtime bases with stable
+krb5-libs 1.22.3-r0 and zlib 1.4-r0; keep application hash locks. Do not copy musl
+native modules into the glibc browser image: strictly install the same npm lock in
+that separate test target. Bound this ABI change with real PG/IdP/API/BFF tests,
+not a zero scan alone. Served runtimes keep UID10001/read-only/cap-drop.
+
+Keep approved PostgreSQL/Keycloak immutable defaults. Test a signed PGDG 17.12 and
+Debian apt 2.6.2 candidate by actual immutable image ID in the isolated fixture.
+Do not put mutable local tags in hosted workflows. Vendor fixes can precede scan
+coverage: require PostgreSQL >=17.12 and <18 for release, intentionally blocking
+the unchanged 17.11 default until a reviewed immutable artifact is adopted.
+
+No ad hoc Keycloak JAR swap, forced ESLint peers/minimatch major override, lowered
+scan threshold or implicit vulnerability acceptance. Same-host fresh build contexts
+are not independent-host or bit-identical reproducibility evidence.
+
 ## 2026-11-11 — PR6 release controls
 
 Preserve migrations; refuse history-losing downgrade before DDL. Only explicit

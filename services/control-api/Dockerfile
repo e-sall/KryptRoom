@@ -1,7 +1,5 @@
-FROM python:3.12.16-slim-bookworm@sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337 AS base
-RUN apt-get update \
-    && apt-get install --only-upgrade --no-install-recommends -y apt=2.6.2 libapt-pkg6.0=2.6.2 \
-    && rm -rf /var/lib/apt/lists/*
+FROM python:3.12.16-alpine3.23@sha256:9a7b46da82fe49a9118e0aa7e35ac3b831aa53ad4f4ebf3e16654732bc958a62 AS base
+RUN apk add --no-cache --upgrade krb5-libs=1.22.3-r0 zlib=1.4-r0
 
 FROM base AS secret-bootstrap
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1

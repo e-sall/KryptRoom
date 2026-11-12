@@ -37,6 +37,29 @@ def measure(archive, image_id):
             raw = tar.extractfile('blobs/sha256/' + image_id.removeprefix('sha256:')).read()
             gate.require('sha256:' + hashlib.sha256(raw).hexdigest() == image_id, 'Manifest digest mismatch')
             image_manifest = gate.decode(raw)
+            if image_manifest.get('mediaType') in {
+                'application/vnd.oci.image.index.v1+json',
+                'application/vnd.docker.distribution.manifest.list.v2+json',
+            }:
+                # A pulled multi-platform pin can be .Id while the saved archive
+                # contains only one platform. Bind that exact platform descriptor;
+                # never treat an index digest as the scanned config digest.
+                config_data = gate.decode(config)
+                platform = {key: config_data.get(key) for key in ('os', 'architecture')}
+                gate.require(all(type(value) is str and value for value in platform.values()), 'Missing platform')
+                descriptors = image_manifest.get('manifests')
+                gate.require(type(descriptors) is list and 0 < len(descriptors) <= 64, 'Invalid image index')
+                matches = [d for d in descriptors if type(d) is dict and
+                           all(d.get('platform', {}).get(key) == value for key, value in platform.items())]
+                gate.require(len(matches) == 1, 'Missing/ambiguous platform descriptor')
+                descriptor = matches[0]
+                child_id, size = descriptor.get('digest'), descriptor.get('size')
+                gate.require(type(child_id) is str and re.fullmatch(r'sha256:[0-9a-f]{64}', child_id), 'Invalid child digest')
+                gate.require(type(size) is int and 0 < size <= 1024 * 1024, 'Invalid child size')
+                child_file = tar.extractfile('blobs/sha256/' + child_id[7:])
+                child = child_file.read(size + 1)
+                gate.require(len(child) == size and 'sha256:' + hashlib.sha256(child).hexdigest() == child_id, 'Child manifest mismatch')
+                image_manifest = gate.decode(child)
             gate.require(image_manifest.get('config', {}).get('digest') == config_id, 'Archive/config mismatch')
     with Path(archive).open('rb') as stream:
         archive_sha = hashlib.file_digest(stream, 'sha256').hexdigest()

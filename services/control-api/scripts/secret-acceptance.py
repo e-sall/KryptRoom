@@ -2,6 +2,7 @@
 
 import json
 import os
+import re
 import secrets
 import shutil
 import subprocess
@@ -12,10 +13,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCKER = shutil.which("docker")
-PG = (
-    "postgres:17.11-bookworm@"
-    "sha256:839fbb5a4942a7758dd93e18b42ea5649807491a0545b5eeeb8f0b8bb11857a5"
-)
 if DOCKER is None or os.name != "posix":
     raise SystemExit("Native Linux Docker is required")
 
@@ -27,6 +24,16 @@ def run(*args: str, check: bool = True) -> subprocess.CompletedProcess[str]:
     if check and result.returncode:
         raise AssertionError("Native secret acceptance Docker operation failed")
     return result
+
+
+# Bind negative bootstrap tests to the actual running image, including a local
+# hardened candidate; never substitute an older reference image or floating tag.
+pg_container = run("compose", "ps", "-q", "postgres").stdout.strip()
+if not pg_container:
+    raise RuntimeError("Running disposable PostgreSQL fixture required")
+PG = run("inspect", pg_container, "--format", "{{.Image}}").stdout.strip()
+if not re.fullmatch(r"sha256:[0-9a-f]{64}", PG):
+    raise RuntimeError("PostgreSQL image identity unavailable")
 
 
 def wait_running(name: str) -> None:

@@ -1,4 +1,5 @@
-FROM node:22.23.5-bookworm-slim@sha256:e9f565d32859f0cbfb52125eafe8be39390f24dac302dc3cdf566e8ba3ab21ee AS build
+FROM node:22.23.5-alpine3.23@sha256:6868d4695b947ee120bffaa463fecd68cde370d7bfec92955e7c8ac576b4f475 AS build
+RUN apk add --no-cache --upgrade zlib=1.4-r0
 ENV NEXT_TELEMETRY_DISABLED=1
 WORKDIR /app
 COPY package.json package-lock.json ./
@@ -12,7 +13,10 @@ RUN npm run build
 # Trusted acceptance controller only; never used by the API or BFF runtime.
 FROM mcr.microsoft.com/playwright:v1.64.1-noble@sha256:2f05f8a734509a7b3f26a912639488ee08f58a7b292d14d62271bcff9038768f AS acceptance
 WORKDIR /app
-COPY --from=build /app/node_modules ./node_modules
+COPY package.json package-lock.json ./
+# The browser image is glibc; reproduce its native dependencies independently.
+RUN npm install --global npm@10.9.10 --ignore-scripts --registry=https://registry.npmjs.org \
+    && npm ci --ignore-scripts --strict-peer-deps --no-audit
 COPY --from=build /app/.next ./.next
 COPY package.json package-lock.json playwright.identity.config.ts ./
 COPY tests-identity ./tests-identity
@@ -27,7 +31,8 @@ ENV CI=1 HOME=/run/browser-tmp TMPDIR=/run/browser-tmp
 USER 10001:10001
 CMD ["node", "node_modules/@playwright/test/cli.js", "test", "-c", "playwright.identity.config.ts", "--output=/run/browser-tmp/test-results"]
 
-FROM node:22.23.5-bookworm-slim@sha256:e9f565d32859f0cbfb52125eafe8be39390f24dac302dc3cdf566e8ba3ab21ee AS runtime
+FROM node:22.23.5-alpine3.23@sha256:6868d4695b947ee120bffaa463fecd68cde370d7bfec92955e7c8ac576b4f475 AS runtime
+RUN apk add --no-cache --upgrade zlib=1.4-r0
 ENV NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production HOSTNAME=127.0.0.1 PORT=3004
 WORKDIR /app
 # Production server.js does not need the bundled package-manager attack surface.

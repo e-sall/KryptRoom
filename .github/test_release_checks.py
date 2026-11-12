@@ -53,8 +53,24 @@ class ReleaseEvidenceTests(unittest.TestCase):
                     info.size = len(data)
                     tar.addfile(info, io.BytesIO(data))
             self.assertEqual(checks.measure(path, expected)['image_id'], expected)
-            with self.assertRaises(ValueError):
+            with self.assertRaises((ValueError, KeyError)):
                 checks.measure(path, 'sha256:' + '0'*64)
+
+    def test_containerd_manifest_id_binds_to_scan_config_id(self):
+        config = b'{"architecture":"amd64"}'
+        config_id = 'sha256:' + hashlib.sha256(config).hexdigest()
+        image_manifest = json.dumps({'schemaVersion': 2, 'config': {'digest': config_id}}).encode()
+        manifest_id = 'sha256:' + hashlib.sha256(image_manifest).hexdigest()
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'oci.tar'
+            with tarfile.open(path, 'w') as tar:
+                for name, data in [('manifest.json', json.dumps([{'Config': 'config.json'}]).encode()), ('config.json', config), ('blobs/sha256/' + manifest_id[7:], image_manifest)]:
+                    info = tarfile.TarInfo(name)
+                    info.size = len(data)
+                    tar.addfile(info, io.BytesIO(data))
+            measured = checks.measure(path, manifest_id)
+            self.assertEqual(measured['image_id'], manifest_id)
+            self.assertEqual(measured['config_id'], config_id)
 
 
 if __name__ == '__main__':

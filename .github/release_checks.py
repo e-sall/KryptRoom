@@ -30,10 +30,17 @@ def measure(archive, image_id):
         manifest = gate.decode(tar.extractfile('manifest.json').read())
         gate.require(type(manifest) is list and len(manifest) == 1, 'One image per archive required')
         config = tar.extractfile(manifest[0]['Config']).read()
-        gate.require('sha256:' + hashlib.sha256(config).hexdigest() == image_id, 'Archive/config mismatch')
+        config_id = 'sha256:' + hashlib.sha256(config).hexdigest()
+        if image_id != config_id:
+            # Docker's containerd store returns the OCI manifest digest as .Id;
+            # classic Docker returns the config digest. Verify both, never tags.
+            raw = tar.extractfile('blobs/sha256/' + image_id.removeprefix('sha256:')).read()
+            gate.require('sha256:' + hashlib.sha256(raw).hexdigest() == image_id, 'Manifest digest mismatch')
+            image_manifest = gate.decode(raw)
+            gate.require(image_manifest.get('config', {}).get('digest') == config_id, 'Archive/config mismatch')
     with Path(archive).open('rb') as stream:
         archive_sha = hashlib.file_digest(stream, 'sha256').hexdigest()
-    return {'image_id': image_id, 'sha256': archive_sha}
+    return {'image_id': image_id, 'config_id': config_id, 'sha256': archive_sha}
 
 
 def main():
@@ -49,7 +56,7 @@ def main():
         images[name] = measure(args.directory / (name + '.tar'), image_id)
         report = gate.decode((args.directory / (name + '.scan.json')).read_bytes())
         code = int((args.directory / (name + '.scan.exit')).read_text())
-        verify_scan(report, code, image_id)
+        verify_scan(report, code, images[name]['config_id'])
     (args.directory / 'PROVENANCE.json').write_text(json.dumps({'source_sha': args.source, 'images': images, 'independently_signed': False}, indent=2), encoding='utf-8')
 
 

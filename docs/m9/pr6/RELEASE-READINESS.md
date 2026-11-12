@@ -29,7 +29,7 @@ three real Edge/Chromium acceptance cases with Keycloak/PostgreSQL/source-free
 API/BFF (Rooms save/reopen, collaboration/revocation, restarts, dependency outages,
 readiness recovery and real persisted session expiry). Lint, types, production
 build, Ruff, formatting, strict mypy and locked Python audits pass. CI/gate tests:
-69; actual final decision shell: nine positive/negative executions. Actionlint
+70; actual final decision shell: nine positive/negative executions. Actionlint
 and YAML pass; external shellcheck/pyflakes integrations NOT RUN (unavailable).
 Two Python distributions compared with fixed SOURCE_DATE_EPOCH; exact hashes and
 commands in the handoff. Bit-identical independent Docker rebuild is NOT RUN.
@@ -39,6 +39,8 @@ and omitting PR5's exact server readiness route. Tests now check the actual stri
 gate and exact existing route; adjacent/future paths stay rejected. No general
 server exemption. Test-only Docker inputs include the lockfile, canonical Signal
 reference mount and writable test caches. Marketing assets/assertions unchanged.
+Actual archive validation covers both classic Docker config IDs and containerd
+OCI manifest IDs, bound to the configuration digest reported by the scanner.
 
 ## Explicit gates
 

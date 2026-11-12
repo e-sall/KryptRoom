@@ -16,13 +16,16 @@ test("real Rooms UI through session BFF, API, PostgreSQL and Keycloak",async({br
   expect(result.status()).toBe(200);return {context,page,me:(await result.json()).data,csrf:result.headers()["x-csrf-token"]};
  }
  const alice=await login(browser,"alice"),bob=await login(browser,"bob");
+ const organizations:string[]=[];
  for(const user of [alice,bob]){
   const response=await user.context.request.post("http://127.0.0.1:3004/bff/api/v1/organizations",{data:{displayName:randomUUID()},headers:{Origin:"http://127.0.0.1:3004","Sec-Fetch-Site":"same-origin","X-CSRF-Token":user.csrf,"Idempotency-Key":randomUUID()}});
   expect(response.status()).toBe(202);const oid=(await response.json()).data.id;
+  organizations.push(oid);
   execFileSync("wsl",["-d","Ubuntu-24.04","-u","root","--","python3",operator,"approve",oid]);
  }
- await alice.page.reload();await expect(alice.page.getByText("No Rooms yet")).toBeVisible();
+ await alice.page.reload();await alice.page.getByLabel("Organization",{exact:true}).selectOption(organizations[0]);await expect(alice.page.getByText("No Rooms yet")).toBeVisible();
  await alice.page.getByRole("link",{name:"Create Room",exact:true}).click();
+ await alice.page.getByLabel("Organization",{exact:true}).selectOption(organizations[0]);
  await alice.page.getByLabel("Room name").fill("Synthetic persisted UI Room");
  await alice.page.getByRole("button",{name:"Create Room",exact:true}).click();
  await expect(alice.page.getByText("Room created.")).toBeVisible();

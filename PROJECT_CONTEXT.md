@@ -1,5 +1,17 @@
 # Project context
 
+## Local M9 PR5 operational hardening — 2026-11-11
+
+Isolated branch starts at approved PR4 `c209806`. Migration 0005 catches up legacy
+0004 databases without resetting data or widening the existing function ACL.
+Migration 0006 adds transaction-bound Room history with manager-only projections,
+no private metadata bodies and no cryptographic claim. Existing Room/invitation
+states remain unchanged. Standalone Linux packaging and real dependency recovery
+are locally exercised; no source mount or `next start` substitutes for server.js.
+See `docs/m9/pr5` and the exact-commit flat QA handoff. Inherited frontend findings,
+unsupported lint tooling, independent enforcement and hosted validation still block
+publication. No exception, hosted CI, push, merge or deployment is authorized.
+
 ## Local M9 PR4 collaboration — 2026-11-11
 
 Founder authorizes isolated development from approved Rooms UI `b2cf2b5`.

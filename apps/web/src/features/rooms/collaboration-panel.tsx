@@ -9,6 +9,9 @@ export function CollaborationPanel({roomId,ownerId,canInvite=false}:{roomId?:str
  const [target,setTarget]=useState("");const [csrf,setCsrf]=useState("");const [status,setStatus]=useState("Loading");
  const [revision,setRevision]=useState(0);const [busy,setBusy]=useState(false);const key=useRef<string|null>(null);
  const [cursor,setCursor]=useState<string|null>(null);
+ const [history,setHistory]=useState<{id:string;kind:string;actorOrganizationId:string;createdAt:string}[]>([]);
+ const [historyCursor,setHistoryCursor]=useState<string|null>(null);
+ const [historyStatus,setHistoryStatus]=useState("");
  useEffect(()=>{let live=true;void(async()=>{try{
   const me=await api("/me");if(!live)return;setCsrf(me.csrf||"");
   const managed=me.data.organizations.filter((o:{id:string})=>me.data.memberships.some((m:{organizationId:string;status:string;role:string})=>m.organizationId===o.id&&m.status==="ACTIVE"&&["ORG_OWNER","ORG_ADMIN"].includes(m.role)));
@@ -27,8 +30,12 @@ export function CollaborationPanel({roomId,ownerId,canInvite=false}:{roomId?:str
   }catch{setStatus("Action refused or conflict. Reload the current invitation before retrying.");}finally{setBusy(false);}}
  async function more(){if(!cursor||busy)return;setBusy(true);try{const list=await api(`/organizations/${ownerId||org}/room-invitations?cursor=${encodeURIComponent(cursor)}`);setItems(old=>[...old,...list.data.items]);setCursor(list.data.next_cursor);}catch{setItems([]);setStatus("Access unavailable or request failed");}finally{setBusy(false);}}
  const visible=items.filter(i=>!roomId||i.roomId===roomId);
+ async function loadHistory(more=false){if(busy||!roomId)return;setBusy(true);setHistoryStatus("Loading history");try{
+  const result=await api(`/rooms/${roomId}/history${more&&historyCursor?`?cursor=${encodeURIComponent(historyCursor)}`:""}`);
+  setHistory(old=>more?[...old,...result.data.items]:result.data.items);setHistoryCursor(result.data.next_cursor);setHistoryStatus(result.data.items.length?"History loaded":"No events available");
+ }catch{setHistory([]);setHistoryCursor(null);setHistoryStatus("History unavailable or access denied");}finally{setBusy(false);}}
  return <Card><h2>{roomId?"Collaboration":"Organization invitations"}</h2><p role="status">{status}</p>
-  {!roomId&&<label>Organization<select aria-label="Invitation organization" value={org} disabled={busy} onChange={e=>{setOrg(e.target.value);setItems([]);setStatus("Loading");}}>{orgs.map(o=><option key={o.id} value={o.id}>{o.displayName}</option>)}</select></label>}
+  {!roomId&&<label>Organization<select aria-label="Invitation organization" value={org} disabled={busy} onChange={e=>{if(e.target.value===org)return;setOrg(e.target.value);setItems([]);setCursor(null);setHistory([]);setHistoryCursor(null);setStatus("Loading");}}>{orgs.map(o=><option key={o.id} value={o.id}>{o.displayName}</option>)}</select></label>}
   {partners.length>0&&<><h3>Participating organizations</h3>{partners.map((id,index)=><p key={id} style={{overflowWrap:"anywhere"}}>{index===0?"Owner · metadata management":"Partner · read-only metadata"} · {id}</p>)}</>}
   {roomId&&canInvite&&<form onSubmit={e=>{e.preventDefault();void act();}}><TextField id="invite-target" label="Pre-registered organization ID" required value={target} onChange={e=>setTarget(e.target.value)} pattern="[0-9a-fA-F-]{36}"/><Button type="submit" disabled={busy||!csrf}>Invite organization</Button></form>}
   {status==="Ready"&&!visible.length&&<p>No invitations on this page</p>}
@@ -38,5 +45,9 @@ export function CollaborationPanel({roomId,ownerId,canInvite=false}:{roomId?:str
    {["PENDING","ACCEPTED"].includes(i.status)&&(ownerId||org)===i.ownerOrganizationId&&<Button disabled={busy} onClick={()=>act(i,"revoke")}>Revoke</Button>}
    {i.status==="ACCEPTED"&&<ButtonLink href={`/app/rooms/${i.roomId}`}>Open shared Room</ButtonLink>}
   </div>)}{cursor&&<Button onClick={more} disabled={busy}>Load more invitations</Button>}<Button onClick={()=>{setStatus("Loading");setRevision(v=>v+1);}} disabled={busy}>Reload invitations</Button>
+  {roomId&&orgs.some(o=>partners.includes(o.id))&&<><h3>Room history</h3><Button disabled={busy} onClick={()=>loadHistory()}>Load Room history</Button>
+   <p role="status">{historyStatus}</p>{history.map(event=><p key={event.id}>{event.kind} · {event.createdAt} · {event.actorOrganizationId}</p>)}
+   {historyCursor&&<Button disabled={busy} onClick={()=>loadHistory(true)}>Load more history</Button>}
+   <p>Business events only, not cryptographic evidence.</p></>}
   <p>Shared metadata only. No private computation or RoomState is created.</p></Card>;
 }

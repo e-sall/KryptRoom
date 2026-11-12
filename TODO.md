@@ -1,5 +1,16 @@
 # TODO
 
+## Authorized isolated M9 PR5
+
+- [x] Fresh schema and legacy 0004 catch-up with data/owner/ACL preservation.
+- [x] Scoped transactional history, rollback, revocation and no metadata bodies.
+- [x] Real standalone server.js image; no source mounts or worktree dependencies.
+- [x] Real Rooms/collaboration, service restart/recovery and session-expiry tests.
+- [ ] Obtain consolidated independent QA04 of the exact PR5 delta.
+- [ ] Resolve moderate audit failures, ESLint support and independent GitHub enforcement.
+- [ ] Separately authorize publication and exact-SHA hosted checks for the stacked M9 work.
+- Publication/merge/deployment remain NO-GO. Earlier checklists are historical.
+
 ## Authorized isolated M9 PR4 collaboration
 
 - [x] Implement owner/partner authority, lifecycle, RLS and migration 0004.

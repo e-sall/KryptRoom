@@ -15,6 +15,8 @@ COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/.next ./.next
 COPY package.json playwright.identity.config.ts ./
 COPY tests-identity ./tests-identity
+COPY tests-rooms-real ./tests-rooms-real
+COPY playwright.rooms.config.ts ./
 COPY playwright.config.ts playwright.identity-regression.config.ts ./
 COPY tests ./tests
 COPY src ./src

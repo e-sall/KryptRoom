@@ -1,5 +1,10 @@
 # Changelog
 
+- M9 PR5 local: non-destructive legacy action-guard migration, transactional
+  scoped business history, BFF health probes, recovery/expiry acceptance on a real
+  standalone Linux image, and same-organization selection stall regression fix.
+  No dependency, workflow, Core or approved marketing design change. Publication NO-GO.
+
 - M9 PR4 local: pre-registered partner invitations, accept/reject/leave/revoke,
   read-only shared metadata, scoped SQL functions/RLS and transactional events.
   Real BFF/UI, PostgreSQL/concurrency/restart tests. No RoomState, cryptographic

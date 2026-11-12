@@ -52,7 +52,10 @@ def test_schema_version_constraints_and_metadata_only(migrated: Database) -> Non
             "organization_access_events",
             "organization_memberships",
             "organizations",
+            "room_collaboration_events",
             "room_creation_requests",
+            "room_invitations",
+            "room_operational_events",
             "rooms",
             "users",
         ]

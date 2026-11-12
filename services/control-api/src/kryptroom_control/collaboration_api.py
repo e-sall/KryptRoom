@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Annotated, Literal
 from uuid import UUID
 
@@ -42,6 +43,29 @@ class InvitationOutput(Contract):
 class ParticipantsOutput(Contract):
     ownerOrganizationId: UUID
     partnerOrganizationIds: tuple[UUID, ...]
+
+
+class HistoryOutput(Contract):
+    id: UUID
+    kind: Literal[
+        "room_created",
+        "room_metadata_updated",
+        "invitation_invite",
+        "invitation_accept",
+        "invitation_reject",
+        "invitation_leave",
+        "invitation_revoke",
+    ]
+    actorOrganizationId: UUID
+    createdAt: datetime
+
+
+@router.get("/rooms/{roomId}/history", response_model=DataResponse[Page[HistoryOutput]])
+def history(
+    request: Request, roomId: UUID, service: Service, limit: Limit = 25, cursor: UUID | None = None
+) -> JSONResponse:
+    RoomService(service).read(roomId)
+    return response(request, Collaboration(service).history(roomId, limit, cursor))
 
 
 @router.post(

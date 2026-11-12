@@ -1,4 +1,4 @@
-import { render,screen,waitFor } from "@testing-library/react";
+import { render,screen,waitFor,fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach,describe,expect,it,vi } from "vitest";
 import { PersistentRooms } from "../src/features/rooms/persistent-rooms";
@@ -11,6 +11,13 @@ const me={organizations:[{id:oid,displayName:"Lab A"}],memberships:[{organizatio
 function reply(data:unknown,status=200){return new Response(JSON.stringify({data}),{status,headers:{"Content-Type":"application/json","ETag":'"1"',"X-CSRF-Token":"session-bound"}});}
 afterEach(()=>vi.unstubAllGlobals());
 describe("Persistent Rooms boundary",()=>{
+ it("does not stall when the active organization is selected again",async()=>{
+  vi.stubGlobal("fetch",vi.fn(async()=>reply(me)));
+  render(<PersistentRooms create/>);await screen.findByLabelText("Room name");
+  fireEvent.change(screen.getByLabelText("Organization"),{target:{value:oid}});
+  expect(screen.getByLabelText("Room name")).toBeInTheDocument();
+  expect(screen.queryByText("Loading Rooms")).not.toBeInTheDocument();
+ });
  it("permits one same-origin BFF transport and no client credential storage",()=>{
   const source=readFileSync("src/features/rooms/persistent-rooms.tsx","utf8");
   expect(source.match(/\bfetch\s*\(/g)).toHaveLength(1);

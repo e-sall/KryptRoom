@@ -27,6 +27,37 @@ class Collaboration:
         self.authority = authority
         self.session = authority.session
 
+    def history(self, rid: UUID, limit: int, cursor: UUID | None) -> dict[str, Any]:
+        try:
+            with self.session.begin_nested():
+                rows = (
+                    self.session.execute(
+                        sa.text("SELECT * FROM control_api.room_history(:rid,:cursor,:limit)"),
+                        {"rid": rid, "cursor": cursor, "limit": limit + 1},
+                    )
+                    .mappings()
+                    .all()
+                )
+        except DBAPIError as error:
+            code = str(getattr(error.orig, "sqlstate", ""))
+            status, reason = {
+                "42501": (403, "permission_denied"),
+                "22023": (422, "invalid_page"),
+            }.get(code, (503, "history_unavailable"))
+            raise AccessError(status, reason) from None
+        return {
+            "items": [
+                {
+                    "id": str(r["id"]),
+                    "kind": r["kind"],
+                    "actorOrganizationId": str(r["actor_organization_id"]),
+                    "createdAt": r["created_at"].isoformat(),
+                }
+                for r in rows[:limit]
+            ],
+            "next_cursor": str(rows[limit - 1]["id"]) if len(rows) > limit else None,
+        }
+
     def listing(self, oid: UUID, limit: int, cursor: UUID | None) -> dict[str, Any]:
         self.authority.authorized(oid, BusinessAction.ORGANIZATION_UPDATE)
         rows = (

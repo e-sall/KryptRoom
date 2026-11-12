@@ -1,5 +1,28 @@
 # Architectural decisions
 
+## 2026-11-11 — PR5 operational recovery and bounded history
+
+Freeze 0001–0004. Apply an immutable CREATE OR REPLACE snapshot in 0005 so old
+0004 installations receive the SQL guard without data reset, ACL or owner changes.
+0005 downgrade intentionally keeps the security fix. Version 0006 owns history;
+its downgrade removes only the new projection/triggers/history, not old Rooms,
+invitations or collaboration events. Export new history before any non-test rollback.
+
+Record Room create/update and invitation events atomically through narrow definer
+triggers. App roles cannot directly read/write history. Owner managers see Room
+history; accepted partner managers see only current-invitation events and Room
+events since acceptance. Members and third parties cannot read it. Never project
+actor-user IDs, idempotency keys, labels/descriptions or OAuth data. Preserve actual
+legacy event IDs/times; do not invent unavailable historical Room events. This is
+business observability, not signed, tamper-proof or cryptographic evidence.
+
+Reuse Dockerfile.identity's pinned Linux runtime and clean npm ci. The earlier
+trace warnings came from shared Windows dependency junctions, not a need to widen
+tracing to a developer filesystem. Runtime validation uses server.js with only
+private fixture credential/CA mounts, never source/node_modules mounts. Readiness
+checks DB/API/IdP without returning diagnostics. Local HTTP cookies and local test
+results authorize no production exposure. Security gates remain strict and unchanged.
+
 ## 2026-11-11 — PR4 bounded business collaboration
 
 One owning organization and at most one pending/accepted pre-registered partner

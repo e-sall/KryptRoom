@@ -41,7 +41,7 @@ export function proxyPath(path: string[], method: string): string | null {
   const id = "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}";
   const route = path.join("/");
   const allowed: Record<string, RegExp[]> = {
-    GET: [/^me(?:\/registrations)?$/, /^organizations$/, new RegExp(`^organizations/${id}(?:/members|/rooms|/room-invitations)?$`), new RegExp(`^rooms/${id}(?:/participants)?$`)],
+    GET: [/^me(?:\/registrations)?$/, /^organizations$/, new RegExp(`^organizations/${id}(?:/members|/rooms|/room-invitations)?$`), new RegExp(`^rooms/${id}(?:/participants|/history)?$`)],
     POST: [/^organizations$/, new RegExp(`^organizations/${id}/rooms$`),new RegExp(`^rooms/${id}/invitations$`)],
     PATCH: [new RegExp(`^organizations/${id}(?:/members/${id}|/room-invitations/${id})?$`), new RegExp(`^rooms/${id}$`)],
     DELETE: [new RegExp(`^organizations/${id}/members/${id}$`)],

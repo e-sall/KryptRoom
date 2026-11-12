@@ -39,6 +39,7 @@ def test_configured_openapi_has_exact_metadata_scope_and_bearer(settings, tmp_pa
         "/api/v1/rooms/{roomId}",
         "/api/v1/rooms/{roomId}/invitations",
         "/api/v1/rooms/{roomId}/participants",
+        "/api/v1/rooms/{roomId}/history",
         "/api/v1/organizations/{organizationId}/room-invitations",
         "/api/v1/organizations/{organizationId}/room-invitations/{invitationId}",
     }

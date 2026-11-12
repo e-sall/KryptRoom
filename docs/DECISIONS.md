@@ -1,5 +1,16 @@
 # Architectural decisions
 
+## 2026-11-11 — PR6 release controls
+
+Preserve migrations; refuse history-losing downgrade before DDL. Only explicit
+trusted disposable *_test resets in environment=test opt in. Prefer reviewed
+forward migration/recovery for production. Rehearse data/grants/functions/RLS
+restore without claiming PITR. Pin compatible Node security patch and remove
+unused runtime installers, without excluding build risk from analysis. Keep
+unresolved findings blocking. Add explicit release applicability/aggregate; do
+not alter Core classification or call mutable checkout controls independent.
+See docs/m9/pr6 for measurements, limitations and governance gates.
+
 ## 2026-11-11 — PR5 operational recovery and bounded history
 
 Freeze 0001–0004. Apply an immutable CREATE OR REPLACE snapshot in 0005 so old

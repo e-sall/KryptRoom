@@ -19,7 +19,12 @@ def test_identity_ci_is_additive_strict_and_does_not_reuse_an_exception():
     assert "paths" not in trigger["pull_request"]
     assert config["permissions"] == {"contents": "read"}
     assert set(config["jobs"]) == {"m9-identity-organizations"}
-    assert "npm audit --json --audit-level=moderate" in source
+    # The approved V2 gate replaced the old inline audit; check the real control.
+    assert "python3 .github/frontend_security_gate.py" in source
+    gate = (REPO / ".github/frontend_security_gate.py").read_text()
+    assert "IMAGE,'npm','audit','--json','--registry=https://registry.npmjs.org'" in gate
+    assert "type(n) is int and n == 0" in gate
+    assert "'Unresolved findings'" in gate
     assert "continue-on-error" not in source
     assert "persist-credentials: false" in source
     assert "--require-hashes" in source
@@ -55,7 +60,7 @@ def test_identity_fixture_remains_loopback_only_and_exactly_pinned():
     dockerfile = (REPO / "apps/web/Dockerfile.identity").read_text()
     assert "HOSTNAME=127.0.0.1 PORT=3004" in dockerfile
     assert "playwright:v1.64.1-noble@sha256:" in dockerfile
-    assert "node:22.23.4-bookworm-slim@sha256:" in dockerfile
+    assert "node:22.23.5-bookworm-slim@sha256:" in dockerfile
     assert "USER 10001:10001" in dockerfile
 
 

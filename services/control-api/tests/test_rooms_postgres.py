@@ -240,6 +240,7 @@ def test_revocation_while_room_mutation_waits(stores, cohort):
 def test_rooms_migration_downgrade_and_reupgrade(postgres_settings):
     # Only the explicitly isolated *_test database selected by conftest.
     config = Config(str(Path(__file__).resolve().parents[1] / "alembic.ini"))
+    config.attributes["allow_disposable_history_loss"] = True
     command.downgrade(config, "0002_identity_organizations")
     command.upgrade(config, "head")
     command.upgrade(config, "head")

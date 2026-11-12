@@ -1,5 +1,13 @@
 # Project context
 
+## Local M9 PR6 release gates — 2026-11-11
+
+Isolated from approved PR5 51e885c; no product feature. Pins Node security patch,
+removes unused runtime installers, patches apt, guards history downgrade and
+rehearses PostgreSQL logical restore. Additional fail-closed CI is prepared only.
+Npm/ESLint, OS findings and independent GitHub enforcement still block release.
+See docs/m9/pr6. No exception reused; no publication/deployment authorized.
+
 ## Local M9 PR5 operational hardening — 2026-11-11
 
 Isolated branch starts at approved PR4 `c209806`. Migration 0005 catches up legacy

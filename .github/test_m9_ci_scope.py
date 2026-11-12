@@ -146,12 +146,25 @@ class M9ScopeTests(unittest.TestCase):
             ("run", 'echo "Frontend checks not applicable; classification succeeded"'),
             ("run", "python3 .github/frontend_security_gate.py"),
             ("run", "python3 -m unittest discover -s .github -p 'test_frontend_security_gate.py' -v"),
-            ("uses", "actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6"),
         }
         # Recognize only these exact new security operations; every historical
         # frontend validation must still appear in its original order.
         self.assertEqual(operations(new_web).count(("run", "python3 .github/frontend_security_gate.py")), 1)
-        self.assertEqual([op for op in operations(new_web) if op not in added_web], operations(old_web))
+        # PR6 changes only exact pins and strict installation options. Preserve
+        # every historical validation in order; exclude just the added gate artifact.
+        compared = re.sub(r"^      - name: Preserve frontend gate evidence\n(?:(?!^      - ).*\n)*",
+                          "", new_web, flags=re.M)
+        replacements = {
+            ('uses', 'actions/checkout@v7'): ('uses', 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7'),
+            ('uses', 'actions/setup-node@v7'): ('uses', 'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7'),
+            ('uses', 'actions/upload-artifact@v6'): ('uses', 'actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6'),
+            ('run', 'npm ci'): ('run', 'npm ci --strict-peer-deps --ignore-scripts'),
+            ('run', 'test "$(npm --version)" = "10.9.4"'): ('run', '|'),
+        }
+        self.assertIn('npm install --global npm@10.9.10 --ignore-scripts', new_web)
+        self.assertIn('test "$(npm --version)" = "10.9.10"', new_web)
+        self.assertEqual([op for op in operations(compared) if op not in added_web],
+                         [replacements.get(op, op) for op in operations(old_web)])
         scoped = (ROOT / ".github/fixtures/control-api-foundation.scoped.yml").read_text(encoding="utf-8")
         added_m9 = {("run", "python3 ../../.github/ci_scope.py"),
                     ("run", 'echo "M9 checks not applicable; classification succeeded"')}

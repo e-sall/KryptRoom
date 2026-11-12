@@ -25,7 +25,7 @@ jobs:
       run:
         working-directory: apps/web
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
           fetch-depth: 0 # scope migration tests compare immutable pre-migration blobs
@@ -58,19 +58,21 @@ jobs:
           name: frontend-security-web
           path: frontend-security-evidence/
           if-no-files-found: error
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         if: steps.scope.outputs.web == 'true'
         with:
-          node-version: '22.22.0'
+          node-version: '22.23.5'
           cache: npm
           cache-dependency-path: apps/web/package-lock.json
       - name: Verify pinned package manager
         if: steps.scope.outputs.web == 'true'
-        run: test "$(npm --version)" = "10.9.4"
+        run: |
+          npm install --global npm@10.9.10 --ignore-scripts --registry=https://registry.npmjs.org
+          test "$(npm --version)" = "10.9.10"
       - name: Verify frontend/core CI scope decisions
         if: steps.scope.outputs.web == 'true'
         run: python3 -m unittest discover -s ../../.github -p 'test_ci_scope.py' -v
-      - run: npm ci
+      - run: npm ci --strict-peer-deps --ignore-scripts
         if: steps.scope.outputs.web == 'true'
       - run: npm run lint
         if: steps.scope.outputs.web == 'true'
@@ -84,7 +86,7 @@ jobs:
         if: steps.scope.outputs.web == 'true'
       - run: npm run test:e2e
         if: steps.scope.outputs.web == 'true'
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         if: always() && steps.scope.outputs.web == 'true'
         with:
           name: m8-foundation-browser-evidence

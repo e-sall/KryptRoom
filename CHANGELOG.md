@@ -1,5 +1,9 @@
 # Changelog
 
+- M9 PR6 local: pinned Node security patch, runtime installer removal, apt patch,
+  protected history downgrade, real logical restore, fail-closed release CI and
+  manual enforcement plan. Unresolved findings remain blocking; no publication.
+
 - M9 PR5 local: non-destructive legacy action-guard migration, transactional
   scoped business history, BFF health probes, recovery/expiry acceptance on a real
   standalone Linux image, and same-organization selection stall regression fix.

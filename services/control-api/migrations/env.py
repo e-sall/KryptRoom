@@ -9,6 +9,7 @@ from kryptroom_control import (
 )
 from kryptroom_control.config import load_settings
 from kryptroom_control.db import SCHEMA, Base
+from kryptroom_control.migration_safety import protect_history
 
 settings = load_settings()
 options = {
@@ -28,6 +29,13 @@ if context.is_offline_mode():
         **options,
     )
     with context.begin_transaction():
+        start = context.get_starting_revision_argument()
+        protect_history(
+            settings,
+            context.config,
+            (start,) if start else (),
+            context.get_context().opts.get("destination_rev"),
+        )
         context.run_migrations()
 else:
     engine = create_engine(
@@ -43,6 +51,12 @@ else:
         with engine.connect() as connection:
             context.configure(connection=connection, **options)
             with context.begin_transaction():
+                protect_history(
+                    settings,
+                    context.config,
+                    context.get_context().get_current_heads(),
+                    context.get_context().opts.get("destination_rev"),
+                )
                 context.run_migrations()
     finally:
         engine.dispose()

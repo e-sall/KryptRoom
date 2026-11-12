@@ -9,6 +9,9 @@ it("never exempts arbitrary or future server files from the M8 boundary", () => 
   for (const name of ["future.ts","handlers.tsx","rooms.ts"])
     expect(m9ServerFile(resolve("src/server/auth"),name)).toBe(false);
   expect(m9ServerFile(resolve("src/features/marketing"),"handlers.ts")).toBe(false);
+  expect(m9ServerFile(resolve("src/app/health/ready"),"route.ts")).toBe(true);
+  expect(m9ServerFile(resolve("src/app/health/ready"),"future.ts")).toBe(false);
+  expect(m9ServerFile(resolve("src/app/health/future"),"route.ts")).toBe(false);
 });
 it("keeps server authority out of every presentation import and the Core", () => {
   for (const entry of readdirSync("src",{recursive:true,withFileTypes:true})) {

@@ -20,6 +20,7 @@ pytestmark = pytest.mark.postgres
 @pytest.fixture(scope="module")
 def migrated(postgres_settings: Settings) -> Iterator[Database]:
     config = Config(str(Path(__file__).resolve().parents[1] / "alembic.ini"))
+    config.attributes["allow_disposable_history_loss"] = True
     db = Database(postgres_settings)
     command.downgrade(config, "base")
     with TestClient(create_app(postgres_settings)) as client:
@@ -136,6 +137,7 @@ def test_runtime_role_readiness_and_least_privilege(
 
 def test_missing_and_wrong_revision_fail_closed(migrated: Database) -> None:
     config = Config(str(Path(__file__).resolve().parents[1] / "alembic.ini"))
+    config.attributes["allow_disposable_history_loss"] = True
     with migrated.transaction() as session:
         session.execute(text("UPDATE control_api.alembic_version SET version_num='unknown'"))
     try:

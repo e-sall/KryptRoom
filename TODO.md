@@ -1,5 +1,15 @@
 # TODO
 
+## Authorized isolated M9 PR6
+
+- [x] Compatible runtime hardening, exact-image scans and restore/downgrade tests.
+- [x] Additional fail-closed CI and independent enforcement plan, local validation.
+- [ ] QA04 of exact PR6 delta and flat evidence.
+- [ ] Resolve eight npm findings, ESLint EOL and residual OS HIGH/CRITICAL findings.
+- [ ] Independent reviewer/validator and effective GitHub protections.
+- [ ] Explicit publication/proof-routing authorization, hosted validation and PITR.
+- Prior PR2–PR5 QA stays approved; publication/merge/deployment remain NO-GO.
+
 ## Authorized isolated M9 PR5
 
 - [x] Fresh schema and legacy 0004 catch-up with data/owner/ACL preservation.

@@ -26,7 +26,9 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def config():
-    return Config(str(ROOT / "alembic.ini"))
+    result = Config(str(ROOT / "alembic.ini"))
+    result.attributes["allow_disposable_history_loss"] = True
+    return result
 
 
 def snapshot(db):

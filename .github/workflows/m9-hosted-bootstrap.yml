@@ -1,0 +1,205 @@
+name: M9 Hosted CI Bootstrap
+
+on:
+  push:
+    branches: [release/m9-hosted-ci-20261112]
+  pull_request:
+    branches: [dev]
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: m9-bootstrap-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  SCANNER_IMAGE: aquasec/trivy:0.76.2@sha256:6fa071ef8daa2e58b90cbf1710bedca91adbb3bf98693533226f442035b836a6
+  POSTGRES_IMAGE: postgres:17.11-bookworm@sha256:839fbb5a4942a7758dd93e18b42ea5649807491a0545b5eeeb8f0b8bb11857a5
+  KEYCLOAK_IMAGE: quay.io/keycloak/keycloak:26.8.2@sha256:3879c623248408de29a5303178b5816c77e8dfef3890c361f8c0bbeaa979ba3b
+
+jobs:
+  bootstrap-policy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      applicable: ${{ steps.policy.outputs.applicable }}
+    steps:
+      - name: Refuse unexpected repository or initiator before checkout
+        if: github.repository != 'e-sall/KryptRoom' || github.actor != 'e-sall'
+        run: exit 1
+      - name: Refuse foreign source before checkout or candidate tests
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
+        run: exit 1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {persist-credentials: false, fetch-depth: 0}
+      - id: policy
+        run: python3 .github/bootstrap_checks.py policy
+      - if: steps.policy.outputs.applicable == 'true'
+        run: python3 -m unittest discover -s .github -p 'test_*.py' -v
+
+  bootstrap-backend:
+    needs: bootstrap-policy
+    if: needs.bootstrap-policy.outputs.applicable == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run: {working-directory: services/control-api}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with: {python-version: '3.12.16'}
+      - run: |
+          python -m pip install --require-hashes -r requirements-dev.lock
+          python -m pip install --no-deps --no-build-isolation .
+          python -m pip check
+          uv lock --check
+          python scripts/check-locks.py
+          ruff check .
+          ruff format --check .
+          mypy src
+          python -m pytest -m 'not postgres' -v
+          python -m pip_audit -r requirements.lock --require-hashes --disable-pip
+          python -m pip_audit -r requirements-dev.lock --require-hashes --disable-pip
+          python -m build --no-isolation
+          python -c "import pathlib,hashlib,json,os; p=pathlib.Path('dist'); files=list(p.iterdir()); (p/'MEASUREMENTS.json').write_text(json.dumps({'source_sha':os.environ['GITHUB_SHA'],'independently_signed':False,'files':{f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in files if f.is_file()}},indent=2))"
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with: {name: bootstrap-python-distributions, path: services/control-api/dist/, if-no-files-found: error}
+
+  bootstrap-security:
+    needs: bootstrap-policy
+    if: needs.bootstrap-policy.outputs.applicable == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {persist-credentials: false, fetch-depth: 0}
+      - name: Root full and production audits without lifecycle scripts
+        run: |
+          mkdir -p bootstrap-audits
+          for mode in full production; do
+            extra=''
+            if [ "$mode" = production ]; then extra='--omit=dev'; fi
+            docker run --rm --read-only --cap-drop ALL --security-opt no-new-privileges:true --tmpfs /tmp -e HOME=/tmp -v "$PWD/package.json:/input/package.json:ro" -v "$PWD/package-lock.json:/input/package-lock.json:ro" node:22.23.5-alpine3.23@sha256:6868d4695b947ee120bffaa463fecd68cde370d7bfec92955e7c8ac576b4f475 sh -ec 'cd /tmp; cp /input/* .; npm audit --json --registry=https://registry.npmjs.org '"$extra" > "bootstrap-audits/root-$mode.json"
+          done
+      - name: Strict frontend audit and record validation before frontend operations
+        env:
+          REVIEW_SOURCE_SHA: ${{ github.sha }}
+          REVIEW_BASELINE_SHA: d8a5c0aa7ed845c31bd2ff40c1b3491246c6cf83
+          FRONTEND_SECURITY_EVIDENCE_JSON: ${{ vars.FRONTEND_SECURITY_EVIDENCE_JSON }}
+        run: python3 .github/frontend_security_gate.py
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        if: always()
+        with:
+          name: bootstrap-security
+          path: |
+            frontend-security-evidence/
+            bootstrap-audits/
+          if-no-files-found: error
+
+  bootstrap-images:
+    needs: bootstrap-policy
+    if: needs.bootstrap-policy.outputs.applicable == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {persist-credentials: false}
+      - name: Build and scan API, selected PostgreSQL, candidate and IdP without starting services
+        run: python3 .github/bootstrap_images.py
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        if: always()
+        with:
+          name: bootstrap-image-evidence
+          path: |
+            bootstrap-images/*.json
+            bootstrap-images/*.id
+            bootstrap-images/*.exit
+            bootstrap-images/*.txt
+          if-no-files-found: error
+
+  bootstrap-frontend:
+    needs: [bootstrap-policy, bootstrap-security]
+    if: needs.bootstrap-policy.outputs.applicable == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    defaults:
+      run: {working-directory: apps/web}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {persist-credentials: false}
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with: {node-version: '22.23.5'}
+      - run: |
+          npm install --global npm@10.9.10 --ignore-scripts --registry=https://registry.npmjs.org
+          test "$(npm --version)" = 10.9.10
+          npm ci --strict-peer-deps --ignore-scripts
+          npm audit --json --registry=https://registry.npmjs.org
+          npm audit --omit=dev --json --registry=https://registry.npmjs.org
+          npm run lint
+          npm test
+          npm run build
+          npm run typecheck
+          npx playwright install --with-deps chromium
+          npm run test:e2e
+
+  bootstrap-identity:
+    needs: [bootstrap-policy, bootstrap-backend, bootstrap-images, bootstrap-frontend]
+    if: needs.bootstrap-policy.outputs.applicable == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    defaults:
+      run: {working-directory: services/control-api}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with: {python-version: '3.12.16'}
+      - run: |
+          python -m pip install --require-hashes -r requirements-dev.lock
+          python -m pip install --no-deps --no-build-isolation .
+          sudo --preserve-env=DOCKER_CONFIG,COMPOSE_PROJECT_NAME "$(command -v python)" scripts/local-secrets.py
+          sudo --preserve-env=DOCKER_CONFIG,COMPOSE_PROJECT_NAME "$(command -v python)" scripts/compose-acceptance.py
+          pg_version="$(sudo --preserve-env=DOCKER_CONFIG,COMPOSE_PROJECT_NAME docker compose exec -T postgres psql -XAt -U postgres -d postgres -c 'SHOW server_version_num')"
+          case "$pg_version" in ''|*[!0-9]*) exit 1 ;; esac
+          test "$pg_version" -ge 170012
+          test "$pg_version" -lt 180000
+          sudo --preserve-env=DOCKER_CONFIG,COMPOSE_PROJECT_NAME docker compose --profile test run --rm tests python -m pytest tests/test_release_postgres.py -vs
+          sudo --preserve-env=DOCKER_CONFIG "$(command -v python)" scripts/backup-restore-acceptance.py --disposable --container kr-m9-release-backend-postgres-1
+        env: {COMPOSE_PROJECT_NAME: kr-m9-release-backend}
+      - name: Real OIDC PKCE BFF and collaboration acceptance
+        run: sudo --preserve-env=DOCKER_CONFIG,GITHUB_WORKSPACE,GITHUB_SHA,SCANNER_IMAGE,POSTGRES_IMAGE,KEYCLOAK_IMAGE "$(command -v python)" ../../.github/bootstrap_identity.py
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        if: always()
+        with:
+          name: bootstrap-running-image-evidence
+          path: |
+            bootstrap-running-images/*.json
+            bootstrap-running-images/*.id
+            bootstrap-running-images/*.exit
+            bootstrap-running-images/*.txt
+          if-no-files-found: error
+      - name: Remove only disposable acceptance fixtures
+        if: always()
+        run: |
+          sudo --preserve-env=DOCKER_CONFIG docker compose -p kr-m9-release-backend --profile test down --volumes --remove-orphans
+          sudo --preserve-env=DOCKER_CONFIG docker compose -p kr-m9-pr2-real -f compose.identity.yml --profile operator down --volumes --remove-orphans
+
+  m9-bootstrap-release:
+    needs: [bootstrap-policy, bootstrap-backend, bootstrap-security, bootstrap-images, bootstrap-frontend, bootstrap-identity]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - name: Refuse failed policy before executing candidate aggregate code
+        env: {POLICY: '${{ needs.bootstrap-policy.result }}'}
+        run: test "$POLICY" = success
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {persist-credentials: false}
+      - name: Fail closed on missing, skipped, cancelled or refused required consumers
+        env:
+          APPLICABLE: ${{ needs.bootstrap-policy.outputs.applicable }}
+          RESULTS: '{"policy":"${{ needs.bootstrap-policy.result }}","backend":"${{ needs.bootstrap-backend.result }}","security":"${{ needs.bootstrap-security.result }}","images":"${{ needs.bootstrap-images.result }}","frontend":"${{ needs.bootstrap-frontend.result }}","identity":"${{ needs.bootstrap-identity.result }}"}'
+        run: python3 .github/bootstrap_checks.py aggregate

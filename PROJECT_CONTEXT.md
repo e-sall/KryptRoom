@@ -1,5 +1,18 @@
 # Project context
 
+## M9 hosted bootstrap preparation — 2026-11-12
+
+Isolated from approved PR7 c2a8e7b; no hosted run/push/PR is authorized yet.
+Exact release/m9-hosted-ci-20261112 push selects only the new owner-controlled
+diagnostic workflow. Audits/scans stay blocking; no frontend/service execution
+before successful prerequisites. Stable aggregate refuses skipped requirements.
+On that branch's allowlisted diagnostic PR, conservative core=true remains visible but scope exits with
+failure before existing dependent heavy jobs. Core requirements stay outstanding,
+not exempted; actual Core/unknown edits and other branches/manual workflows keep
+their mandatory routing. Launch refuses actual Core/unknown edits. Crypto recipes/fixtures
+remain untouched. Solo Founder CI is not independent human review or tamper-proof
+external enforcement. See docs/m9/ci-bootstrap and exact-SHA flat evidence.
+
 ## Local M9 PR7 final security remediation — 2026-11-12
 
 From approved release closure `5363d68`. Local PostgreSQL17.12 candidate rebuilds

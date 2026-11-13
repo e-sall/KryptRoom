@@ -1,5 +1,22 @@
 # Architectural decisions
 
+## 2026-11-12 — Owner-controlled first CI, explicit crypto execution refusal
+
+The Founder remains the sole maintainer; introduce no fictional external reviewer.
+Separate diagnostic execution from release/merge authority. First reviewed push
+on one exact release branch selects only M9 bootstrap. Existing cryptographic
+workflows/recipes stay byte-identical, preserving M5 workflow-bound vectors.
+For that branch's allowlisted diagnostic PR, keep core=true but fail change-scope before its heavy
+dependent jobs. A failed prerequisite is not a successful crypto check; bootstrap
+aggregate also refuses a Core-pending PR. Other branches retain existing required
+Core execution. Never branch-name-exempt actual Core changes.
+
+All known audit/image findings remain failures. Services/frontend wait for clean
+prerequisites; unsigned source/image/config/archive measurements are not independent
+attestations. Owner-edited workflows can change their own controls: safety applies
+only to the locally reviewed exact SHA; any pipeline/event/helper change requires
+another audit before push. No external enforcement or independent review is claimed.
+
 ## 2026-11-12 — PR7 local privilege-helper rebuild, no vendor substitution
 
 Rebuild unmodified gosu1.20 commit29b939aa with digest-pinned Go1.27.4, verified

@@ -1,5 +1,11 @@
 # Changelog
 
+- M9 hosted-bootstrap local preparation: controlled release-branch diagnostics,
+  full strict audits/scans, prerequisite-gated functional acceptance, unsigned
+  artifact measurements and fail-closed aggregate. Explicit bootstrap PR execution
+  refusal preserves core=true and pending Core requirements. No crypto recipe,
+  fixture, dependency, product code, GitHub setting or publication change.
+
 - M9 PR7 local: source/hash-pinned gosu rebuild with maintained Go and compatible
   Debian SASL security packages in the PostgreSQL17.12 candidate. Add immutable-ID
   privilege/signal acceptance and negative image-selection tests. Reduce measured

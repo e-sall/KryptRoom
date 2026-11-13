@@ -1,5 +1,16 @@
 # TODO
 
+## M9 first hosted bootstrap (local preparation only)
+
+- [x] Audit main/dev/PR7 and candidate events/jobs, including manual/secrets paths.
+- [x] Preserve Core classification and block automatic heavy bootstrap PR jobs.
+- [x] Strict aggregate and diagnostics; no false release approval from skipped jobs.
+- [ ] QA04 exact bootstrap delta; separate Founder first-push authorization.
+- [ ] Hosted exact-SHA results, still NOT RUN. Known CVEs/npm/ESLint refuse release.
+- [ ] Separate PR authorization after re-audit; Core validation remains outstanding.
+- [ ] Governance/enforcement decision for future merge as solo maintainer. No
+  fictitious independent reviewer, new exception, automatic merge or deployment.
+
 ## Local M9 PR7 security remediation
 
 - [x] Source/hash-pinned maintained-Go gosu rebuild and Debian SASL backports.

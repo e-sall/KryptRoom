@@ -269,9 +269,27 @@ def classify_scopes_event(event_name, event, read_git=git):
     return {"core": True, "web": True, "m9": True} if diff is None else classify_paths(*diff)
 
 
+def refuse_bootstrap_crypto(event_name, event, scopes, paths):
+    """Execution refusal, NOT a core exemption or a successful crypto check.
+
+    Existing heavy jobs require a successful change-scope job. Leave core=true
+    visible and fail that prerequisite on the controlled bootstrap PR. Other
+    branches/manual workflows keep their existing mandatory regression behavior.
+    Actual Core/unknown changes never qualify: their mandatory routing remains
+    intact, and the launch audit must refuse their publication in this mission.
+    """
+    if not (event_name == 'pull_request' and
+            event['pull_request']['head']['ref'] == 'release/m9-hosted-ci-20261112' and
+            scopes['core']):
+        return False
+    from bootstrap_checks import permitted_path
+    return bool(paths) and all(permitted_path(path) for path in paths)
+
+
 if __name__ == "__main__":
     event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text(encoding="utf-8"))
-    scopes = classify_scopes_event(os.environ["GITHUB_EVENT_NAME"], event)
+    diff = event_diff(os.environ["GITHUB_EVENT_NAME"], event)
+    scopes = {"core": True, "web": True, "m9": True} if diff is None else classify_paths(*diff)
     print(json.dumps(scopes, sort_keys=True))
     with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
         for name, enabled in scopes.items():
@@ -279,3 +297,5 @@ if __name__ == "__main__":
     if os.environ.get("GITHUB_STEP_SUMMARY"):
         with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as summary:
             summary.write("CI applicability: " + json.dumps(scopes, sort_keys=True) + "\n")
+    if refuse_bootstrap_crypto(os.environ['GITHUB_EVENT_NAME'], event, scopes, diff[0] if diff else []):
+        raise SystemExit('BLOCKED: core=true; automatic crypto execution is not authorized on the M9 bootstrap PR. Required Core validation is still outstanding.')

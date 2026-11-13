@@ -1,5 +1,18 @@
 # TODO
 
+## Local M9 PR7 security remediation
+
+- [x] Source/hash-pinned maintained-Go gosu rebuild and Debian SASL backports.
+- [x] Real immutable-image UID/groups/elevation/signal tests and PG17.12 acceptance.
+- [x] Real observed browser replays; old timeouts not reproduced, cause unproven.
+- [x] Current complete scans/audits; no suppression, exception or false resolution.
+- [ ] QA04 consolidated PR7 delta/evidence.
+- [ ] Resolve remaining PG106H+3C/39unique and Keycloak6H/6unique; qualify and
+  publish/pin a reviewed PG>=17.12 artifact under separate authorization.
+- [ ] Compatible maintained ESLint chain and npm8moderate remediation.
+- [ ] Independent GitHub enforcement, exact-SHA hosted validation and Founder
+  publication approval. Production/PITR remain separate and not validated.
+
 ## Authorized local M9 release closure
 
 - [x] API/BFF measured image findings zero without scan exclusions.

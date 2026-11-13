@@ -1,9 +1,23 @@
 # LOCAL CANDIDATE ONLY. Compose and CI keep the approved official image digest.
 # Validate and publish/pin a reviewed artifact separately before changing defaults.
+FROM golang:1.27.4-bookworm@sha256:4fa7c968ba93f1635670522dbb01a2c78150443e1385746924566079f36570ea AS gosu-build
+# Unmodified upstream 1.20 source; rebuild its Go runtime, not its authorization logic.
+ADD https://codeload.github.com/tianon/gosu/tar.gz/29b939aa5bd4dc588af765b8248f6e39150d2565 /tmp/gosu.tar.gz
+WORKDIR /src
+RUN echo '2b70da8a5480fafedc16bb1fc91b572f064d03df736cbd91a616af2f1b66ab51  /tmp/gosu.tar.gz' | sha256sum -c - \
+    && tar -xzf /tmp/gosu.tar.gz --strip-components=1 \
+    && CGO_ENABLED=0 GOTOOLCHAIN=local go build -mod=readonly -trimpath -buildvcs=false -ldflags=-w -o /gosu . \
+    && go version -m /gosu \
+    && /gosu --version \
+    && /gosu nobody true
+
 FROM postgres:17.11-bookworm@sha256:839fbb5a4942a7758dd93e18b42ea5649807491a0545b5eeeb8f0b8bb11857a5
-ENV PG_VERSION=17.12-1.pgdg12+1
+ENV PG_VERSION=17.12-1.pgdg12+1 GOSU_VERSION=1.20
 RUN apt-get update \
     && apt-get install --only-upgrade --no-install-recommends -y \
        apt=2.6.2 libapt-pkg6.0=2.6.2 postgresql-17=17.12-1.pgdg12+1 \
        postgresql-client-17=17.12-1.pgdg12+1 libpq5=18.7-1.pgdg12+2 \
+       libsasl2-2=2.1.28+dfsg-10+deb12u1 libsasl2-modules-db=2.1.28+dfsg-10+deb12u1 \
     && rm -rf /var/lib/apt/lists/*
+COPY --from=gosu-build /gosu /usr/local/bin/gosu
+RUN chmod 0755 /usr/local/bin/gosu && gosu --version && gosu nobody true

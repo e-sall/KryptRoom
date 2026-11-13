@@ -1,5 +1,11 @@
 # Changelog
 
+- M9 PR7 local: source/hash-pinned gosu rebuild with maintained Go and compatible
+  Debian SASL security packages in the PostgreSQL17.12 candidate. Add immutable-ID
+  privilege/signal acceptance and negative image-selection tests. Reduce measured
+  PG H/C CVEs65 ->39; retain all residual findings and fail-closed release gates.
+  No application/Core/lock/migration/marketing change or publication.
+
 - M9 release closure local: patched digest-pinned Alpine API/BFF runtimes,
   separately installed glibc browser-test dependencies, actual-image secret tests,
   guarded restore fixture extension and PostgreSQL 17.12 release minimum.

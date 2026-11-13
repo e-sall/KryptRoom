@@ -1,5 +1,18 @@
 # Project context
 
+## Local M9 PR7 final security remediation — 2026-11-12
+
+From approved release closure `5363d68`. Local PostgreSQL17.12 candidate rebuilds
+unmodified gosu1.20 with pinned Go1.27.4 and applies signed Debian SASL backports.
+Measured candidate H/C CVEs decrease65 ->39; remaining106 HIGH +3 CRITICAL block
+publication. Official17.12 image tags unavailable at inspection: default immutable
+pins are preserved, release minimum still rejects17.11. Tested local candidate
+uses its actual immutable image ID, not a deployable/published registry artifact.
+Keycloak6HIGH, npm8MODERATE and ESLint9EOL remain; no scan exclusion or exception.
+Real Compose, privilege-helper/secret negatives, PG39 and observed browser replays
+are local evidence only. App/Core/locks/migrations/marketing unchanged.
+See docs/m9/pr7. No push, hosted CI, merge, GitHub settings change or deployment.
+
 ## Local M9 release closure — 2026-11-12
 
 Isolated from approved PR6 `66ac0df`. API/Python and BFF/Node move to official

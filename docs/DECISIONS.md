@@ -1,5 +1,22 @@
 # Architectural decisions
 
+## 2026-11-12 — PR7 local privilege-helper rebuild, no vendor substitution
+
+Rebuild unmodified gosu1.20 commit29b939aa with digest-pinned Go1.27.4, verified
+source archive SHA256 and read-only upstream Go module checksums. Preserve its
+UID/GID/groups/exec behavior; no replacement authorization implementation. Retain
+symbol/build metadata rather than suppressing scanner visibility. Apply only
+identified compatible signed Debian SASL security packages alongside the existing
+PG17.12 candidate. Use the measured immutable ID for local execution. Official
+default pins remain; no mutable tag substitution or registry publication.
+
+Do not transplant unqualified SQLite/OpenJDK binaries or a Guava JAR into the
+Keycloak/Quarkus distribution. Supported parent update/rebuild qualification is
+still needed. Inspect the actual Java default trust store and vendor guidance,
+but keep the raw JDK finding visible; absence of two named roots does not certify
+arbitrary trust stores or all chain-building paths. Do not force ESLint peers or
+minimatch major overrides. Existing strict gates remain blocked.
+
 ## 2026-11-12 — Local release closure runtime choices
 
 Use official digest-pinned Python 3.12/Node 22 Alpine 3.23 runtime bases with stable

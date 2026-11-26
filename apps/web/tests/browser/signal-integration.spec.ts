@@ -4,7 +4,15 @@ import { setCssViewport } from './css-viewport';
 test('Signal exact source geometry, common eight-second bar animation and reduced motion',async({page})=>{
  await page.goto('/');await expect(page.locator('#kr-signal-v4 svg')).toHaveAttribute('viewBox','0 0 1000 508');
  await expect(page.locator('.cinematic-showcase')).toHaveCount(0);
- await expect(page.locator('#product-demo button,#product-demo a,#product-demo video,#product-demo canvas')).toHaveCount(0);
+ await expect(page.locator('#product-demo button,#product-demo video,#product-demo canvas')).toHaveCount(0);
+ const walkthrough = page.locator('#product-demo a');
+ await expect(walkthrough).toHaveCount(1);
+ await expect(walkthrough).toHaveText('Explore the full product walkthrough \u2192');
+ await expect(walkthrough).toHaveAttribute('href', '/demo#product-walkthrough');
+ const sampleDot = page.locator('#kr-signal-v4 svg > circle[cx="846"][cy="38.5"]');
+ await expect(sampleDot).toHaveCSS('animation-name', 'signal-sample-pulse');
+ await expect(sampleDot).toHaveCSS('animation-duration', '2s');
+ await expect(sampleDot).toHaveCSS('animation-iteration-count', 'infinite');
  const data=await page.locator('#kr-signal-v4').evaluate(e=>({
   circles:[...e.querySelectorAll('.rings circle')].map(n=>[n.getAttribute('cx'),n.getAttribute('cy'),n.getAttribute('r')]),
   widths:[...e.querySelectorAll('.risk-fill-group rect')].map(n=>n.getAttribute('width')),
@@ -19,6 +27,7 @@ test('Signal exact source geometry, common eight-second bar animation and reduce
  expect(scales[0]).toBeCloseTo(0);expect(scales[1]).toBeCloseTo(1);expect(scales[2]).toBeCloseTo(1);expect(scales[3]).toBeCloseTo(0);expect(scales[4]).toBeCloseTo(1);
  await page.emulateMedia({reducedMotion:'reduce'});
  await expect(page.locator('.risk-fill-group')).toHaveCSS('animation-name','none');
+ await expect(sampleDot).toHaveCSS('animation-name', 'none');
  expect(await page.locator('.risk-fill-group').evaluate(e=>new DOMMatrix(getComputedStyle(e).transform).a)).toBe(1);
  expect((await new AxeBuilder({page}).include('#product-demo').analyze()).violations).toEqual([]);
 });

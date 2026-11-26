@@ -64,5 +64,4 @@ export function SignalArtwork(){return <div id="kr-signal-v4" style={{width:"min
 <rect x="581" y="402" width="57.67" height="6" rx="3"/>
 </g>
 <text x="40" y="461" fill="#bdcbd4" fontSize="11.5">Just a small glimpse of what KryptRoom can do.</text>
-<text x="958" y="461" fill="#858585" textAnchor="end" fontSize="9.5">SYNTHETIC PREVIEW · NO LIVE COMPUTATION</text>
 </svg></div>;}
